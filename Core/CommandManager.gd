@@ -38,6 +38,7 @@ func unregister_command(command):
 func parse_command(c_text:String):
 	if !MiraiManager.is_connected_to_mirai():
 		printerr("未成功连接至Mirai,因此无法执行指令，请尝试重启RainyBot!")
+		return
 	if c_text.begins_with("/"):
 		c_text.erase(0,1)
 	var c_arr = c_text.split(" ")
