@@ -1,0 +1,69 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "HTTPRequest",
+"class": "HttpRequestInstance",
+"language": "GDScript",
+"path": "res://Core/Classes/HttpRequestInstance.gd"
+}, {
+"base": "Object",
+"class": "MiraiCommandInstance",
+"language": "GDScript",
+"path": "res://Core/Classes/MiraiCommandInstance.gd"
+}, {
+"base": "Node",
+"class": "Plugin",
+"language": "GDScript",
+"path": "res://Core/Classes/PluginClass.gd"
+} ]
+_global_script_class_icons={
+"HttpRequestInstance": "",
+"MiraiCommandInstance": "",
+"Plugin": ""
+}
+
+[application]
+
+config/name="RainyBot-Core"
+run/main_scene="res://Gui/Main.tscn"
+run/low_processor_mode=true
+boot_splash/image="res://logo.png"
+boot_splash/fullsize=false
+boot_splash/use_filter=false
+config/icon="res://logo.png"
+config/windows_native_icon="res://logo.ico"
+
+[autoload]
+
+DataManager="*res://Core/DataManager.gd"
+ConfigManager="*res://Core/ConfigManager.gd"
+MiraiManager="*res://Core/MiraiManager.gd"
+HttpRequestManager="*res://Core/HttpRequestManager.gd"
+CommandManager="*res://Core/CommandManager.gd"
+PluginManager="*res://Core/PluginManager.gd"
+
+[display]
+
+window/size/width=500
+window/size/height=50
+
+[logging]
+
+file_logging/enable_file_logging=true
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_clear_color=Color( 0.12549, 0.141176, 0.192157, 1 )
+environment/default_environment="res://default_env.tres"

@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+
+func _ready():
+	print(\"API无需运行,直接在脚本编辑器中建立并编写插件脚本即可。\")
+	get_tree().quit()
+"
+
+[node name="Main" type="Node"]
+script = SubResource( 1 )
