@@ -1,13 +1,13 @@
 extends Node
 
-var config_path = OS.get_executable_path().get_base_dir() + "/" + "config.json"
+var config_path = OS.get_executable_path().get_base_dir() + "/" + "rainybot_config.json"
 
 var default_config = {
 	"mirai-address":"127.0.0.1",
 	"mirai-port":"8080",
 	"mirai_verify_key_enabled":true,
-	"mirai_verify_key":"#DEFAULT12345",
-	"mirai_qq":"12345",
+	"mirai_verify_key":"$DEFAULT12345",
+	"mirai_qq":"",
 }
 
 var config_description = {
@@ -30,7 +30,7 @@ func init_config():
 		file.close()
 		if _config is Dictionary:
 			if _config.has_all(default_config.keys()):
-				if _config["mirai_verify_key"] == "#DEFAULT12345":
+				if _config["mirai_verify_key"] == "$DEFAULT12345":
 					printerr("检测到您还未修改默认配置，请进行修改!")
 					print("可以前往以下路径来验证与修改配置: ",config_path)
 					return
