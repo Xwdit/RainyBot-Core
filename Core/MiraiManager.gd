@@ -94,10 +94,6 @@ func _tick_command_timeout(cmd_ins:MiraiCommandInstance,timeout:float):
 		cmd_ins.emit_signal("request_finished")
 		printerr("指令请求超时，无法获取到返回结果: ",cmd_ins.request)
 
-func send_request_dic(request_dic:Dictionary):
-	print("正在发送请求到Mirai框架：", request_dic)
-	_client.get_peer(1).put_packet(to_json(request_dic).to_utf8())
-
 func send_command(command,sub_command=null,content={},timeout:float=20):
 	if !is_connected_to_mirai():
 		printerr("未连接到Mirai框架，指令发送失败: ",command,sub_command,content)
@@ -111,7 +107,7 @@ func send_command(command,sub_command=null,content={},timeout:float=20):
 	cmd.sync_id = sync_id
 	cmd.request = request
 	processing_command[sync_id] = cmd
-	send_request_dic(request)
+	_client.get_peer(1).put_packet(to_json(request).to_utf8())
 	_tick_command_timeout(cmd,timeout)
 	return cmd
 
