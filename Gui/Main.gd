@@ -1,7 +1,7 @@
 extends LineEdit
 
 const NAME = "RainyBot-Core"
-const VERSION = "V0.4-Dev"
+const VERSION = "V1.0.5-Dev"
 const AUTHOR = "Xwdit"
 
 
