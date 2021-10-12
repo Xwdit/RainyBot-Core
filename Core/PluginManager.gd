@@ -82,11 +82,12 @@ func load_plugin(file:String):
 				printerr("此插件的以下插件信息参数不正确: ",err_arr)
 				plugin_ins.queue_free()
 				return
-			if get_children().has(_plugin_info["id"]):
-				printerr("无法加载插件文件: " + file)
-				printerr("已经存在相同ID的插件被加载: ", _plugin_info["id"])
-				plugin_ins.queue_free()
-				return
+			for child in get_children():
+				if child.name == _plugin_info["id"]:
+					printerr("无法加载插件文件: " + file)
+					printerr("已经存在相同ID的插件被加载: ", _plugin_info["id"])
+					plugin_ins.queue_free()
+					return
 			plugin_ins.name = _plugin_info["id"]
 			plugin_ins.plugin_path = plugin_path + file
 			plugin_ins.plugin_file = file
