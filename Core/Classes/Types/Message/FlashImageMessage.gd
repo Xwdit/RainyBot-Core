@@ -6,33 +6,33 @@ class_name FlashImageMessage
 
 func _init():
 	data = {
-		"image_id":null,
-		"url":null,
-		"path":null,
-		"base64":null
+		Interface.flash_image_message_data.ImageId:null,
+		Interface.flash_image_message_data.Url:null,
+		Interface.flash_image_message_data.Path:null,
+		Interface.flash_image_message_data.Base64:null
 	}
 
 
 func set_image_id(img_id:String) -> void:
-	data.image_id = img_id
+	data[Interface.flash_image_message_data.ImageId] = img_id
 
 func get_image_id() -> String:
-	return data.image_id
+	return data[Interface.flash_image_message_data.ImageId]
 
 func set_url(url:String) -> void:
-	data.url = url
+	data[Interface.flash_image_message_data.Url] = url
 
 func get_url() -> String:
-	return data.url
+	return data[Interface.flash_image_message_data.Url]
 	
 func set_path(path:String) -> void:
-	data.path = path
+	data[Interface.flash_image_message_data.Path] = path
 
 func get_path() -> String:
-	return data.path
+	return data[Interface.flash_image_message_data.Path]
 
 func set_base64(base64:String) -> void:
-	data.base64 = base64
+	data[Interface.flash_image_message_data.Base64] = base64
 
 func get_base64() -> String:
-	return data.base64
+	return data[Interface.flash_image_message_data.Base64]

@@ -1,6 +1,6 @@
 extends Node
 
-var config_path = OS.get_executable_path().get_base_dir() + "/" + "rainybot_config.json"
+var config_path = OS.get_executable_path().get_base_dir() + "/" + "rainybot_mirai_config.json"
 
 var default_config = {
 	"mirai-address":"127.0.0.1",

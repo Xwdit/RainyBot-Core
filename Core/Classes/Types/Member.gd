@@ -3,56 +3,60 @@ extends Reference
 class_name Member
 
 var data:Dictionary = {
-	"id":null,
-	"name":null,
-	"remark":null,
-	"special_title":null,
-	"permission":null,
-	"join_timestamp":null,
-	"last_speak_timestamp":null,
-	"mute_time_remaining":null,
-	"group":null,
-	"platform":null
+	Interface.member_data.Id:null,
+	Interface.member_data.Name:null,
+	Interface.member_data.MemberName:null,
+	Interface.member_data.Remark:null,
+	Interface.member_data.SpecialTitle:null,
+	Interface.member_data.Permission:null,
+	Interface.member_data.JoinTimestamp:null,
+	Interface.member_data.LastSpeakTimestamp:null,
+	Interface.member_data.MuteTimeRemaining:null,
+	Interface.member_data.Group:null,
+	Interface.member_data.Platform:null
 }
 
 func get_id() -> int:
-	return data.id
+	return data[Interface.member_data.Id]
 	
 func get_name() -> String:
-	return data.name
-	
+	return data[Interface.member_data.Name]
+
+func get_member_name() -> String:
+	return data[Interface.member_data.MemberName]
+
 func get_remark() -> String:
-	return data.remark
+	return data[Interface.member_data.Remark]
 	
 func get_special_title() -> String:
-	return data.special_title
+	return data[Interface.member_data.SpecialTitle]
 	
 func get_permission() -> int:
-	return data.permission
+	return data[Interface.member_data.Permission]
 	
 func get_join_timestamp() -> int:
-	return data.join_timestamp
+	return data[Interface.member_data.JoinTimestamp]
 	
 func get_join_time_datetime() -> Dictionary:
-	if data.join_timestamp != null:
-		return OS.get_datetime_from_unix_time(data.join_timestamp)
+	if data[Interface.member_data.JoinTimestamp] != null:
+		return OS.get_datetime_from_unix_time(data[Interface.member_data.JoinTimestamp])
 	else:
 		return {}
 		
 func get_last_speak_timestamp() -> int:
-	return data.last_speak_timestamp
+	return data[Interface.member_data.LastSpeakTimestamp]
 
 func get_last_speak_datetime() -> Dictionary:
-	if data.last_speak_timestamp != null:
-		return OS.get_datetime_from_unix_time(data.last_speak_timestamp)
+	if data[Interface.member_data.LastSpeakTimestamp] != null:
+		return OS.get_datetime_from_unix_time(data[Interface.member_data.LastSpeakTimestamp])
 	else:
 		return {}
 
 func get_mute_time_remaining() -> int:
-	return data.mute_time_remaining
+	return data[Interface.member_data.MuteTimeRemaining]
 	
 func get_group() -> Group:
-	return data.group
+	return data[Interface.member_data.Group]
 
 func get_platform() -> String:
-	return data.platform
+	return data[Interface.member_data.Platform]

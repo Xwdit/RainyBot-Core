@@ -6,25 +6,25 @@ class_name QuoteMessage
 
 func _init():
 	data = {
-		"message_id": null,
-		"group_id": null,
-		"sender_id": null,
-		"target_id": null,
-		"origin_chain": null
+		Interface.quote_message_data.MessageId: null,
+		Interface.quote_message_data.GroupId: null,
+		Interface.quote_message_data.SenderId: null,
+		Interface.quote_message_data.TargetId: null,
+		Interface.quote_message_data.OriginMessageChain: null
 	}
 
 
 func get_message_id() -> int:
-	return data.message_id
+	return data[Interface.quote_message_data.MessageId]
 	
 func get_group_id() -> int:
-	return data.group_id
+	return data[Interface.quote_message_data.GroupId]
 	
 func get_sender_id() -> int:
-	return data.sender_id
+	return data[Interface.quote_message_data.SenderId]
 	
 func get_target_id() -> int:
-	return data.target_id
+	return data[Interface.quote_message_data.TargetId]
 	
 func get_origin_chain() -> MessageChain:
-	return data.origin_chain
+	return data[Interface.quote_message_data.OriginMessageChain]

@@ -10,7 +10,7 @@ const message_events = {
 	"OtherClientMessage":Interface.message_events.OtherClientMessage,
 }
 
-const message_events_revert = {
+const message_events_reverse = {
 	Interface.message_events.FriendMessage:"FriendMessage",
 	Interface.message_events.GroupMessage:"GroupMessage",
 	Interface.message_events.TempMessage:"TempMessage",
@@ -39,7 +39,7 @@ const message_types = {
 	"MiraiCode":Interface.message_types.MiraiCode
 }
 
-const message_types_revert = {
+const message_types_reverse = {
 	Interface.message_types.Source:"Source",
 	Interface.message_types.Quote:"Quote",
 	Interface.message_types.At:"At",
@@ -100,7 +100,7 @@ const bot_events = {
 	"CommandExecutedEvent":Interface.bot_events.CommandExecutedEvent,
 }
 
-const bot_events_revert = {
+const bot_events_reverse = {
 	Interface.bot_events.BotOnlineEvent:"BotOnlineEvent",
 	Interface.bot_events.BotOfflineEventActive:"BotOfflineEventActive",
 	Interface.bot_events.BotOfflineEventForce:"BotOfflineEventForce",
@@ -141,15 +141,73 @@ const bot_events_revert = {
 }
 
 const permission_types = {
-	"OWNER":Interface.permission_types.OWNER,
-	"ADMINISTRATOR":Interface.permission_types.ADMINISTRATOR,
-	"MEMBER":Interface.permission_types.MEMBER,
+	"OWNER":Interface.permission_types.Owner,
+	"ADMINISTRATOR":Interface.permission_types.Administrator,
+	"MEMBER":Interface.permission_types.Member,
 }
 
-const permission_types_revert = {
-	Interface.permission_types.OWNER:"OWNER",
-	Interface.permission_types.ADMINISTRATOR:"ADMINISTRATOR",
-	Interface.permission_types.MEMBER:"MEMBER"
+const permission_types_reverse = {
+	Interface.permission_types.Owner:"OWNER",
+	Interface.permission_types.Administrator:"ADMINISTRATOR",
+	Interface.permission_types.Member:"MEMBER"
+}
+
+const poke_types = {
+	"Poke":Interface.poke_types.Poke,
+	"ShowLove":Interface.poke_types.ShowLove,
+	"Like":Interface.poke_types.Like,
+	"Heartbroken":Interface.poke_types.Heartbroken,
+	"SixSixSix":Interface.poke_types.SixSixSix,
+	"FangDaZhao":Interface.poke_types.FangDaZhao
+}
+
+const poke_types_reverse = {
+	Interface.poke_types.Poke:"Poke",
+	Interface.poke_types.ShowLove:"ShowLove",
+	Interface.poke_types.Like:"Like",
+	Interface.poke_types.Heartbroken:"Heartbroken",
+	Interface.poke_types.SixSixSix:"SixSixSix",
+	Interface.poke_types.FangDaZhao:"FangDaZhao"
+}
+
+const group_data = {
+	"id":Interface.group_data.Id,
+	"name":Interface.group_data.Name,
+	"permission":Interface.group_data.Permission
+}
+
+const group_data_reverse = {
+	Interface.group_data.Id:"id",
+	Interface.group_data.Name:"name",
+	Interface.group_data.Permission:"permission"
+}
+
+const member_data = {
+	"id":Interface.member_data.Id,
+	"nickname":Interface.member_data.Name,
+	"memberName":Interface.member_data.MemberName,
+	"remark":Interface.member_data.Remark,
+	"specialTitle":Interface.member_data.SpecialTitle,
+	"permission":Interface.member_data.Permission,
+	"joinTimestamp":Interface.member_data.JoinTimestamp,
+	"lastSpeakTimestamp":Interface.member_data.LastSpeakTimestamp,
+	"muteTimeRemaining":Interface.member_data.MuteTimeRemaining,
+	"group":Interface.member_data.Group,
+	"platform":Interface.member_data.Platform
+}
+
+const member_data_reverse = {
+	Interface.member_data.Id:"id",
+	Interface.member_data.Name:"nickname",
+	Interface.member_data.MemberName:"memberName",
+	Interface.member_data.Remark:"remark",
+	Interface.member_data.SpecialTitle:"specialTitle",
+	Interface.member_data.Permission:"permission",
+	Interface.member_data.JoinTimestamp:"joinTimestamp",
+	Interface.member_data.LastSpeakTimestamp:"lastSpeakTimestamp",
+	Interface.member_data.MuteTimeRemaining:"muteTimeRemaining",
+	Interface.member_data.Group:"group",
+	Interface.member_data.Platform:"platform"
 }
 
 static func message_event_from_mirai(event_str:String) -> int:
@@ -159,8 +217,8 @@ static func message_event_from_mirai(event_str:String) -> int:
 		return -1
 		
 static func message_event_to_mirai(event_id:int) -> String:
-	if message_events_revert.has(event_id):
-		return message_events_revert[event_id]
+	if message_events_reverse.has(event_id):
+		return message_events_reverse[event_id]
 	else:
 		return ""
 		
@@ -171,8 +229,8 @@ static func message_type_from_mirai(type_str:String) -> int:
 		return -1
 		
 static func message_type_to_mirai(type_id:int) -> String:
-	if message_types_revert.has(type_id):
-		return message_types_revert[type_id]
+	if message_types_reverse.has(type_id):
+		return message_types_reverse[type_id]
 	else:
 		return ""
 		
@@ -183,8 +241,8 @@ static func bot_event_from_mirai(event_str:String) -> int:
 		return -1
 		
 static func bot_event_to_mirai(event_id:int) -> String:
-	if bot_events_revert.has(event_id):
-		return bot_events_revert[event_id]
+	if bot_events_reverse.has(event_id):
+		return bot_events_reverse[event_id]
 	else:
 		return ""
 		
@@ -195,7 +253,43 @@ static func permission_type_from_mirai(type_str:String) -> int:
 		return -1
 		
 static func permission_type_to_mirai(type_id:int) -> String:
-	if permission_types_revert.has(type_id):
-		return permission_types_revert[type_id]
+	if permission_types_reverse.has(type_id):
+		return permission_types_reverse[type_id]
+	else:
+		return ""
+		
+static func poke_type_from_mirai(type_str:String) -> int:
+	if poke_types.has(type_str):
+		return poke_types[type_str]
+	else:
+		return -1
+		
+static func poke_type_to_mirai(type_id:int) -> String:
+	if poke_types_reverse.has(type_id):
+		return poke_types_reverse[type_id]
+	else:
+		return ""
+		
+static func group_data_from_mirai(data_str:String) -> int:
+	if group_data.has(data_str):
+		return group_data[data_str]
+	else:
+		return -1
+		
+static func group_data_to_mirai(data_id:int) -> String:
+	if group_data_reverse.has(data_id):
+		return group_data_reverse[data_id]
+	else:
+		return ""
+		
+static func member_data_from_mirai(data_str:String) -> int:
+	if member_data.has(data_str):
+		return member_data[data_str]
+	else:
+		return -1
+		
+static func member_data_to_mirai(data_id:int) -> String:
+	if member_data_reverse.has(data_id):
+		return member_data_reverse[data_id]
 	else:
 		return ""

@@ -159,7 +159,7 @@ config/windows_native_icon="res://logo.ico"
 
 InterfaceManager="*res://Core/Classes/Interface.gd"
 DataManager="*res://Adapters/Mirai/MiraiCaster.gd"
-ConfigManager="*res://Core/ConfigManager.gd"
+ConfigManager="*res://Adapters/Mirai/MiraiAdapterConfig.gd"
 MiraiManager="*res://Adapters/Mirai/MiraiManager.gd"
 HttpRequestManager="*res://Core/HttpRequestManager.gd"
 CommandManager="*res://Core/CommandManager.gd"

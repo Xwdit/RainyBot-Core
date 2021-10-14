@@ -6,11 +6,11 @@ class_name AppMessage
 
 func _init():
 	data = {
-		"app_text":null
+		Interface.app_message_data.AppText:null
 	}
 
 func set_app_text(text:int) -> void:
-	data.app_text = text
+	data[Interface.app_message_data.AppText] = text
 
 func get_app_text() -> String:
-	return data.app_text
+	return data[Interface.app_message_data.AppText]

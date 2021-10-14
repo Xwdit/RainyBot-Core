@@ -6,20 +6,20 @@ class_name FaceMessage
 
 func _init():
 	data = {
-		"face_id":null,
-		"name":null
+		Interface.face_message_data.FaceId:null,
+		Interface.face_message_data.Name:null
 	}
 
 
 func set_face_id(id:int) -> void:
-	data.face_id = id
+	data[Interface.face_message_data.FaceId] = id
 	
 	
 func get_face_id() -> int:
-	return data.face_id
+	return data[Interface.face_message_data.FaceId]
 	
 func set_name(name:String) -> void:
-	data.name = name
+	data[Interface.face_message_data.Name] = name
 
 func get_name() -> String:
-	return data.name
+	return data[Interface.face_message_data.Name]

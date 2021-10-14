@@ -6,18 +6,18 @@ class_name AtMessage
 
 func _init():
 	data = {
-		"target_id":null,
-		"display":null
+		Interface.at_message_data.TargetId:null,
+		Interface.at_message_data.DisplayText:null
 	}
 
 
 func set_target_id(id:int) -> void:
-	data.target_id = id
+	data[Interface.at_message_data.TargetId] = id
 	
 	
 func get_target_id() -> int:
-	return data.target_id
+	return data[Interface.at_message_data.TargetId]
 	
 	
 func get_display() -> String:
-	return data.display
+	return data[Interface.at_message_data.DisplayText]

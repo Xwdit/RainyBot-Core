@@ -6,11 +6,11 @@ class_name JsonMessage
 
 func _init():
 	data = {
-		"json_text":null
+		Interface.json_message_data.JsonText:null
 	}
 
 func set_json_text(text:int) -> void:
-	data.json_text = text
+	data[Interface.json_message_data.JsonText] = text
 
 func get_json_text() -> String:
-	return data.json_text
+	return data[Interface.json_message_data.JsonText]

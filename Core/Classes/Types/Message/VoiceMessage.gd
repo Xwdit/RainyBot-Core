@@ -6,37 +6,37 @@ class_name VoiceMessage
 
 func _init():
 	data = {
-		"voice_id":null,
-		"url":null,
-		"path":null,
-		"base64":null,
-		"length":null
+		Interface.voice_message_data.VoiceId:null,
+		Interface.voice_message_data.Url:null,
+		Interface.voice_message_data.Path:null,
+		Interface.voice_message_data.Base64:null,
+		Interface.voice_message_data.Length:null
 	}
 
 
 func set_voice_id(voice_id:String) -> void:
-	data.voice_id = voice_id
+	data[Interface.voice_message_data.VoiceId] = voice_id
 
 func get_voice_id() -> String:
-	return data.voice_id
+	return data[Interface.voice_message_data.VoiceId]
 
 func set_url(url:String) -> void:
-	data.url = url
+	data[Interface.voice_message_data.Url] = url
 
 func get_url() -> String:
-	return data.url
+	return data[Interface.voice_message_data.Url]
 	
 func set_path(path:String) -> void:
-	data.path = path
+	data[Interface.voice_message_data.Path] = path
 
 func get_path() -> String:
-	return data.path
+	return data[Interface.voice_message_data.Path]
 
 func set_base64(base64:String) -> void:
-	data.base64 = base64
+	data[Interface.voice_message_data.Base64] = base64
 
 func get_base64() -> String:
-	return data.base64
+	return data[Interface.voice_message_data.Base64]
 	
 func get_length() -> int:
-	return data.length
+	return data[Interface.voice_message_data.Length]
