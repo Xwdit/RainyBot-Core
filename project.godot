@@ -9,25 +9,139 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "SingleMessage",
+"class": "AppMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/AppMessage.gd"
+}, {
+"base": "SingleMessage",
+"class": "AtAllMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/AtAllMessage.gd"
+}, {
+"base": "SingleMessage",
+"class": "AtMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/AtMessage.gd"
+}, {
+"base": "SingleMessage",
+"class": "FaceMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/FaceMessage.gd"
+}, {
+"base": "SingleMessage",
+"class": "FlashImageMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/FlashImageMessage.gd"
+}, {
+"base": "Reference",
+"class": "Group",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Group.gd"
+}, {
 "base": "HTTPRequest",
 "class": "HttpRequestInstance",
 "language": "GDScript",
 "path": "res://Core/Classes/HttpRequestInstance.gd"
 }, {
+"base": "SingleMessage",
+"class": "ImageMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/ImageMessage.gd"
+}, {
 "base": "Object",
+"class": "Interface",
+"language": "GDScript",
+"path": "res://Core/Classes/Interface.gd"
+}, {
+"base": "SingleMessage",
+"class": "JsonMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/JsonMessage.gd"
+}, {
+"base": "Reference",
+"class": "Member",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Member.gd"
+}, {
+"base": "Object",
+"class": "MessageChain",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/MessageChain.gd"
+}, {
+"base": "Object",
+"class": "MiraiCaster",
+"language": "GDScript",
+"path": "res://Adapters/Mirai/MiraiCaster.gd"
+}, {
+"base": "Reference",
 "class": "MiraiCommandInstance",
 "language": "GDScript",
-"path": "res://Core/Classes/MiraiCommandInstance.gd"
+"path": "res://Adapters/Mirai/MiraiCommandInstance.gd"
+}, {
+"base": "SingleMessage",
+"class": "PlainMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/PlainMessage.gd"
 }, {
 "base": "Node",
 "class": "Plugin",
 "language": "GDScript",
-"path": "res://Core/Classes/PluginClass.gd"
+"path": "res://Core/Classes/Plugin.gd"
+}, {
+"base": "SingleMessage",
+"class": "PokeMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/PokeMessage.gd"
+}, {
+"base": "SingleMessage",
+"class": "QuoteMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/QuoteMessage.gd"
+}, {
+"base": "Reference",
+"class": "SingleMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/SingleMessage.gd"
+}, {
+"base": "SingleMessage",
+"class": "SourceMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/SourceMessage.gd"
+}, {
+"base": "SingleMessage",
+"class": "VoiceMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/VoiceMessage.gd"
+}, {
+"base": "SingleMessage",
+"class": "XmlMessage",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message/XmlMessage.gd"
 } ]
 _global_script_class_icons={
+"AppMessage": "",
+"AtAllMessage": "",
+"AtMessage": "",
+"FaceMessage": "",
+"FlashImageMessage": "",
+"Group": "",
 "HttpRequestInstance": "",
+"ImageMessage": "",
+"Interface": "",
+"JsonMessage": "",
+"Member": "",
+"MessageChain": "",
+"MiraiCaster": "",
 "MiraiCommandInstance": "",
-"Plugin": ""
+"PlainMessage": "",
+"Plugin": "",
+"PokeMessage": "",
+"QuoteMessage": "",
+"SingleMessage": "",
+"SourceMessage": "",
+"VoiceMessage": "",
+"XmlMessage": ""
 }
 
 [application]
@@ -43,9 +157,10 @@ config/windows_native_icon="res://logo.ico"
 
 [autoload]
 
-DataManager="*res://Core/DataManager.gd"
+InterfaceManager="*res://Core/Classes/Interface.gd"
+DataManager="*res://Adapters/Mirai/MiraiCaster.gd"
 ConfigManager="*res://Core/ConfigManager.gd"
-MiraiManager="*res://Core/MiraiManager.gd"
+MiraiManager="*res://Adapters/Mirai/MiraiManager.gd"
 HttpRequestManager="*res://Core/HttpRequestManager.gd"
 CommandManager="*res://Core/CommandManager.gd"
 PluginManager="*res://Core/PluginManager.gd"

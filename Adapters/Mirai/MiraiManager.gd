@@ -25,7 +25,7 @@ func _command_mirai(args:Array):
 					print("收到回调: ",cmd.get_result())
 					cmd.finish()
 
-func connect_to_mirai(ws_url):
+func connect_to_mirai(ws_url:String) -> void:
 	# Connect base signals to get notified of connection open, close, and errors.
 	_client.connect("connection_closed", self, "_closed")
 	_client.connect("connection_error", self, "_closed")
@@ -42,13 +42,13 @@ func connect_to_mirai(ws_url):
 		printerr("无法连接到Mirai框架，请检查配置是否有误")
 		set_process(false)
 
-func _closed(was_clean = false):
+func _closed(was_clean:bool = false):
 	# was_clean will tell you if the disconnection was correctly notified
 	# by the remote peer before closing the socket.
 	print("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
 	set_process(false)
 
-func _connected(proto = ""):
+func _connected(proto:String = ""):
 	# This is called on connection, "proto" will be the selected WebSocket
 	# sub-protocol (which is optional)
 	print("成功与Mirai框架进行通信，正在等待响应...")
@@ -77,9 +77,9 @@ func _process(delta):
 func _parse_event(event_dic:Dictionary):
 	var event_name:String = event_dic["data"]["type"]
 	if DataManager.message_event_has_name(event_name):
-		get_tree().call_group("message_event","_event_"+event_name,event_dic["data"])
+		get_tree().call_group("message","_message_"+event_name,event_dic["data"])
 	elif DataManager.bot_event_has_name(event_name):
-		get_tree().call_group("bot_event","_event_"+event_name,event_dic["data"])
+		get_tree().call_group("event","_event_"+event_name,event_dic["data"])
 
 func _parse_command_result(result:Dictionary):
 	var sync_id = int(result["syncId"])
@@ -87,6 +87,7 @@ func _parse_command_result(result:Dictionary):
 		var cmd:MiraiCommandInstance = processing_command[sync_id]
 		cmd.result = result["data"]
 		cmd.emit_signal("request_finished")
+		processing_command.erase(sync_id)
 
 func _tick_command_timeout(cmd_ins:MiraiCommandInstance,timeout:float):
 	yield(get_tree().create_timer(timeout),"timeout")
@@ -94,7 +95,7 @@ func _tick_command_timeout(cmd_ins:MiraiCommandInstance,timeout:float):
 		cmd_ins.emit_signal("request_finished")
 		printerr("指令请求超时，无法获取到返回结果: ",cmd_ins.request)
 
-func send_command(command,sub_command=null,content={},timeout:float=20):
+func send_command(command,sub_command=null,content={},timeout:float=20) -> MiraiCommandInstance:
 	if !is_connected_to_mirai():
 		printerr("未连接到Mirai框架，指令发送失败: ",command,sub_command,content)
 		return null
@@ -111,5 +112,5 @@ func send_command(command,sub_command=null,content={},timeout:float=20):
 	_tick_command_timeout(cmd,timeout)
 	return cmd
 
-func is_connected_to_mirai():
+func is_connected_to_mirai() -> bool:
 	return _client.get_peer(1).is_connected_to_host()
