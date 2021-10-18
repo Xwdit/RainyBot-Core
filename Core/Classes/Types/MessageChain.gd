@@ -4,5 +4,5 @@ class_name MessageChain
 
 var data = []
 
-func append(msg:SingleMessage) -> void:
+func append(msg:Message) -> void:
 	data.append(msg)

@@ -106,69 +106,35 @@ enum member_data{
 	Platform
 }
 
-enum app_message_data{
-	AppText
-}
-
-enum at_all_message_data{}
-
-enum at_message_data{
-	TargetId,
-	DisplayText
-}
-
-enum face_message_data{
-	FaceId,
-	Name
-}
-
-enum flash_image_message_data{
-	ImageId,
-	Url,
-	Path,
-	Base64
-}
-
-enum image_message_data{
-	ImageId,
-	Url,
-	Path,
-	Base64
-}
-
-enum json_message_data{
-	JsonText
-}
-
-enum plain_message_data{
-	Text
-}
-
-enum poke_message_data{
-	PokeType
-}
-
-enum quote_message_data{
+enum message_data{
+	Type,
 	MessageId,
-	GroupId,
 	SenderId,
 	TargetId,
-	OriginMessageChain
-}
-
-enum source_message_data{
-	MessageId,
-	Timestamp
-}
-
-enum voice_message_data{
+	GroupId,
+	Timestamp,
+	OriginMessageChain,
+	DisplayText,
+	FaceId,
+	FaceName,
+	ImageId,
 	VoiceId,
 	Url,
 	Path,
 	Base64,
-	Length
-}
-
-enum xml_message_data{
-	XmlText
+	Length,
+	Text,
+	PokeType,
+	Value,
+	Kind,
+	Title,
+	Summary,
+	JumpUrl,
+	PictureUrl,
+	MusicUrl,
+	Brief,
+	NodeList,
+	FileId,
+	FileName,
+	FileSize
 }

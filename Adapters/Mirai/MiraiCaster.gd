@@ -210,6 +210,39 @@ const member_data_reverse = {
 	Interface.member_data.Platform:"platform"
 }
 
+const message_data_reverse = {
+	Interface.message_data.Type:"type",
+	Interface.message_data.MessageId:"id",
+	Interface.message_data.SenderId:"senderId",
+	Interface.message_data.TargetId:"targetId",
+	Interface.message_data.GroupId:"groupId",
+	Interface.message_data.Timestamp:"time",
+	Interface.message_data.OriginMessageChain:"origin",
+	Interface.message_data.DisplayText:""
+	Interface.message_data.FaceId:
+	Interface.message_data.FaceName:
+	Interface.message_data.ImageId:
+	Interface.message_data.VoiceId:
+	Interface.message_data.Url:
+	Interface.message_data.Path:
+	Interface.message_data.Base64:
+	Interface.message_data.Length:
+	Interface.message_data.Text:
+	Interface.message_data.PokeType:
+	Interface.message_data.Value:
+	Interface.message_data.Kind:
+	Interface.message_data.Title:
+	Interface.message_data.Summary:
+	Interface.message_data.JumpUrl:
+	Interface.message_data.PictureUrl:
+	Interface.message_data.MusicUrl:
+	Interface.message_data.Brief:
+	Interface.message_data.NodeList:
+	Interface.message_data.FileId:
+	Interface.message_data.FileName:
+	Interface.message_data.FileSize:
+}
+
 static func message_event_from_mirai(event_str:String) -> int:
 	if message_events.has(event_str):
 		return message_events[event_str]

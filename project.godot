@@ -9,31 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "SingleMessage",
-"class": "AppMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/AppMessage.gd"
-}, {
-"base": "SingleMessage",
-"class": "AtAllMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/AtAllMessage.gd"
-}, {
-"base": "SingleMessage",
-"class": "AtMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/AtMessage.gd"
-}, {
-"base": "SingleMessage",
-"class": "FaceMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/FaceMessage.gd"
-}, {
-"base": "SingleMessage",
-"class": "FlashImageMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/FlashImageMessage.gd"
-}, {
 "base": "Reference",
 "class": "Group",
 "language": "GDScript",
@@ -44,25 +19,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Core/Classes/HttpRequestInstance.gd"
 }, {
-"base": "SingleMessage",
-"class": "ImageMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/ImageMessage.gd"
-}, {
 "base": "Object",
 "class": "Interface",
 "language": "GDScript",
 "path": "res://Core/Classes/Interface.gd"
 }, {
-"base": "SingleMessage",
-"class": "JsonMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/JsonMessage.gd"
-}, {
 "base": "Reference",
 "class": "Member",
 "language": "GDScript",
 "path": "res://Core/Classes/Types/Member.gd"
+}, {
+"base": "Reference",
+"class": "Message",
+"language": "GDScript",
+"path": "res://Core/Classes/Types/Message.gd"
 }, {
 "base": "Object",
 "class": "MessageChain",
@@ -79,69 +49,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Adapters/Mirai/MiraiCommandInstance.gd"
 }, {
-"base": "SingleMessage",
-"class": "PlainMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/PlainMessage.gd"
-}, {
 "base": "Node",
 "class": "Plugin",
 "language": "GDScript",
 "path": "res://Core/Classes/Plugin.gd"
-}, {
-"base": "SingleMessage",
-"class": "PokeMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/PokeMessage.gd"
-}, {
-"base": "SingleMessage",
-"class": "QuoteMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/QuoteMessage.gd"
-}, {
-"base": "Reference",
-"class": "SingleMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/SingleMessage.gd"
-}, {
-"base": "SingleMessage",
-"class": "SourceMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/SourceMessage.gd"
-}, {
-"base": "SingleMessage",
-"class": "VoiceMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/VoiceMessage.gd"
-}, {
-"base": "SingleMessage",
-"class": "XmlMessage",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message/XmlMessage.gd"
 } ]
 _global_script_class_icons={
-"AppMessage": "",
-"AtAllMessage": "",
-"AtMessage": "",
-"FaceMessage": "",
-"FlashImageMessage": "",
 "Group": "",
 "HttpRequestInstance": "",
-"ImageMessage": "",
 "Interface": "",
-"JsonMessage": "",
 "Member": "",
+"Message": "",
 "MessageChain": "",
 "MiraiCaster": "",
 "MiraiCommandInstance": "",
-"PlainMessage": "",
-"Plugin": "",
-"PokeMessage": "",
-"QuoteMessage": "",
-"SingleMessage": "",
-"SourceMessage": "",
-"VoiceMessage": "",
-"XmlMessage": ""
+"Plugin": ""
 }
 
 [application]
@@ -182,4 +104,3 @@ common/enable_pause_aware_picking=true
 
 quality/driver/driver_name="GLES2"
 environment/default_clear_color=Color( 0.12549, 0.141176, 0.192157, 1 )
-environment/default_environment="res://default_env.tres"
