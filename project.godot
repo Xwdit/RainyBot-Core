@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[{
 "base": "Message",
+"class": &"AppMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/ForwardMessage.gd"
+}, {
+"base": "Message",
 "class": &"AtAllMessage",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/Types/AtAllMessage.gd"
@@ -23,6 +28,11 @@ _global_script_classes=[{
 "class": &"BotRequestResult",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Core/BotRequestResult.gd"
+}, {
+"base": "Message",
+"class": &"DiceMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/DiceMessage.gd"
 }, {
 "base": "Message",
 "class": &"FaceMessage",
@@ -64,6 +74,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/Types/ImageMessage.gd"
 }, {
+"base": "Message",
+"class": &"JsonMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/JsonMessage.gd"
+}, {
 "base": "RefCounted",
 "class": &"MemberInfo",
 "language": &"GDScript",
@@ -89,10 +104,20 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/MiraiConfigManager.gd"
 }, {
+"base": "Message",
+"class": &"MusicShareMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/MusicShareMessage.gd"
+}, {
 "base": "Node",
 "class": &"Plugin",
 "language": &"GDScript",
 "path": "res://Core/Classes/PluginClass.gd"
+}, {
+"base": "Message",
+"class": &"PokeMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/PokeMessage.gd"
 }, {
 "base": "Message",
 "class": &"QuoteMessage",
@@ -118,11 +143,18 @@ _global_script_classes=[{
 "class": &"VoiceMessage",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/Types/VoiceMessage.gd"
+}, {
+"base": "Message",
+"class": &"XmlMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/XmlMessage.gd"
 }]
 _global_script_class_icons={
+"AppMessage": "",
 "AtAllMessage": "",
 "AtMessage": "",
 "BotRequestResult": "",
+"DiceMessage": "",
 "FaceMessage": "",
 "FlashImageMessage": "",
 "Group": "",
@@ -131,17 +163,21 @@ _global_script_class_icons={
 "GroupMemberList": "",
 "HttpRequestInstance": "",
 "ImageMessage": "",
+"JsonMessage": "",
 "MemberInfo": "",
 "Message": "",
 "MessageChain": "",
 "MiraiClient": "",
 "MiraiConfigManager": "",
+"MusicShareMessage": "",
 "Plugin": "",
+"PokeMessage": "",
 "QuoteMessage": "",
 "SourceMessage": "",
 "TextMessage": "",
 "Utils": "",
-"VoiceMessage": ""
+"VoiceMessage": "",
+"XmlMessage": ""
 }
 
 [application]

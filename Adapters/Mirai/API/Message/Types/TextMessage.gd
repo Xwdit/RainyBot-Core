@@ -10,7 +10,7 @@ var data_dic:Dictionary = {
 }
 
 
-static func init(text:int)->TextMessage:
+static func init(text:String)->TextMessage:
 	var ins:TextMessage = TextMessage.new()
 	var dic:Dictionary = ins.data_dic
 	dic.text = text
