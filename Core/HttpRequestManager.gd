@@ -1,8 +1,8 @@
 extends Node
 
 
-func send_http_get_request(url:String,timeout:float = 20):
-	print("正在尝试发送Http Get请求到: ",url)
+func send_http_get_request(url:String,_timeout:float = 20.0):
+	GuiManager.console_print_warning("正在尝试发送Http Get请求到: "+url)
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
 	node.use_threads = true
@@ -10,14 +10,17 @@ func send_http_get_request(url:String,timeout:float = 20):
 	var error = node.request(url)
 	if error != OK:
 		node.queue_free()
-		printerr("发生了一个错误 " + str(error) + " 当发送Http Get请求到: " + url)
+		GuiManager.console_print_error("发生了一个错误 " + str(error) + " 当发送Http Get请求到: " + url)
 		return null
-	_tick_request_timeout(node,timeout)
-	return node
+	_tick_request_timeout(node,_timeout)
+	await node.request_finished
+	var result = node.get_result()
+	node.queue_free()
+	return result
 
 
-func _tick_request_timeout(request_ins:HttpRequestInstance,timeout:float):
-	yield(get_tree().create_timer(timeout),"timeout")
+func _tick_request_timeout(request_ins:HttpRequestInstance,_timeout:float):
+	await get_tree().create_timer(_timeout).timeout
 	if is_instance_valid(request_ins) && request_ins.result == null:
 		request_ins.emit_signal("request_finished")
-		printerr("Http请求超时，无法获取到返回结果: ",request_ins.request_url)
+		GuiManager.console_print_error("Http请求超时，无法获取到返回结果: "+str(request_ins.request_url))

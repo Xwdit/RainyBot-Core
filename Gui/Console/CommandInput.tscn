@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://278vdckoipp1"]
+
+[ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_tod83"]
+[ext_resource type="Script" path="res://Gui/Console/CommandInput.gd" id="3"]
+
+[node name="CommandInput" type="LineEdit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( "1_tod83" )
+theme_override_colors/font_color = Color(0.878431, 0.878431, 0.878431, 1)
+theme_override_font_sizes/font_size = 16
+expand_to_text_length = true
+placeholder_text = "在此输入命令，回车键确认，输入help查看帮助"
+caret_blink = true
+caret_blink_speed = 0.5
+script = ExtResource( "3" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="text_submitted" from="." to="." method="_on_CommandInput_text_submitted"]

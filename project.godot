@@ -8,62 +8,140 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Reference",
-"class": "Group",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Group.gd"
+_global_script_classes=[{
+"base": "Message",
+"class": &"AtAllMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/AtAllMessage.gd"
+}, {
+"base": "Message",
+"class": &"AtMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/AtMessage.gd"
+}, {
+"base": "RefCounted",
+"class": &"BotRequestResult",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Core/BotRequestResult.gd"
+}, {
+"base": "Message",
+"class": &"FaceMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/FaceMessage.gd"
+}, {
+"base": "Message",
+"class": &"FlashImageMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/FlashImageMessage.gd"
+}, {
+"base": "RefCounted",
+"class": &"Group",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Roles/Group/Group.gd"
+}, {
+"base": "RefCounted",
+"class": &"GroupConfig",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Roles/Group/GroupConfig.gd"
+}, {
+"base": "RefCounted",
+"class": &"GroupMember",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Roles/Group/GroupMember.gd"
+}, {
+"base": "RefCounted",
+"class": &"GroupMemberList",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Roles/Group/GroupMemberList.gd"
 }, {
 "base": "HTTPRequest",
-"class": "HttpRequestInstance",
-"language": "GDScript",
+"class": &"HttpRequestInstance",
+"language": &"GDScript",
 "path": "res://Core/Classes/HttpRequestInstance.gd"
 }, {
-"base": "Object",
-"class": "Interface",
-"language": "GDScript",
-"path": "res://Core/Classes/Interface.gd"
+"base": "Message",
+"class": &"ImageMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/ImageMessage.gd"
 }, {
-"base": "Reference",
-"class": "Member",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Member.gd"
+"base": "RefCounted",
+"class": &"MemberInfo",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Roles/Member/MemberInfo.gd"
 }, {
-"base": "Reference",
-"class": "Message",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/Message.gd"
+"base": "RefCounted",
+"class": &"Message",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Message.gd"
 }, {
-"base": "Object",
-"class": "MessageChain",
-"language": "GDScript",
-"path": "res://Core/Classes/Types/MessageChain.gd"
-}, {
-"base": "Object",
-"class": "MiraiCaster",
-"language": "GDScript",
-"path": "res://Adapters/Mirai/MiraiCaster.gd"
-}, {
-"base": "Reference",
-"class": "MiraiCommandInstance",
-"language": "GDScript",
-"path": "res://Adapters/Mirai/MiraiCommandInstance.gd"
+"base": "RefCounted",
+"class": &"MessageChain",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/MessageChain.gd"
 }, {
 "base": "Node",
-"class": "Plugin",
-"language": "GDScript",
-"path": "res://Core/Classes/Plugin.gd"
-} ]
+"class": &"MiraiClient",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/MiraiClient.gd"
+}, {
+"base": "Node",
+"class": &"MiraiConfigManager",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/MiraiConfigManager.gd"
+}, {
+"base": "Node",
+"class": &"Plugin",
+"language": &"GDScript",
+"path": "res://Core/Classes/PluginClass.gd"
+}, {
+"base": "Message",
+"class": &"QuoteMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/QuoteMessage.gd"
+}, {
+"base": "Message",
+"class": &"SourceMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/SourceMessage.gd"
+}, {
+"base": "Message",
+"class": &"TextMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/TextMessage.gd"
+}, {
+"base": "RefCounted",
+"class": &"Utils",
+"language": &"GDScript",
+"path": "res://Core/Classes/Utils.gd"
+}, {
+"base": "Message",
+"class": &"VoiceMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Message/Types/VoiceMessage.gd"
+}]
 _global_script_class_icons={
+"AtAllMessage": "",
+"AtMessage": "",
+"BotRequestResult": "",
+"FaceMessage": "",
+"FlashImageMessage": "",
 "Group": "",
+"GroupConfig": "",
+"GroupMember": "",
+"GroupMemberList": "",
 "HttpRequestInstance": "",
-"Interface": "",
-"Member": "",
+"ImageMessage": "",
+"MemberInfo": "",
 "Message": "",
 "MessageChain": "",
-"MiraiCaster": "",
-"MiraiCommandInstance": "",
-"Plugin": ""
+"MiraiClient": "",
+"MiraiConfigManager": "",
+"Plugin": "",
+"QuoteMessage": "",
+"SourceMessage": "",
+"TextMessage": "",
+"Utils": "",
+"VoiceMessage": ""
 }
 
 [application]
@@ -79,28 +157,25 @@ config/windows_native_icon="res://logo.ico"
 
 [autoload]
 
-InterfaceManager="*res://Core/Classes/Interface.gd"
-DataManager="*res://Adapters/Mirai/MiraiCaster.gd"
-ConfigManager="*res://Adapters/Mirai/MiraiAdapterConfig.gd"
-MiraiManager="*res://Adapters/Mirai/MiraiManager.gd"
+MiraiAdapter="*res://Adapters/Mirai/MiraiAdapter.gd"
 HttpRequestManager="*res://Core/HttpRequestManager.gd"
 CommandManager="*res://Core/CommandManager.gd"
 PluginManager="*res://Core/PluginManager.gd"
+GuiManager="*res://Core/GuiManager.gd"
+
+[debug]
+
+file_logging/enable_file_logging=true
+file_logging/log_path="user://logs/rainybot.log"
 
 [display]
 
-window/size/width=500
-window/size/height=50
+window/dpi/allow_hidpi=true
 
-[logging]
+[editor]
 
-file_logging/enable_file_logging=true
-
-[physics]
-
-common/enable_pause_aware_picking=true
+export/convert_text_resources_to_binary=true
 
 [rendering]
 
-quality/driver/driver_name="GLES2"
-environment/default_clear_color=Color( 0.12549, 0.141176, 0.192157, 1 )
+vulkan/rendering/back_end=1

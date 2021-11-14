@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bu5jmoq2h301j"]
+
+[ext_resource type="FontData" uid="uid://cdnmunrledgi3" path="res://Gui/Theme/font-16px-src.ttf" id="1_6ur8u"]
+
+[sub_resource type="Font" id="Font_1rjje"]
+data/0 = ExtResource( "1_6ur8u" )
+
+[resource]
+default_font = SubResource( "Font_1rjje" )

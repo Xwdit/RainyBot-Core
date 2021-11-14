@@ -8,18 +8,17 @@ var request_url = null
 var result = null
 
 func _ready():
-	connect("request_completed",self,"_http_request_completed")
+	connect("request_completed",Callable(self,"_http_request_completed"))
 
 func _http_request_completed(_result, _response_code, _headers, body):
-	result = parse_json(body.get_string_from_utf8())
-	if result is Dictionary:
-		print("获取到Http请求的回应: ",result)
+	var json = JSON.new()
+	var _error = json.parse(body.get_string_from_utf8())
+	if _error == OK:
+		GuiManager.console_print_success("获取到Http请求的回应: "+str(result))
+		result = json.get_data()
 	else:
-		printerr("无法获取到有效的Http请求回应")
+		GuiManager.console_print_error("无法获取到有效的Http请求回应")
 	emit_signal("request_finished")
-	
-func finish():
-	queue_free()
 	
 func get_result():
 	return result
