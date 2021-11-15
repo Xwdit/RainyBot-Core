@@ -28,3 +28,7 @@ func get_file_name()->String:
 
 func get_file_size()->int:
 	return data_dic.size
+
+
+func get_as_text()->String:
+	return "[文件"+get_file_name()+"]"

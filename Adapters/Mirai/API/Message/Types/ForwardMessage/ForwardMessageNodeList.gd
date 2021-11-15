@@ -1,4 +1,4 @@
-extends RefCounted
+extends MessageAPI
 
 
 class_name ForwardMessageNodeList

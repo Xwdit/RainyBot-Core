@@ -29,3 +29,7 @@ func get_app_text()->String:
 	
 func set_app_text(text:String):
 	data_dic.content = text
+
+
+func get_as_text()->String:
+	return "[APP]"

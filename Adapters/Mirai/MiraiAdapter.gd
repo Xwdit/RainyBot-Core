@@ -1,6 +1,28 @@
 extends Node
 
 
+const message_type_name:Array = [
+	"Source",
+	"Quote",
+	"At",
+	"AtAll",
+	"Face",
+	"Plain",
+	"Image",
+	"FlashImage",
+	"Voice",
+	"Xml",
+	"Json",
+	"App",
+	"Poke",
+	"Dice",
+	"MusicShare",
+	"ForwardMessage",
+	"File",
+	"MiraiCode"
+]
+
+
 var mirai_client:= MiraiClient.new()
 var mirai_config_manager:=MiraiConfigManager.new()
 
@@ -58,3 +80,47 @@ func perm2enum(perm:String)->int:
 			return GroupMember.Permissions.OWNER
 		_:
 			return GroupMember.Permissions.MEMBER
+			
+			
+func dic2msg(dic:Dictionary)->Message:
+	if !dic.has("type"):
+		return null
+	match dic.type:
+		"Source":
+			return SourceMessage.init_meta(dic)
+		"Quote":
+			return QuoteMessage.init_meta(dic)
+		"At":
+			return AtMessage.init_meta(dic)
+		"AtAll":
+			return AtAllMessage.init_meta(dic)
+		"Face":
+			return FaceMessage.init_meta(dic)
+		"Plain":
+			return TextMessage.init_meta(dic)
+		"Image":
+			return ImageMessage.init_meta(dic)
+		"FlashImage":
+			return FlashImageMessage.init_meta(dic)
+		"Voice":
+			return VoiceMessage.init_meta(dic)
+		"Xml":
+			return XmlMessage.init_meta(dic)
+		"Json":
+			return JsonMessage.init_meta(dic)
+		"App":
+			return AppMessage.init_meta(dic)
+		"Poke":
+			return PokeMessage.init_meta(dic)
+		"Dice":
+			return DiceMessage.init_meta(dic)
+		"MusicShare":
+			return MusicShareMessage.init_meta(dic)
+		"ForwardMessage":
+			return ForwardMessage.init_meta(dic)
+		"File":
+			return FileMessage.init_meta(dic)
+		"MiraiCode":
+			return RainyCodeMessage.init_meta(dic)
+		_:
+			return null

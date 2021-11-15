@@ -45,3 +45,7 @@ func get_face_name()->String:
 	
 func set_face_name(face_name:String):
 	data_dic.name = face_name
+
+
+func get_as_text()->String:
+	return "[表情:"+get_face_name()+"]"

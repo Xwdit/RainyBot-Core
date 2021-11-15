@@ -1,7 +1,13 @@
-extends RefCounted
+extends MemberAPI
 
 
 class_name Member
+
+
+enum Role{
+	FRIEND,
+	STRANGER
+}
 
 
 var data_dic:Dictionary = {
@@ -10,17 +16,21 @@ var data_dic:Dictionary = {
 	"remark":""
 }
 
+var member_role:= Role.FRIEND
 
-static func init(member_id:int)->Member:
+
+static func init(member_id:int,role:int=Role.FRIEND)->Member:
 	var ins:Member = Member.new()
 	var dic:Dictionary = ins.data_dic
 	dic.id = member_id
+	ins.member_role = role
 	return ins
 	
 
-static func init_meta(dic:Dictionary)->Member:
+static func init_meta(dic:Dictionary,role:int=Role.FRIEND)->Member:
 	var ins:Member = Member.new()
 	ins.data_dic = dic
+	ins.member_role = role
 	return ins
 
 
@@ -30,6 +40,14 @@ func get_metadata()->Dictionary:
 
 func set_metadata(dic:Dictionary):
 	data_dic = dic
+
+
+func get_role()->int:
+	return member_role
+	
+	
+func set_role(role:int):
+	member_role = role
 
 
 func get_id()->int:
@@ -79,7 +97,7 @@ func send_nudge()->BotRequestResult:
 	var _req_dic = {
 		"target":get_id(),
 		"subject":get_id(),
-		"kind":"Friend"
+		"kind":"Friend" if member_role == Role.FRIEND else "Stranger"
 	}
 	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendNudge",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)

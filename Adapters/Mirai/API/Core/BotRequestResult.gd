@@ -1,4 +1,4 @@
-extends RefCounted
+extends CoreAPI
 
 
 class_name BotRequestResult
@@ -38,3 +38,15 @@ func get_metadata()->Dictionary:
 
 func set_metadata(dic:Dictionary):
 	data_dic = dic
+
+
+func get_status_code()->int:
+	return data_dic.code
+	
+	
+func get_status_msg()->String:
+	return data_dic.msg
+	
+	
+func get_message_id()->int:
+	return data_dic.messageId

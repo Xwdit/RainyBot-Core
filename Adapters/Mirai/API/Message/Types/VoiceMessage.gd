@@ -82,3 +82,7 @@ func set_voice_base64(voice_base64:String):
 	
 func get_voice_length()->int:
 	return data_dic.length
+
+
+func get_as_text()->String:
+	return "[语音:"+get_voice_id()+"]"

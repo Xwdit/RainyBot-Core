@@ -89,3 +89,7 @@ func get_share_brief()->String:
 	
 func set_share_brief(text:String):
 	data_dic.brief = text
+
+
+func get_as_text()->String:
+	return "[音乐分享:"+get_share_title()+"]"

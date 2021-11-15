@@ -1,4 +1,4 @@
-extends RefCounted
+extends GroupAPI
 
 
 class_name GroupMember

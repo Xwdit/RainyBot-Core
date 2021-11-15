@@ -30,3 +30,7 @@ func get_code_text()->String:
 	
 func set_code_text(text:String):
 	data_dic.code = text.replacen("[rainy:","[mirai:")
+
+
+func get_as_text()->String:
+	return get_code_text()

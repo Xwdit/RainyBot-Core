@@ -29,3 +29,7 @@ func get_xml_text()->String:
 	
 func set_xml_text(text:String):
 	data_dic.xml = text
+
+
+func get_as_text()->String:
+	return "[Xml]"

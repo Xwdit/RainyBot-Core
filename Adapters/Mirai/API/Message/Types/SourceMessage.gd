@@ -23,3 +23,7 @@ func get_message_id()->int:
 	
 func get_timestamp()->int:
 	return data_dic.time
+
+
+func get_as_text()->String:
+	return "[消息ID:"+str(get_message_id())+",时间:"+str(get_timestamp())+"]"

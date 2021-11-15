@@ -59,3 +59,7 @@ func get_poke_type()->int:
 	
 func set_poke_type(type:int):
 	data_dic.name = type_dic[type]
+	
+	
+func get_as_text()->String:
+	return "[戳一戳:"+data_dic.name+"]"

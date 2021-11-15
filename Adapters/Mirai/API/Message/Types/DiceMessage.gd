@@ -29,3 +29,7 @@ func get_dice_value()->int:
 	
 func set_dice_value(value:int):
 	data_dic.value = value
+
+
+func get_as_text()->String:
+	return "[骰子:"+str(get_dice_value())+"]"

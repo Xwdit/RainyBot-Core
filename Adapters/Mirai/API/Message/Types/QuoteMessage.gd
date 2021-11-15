@@ -38,3 +38,7 @@ func get_target_id()->int:
 	
 func get_message_chain()->MessageChain:
 	return MessageChain.init_meta(data_dic.origin)
+	
+	
+func get_as_text()->String:
+	return "[引用回复:"+str(get_message_id())+"]"

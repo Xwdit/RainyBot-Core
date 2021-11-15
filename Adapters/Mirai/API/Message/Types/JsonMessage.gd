@@ -29,3 +29,7 @@ func get_json_text()->String:
 	
 func set_json_text(text:String):
 	data_dic.json = text
+
+
+func get_as_text()->String:
+	return "[Json]"

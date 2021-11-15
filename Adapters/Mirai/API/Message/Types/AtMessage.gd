@@ -34,3 +34,7 @@ func set_target_id(target_id:int):
 	
 func get_display_text()->String:
 	return data_dic.display
+
+
+func get_as_text()->String:
+	return get_display_text()

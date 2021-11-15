@@ -77,3 +77,7 @@ func get_image_base64()->String:
 	
 func set_image_base64(image_base64:String):
 	data_dic.base64 = image_base64
+
+
+func get_as_text()->String:
+	return "[图片:"+get_image_id()+"]"

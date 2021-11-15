@@ -29,3 +29,7 @@ func get_message_text()->String:
 	
 func set_message_text(text:String):
 	data_dic.text = text
+
+
+func get_as_text()->String:
+	return get_message_text()
