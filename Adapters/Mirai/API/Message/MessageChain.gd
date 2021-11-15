@@ -7,6 +7,12 @@ class_name MessageChain
 var data_array:Array = []
 
 
+static func init(msg:Message)->MessageChain:
+	var ins:MessageChain = MessageChain.new()
+	ins.data_array.append(msg.get_metadata())
+	return ins
+
+
 static func init_meta(arr:Array)->MessageChain:
 	var ins:MessageChain = MessageChain.new()
 	ins.data_array = arr

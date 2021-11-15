@@ -1,7 +1,7 @@
 extends RefCounted
 
 
-class_name MemberInfo
+class_name MemberProfile
 
 
 enum Sex {
@@ -21,8 +21,8 @@ var data_dic:Dictionary = {
 }
 
 
-static func init_meta(dic:Dictionary)->MemberInfo:
-	var ins:MemberInfo = MemberInfo.new()
+static func init_meta(dic:Dictionary)->MemberProfile:
+	var ins:MemberProfile = MemberProfile.new()
 	ins.data_dic = dic
 	return ins
 	

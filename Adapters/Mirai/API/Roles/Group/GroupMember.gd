@@ -155,8 +155,7 @@ func send_message(msg:Message,quote_msgid:int=-1)->BotRequestResult:
 	}
 	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendTempMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
-	return _ins
-	
+	return _ins	
 
 
 func send_message_chain(msg_chain:MessageChain,quote_msgid:int=-1)->BotRequestResult:

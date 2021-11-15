@@ -21,7 +21,8 @@ enum StatusCode{
 
 var data_dic:Dictionary = {
 	"code":StatusCode.SUCCESS,
-	"msg":""
+	"msg":"",
+	"messageId":-1
 }
 
 
@@ -29,3 +30,11 @@ static func init_meta(dic:Dictionary)->BotRequestResult:
 	var ins:BotRequestResult = BotRequestResult.new()
 	ins.data_dic = dic
 	return ins
+
+
+func get_metadata()->Dictionary:
+	return data_dic
+
+
+func set_metadata(dic:Dictionary):
+	data_dic = dic

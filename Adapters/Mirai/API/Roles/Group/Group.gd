@@ -11,10 +11,10 @@ var data_dic:Dictionary = {
 		}
 
 
-static func init(g_id:int)->Group:
+static func init(group_id:int)->Group:
 	var ins:Group = Group.new()
 	var dic:Dictionary = ins.data_dic
-	dic.id = g_id
+	dic.id = group_id
 	return ins
 	
 
@@ -64,13 +64,13 @@ func get_member_list()->GroupMemberList:
 	return _ins
 
 
-func get_member_info(member_id:int)->MemberInfo:
+func get_member_profile(member_id:int)->MemberProfile:
 	var _req_dic = {
 		"target":get_id(),
 		"memberId":member_id
 	}
 	var _result:Dictionary = await MiraiAdapter.send_bot_request("memberProfile",null,_req_dic)
-	var _ins:MemberInfo = MemberInfo.init_meta(_result)
+	var _ins:MemberProfile = MemberProfile.init_meta(_result)
 	return _ins
 
 
@@ -115,7 +115,6 @@ func send_message(msg:Message,quote_msgid:int=-1)->BotRequestResult:
 	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendGroupMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
-	
 
 
 func send_message_chain(msg_chain:MessageChain,quote_msgid:int=-1)->BotRequestResult:
