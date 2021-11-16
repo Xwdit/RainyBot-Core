@@ -15,7 +15,7 @@ enum Type{
 	FLASH_IMAGE,
 	VOICE,
 	XML,
-	JSON,
+	JSON_MSG,
 	APP,
 	POKE,
 	DICE,
