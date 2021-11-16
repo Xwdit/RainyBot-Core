@@ -47,11 +47,12 @@ func _on_data():
 	var json = JSON.new()
 	json.parse(_client.get_peer(1).get_packet().get_string_from_utf8())
 	var data = json.get_data()
-	if processing_command.has(int(data["syncId"])):
-		_parse_command_result(data)
-	elif data["data"].has("type"):
+	if data.has("syncId"):
+		if processing_command.has(data["syncId"].to_int()):
+			_parse_command_result(data)
+	if data["data"].has("type"):
 		BotAdapter.parse_event(data)
-	elif data["data"].has("session"):
+	if data["data"].has("session"):
 		GuiManager.console_print_success("成功连接至Mirai框架!开始加载插件.....")
 		PluginManager.reload_plugins()
 
@@ -80,7 +81,6 @@ func send_bot_request(command,sub_command=null,content={},timeout:float=20.0):
 	_tick_command_timeout(cmd,timeout)
 	await cmd.request_finished
 	var result = cmd.get_result()
-	cmd.free()
 	return result
 
 
@@ -89,7 +89,7 @@ func is_bot_connected()->bool:
 
 
 func _parse_command_result(result:Dictionary):
-	var sync_id = int(result["syncId"])
+	var sync_id = result["syncId"].to_int()
 	if processing_command.has(sync_id):
 		var cmd:MiraiRequestInstance = processing_command[sync_id]
 		cmd.result = result["data"]

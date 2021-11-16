@@ -15,7 +15,8 @@ func send_http_get_request(url:String,_timeout:float = 20.0):
 	_tick_request_timeout(node,_timeout)
 	await node.request_finished
 	var result = node.get_result()
-	node.queue_free()
+	node.disconnect("request_completed",Callable(self,"_http_request_completed"))
+	queue_free()
 	return result
 
 

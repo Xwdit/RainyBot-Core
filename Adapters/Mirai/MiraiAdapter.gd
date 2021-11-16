@@ -135,15 +135,16 @@ func parse_message_dic(dic:Dictionary)->Message:
 			return null
 
 
-func parse_event(event_dic:Dictionary):
-	var event_name:String = event_dic["data"]["type"]
+func parse_event(result_dic:Dictionary):
+	var event_dic = result_dic["data"]
+	var event_name:String = event_dic["type"]
 	if message_event_name.has(event_name):
 		parse_message_event(event_dic)
 		
 
 func parse_message_event(event_dic:Dictionary):
 	var ins:Event
-	var event_name:String = event_dic["data"]["type"]
+	var event_name:String = event_dic["type"]
 	match event_name:
 		"FriendMessage":
 			ins = FriendMessageEvent.init_meta(event_dic)

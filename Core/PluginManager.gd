@@ -79,7 +79,7 @@ func load_plugin(file:String):
 			for key in _plugin_info:
 				if _plugin_info[key] == "":
 					err_arr.append(key)
-			if !err_arr.empty():
+			if !err_arr.is_empty():
 				GuiManager.console_print_error("无法加载插件文件: " + file)
 				GuiManager.console_print_error("此插件的以下插件信息参数不正确: "+str(err_arr))
 				plugin_ins.queue_free()
@@ -115,27 +115,27 @@ func reload_plugin(plugin:Plugin):
 	GuiManager.console_print_warning("正在重载插件: " + _plugin_info["name"])
 	var file = plugin.get_plugin_file()
 	unload_plugin(plugin)
-	await get_tree().idle_frame
+	await get_tree().process_frame
 	load_plugin(file)
 
 		
 func reload_plugins():
 	GuiManager.console_print_warning("正在重载所有插件.....插件目录: "+plugin_path)
 	for child in get_children():
-		await get_tree().idle_frame
+		await get_tree().process_frame
 		unload_plugin(child)
 	var files:Array = _list_files_in_directory(plugin_path)
 	if files.size() == 0:
 		GuiManager.console_print_warning("插件目录下未找到任何插件...")
 		return
 	for path in files:
-		await get_tree().idle_frame
+		await get_tree().process_frame
 		load_plugin(path)
 
 
 func unload_plugins():
 	for child in get_children():
-		await get_tree().idle_frame
+		await get_tree().process_frame
 		unload_plugin(child)
 
 
