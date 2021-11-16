@@ -4,21 +4,9 @@ extends CoreAPI
 class_name Bot
 
 
-static func get_ws_url()->String:
-	return BotAdapter.get_ws_url()
-
-
-static func is_connected()->bool:
-	return BotAdapter.is_bot_connected()
-
-
 static func get_id()->int:
 	return BotAdapter.get_bot_id()
 	
-
-static func send_request(_command,_sub_command=null,_content={},_timeout:float=20.0)->Dictionary:
-	return await BotAdapter.send_bot_request(_command,_sub_command,_content,_timeout)
-
 
 static func get_friend_list()->MemberList:
 	var _result:Dictionary = await BotAdapter.send_bot_request("friendList",null,null)

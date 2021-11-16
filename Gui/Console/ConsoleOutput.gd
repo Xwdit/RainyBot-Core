@@ -20,7 +20,7 @@ func add_warning(_text):
 	pop()
 
 
-func add_success(text):
+func add_success(_text):
 	push_color(Color.GREEN)
-	add_newline_with_time(text)
+	add_newline_with_time(_text)
 	pop()
