@@ -17,6 +17,8 @@ var plugin_info:Dictionary = {
 var plugin_config:Dictionary = {}
 var plugin_data:Dictionary = {}
 
+var plugin_event_dic:Dictionary = {}
+
 
 func _init():
 	_on_init()
@@ -42,6 +44,12 @@ func _on_unload():
 	pass
 
 
+func _call_event(event:String,ins:Event):
+	if plugin_event_dic.has(event):
+		var func_name = plugin_event_dic[event]
+		call(func_name,ins)
+
+
 func set_plugin_info(info_dic:Dictionary):
 	plugin_info = info_dic
 
@@ -62,40 +70,14 @@ func get_other_plugin_instance(plugin_id):
 	return PluginManager.get_plugin_instance(plugin_id)
 
 
-func send_mirai_command(command,sub_command=null,content={}):
-	return BotAdapter.send_request(command,sub_command,content)
+func register_message_event(msg_event:int,func_name:String):
+	plugin_event_dic[BotAdapter.message_event_name[msg_event]] = func_name
+	add_to_group(BotAdapter.message_event_name[msg_event])
 
-	
-func send_http_get_request(url:String,timeout:float = 20.0):
-	var result = await HttpRequestManager.send_http_get_request(url,timeout)
-	return result
 
-	
-func receive_message_events(enabled:bool):
-	if enabled:
-		add_to_group("message_event")
-		GuiManager.console_print_success("已启用对Mirai消息事件的监听")
-	else:
-		remove_from_group("message_event")
-		GuiManager.console_print_warning("已禁用对Mirai消息事件的监听")
-
-	
-func receive_bot_events(enabled:bool):
-	if enabled:
-		add_to_group("bot_event")
-		GuiManager.console_print_success("已启用对Mirai框架事件的监听")
-	else:
-		remove_from_group("bot_event")
-		GuiManager.console_print_warning("已禁用对Mirai框架事件的监听")
-
-	
-func receive_commands(enabled:bool):
-	if enabled:
-		add_to_group("command")
-		GuiManager.console_print_success("已启用对用户命令的监听")
-	else:
-		remove_from_group("command")
-		GuiManager.console_print_warning("已禁用对用户命令的监听")
+func unregister_message_event(msg_event:int):
+	plugin_event_dic.erase(BotAdapter.message_event_name[msg_event])
+	remove_from_group(BotAdapter.message_event_name[msg_event])
 
 
 func register_command(command:String,need_arguments:bool,usages:Array,source:String):
@@ -104,16 +86,12 @@ func register_command(command:String,need_arguments:bool,usages:Array,source:Str
 
 func unregister_command(command:String):
 	CommandManager.unregister_command(command)
-		
-
-func is_connected_to_mirai():
-	return BotAdapter.is_bot_connected()
 	
 	
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={}):
 	GuiManager.console_print_warning("正在加载插件配置文件.....")
 	plugin_config = default_config
-	var config_path = PluginManager.plugin_path + plugin_info["id"] + ".json"
+	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file = File.new()
 	if file.file_exists(config_path):
 		var _err = file.open(config_path,File.READ)
@@ -153,7 +131,7 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 
 func save_plugin_config():
 	GuiManager.console_print_warning("正在保存配置文件...")
-	var config_path = PluginManager.plugin_path + plugin_info["id"] + ".json"
+	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file = File.new()
 	var _err = file.open(config_path,File.WRITE)
 	if _err != OK:
@@ -179,7 +157,7 @@ func set_plugin_config(key,value,save_file:bool=true):
 
 func init_plugin_data():
 	GuiManager.console_print_warning("正在加载插件数据库.....")
-	var data_path = PluginManager.plugin_path + plugin_info["id"] + ".rdb"
+	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file = File.new()
 	if file.file_exists(data_path):
 		var _err = file.open(data_path,File.READ)
@@ -205,7 +183,7 @@ func init_plugin_data():
 			
 func save_plugin_data():
 	GuiManager.console_print_warning("正在保存插件数据库.....")
-	var data_path = PluginManager.plugin_path + plugin_info["id"] + ".rdb"
+	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file = File.new()
 	var _err = file.open(data_path,File.WRITE)
 	if _err != OK:
@@ -226,19 +204,3 @@ func set_plugin_data(key,value,save_file:bool=true):
 	plugin_data[key]=value
 	if save_file:
 		save_plugin_data()
-
-
-func console_print_text(text):
-	GuiManager.console_print_text(text)
-	
-	
-func console_print_error(text):
-	GuiManager.console_print_error(text)
-	
-	
-func console_print_warning(text):
-	GuiManager.console_print_warning(text)
-	
-
-func console_print_success(text):
-	GuiManager.console_print_warning(text)

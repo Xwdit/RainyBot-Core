@@ -50,7 +50,7 @@ func _on_data():
 	if processing_command.has(int(data["syncId"])):
 		_parse_command_result(data)
 	elif data["data"].has("type"):
-		_parse_event(data)
+		BotAdapter.parse_event(data)
 	elif data["data"].has("session"):
 		GuiManager.console_print_success("成功连接至Mirai框架!开始加载插件.....")
 		PluginManager.reload_plugins()
@@ -60,29 +60,6 @@ func _process(delta):
 	# Call this in _process or _physics_process. Data transfer, and signals
 	# emission will only happen when calling this function.
 	_client.poll()
-
-
-func _parse_event(event_dic:Dictionary):
-	var event_name:String = event_dic["data"]["type"]
-#	if DataManager.message_event_has_name(event_name):
-#		get_tree().call_group("message_event","_event_"+event_name,event_dic["data"])
-#	elif DataManager.bot_event_has_name(event_name):
-#		get_tree().call_group("bot_event","_event_"+event_name,event_dic["data"])
-
-
-func _parse_command_result(result:Dictionary):
-	var sync_id = int(result["syncId"])
-	if processing_command.has(sync_id):
-		var cmd:MiraiRequestInstance = processing_command[sync_id]
-		cmd.result = result["data"]
-		cmd.emit_signal("request_finished")
-
-
-func _tick_command_timeout(cmd_ins:MiraiRequestInstance,_timeout:float):
-	await get_tree().create_timer(_timeout).timeout
-	if is_instance_valid(cmd_ins) && cmd_ins.result == null:
-		cmd_ins.emit_signal("request_finished")
-		GuiManager.console_print_error("指令请求超时，无法获取到返回结果: "+str(cmd_ins.request))
 
 
 func send_bot_request(command,sub_command=null,content={},timeout:float=20.0):
@@ -111,6 +88,21 @@ func is_bot_connected()->bool:
 	return _client.get_peer(1).is_connected_to_host()
 
 
+func _parse_command_result(result:Dictionary):
+	var sync_id = int(result["syncId"])
+	if processing_command.has(sync_id):
+		var cmd:MiraiRequestInstance = processing_command[sync_id]
+		cmd.result = result["data"]
+		cmd.emit_signal("request_finished")
+
+
+func _tick_command_timeout(cmd_ins:MiraiRequestInstance,_timeout:float):
+	await get_tree().create_timer(_timeout).timeout
+	if is_instance_valid(cmd_ins) && cmd_ins.result == null:
+		cmd_ins.emit_signal("request_finished")
+		GuiManager.console_print_error("指令请求超时，无法获取到返回结果: "+str(cmd_ins.request))
+		
+		
 class MiraiRequestInstance:
 	extends RefCounted
 	

@@ -4,7 +4,7 @@ extends GroupAPI
 class_name GroupMember
 
 
-enum Permissions{
+enum Permission{
 	MEMBER,
 	ADMINISTRATOR,
 	OWNER
@@ -62,7 +62,7 @@ func get_special_title()->String:
 	
 	
 func get_permission()->int:
-	return MiraiAdapter.perm2enum(data_dic.permission)
+	return BotAdapter.parse_permission_text(data_dic.permission)
 	
 	
 func get_join_timestamp()->int:
@@ -87,7 +87,7 @@ func change_name(new_name:String)->BotRequestResult:
 		"memberId":get_id(),
 		"info":{"name":new_name}
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("memberInfo","update",_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("memberInfo","update",_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 	
@@ -98,7 +98,7 @@ func change_special_title(new_title:String)->BotRequestResult:
 		"memberId":get_id(),
 		"info":{"specialTitle":new_title}
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("memberInfo","update",_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("memberInfo","update",_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 	
@@ -109,7 +109,7 @@ func toggle_admin(enabled:bool)->BotRequestResult:
 		"memberId":get_id(),
 		"assign":enabled
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("memberAdmin","update",_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("memberAdmin","update",_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -120,7 +120,7 @@ func kick(message:String)->BotRequestResult:
 		"memberId":get_id(),
 		"msg":message
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("kick",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("kick",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -131,7 +131,7 @@ func mute(time:int)->BotRequestResult:
 		"memberId":get_id(),
 		"time":time
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("mute",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("mute",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 	
@@ -141,7 +141,7 @@ func unmute()->BotRequestResult:
 		"target":data_dic.group.id,
 		"memberId":get_id(),
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("unmute",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("unmute",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 	
@@ -153,7 +153,7 @@ func send_message(msg:Message,quote_msgid:int=-1)->BotRequestResult:
 		"messageChain":[msg.get_metadata()],
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendTempMessage",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendTempMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins	
 
@@ -165,7 +165,7 @@ func send_message_chain(msg_chain:MessageChain,quote_msgid:int=-1)->BotRequestRe
 		"messageChain":msg_chain.get_metadata(),
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendTempMessage",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendTempMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -176,6 +176,6 @@ func send_nudge()->BotRequestResult:
 		"subject":get_id(),
 		"kind":"Stranger"
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendNudge",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

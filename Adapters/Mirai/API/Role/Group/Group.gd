@@ -41,7 +41,7 @@ func get_id()->int:
 
 
 func get_bot_permission()->int:
-	return MiraiAdapter.perm2enum(data_dic.permission)
+	return BotAdapter.parse_permission_text(data_dic.permission)
 
 
 func get_member(member_id:int)->GroupMember:
@@ -49,7 +49,7 @@ func get_member(member_id:int)->GroupMember:
 		"target":get_id(),
 		"memberId":member_id
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("memberInfo","get",_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("memberInfo","get",_req_dic)
 	var _ins:GroupMember = GroupMember.init_meta(_result)
 	return _ins
 
@@ -58,7 +58,7 @@ func get_member_list()->GroupMemberList:
 	var _req_dic = {
 		"target":get_id()
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("memberList",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("memberList",null,_req_dic)
 	var _arr:Array = _result["data"]
 	var _ins:GroupMemberList = GroupMemberList.init_meta(_arr)
 	return _ins
@@ -69,7 +69,7 @@ func get_member_profile(member_id:int)->MemberProfile:
 		"target":get_id(),
 		"memberId":member_id
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("memberProfile",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("memberProfile",null,_req_dic)
 	var _ins:MemberProfile = MemberProfile.init_meta(_result)
 	return _ins
 
@@ -80,9 +80,9 @@ func toggle_mute_all(enabled:bool)->BotRequestResult:
 	}
 	var _result:Dictionary
 	if enabled:
-		_result = await MiraiAdapter.send_bot_request("muteAll",null,_req_dic)
+		_result = await BotAdapter.send_bot_request("muteAll",null,_req_dic)
 	else:
-		_result = await MiraiAdapter.send_bot_request("unmuteAll",null,_req_dic)
+		_result = await BotAdapter.send_bot_request("unmuteAll",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 	
@@ -91,7 +91,7 @@ func get_group_config()->GroupConfig:
 	var _req_dic = {
 		"target":get_id()
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("groupConfig","get",_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("groupConfig","get",_req_dic)
 	var _ins:GroupConfig = GroupConfig.init_meta(_result)
 	return _ins
 
@@ -101,7 +101,7 @@ func set_group_config(config:GroupConfig)->BotRequestResult:
 		"target":get_id(),
 		"config":config.get_metadata()
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("groupConfig","update",_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("groupConfig","update",_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -112,7 +112,7 @@ func send_message(msg:Message,quote_msgid:int=-1)->BotRequestResult:
 		"messageChain":[msg.get_metadata()],
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendGroupMessage",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendGroupMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -123,7 +123,7 @@ func send_message_chain(msg_chain:MessageChain,quote_msgid:int=-1)->BotRequestRe
 		"messageChain":msg_chain.get_metadata(),
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendGroupMessage",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendGroupMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 	
@@ -134,7 +134,7 @@ func send_nudge(member_id:int)->BotRequestResult:
 		"subject":get_id(),
 		"kind":"Group"
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendNudge",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -143,6 +143,6 @@ func quit()->BotRequestResult:
 	var _req_dic = {
 		"target":get_id()
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("quit",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("quit",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

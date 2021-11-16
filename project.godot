@@ -44,6 +44,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/CacheMessage.gd"
 }, {
+"base": "CoreAPI",
+"class": &"Console",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Core/Console.gd"
+}, {
 "base": "BotAPI",
 "class": &"CoreAPI",
 "language": &"GDScript",
@@ -53,6 +58,16 @@ _global_script_classes=[{
 "class": &"DiceMessage",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/Types/DiceMessage.gd"
+}, {
+"base": "EventAPI",
+"class": &"Event",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Event/Event.gd"
+}, {
+"base": "RefCounted",
+"class": &"EventAPI",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Event/EventAPI.gd"
 }, {
 "base": "Message",
 "class": &"FaceMessage",
@@ -84,6 +99,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/Types/ForwardMessage/ForwardMessageNodeList.gd"
 }, {
+"base": "MessageEvent",
+"class": &"FriendMessageEvent",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Event/MessageEvent/FriendMessageEvent.gd"
+}, {
 "base": "GroupAPI",
 "class": &"Group",
 "language": &"GDScript",
@@ -113,6 +133,11 @@ _global_script_classes=[{
 "class": &"GroupMemberList",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Role/Group/GroupMemberList.gd"
+}, {
+"base": "MessageEvent",
+"class": &"GroupMessageEvent",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Event/MessageEvent/GroupMessageEvent.gd"
 }, {
 "base": "HTTPRequest",
 "class": &"HttpRequestInstance",
@@ -164,6 +189,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/MessageChain.gd"
 }, {
+"base": "Event",
+"class": &"MessageEvent",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Event/MessageEvent/MessageEvent.gd"
+}, {
 "base": "Node",
 "class": &"MiraiClient",
 "language": &"GDScript",
@@ -183,6 +213,11 @@ _global_script_classes=[{
 "class": &"OtherClient",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Role/OtherClient.gd"
+}, {
+"base": "MessageEvent",
+"class": &"OtherClientMessageEvent",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Event/MessageEvent/OtherClientMessageEvent.gd"
 }, {
 "base": "Node",
 "class": &"Plugin",
@@ -214,12 +249,22 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/Types/SourceMessage.gd"
 }, {
+"base": "MessageEvent",
+"class": &"StrangerMessageEvent",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Event/MessageEvent/StrangerMessageEvent.gd"
+}, {
+"base": "MessageEvent",
+"class": &"TempMessageEvent",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/Event/MessageEvent/TempMessageEvent.gd"
+}, {
 "base": "Message",
 "class": &"TextMessage",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Message/Types/TextMessage.gd"
 }, {
-"base": "RefCounted",
+"base": "CoreAPI",
 "class": &"Utils",
 "language": &"GDScript",
 "path": "res://Core/Classes/Utils.gd"
@@ -242,20 +287,25 @@ _global_script_class_icons={
 "BotAPI": "",
 "BotRequestResult": "",
 "CacheMessage": "",
+"Console": "",
 "CoreAPI": "",
 "DiceMessage": "",
+"Event": "",
+"EventAPI": "",
 "FaceMessage": "",
 "FileMessage": "",
 "FlashImageMessage": "",
 "ForwardMessage": "",
 "ForwardMessageNode": "",
 "ForwardMessageNodeList": "",
+"FriendMessageEvent": "",
 "Group": "",
 "GroupAPI": "",
 "GroupConfig": "",
 "GroupList": "",
 "GroupMember": "",
 "GroupMemberList": "",
+"GroupMessageEvent": "",
 "HttpRequestInstance": "",
 "ImageMessage": "",
 "JsonMessage": "",
@@ -266,16 +316,20 @@ _global_script_class_icons={
 "Message": "",
 "MessageAPI": "",
 "MessageChain": "",
+"MessageEvent": "",
 "MiraiClient": "",
 "MiraiConfigManager": "",
 "MusicShareMessage": "",
 "OtherClient": "",
+"OtherClientMessageEvent": "",
 "Plugin": "",
 "PokeMessage": "",
 "QuoteMessage": "",
 "RainyCodeMessage": "",
 "RoleAPI": "",
 "SourceMessage": "",
+"StrangerMessageEvent": "",
+"TempMessageEvent": "",
 "TextMessage": "",
 "Utils": "",
 "VoiceMessage": "",
@@ -285,7 +339,7 @@ _global_script_class_icons={
 [application]
 
 config/name="RainyBot-Core"
-run/main_scene="res://Gui/Main.tscn"
+run/main_scene="res://Main/Main.tscn"
 run/low_processor_mode=true
 boot_splash/image="res://logo.png"
 boot_splash/fullsize=false
@@ -295,7 +349,8 @@ config/windows_native_icon="res://logo.ico"
 
 [autoload]
 
-MiraiAdapter="*res://Adapters/Mirai/MiraiAdapter.gd"
+GlobalManager="*res://Core/GlobalManager.gd"
+BotAdapter="*res://Adapters/Mirai/MiraiAdapter.gd"
 HttpRequestManager="*res://Core/HttpRequestManager.gd"
 CommandManager="*res://Core/CommandManager.gd"
 PluginManager="*res://Core/PluginManager.gd"

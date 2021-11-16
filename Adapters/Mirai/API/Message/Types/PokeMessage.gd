@@ -4,7 +4,7 @@ extends Message
 class_name PokeMessage
 
 
-enum Type {
+enum PokeType {
 	POKE,
 	SHOW_LOVE,
 	LIKE,
@@ -14,23 +14,23 @@ enum Type {
 }
 
 
-var type_dic:Dictionary = {
-	Type.POKE:"Poke",
-	Type.SHOW_LOVE:"ShowLove",
-	Type.LIKE:"Like",
-	Type.HEART_BROKEN:"Heartbroken",
-	Type.SIX_SIX_SIX:"SixSixSix",
-	Type.FANG_DA_ZHAO:"FangDaZhao"
+const type_dic:Dictionary = {
+	PokeType.POKE:"Poke",
+	PokeType.SHOW_LOVE:"ShowLove",
+	PokeType.LIKE:"Like",
+	PokeType.HEART_BROKEN:"Heartbroken",
+	PokeType.SIX_SIX_SIX:"SixSixSix",
+	PokeType.FANG_DA_ZHAO:"FangDaZhao"
 }
 
 
-var type_dic_reverse:Dictionary = {
-	"Poke":Type.POKE,
-	"ShowLove":Type.SHOW_LOVE,
-	"Like":Type.SHOW_LOVE,
-	"Heartbroken":Type.SHOW_LOVE,
-	"SixSixSix":Type.SIX_SIX_SIX,
-	"FangDaZhao":Type.FANG_DA_ZHAO
+const type_dic_reverse:Dictionary = {
+	"Poke":PokeType.POKE,
+	"ShowLove":PokeType.SHOW_LOVE,
+	"Like":PokeType.SHOW_LOVE,
+	"Heartbroken":PokeType.SHOW_LOVE,
+	"SixSixSix":PokeType.SIX_SIX_SIX,
+	"FangDaZhao":PokeType.FANG_DA_ZHAO
 }
 
 

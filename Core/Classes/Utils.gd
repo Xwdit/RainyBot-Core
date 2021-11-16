@@ -1,3 +1,6 @@
+extends CoreAPI
+
+
 class_name Utils
 
 
@@ -15,3 +18,8 @@ static func get_beautifuler_num(num):
 		return "0"+str(num)
 	else:
 		return str(num)
+
+
+static func send_http_get_request(url:String,timeout:float = 20.0):
+	var result = await HttpRequestManager.send_http_get_request(url,timeout)
+	return result

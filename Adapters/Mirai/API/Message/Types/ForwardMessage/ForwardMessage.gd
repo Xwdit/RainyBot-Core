@@ -25,8 +25,8 @@ static func init(node_list:ForwardMessageNodeList)->ForwardMessage:
 	return ins
 
 
-static func init_meta(dic:Dictionary)->AppMessage:
-	var ins:AppMessage = AppMessage.new()
+static func init_meta(dic:Dictionary)->ForwardMessage:
+	var ins:ForwardMessage = ForwardMessage.new()
 	ins.data_dic = dic
 	return ins
 

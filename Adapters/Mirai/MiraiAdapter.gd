@@ -23,6 +23,15 @@ const message_type_name:Array = [
 ]
 
 
+const message_event_name:Array = [
+	"FriendMessage",
+	"GroupMessage",
+	"TempMessage",
+	"StrangerMessage",
+	"OtherClientMessage"
+]
+
+
 var mirai_client:= MiraiClient.new()
 var mirai_config_manager:=MiraiConfigManager.new()
 
@@ -72,17 +81,17 @@ func send_bot_request(_command,_sub_command=null,_content={},_timeout:float=20.0
 	return await mirai_client.send_bot_request(_command,_sub_command,_content,_timeout)
 			
 			
-func perm2enum(perm:String)->int:
+func parse_permission_text(perm:String)->int:
 	match perm:
 		"ADMINISTRATOR":
-			return GroupMember.Permissions.ADMINISTRATOR
+			return GroupMember.Permission.ADMINISTRATOR
 		"OWNER":
-			return GroupMember.Permissions.OWNER
+			return GroupMember.Permission.OWNER
 		_:
-			return GroupMember.Permissions.MEMBER
+			return GroupMember.Permission.MEMBER
 			
 			
-func dic2msg(dic:Dictionary)->Message:
+func parse_message_dic(dic:Dictionary)->Message:
 	if !dic.has("type"):
 		return null
 	match dic.type:
@@ -124,3 +133,26 @@ func dic2msg(dic:Dictionary)->Message:
 			return RainyCodeMessage.init_meta(dic)
 		_:
 			return null
+
+
+func parse_event(event_dic:Dictionary):
+	var event_name:String = event_dic["data"]["type"]
+	if message_event_name.has(event_name):
+		parse_message_event(event_dic)
+		
+
+func parse_message_event(event_dic:Dictionary):
+	var ins:Event
+	var event_name:String = event_dic["data"]["type"]
+	match event_name:
+		"FriendMessage":
+			ins = FriendMessageEvent.init_meta(event_dic)
+		"GroupMessage":
+			ins = GroupMessageEvent.init_meta(event_dic)
+		"TempMessage":
+			ins = TempMessageEvent.init_meta(event_dic)
+		"StrangerMessage":
+			ins = StrangerMessageEvent.init_meta(event_dic)
+		"OtherClientMessage":
+			ins = OtherClientMessageEvent.init_meta(event_dic)
+	get_tree().call_group(event_name,"_call_event",event_name,ins)

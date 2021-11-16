@@ -42,7 +42,7 @@ func append(msg:Message):
 
 
 func get_message(index:int)->Message:
-	return MiraiAdapter.dic2msg(data_array[index])
+	return BotAdapter.parse_message_dic(data_array[index])
 
 
 func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array:
@@ -51,7 +51,7 @@ func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array
 		if types.size() > 0:
 			var _has = false
 			for _t in types:
-				if _dic.type == MiraiAdapter.message_type_name[_t]:
+				if _dic.type == BotAdapter.message_type_name[_t]:
 					_has = true
 					break
 			if exclude:
@@ -59,7 +59,7 @@ func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array
 					continue
 			elif !_has:
 				continue
-		arr.append(MiraiAdapter.dic2msg(_dic))
+		arr.append(BotAdapter.parse_message_dic(_dic))
 		if max_size != -1 && arr.size() >= max_size:
 			break
 	return arr
@@ -71,7 +71,7 @@ func get_message_text(types:Array=[],exclude:bool=false)->String:
 		if types.size() > 0:
 			var _has = false
 			for _t in types:
-				if _dic.type == MiraiAdapter.message_type_name[_t]:
+				if _dic.type == BotAdapter.message_type_name[_t]:
 					_has = true
 					break
 			if exclude:
@@ -79,7 +79,7 @@ func get_message_text(types:Array=[],exclude:bool=false)->String:
 					continue
 			elif !_has:
 				continue
-		text += MiraiAdapter.dic2msg(_dic).get_as_text()
+		text += BotAdapter.parse_message_dic(_dic).get_as_text()
 	return text
 
 
@@ -101,7 +101,7 @@ func get_message_timestamp()->int:
 
 func has_message_type(type:int)->bool:
 	for _dic in data_array:
-		if _dic.type == MiraiAdapter.message_type_name[type]:
+		if _dic.type == BotAdapter.message_type_name[type]:
 			return true
 	return false
 
@@ -110,7 +110,7 @@ func set_essence()->BotRequestResult:
 	var _req_dic = {
 		"target":get_message_id()
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("setEssence",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("setEssence",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -119,6 +119,6 @@ func recall()->BotRequestResult:
 	var _req_dic = {
 		"target":get_message_id()
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("recall",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("recall",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

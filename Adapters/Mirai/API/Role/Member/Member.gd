@@ -66,7 +66,7 @@ func get_profile()->MemberProfile:
 	var _req_dic = {
 		"target":get_id(),
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("friendProfile",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("friendProfile",null,_req_dic)
 	var _ins:MemberProfile = MemberProfile.init_meta(_result)
 	return _ins
 
@@ -77,7 +77,7 @@ func send_message(msg:Message,quote_msgid:int=-1)->BotRequestResult:
 		"messageChain":[msg.get_metadata()],
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendFriendMessage",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -88,7 +88,7 @@ func send_message_chain(msg_chain:MessageChain,quote_msgid:int=-1)->BotRequestRe
 		"messageChain":msg_chain.get_metadata(),
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendFriendMessage",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -99,15 +99,15 @@ func send_nudge()->BotRequestResult:
 		"subject":get_id(),
 		"kind":"Friend" if member_role == Role.FRIEND else "Stranger"
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("sendNudge",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
 
-func delete()->BotRequestResult:
+func delete_friend()->BotRequestResult:
 	var _req_dic = {
 		"target":get_id()
 	}
-	var _result:Dictionary = await MiraiAdapter.send_bot_request("deleteFriend",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("deleteFriend",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
