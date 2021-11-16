@@ -139,11 +139,6 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/Event/MessageEvent/GroupMessageEvent.gd"
 }, {
-"base": "HTTPRequest",
-"class": &"HttpRequestInstance",
-"language": &"GDScript",
-"path": "res://Core/Classes/HttpRequestInstance.gd"
-}, {
 "base": "Message",
 "class": &"ImageMessage",
 "language": &"GDScript",
@@ -222,7 +217,7 @@ _global_script_classes=[{
 "base": "Node",
 "class": &"Plugin",
 "language": &"GDScript",
-"path": "res://Core/Classes/PluginClass.gd"
+"path": "res://Core/API/PluginClass.gd"
 }, {
 "base": "Message",
 "class": &"PokeMessage",
@@ -267,7 +262,7 @@ _global_script_classes=[{
 "base": "CoreAPI",
 "class": &"Utils",
 "language": &"GDScript",
-"path": "res://Core/Classes/Utils.gd"
+"path": "res://Core/API/Utils.gd"
 }, {
 "base": "Message",
 "class": &"VoiceMessage",
@@ -306,7 +301,6 @@ _global_script_class_icons={
 "GroupMember": "",
 "GroupMemberList": "",
 "GroupMessageEvent": "",
-"HttpRequestInstance": "",
 "ImageMessage": "",
 "JsonMessage": "",
 "Member": "",
