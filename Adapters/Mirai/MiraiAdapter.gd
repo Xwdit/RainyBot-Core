@@ -45,6 +45,8 @@ func init():
 	]
 	CommandManager.register_command("mirai",true,usages,"RainyBot-Core")
 	mirai_config_manager.connect("config_loaded",Callable(self,"_mirai_config_loaded"))
+	mirai_config_manager.name = "mirai_config_manager"
+	mirai_client.name = "mirai_client"
 	add_child(mirai_config_manager,true)
 	add_child(mirai_client,true)
 	mirai_config_manager.init_config()
