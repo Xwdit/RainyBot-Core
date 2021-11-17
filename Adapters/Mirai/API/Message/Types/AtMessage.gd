@@ -25,7 +25,7 @@ static func init_meta(dic:Dictionary)->AtMessage:
 
 
 func get_target_id()->int:
-	return data_dic.id
+	return data_dic.target
 
 
 func set_target_id(target_id:int):
