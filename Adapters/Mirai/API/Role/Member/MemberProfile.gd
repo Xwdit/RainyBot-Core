@@ -61,5 +61,4 @@ func get_sex()->int:
 			return Sex.MALE
 		"FEMALE":
 			return Sex.FEMALE
-		_:
-			return Sex.UNKNOWN
+	return Sex.UNKNOWN

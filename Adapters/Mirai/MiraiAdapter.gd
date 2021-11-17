@@ -89,8 +89,7 @@ func parse_permission_text(perm:String)->int:
 			return GroupMember.Permission.ADMINISTRATOR
 		"OWNER":
 			return GroupMember.Permission.OWNER
-		_:
-			return GroupMember.Permission.MEMBER
+	return GroupMember.Permission.MEMBER
 			
 			
 func parse_message_dic(dic:Dictionary)->Message:
@@ -133,8 +132,7 @@ func parse_message_dic(dic:Dictionary)->Message:
 			return FileMessage.init_meta(dic)
 		"MiraiCode":
 			return RainyCodeMessage.init_meta(dic)
-		_:
-			return null
+	return null
 
 
 func parse_event(result_dic:Dictionary):

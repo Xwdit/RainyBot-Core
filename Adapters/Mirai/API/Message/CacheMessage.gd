@@ -43,5 +43,4 @@ func get_sender():
 			return Member.init_meta(data_dic.sender,Member.Role.STRANGER)
 		"OtherClientMessage":
 			return OtherClient.init_meta(data_dic.sender)
-		_:
-			return null
+	return null
