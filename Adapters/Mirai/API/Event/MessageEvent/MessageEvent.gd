@@ -14,4 +14,12 @@ enum Type{
 
 
 func get_message_chain()->MessageChain:
-	return MessageChain.init_meta(get("data_dic"))
+	return null
+	
+	
+func reply(msg:Message,quote:bool=false)->BotRequestResult:
+	return null
+	
+	
+func reply_chain(msg_chain:MessageChain,quote:bool=false)->BotRequestResult:
+	return null

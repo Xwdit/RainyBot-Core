@@ -30,8 +30,8 @@ static func init_meta(dic:Dictionary)->GroupMessageEvent:
 	return ins
 
 
-func get_sender()->Member:
-	return Member.init_meta(data_dic.sender)
+func get_sender()->GroupMember:
+	return GroupMember.init_meta(data_dic.sender)
 
 
 func get_group()->Group:
