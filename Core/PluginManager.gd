@@ -1,7 +1,7 @@
 extends Node
 
 
-var plugin_path = OS.get_executable_path().get_base_dir() + "/plugin/"
+var plugin_path = OS.get_executable_path().get_base_dir() + "/plugins/"
 var plugin_config_path = OS.get_executable_path().get_base_dir() + "/config/" 
 var plugin_data_path = OS.get_executable_path().get_base_dir() + "/data/" 
 

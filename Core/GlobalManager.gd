@@ -2,7 +2,7 @@ extends Node
 
 
 const INIT_PATH = [
-	"/plugin/",
+	"/plugins/",
 	"/config/",
 	"/data/",
 ]
