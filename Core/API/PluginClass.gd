@@ -50,8 +50,12 @@ func _call_event(event:String,ins:Event):
 		call(func_name,ins)
 
 
-func set_plugin_info(info_dic:Dictionary):
-	plugin_info = info_dic
+func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String):
+	plugin_info.id = p_id
+	plugin_info.name = p_name
+	plugin_info.author = p_author
+	plugin_info.version = p_version
+	plugin_info.description = p_description
 
 	
 func get_plugin_info():
