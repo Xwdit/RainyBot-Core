@@ -79,4 +79,4 @@ func get_ws_address(config_dic:Dictionary):
 	
 	
 func get_bot_id()->int:
-	return loaded_config.mirai_qq
+	return loaded_config.mirai_qq.to_int()
