@@ -14,6 +14,8 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="."]
 anchor_right = 1.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 16
 text = "RainyBot控制台"
 align = 1
 valign = 1
@@ -24,17 +26,23 @@ __meta__ = {
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-split_offset = 180
+offset_left = 5.0
+offset_top = 27.0
+offset_right = -5.0
+offset_bottom = -5.0
+theme = ExtResource( "1_d2nse" )
+split_offset = 200
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ConsoleOutput" type="RichTextLabel" parent="VSplitContainer" groups=["Console"]]
-offset_right = 1024.0
-offset_bottom = 474.0
+offset_right = 1014.0
+offset_bottom = 478.0
 focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource( "1_d2nse" )
 bbcode_enabled = true
 scroll_following = true
 selection_enabled = true
@@ -43,9 +51,9 @@ script = ExtResource( "3" )
 [node name="CommandInput" parent="VSplitContainer" instance=ExtResource( "1" )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 486.0
-offset_right = 1024.0
-offset_bottom = 600.0
+offset_top = 490.0
+offset_right = 1014.0
+offset_bottom = 568.0
 rect_min_size = Vector2(0, 60)
 expand_to_text_length = false
 caret_force_displayed = true
