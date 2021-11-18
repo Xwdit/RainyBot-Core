@@ -217,7 +217,12 @@ _global_script_classes=[{
 "base": "Node",
 "class": &"Plugin",
 "language": &"GDScript",
-"path": "res://Core/API/PluginClass.gd"
+"path": "res://Core/API/Plugin.gd"
+}, {
+"base": "Control",
+"class": &"PluginEditor",
+"language": &"GDScript",
+"path": "res://Gui/PluginEditor/PluginEditor.gd"
 }, {
 "base": "Message",
 "class": &"PokeMessage",
@@ -317,6 +322,7 @@ _global_script_class_icons={
 "OtherClient": "",
 "OtherClientMessageEvent": "",
 "Plugin": "",
+"PluginEditor": "",
 "PokeMessage": "",
 "QuoteMessage": "",
 "RainyCodeMessage": "",
@@ -349,6 +355,7 @@ HttpRequestManager="*res://Core/HttpRequestManager.gd"
 CommandManager="*res://Core/CommandManager.gd"
 PluginManager="*res://Core/PluginManager.gd"
 GuiManager="*res://Core/GuiManager.gd"
+PluginEditorWindow="*res://Gui/PluginEditor/EditorWindow/PluginEditorWindow.tscn"
 
 [debug]
 
@@ -358,6 +365,7 @@ file_logging/log_path="user://logs/rainybot.log"
 [display]
 
 window/dpi/allow_hidpi=true
+window/subwindows/embed_subwindows=false
 
 [editor]
 

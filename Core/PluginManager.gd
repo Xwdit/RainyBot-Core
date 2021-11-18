@@ -3,7 +3,7 @@ extends Node
 
 var plugin_path = OS.get_executable_path().get_base_dir() + "/plugins/"
 var plugin_config_path = OS.get_executable_path().get_base_dir() + "/config/" 
-var plugin_data_path = OS.get_executable_path().get_base_dir() + "/data/" 
+var plugin_data_path = OS.get_executable_path().get_base_dir() + "/data/"
 
 
 var default_plugin_info = {
@@ -22,7 +22,10 @@ func _ready():
 		"plugins load <文件名> - 加载一个指定的插件",
 		"plugins unload <插件id> - 卸载一个指定的插件",
 		"plugins reload <插件id> - 重新加载一个指定的插件",
-		"plugins areload - 重新加载所有插件"
+		"plugins areload - 重新加载所有插件",
+		"plugins create <文件名> - 新建一个插件",
+		"plugins edit <文件名> - 编辑一个插件",
+		"plugins delete <文件名> - 删除一个插件"
 	]
 	CommandManager.register_command("plugins",true,usages,"RainyBot-Core")
 
@@ -60,6 +63,42 @@ func _command_plugins(args:Array):
 				GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
 		"areload":
 			reload_plugins()
+		"edit":
+			if args.size() > 1:
+				var file_name:String = args[1]
+				if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
+					GuiManager.console_print_warning("正在启动插件编辑器...")
+					PluginEditorWindow.load_script(plugin_path+file_name)
+				else:
+					GuiManager.console_print_error("插件文件不存在或格式错误!")
+			else:
+				GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
+		"create":
+			if args.size() > 1:
+				var file_name:String = args[1]
+				if File.new().file_exists(plugin_path+file_name):
+					GuiManager.console_print_error("此插件文件已存在!")
+				elif file_name.ends_with(".gd"):
+					var scr:GDScript = load("res://Core/PluginTemplates/PluginTemplate.gd")
+					if ResourceSaver.save(plugin_path+file_name,scr) == OK:
+						GuiManager.console_print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
+						GuiManager.console_print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
+					else:
+						GuiManager.console_print_error("插件文件创建失败，请检查文件权限是否正确!")
+				else:
+					GuiManager.console_print_error("插件文件名格式错误，正确格式: <文件名>.gd")
+		"delete":
+			if args.size() > 1:
+				var file_name:String = args[1]
+				if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
+					var dir = Directory.new()
+					if dir.remove(plugin_path+file_name):
+						GuiManager.console_print_success("插件文件删除成功!")
+						GuiManager.console_print_success("请不要忘记使用插件卸载命令来停用已加载的插件!")
+					else:
+						GuiManager.console_print_error("插件文件删除失败，请检查文件权限是否正确!")
+				else:
+					GuiManager.console_print_error("插件文件不存在或格式错误!")	
 		_:
 			GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
 

@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://btdilsic4yc8l"]
+
+[ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_hsrho"]
+[ext_resource type="Script" path="res://Gui/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
+[ext_resource type="PackedScene" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
+
+[node name="PluginEditor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( "1_hsrho" )
+script = ExtResource( "2_5p1sy" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CodeEdit" parent="." instance=ExtResource( "3_ku66v" )]
+offset_top = 25.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+
+[node name="StatusBar" type="Label" parent="."]
+anchor_right = 1.0
+offset_left = 5.0
+offset_bottom = 24.0
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
