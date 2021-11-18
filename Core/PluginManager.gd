@@ -147,6 +147,7 @@ func unload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	GuiManager.console_print_warning("正在卸载插件: " + _plugin_info["name"])
 	plugin.queue_free()
+	GuiManager.console_print_success("成功卸载插件 " + _plugin_info["name"] + " "+str(_plugin_info))
 
 
 func reload_plugin(plugin:Plugin):
