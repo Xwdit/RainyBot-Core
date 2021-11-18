@@ -92,7 +92,7 @@ func _command_plugins(args:Array):
 				var file_name:String = args[1]
 				if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
 					var dir = Directory.new()
-					if dir.remove(plugin_path+file_name):
+					if dir.open(plugin_path)==OK && dir.remove(plugin_path+file_name)==OK:
 						GuiManager.console_print_success("插件文件删除成功!")
 						GuiManager.console_print_success("请不要忘记使用插件卸载命令来停用已加载的插件!")
 					else:
