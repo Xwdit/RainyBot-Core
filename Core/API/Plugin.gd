@@ -16,8 +16,9 @@ var plugin_info:Dictionary = {
 
 var plugin_config:Dictionary = {}
 var plugin_data:Dictionary = {}
-
 var plugin_event_dic:Dictionary = {}
+var plugin_timer:Timer = Timer.new()
+var plugin_time_passed:int = 0
 
 
 func _init():
@@ -25,6 +26,10 @@ func _init():
 	
 
 func _ready():
+	plugin_timer.wait_time = 1
+	plugin_timer.connect("timeout",Callable(self,"_plugin_timer_timeout"))
+	add_child(plugin_timer)
+	plugin_timer.start()
 	_on_load()
 	
 	
@@ -50,6 +55,10 @@ func _call_event(event:String,ins:Event):
 		call(func_name,ins)
 
 
+func _plugin_timer_timeout():
+	plugin_time_passed += 1
+
+
 func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String):
 	plugin_info.id = p_id
 	plugin_info.name = p_name
@@ -58,19 +67,23 @@ func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,
 	plugin_info.description = p_description
 
 	
-func get_plugin_info():
+func get_plugin_info()->Dictionary:
 	return plugin_info
 
 
-func get_plugin_file():
+func get_plugin_filename()->String:
 	return plugin_file
 
 
-func get_plugin_path():
+func get_plugin_path()->String:
 	return plugin_path
 
 
-func get_other_plugin_instance(plugin_id):
+func get_plugin_runtime()->int:
+	return plugin_time_passed
+	
+
+func get_other_plugin_instance(plugin_id)->Plugin:
 	return PluginManager.get_plugin_instance(plugin_id)
 
 
@@ -157,6 +170,22 @@ func set_plugin_config(key,value,save_file:bool=true):
 	plugin_config[key]=value
 	if save_file:
 		save_plugin_config()
+
+
+func get_plugin_config_metadata()->Dictionary:
+	return plugin_config
+
+
+func set_plugin_config_metadata(dic:Dictionary):
+	plugin_config = dic
+	
+	
+func get_plugin_data_metadata()->Dictionary:
+	return plugin_data
+
+
+func set_plugin_data_metadata(dic:Dictionary):
+	plugin_data = dic
 
 
 func init_plugin_data():
