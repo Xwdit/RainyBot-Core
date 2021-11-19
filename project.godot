@@ -361,7 +361,6 @@ HttpRequestManager="*res://Core/HttpRequestManager.gd"
 CommandManager="*res://Core/CommandManager.gd"
 PluginManager="*res://Core/PluginManager.gd"
 GuiManager="*res://Core/GuiManager.gd"
-PluginEditorWindow="*res://Gui/PluginEditor/EditorWindow/PluginEditorWindow.tscn"
 
 [debug]
 

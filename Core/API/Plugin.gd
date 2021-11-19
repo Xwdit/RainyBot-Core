@@ -157,7 +157,7 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 			file.close()
 		else:
 			var json = JSON.new()
-			file.store_string(json.stringify(plugin_config))
+			file.store_string(json.stringify(plugin_config,"\t"))
 			file.close()
 			GuiManager.console_print_success("配置文件创建成功，请访问以下路径进行配置: "+config_path)
 			if !config_description.is_empty():
@@ -178,7 +178,7 @@ func save_plugin_config():
 		file.close()
 	else:
 		var json = JSON.new()
-		file.store_string(json.stringify(plugin_config))
+		file.store_string(json.stringify(plugin_config,"\t"))
 		file.close()
 		GuiManager.console_print_success("配置文件保存成功，路径: "+config_path)
 

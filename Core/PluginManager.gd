@@ -68,7 +68,7 @@ func _call_console_command(cmd:String,args:Array):
 				var file_name:String = args[1]
 				if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
 					GuiManager.console_print_warning("正在启动插件编辑器...")
-					PluginEditorWindow.load_script(plugin_path+file_name)
+					GuiManager.open_plugin_editor(plugin_path+file_name)
 				else:
 					GuiManager.console_print_error("插件文件不存在或格式错误!")
 			else:

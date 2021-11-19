@@ -64,7 +64,7 @@ func init_config():
 			file.close()
 		else:
 			var json = JSON.new()
-			file.store_string(json.stringify(loaded_config))
+			file.store_string(json.stringify(loaded_config,"\t"))
 			file.close()
 			GuiManager.console_print_success("配置文件创建成功，请访问以下路径进行配置: "+config_path)
 			GuiManager.console_print_text("配置选项说明:")

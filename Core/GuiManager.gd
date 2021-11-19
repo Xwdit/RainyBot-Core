@@ -1,8 +1,16 @@
 extends Node
 
 
-func open_gui_module(m_name):
-	get_tree().call_group("GuiModule","open_module",m_name)
+var plugin_editor = load("res://Gui/PluginEditor/EditorWindow/PluginEditorWindow.tscn").instantiate()
+
+
+func _ready():
+	plugin_editor.name = "PluginEditorWindow"
+	add_child(plugin_editor,true)
+	
+	
+func open_plugin_editor(path:String):
+	plugin_editor.load_script(path)
 
 
 func console_print_text(text):
