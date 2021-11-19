@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://do3ucpehwfiwq"]
 
 [ext_resource type="Script" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.gd" id="1_4pm0p"]
 
@@ -34,7 +34,6 @@ line_folding = true
 gutters_draw_bookmarks = true
 gutters_draw_line_numbers = true
 gutters_draw_fold_gutter = true
-delimiter_strings = ["\" \"", "' '"]
 delimiter_comments = ["# #"]
 code_completion_enabled = true
 indent_automatic = true
@@ -44,24 +43,3 @@ script = ExtResource( "1_4pm0p" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="@@307139" type="HScrollBar" parent="."]
-offset_top = -12.0
-offset_right = -12.0
-max_value = 12.0
-
-[node name="@@307140" type="VScrollBar" parent="."]
-offset_left = -12.0
-max_value = 1.999
-step = 1.0
-page = 0.999
-
-[node name="@@307141" type="Timer" parent="."]
-wait_time = 0.65
-
-[node name="@@307142" type="Timer" parent="."]
-wait_time = 0.05
-
-[node name="@@307143" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true

@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_hsrho"]
 [ext_resource type="Script" path="res://Gui/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
-[ext_resource type="PackedScene" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
+[ext_resource type="PackedScene" uid="uid://do3ucpehwfiwq" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_oceml"]
 command_pressed = true
