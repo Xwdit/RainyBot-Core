@@ -1,8 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://btdilsic4yc8l"]
+[gd_scene load_steps=6 format=3 uid="uid://btdilsic4yc8l"]
 
 [ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_hsrho"]
 [ext_resource type="Script" path="res://Gui/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
 [ext_resource type="PackedScene" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_oceml"]
+command_pressed = true
+keycode = 83
+
+[sub_resource type="Shortcut" id="Shortcut_70cvl"]
+events = [SubResource( "InputEventKey_oceml" )]
 
 [node name="PluginEditor" type="Control"]
 anchor_right = 1.0
@@ -14,21 +21,108 @@ __meta__ = {
 }
 
 [node name="CodeEdit" parent="." instance=ExtResource( "3_ku66v" )]
-offset_top = 25.0
+offset_top = 32.0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath(".")
 focus_previous = NodePath(".")
-delimiter_strings = ["' '", "\" \""]
 delimiter_comments = []
 
-[node name="StatusBar" type="Label" parent="."]
+[node name="EditorPanel" type="Panel" parent="."]
 anchor_right = 1.0
-offset_left = 5.0
-offset_bottom = 24.0
+offset_bottom = 33.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="HBoxContainer" parent="EditorPanel"]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 1017.0
+offset_bottom = 29.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
+offset_right = 92.0
+offset_bottom = 22.0
+theme_override_font_sizes/font_size = 16
+shortcut = SubResource( "Shortcut_70cvl" )
+text = "保存并重载"
+flat = true
+
+[node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
+offset_left = 96.0
+offset_right = 196.0
+offset_bottom = 22.0
+text = "打开API文档"
+flat = true
+
+[node name="File" type="HBoxContainer" parent="EditorPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FileName" type="Label" parent="EditorPanel/File"]
+offset_left = 481.0
+offset_top = 7.0
+offset_right = 537.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 16
+text = "Test.gd"
+align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="FileStatus" type="Label" parent="EditorPanel/File"]
+offset_left = 541.0
+offset_top = 8.0
+offset_right = 542.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 16
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Edit" type="HBoxContainer" parent="EditorPanel"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -214.0
+offset_right = -12.0
+mouse_filter = 2
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
+offset_left = 132.0
+offset_top = 7.0
+offset_right = 202.0
+offset_bottom = 26.0
+rect_min_size = Vector2(70, 0)
+theme_override_font_sizes/font_size = 16
+text = "1 : 1"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="caret_changed" from="CodeEdit" to="." method="_on_CodeEdit_caret_changed"]
+[connection signal="text_changed" from="CodeEdit" to="." method="_on_CodeEdit_text_changed"]
+[connection signal="button_down" from="EditorPanel/Menu/SaveButton" to="." method="_on_SaveButton_button_down"]
+[connection signal="button_down" from="EditorPanel/Menu/HelpButton" to="." method="_on_HelpButton_button_down"]

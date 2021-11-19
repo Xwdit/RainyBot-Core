@@ -4,9 +4,13 @@ extends Node
 class_name MiraiClient
 
 
-# Our WebSocketClient instance
 var _client = WebSocketClient.new()
 var processing_command:Dictionary = {}
+
+
+func _exit_tree():
+	if is_bot_connected():
+		_client.get_peer(1).close()
 
 
 func connect_to_mirai(ws_url):

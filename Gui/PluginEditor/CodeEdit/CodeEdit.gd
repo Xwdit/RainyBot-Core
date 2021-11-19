@@ -69,6 +69,7 @@ var color_regions = {
 
 
 func _ready():
+	var menu = get_menu()
 	init_syntax_highlight()
 	
 

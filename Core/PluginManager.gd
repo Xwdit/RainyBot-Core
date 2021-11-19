@@ -93,8 +93,10 @@ func _call_console_command(cmd:String,args:Array):
 				if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
 					var dir = Directory.new()
 					if dir.open(plugin_path)==OK && dir.remove(plugin_path+file_name)==OK:
+						var plug = get_plugin_with_filename(file_name)
+						if is_instance_valid(plug):
+							unload_plugin(plug)
 						GuiManager.console_print_success("插件文件删除成功!")
-						GuiManager.console_print_success("请不要忘记使用插件卸载命令来停用已加载的插件!")
 					else:
 						GuiManager.console_print_error("插件文件删除失败，请检查文件权限是否正确!")
 				else:
@@ -153,9 +155,9 @@ func unload_plugin(plugin:Plugin):
 func reload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	GuiManager.console_print_warning("正在重载插件: " + _plugin_info["name"])
-	var file = plugin.get_plugin_file()
+	var file = plugin.get_plugin_filename()
 	unload_plugin(plugin)
-	await get_tree().process_frame
+	await plugin.tree_exited
 	load_plugin(file)
 
 		
@@ -181,6 +183,16 @@ func unload_plugins():
 
 func get_plugin_instance(plugin_id):
 	return get_node_or_null(plugin_id)
+
+
+func get_plugin_with_filename(f_name:String)->Plugin:
+	var arr = PluginManager.get_children()
+	for child in arr:
+		var plug:Plugin = child
+		var file = plug.plugin_file
+		if file == f_name:
+			return plug
+	return null
 
 
 func _list_files_in_directory(path):
