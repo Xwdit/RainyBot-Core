@@ -38,12 +38,12 @@ var mirai_config_manager:=MiraiConfigManager.new()
 
 func init():
 	GuiManager.console_print_warning("正在加载内置模块: Mirai-Adapter 版本:V1.0-dev, 作者:Xwdit")
-	add_to_group("command")
+	add_to_group("console_command_mirai")
 	var usages = [
 		"mirai status - 获取与Mirai框架的连接状态",
 		"mirai command <命令> - 向Mirai框架发送命令并显示回调(不支持额外参数)",
 	]
-	CommandManager.register_command("mirai",true,usages,"Mirai-Adapter")
+	CommandManager.register_console_command("mirai",true,usages,"Mirai-Adapter")
 	mirai_config_manager.connect("config_loaded",Callable(self,"_mirai_config_loaded"))
 	mirai_config_manager.name = "mirai_config_manager"
 	mirai_client.name = "mirai_client"
@@ -56,7 +56,7 @@ func _mirai_config_loaded():
 	mirai_client.connect_to_mirai(get_ws_url())
 
 
-func _command_mirai(args:Array):
+func _call_console_command(cmd:String,args:Array):
 	match args[0]:
 		"status":
 			GuiManager.console_print_text("当前连接状态:"+str(is_bot_connected()))

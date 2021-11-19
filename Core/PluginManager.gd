@@ -16,7 +16,7 @@ var default_plugin_info = {
 
 
 func _ready():
-	add_to_group("command")
+	add_to_group("console_command_plugins")
 	var usages = [
 		"plugins list - 查看所有已加载的插件列表",
 		"plugins load <文件名> - 加载一个指定的插件",
@@ -27,10 +27,10 @@ func _ready():
 		"plugins edit <文件名> - 编辑一个插件",
 		"plugins delete <文件名> - 删除一个插件"
 	]
-	CommandManager.register_command("plugins",true,usages,"RainyBot-Core")
+	CommandManager.register_console_command("plugins",true,usages,"RainyBot-Core")
 
 
-func _command_plugins(args:Array):
+func _call_console_command(cmd:String,args:Array):
 	match args[0]:
 		"list":
 			GuiManager.console_print_text("-----插件列表-----")
@@ -79,7 +79,7 @@ func _command_plugins(args:Array):
 				if File.new().file_exists(plugin_path+file_name):
 					GuiManager.console_print_error("此插件文件已存在!")
 				elif file_name.ends_with(".gd"):
-					var scr:GDScript = load("res://Core/PluginTemplates/PluginTemplate.gd")
+					var scr:GDScript = load("res://Core/Templates/PluginTemplate.gd")
 					if ResourceSaver.save(plugin_path+file_name,scr) == OK:
 						GuiManager.console_print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
 						GuiManager.console_print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)

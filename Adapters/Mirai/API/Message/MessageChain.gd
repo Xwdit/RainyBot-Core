@@ -37,8 +37,9 @@ func set_metadata(arr:Array):
 	data_array = arr
 
 
-func append(msg:Message):
+func append(msg:Message)->MessageChain:
 	data_array.append(msg.get_metadata())
+	return self
 
 
 func get_message(index:int)->Message:

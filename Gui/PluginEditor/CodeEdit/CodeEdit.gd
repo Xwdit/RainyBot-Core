@@ -11,6 +11,7 @@ const NUMBER_COLOR = Color(0.62,1.0,0.87)
 const STRING_COLOR = Color(1,0.92,0.62)
 const COMMENT_COLOR = Color(0.8,0.81,0.82,0.5)
 const NODE_PATH_COLOR = Color(0.38,0.75,0.34)
+const ANNOTATION_COLOR = Color(1,0.69,0.44)
 
 
 var keyword_colors := {
@@ -50,13 +51,20 @@ var keyword_colors := {
 	"TAU":KEYWORD_COLOR,
 	"INF":KEYWORD_COLOR,
 	"NAN":KEYWORD_COLOR,
-	"$":NODE_PATH_COLOR,
+	"null":KEYWORD_COLOR,
+	"int":KEYWORD_COLOR,
+	"float":KEYWORD_COLOR,
+	"bool":KEYWORD_COLOR,
+	"super":KEYWORD_COLOR,
+	"true":KEYWORD_COLOR,
+	"false":KEYWORD_COLOR,
 }
-
 
 var color_regions = {
 	"#":COMMENT_COLOR,
-	"\" \"":STRING_COLOR
+	"\" \"":STRING_COLOR,
+	"$ .":NODE_PATH_COLOR,
+	"@":ANNOTATION_COLOR
 }
 
 
@@ -82,7 +90,6 @@ func init_syntax_highlight():
 
 func register_api_highlight(path:String):
 	keyword_colors["BotAdapter"]=CLASS_COLOR
-	print(path)
 	var dir = Directory.new()
 	var error = dir.open(path)
 	if error!=OK:

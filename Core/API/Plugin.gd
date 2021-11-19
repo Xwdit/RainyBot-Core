@@ -17,6 +17,7 @@ var plugin_info:Dictionary = {
 var plugin_config:Dictionary = {}
 var plugin_data:Dictionary = {}
 var plugin_event_dic:Dictionary = {}
+var plugin_console_command_dic:Dictionary = {}
 var plugin_timer:Timer = Timer.new()
 var plugin_time_passed:int = 0
 
@@ -45,6 +46,10 @@ func _on_load():
 	pass
 
 
+func _on_process():
+	pass
+
+
 func _on_unload():
 	pass
 
@@ -55,8 +60,15 @@ func _call_event(event:String,ins:Event):
 		call(func_name,ins)
 
 
+func _call_console_command(cmd:String,args:Array):
+	if plugin_console_command_dic.has(cmd):
+		var func_name = plugin_console_command_dic[cmd]
+		call(func_name,cmd,args)
+
+
 func _plugin_timer_timeout():
 	plugin_time_passed += 1
+	_on_process()
 
 
 func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String):
@@ -79,6 +91,10 @@ func get_plugin_path()->String:
 	return plugin_path
 
 
+func set_plugin_runtime(time_sec:int):
+	plugin_time_passed = time_sec
+
+
 func get_plugin_runtime()->int:
 	return plugin_time_passed
 	
@@ -97,12 +113,16 @@ func unregister_message_event(msg_event:int):
 	remove_from_group(BotAdapter.message_event_name[msg_event])
 
 
-func register_command(command:String,need_arguments:bool,usages:Array,source:String):
-	CommandManager.register_command(command,need_arguments,usages,source)
+func register_console_command(command:String,func_name:String,need_arguments:bool=false,usages:Array=[]):
+	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name)==OK:
+		plugin_console_command_dic[command] = func_name
+		add_to_group("console_command_"+command)
 
 
-func unregister_command(command:String):
-	CommandManager.unregister_command(command)
+func unregister_console_command(command:String):
+	if CommandManager.unregister_console_command(command) == OK:
+		plugin_console_command_dic.erase(command)
+		remove_from_group("console_command_"+command)
 	
 	
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={}):
@@ -124,6 +144,7 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 						GuiManager.console_print_warning("可以前往以下路径来验证与修改配置: "+config_path)
 				plugin_config = _config
 				GuiManager.console_print_success("插件配置加载成功")
+				return
 			else:
 				GuiManager.console_print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
 		else:
@@ -143,7 +164,8 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 				GuiManager.console_print_text("配置选项说明:")
 				for key in config_description:
 					GuiManager.console_print_text(key+":"+config_description[key])
-			GuiManager.console_print_warning("配置完成后请重载此插件")
+			GuiManager.console_print_warning("配置完成后请重新加载此插件")
+	unload_plugin()
 
 
 func save_plugin_config():
@@ -199,6 +221,7 @@ func init_plugin_data():
 		if _data is Dictionary:
 			plugin_data = _data
 			GuiManager.console_print_success("插件数据库加载成功")
+			return
 		else:
 			GuiManager.console_print_error("插件数据库读取失败，请删除后重新生成! 路径:"+data_path)
 	else:
@@ -212,6 +235,8 @@ func init_plugin_data():
 			file.close()
 			GuiManager.console_print_success("数据库文件创建成功，路径: "+data_path)
 			GuiManager.console_print_warning("若发生任何数据库文件更改，请重载此插件")
+			return
+	unload_plugin()
 			
 			
 func save_plugin_data():
@@ -237,3 +262,7 @@ func set_plugin_data(key,value,save_file:bool=true):
 	plugin_data[key]=value
 	if save_file:
 		save_plugin_data()
+
+
+func unload_plugin():
+	PluginManager.unload_plugin(plugin_info.id)

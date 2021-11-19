@@ -26,4 +26,4 @@ func _on_CommandInput_text_submitted(new_text):
 	text = ""
 	arr_history.append(new_text)
 	n_history = -1
-	CommandManager.parse_command(new_text)
+	CommandManager.parse_console_command(new_text)
