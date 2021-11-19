@@ -1,26 +1,28 @@
 extends Node
 
 
-class_name MiraiConfigManager
+class_name MiraiAdapterConfig
 
 
 signal config_loaded
 
 
 var default_config = {
-	"mirai-address":"127.0.0.1",
-	"mirai-port":"8080",
-	"mirai_verify_key_enabled":true,
-	"mirai_verify_key":"$DEFAULT12345",
+	"mirai_address":"127.0.0.1",
+	"mirai_port":"8080",
+	"mirai_verify_key_enabled":false,
+	"mirai_verify_key":"",
 	"mirai_qq":"",
+	"mirai_qq_password":"$DEFAULT12345",
 }
 
 var config_description = {
-	"mirai-address":"在这里填写连接到Mirai框架的地址，默认为127.0.0.1",
-	"mirai-port":"在这里填写连接到Mirai框架的端口，默认为8080",
+	"mirai_address":"在这里填写连接到Mirai框架的地址，默认为127.0.0.1",
+	"mirai_port":"在这里填写连接到Mirai框架的端口，默认为8080",
 	"mirai_verify_key_enabled":"是否启用连接时的验证密钥，默认为true",
 	"mirai_verify_key":"若启用连接验证，请在这里输入验证密钥",
 	"mirai_qq":"要连接到的机器人QQ号码",
+	"mirai_qq_password":"要连接到的机器人QQ密码",
 }
 
 var loaded_config = default_config
@@ -39,7 +41,7 @@ func init_config():
 		file.close()
 		if _config is Dictionary:
 			if _config.has_all(default_config.keys()):
-				if _config["mirai_verify_key"] == "$DEFAULT12345":
+				if _config["mirai_qq_password"] == "$DEFAULT12345":
 					GuiManager.console_print_error("检测到您还未修改默认配置，请进行修改!")
 					GuiManager.console_print_error("可以前往以下路径来验证与修改配置: "+config_path)
 					return
@@ -72,9 +74,9 @@ func init_config():
 			
 
 func get_ws_address(config_dic:Dictionary):
-	var ws_text = "ws://{mirai-address}:{mirai-port}/all?verifyKey={mirai_verify_key}&qq={mirai_qq}"
+	var ws_text = "ws://{mirai_address}:{mirai_port}/all?verifyKey={mirai_verify_key}&qq={mirai_qq}"
 	if !config_dic["mirai_verify_key_enabled"]:
-		ws_text = "ws://{mirai-address}:{mirai-port}/all?qq={mirai_qq}"
+		ws_text = "ws://{mirai_address}:{mirai_port}/all?qq={mirai_qq}"
 	return ws_text.format(config_dic)
 	
 	

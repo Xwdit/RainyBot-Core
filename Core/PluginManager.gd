@@ -149,6 +149,7 @@ func unload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	GuiManager.console_print_warning("正在卸载插件: " + _plugin_info["name"])
 	plugin.queue_free()
+	await plugin.tree_exited
 	GuiManager.console_print_success("成功卸载插件 " + _plugin_info["name"] + " "+str(_plugin_info))
 
 
@@ -156,16 +157,14 @@ func reload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	GuiManager.console_print_warning("正在重载插件: " + _plugin_info["name"])
 	var file = plugin.get_plugin_filename()
-	unload_plugin(plugin)
-	await plugin.tree_exited
+	await unload_plugin(plugin)
 	load_plugin(file)
 
 		
 func reload_plugins():
 	GuiManager.console_print_warning("正在重载所有插件.....插件目录: "+plugin_path)
 	for child in get_children():
-		await get_tree().process_frame
-		unload_plugin(child)
+		await unload_plugin(child)
 	var files:Array = _list_files_in_directory(plugin_path)
 	if files.size() == 0:
 		GuiManager.console_print_warning("插件目录下未找到任何插件...")
@@ -177,8 +176,7 @@ func reload_plugins():
 
 func unload_plugins():
 	for child in get_children():
-		await get_tree().process_frame
-		unload_plugin(child)
+		await unload_plugin(child)
 
 
 func get_plugin_instance(plugin_id):

@@ -8,31 +8,37 @@ var _client = WebSocketClient.new()
 var processing_command:Dictionary = {}
 
 
-func _exit_tree():
-	if is_bot_connected():
-		_client.get_peer(1).close()
-
-
-func connect_to_mirai(ws_url):
-	# Connect base signals to get notified of connection open, close, and errors.
+func _ready():
 	_client.connect("connection_closed", Callable(self, "_closed"))
 	_client.connect("connection_error", Callable(self, "_closed"))
 	_client.connect("connection_established", Callable(self, "_connected"))
 	_client.connect("data_received", Callable(self, "_on_data"))
 
+
+func connect_to_mirai(ws_url):
 	# Initiate connection to the given URL.
 	GuiManager.console_print_warning("正在尝试连接到Mirai框架中，连接地址: "+ws_url)
 	var err = _client.connect_to_url(ws_url)
 	if err != OK:
 		GuiManager.console_print_error("无法连接到Mirai框架，请检查配置是否有误")
-		set_process(false)
+		GuiManager.console_print_warning("将于10秒后尝试重新连接...")
+		await get_tree().create_timer(10).timeout
+		connect_to_mirai(BotAdapter.get_ws_url())
+
+
+func disconnect_to_mirai():
+	if is_bot_connected():
+		_client.get_peer(1).close()
 
 
 func _closed(was_clean = false):
 	# was_clean will tell you if the disconnection was correctly notified
 	# by the remote peer before closing the socket.
 	GuiManager.console_print_warning("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
-	set_process(false)
+	GuiManager.console_print_warning("若Mirai进程被意外关闭，请使用命令 mirai restart 来重新启动")
+	GuiManager.console_print_warning("将于10秒后尝试重新连接...")
+	await get_tree().create_timer(10).timeout
+	connect_to_mirai(BotAdapter.get_ws_url())
 
 
 func _connected(proto = ""):

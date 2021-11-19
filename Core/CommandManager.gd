@@ -6,7 +6,7 @@ var console_commands_dic = {}
 
 func _ready():
 	add_to_group("console_command_help")
-	register_console_command("help",false,["help - 查看命令列表","help <命令> - 查看某个命令的帮助"],"RainyBot-Core")
+	register_console_command("help",false,["help - 查看命令列表","help <命令> - 查看某个命令的帮助"],"RainyBot-Core",false)
 
 
 func _call_console_command(cmd:String,args:Array):
@@ -20,7 +20,7 @@ func _call_console_command(cmd:String,args:Array):
 	GuiManager.console_print_text("--------------")
 
 
-func register_console_command(command:String,need_arguments:bool,usages:Array,source:String)->int:
+func register_console_command(command:String,need_arguments:bool,usages:Array,source:String,need_connect:bool=true)->int:
 	if console_commands_dic.has(command):
 		GuiManager.console_print_error("无法注册以下命令，因为已存在相同命令: " + command)
 		return ERR_ALREADY_EXISTS
@@ -28,6 +28,7 @@ func register_console_command(command:String,need_arguments:bool,usages:Array,so
 		"need_args":need_arguments,
 		"usages":usages,
 		"source":source,
+		"need_connect":need_connect
 	}
 	return OK
 	
@@ -40,15 +41,15 @@ func unregister_console_command(command)->int:
 
 
 func parse_console_command(c_text:String):
-	if !BotAdapter.is_bot_connected():
-		GuiManager.console_print_error("未成功连接至机器人后端，因此无法执行指令，请尝试重启RainyBot!")
-		return
 	if c_text.begins_with("/"):
 		c_text= c_text.substr(1)
 	var c_arr = c_text.split(" ")
 	var cmd = c_arr[0].to_lower()
 	if !console_commands_dic.has(cmd):
 		GuiManager.console_print_warning("命令 " + cmd + " 不存在！请输入help查看帮助!")
+		return
+	if !BotAdapter.is_bot_connected() && console_commands_dic[cmd]["need_connect"]:
+		GuiManager.console_print_error("未成功连接至机器人后端，因此无法执行此指令，请尝试重启RainyBot!")
 		return
 	var args = []
 	if c_arr.size() > 1 :
