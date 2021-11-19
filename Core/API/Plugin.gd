@@ -265,4 +265,4 @@ func set_plugin_data(key,value,save_file:bool=true):
 
 
 func unload_plugin():
-	PluginManager.unload_plugin(plugin_info.id)
+	PluginManager.unload_plugin(self)
