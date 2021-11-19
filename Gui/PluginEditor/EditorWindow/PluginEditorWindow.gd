@@ -1,9 +1,6 @@
 extends Window
 
 
-var force_close = false
-
-
 func _ready():
 	hide()
 
