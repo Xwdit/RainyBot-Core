@@ -106,7 +106,7 @@ func _call_console_command(cmd:String,args:Array):
 
 
 func load_plugin(file:String):
-	var plugin_res = load(plugin_path + file)
+	var plugin_res = ResourceLoader.load(plugin_path + file,"GDScript",2)
 	if !plugin_res is GDScript:
 		GuiManager.console_print_error("无法加载插件文件: " + file)
 		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
@@ -158,6 +158,7 @@ func reload_plugin(plugin:Plugin):
 	GuiManager.console_print_warning("正在重载插件: " + _plugin_info["name"])
 	var file = plugin.get_plugin_filename()
 	await unload_plugin(plugin)
+	await get_tree().process_frame
 	load_plugin(file)
 
 		

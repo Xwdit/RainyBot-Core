@@ -10,7 +10,7 @@ var unsaved:bool = false
 
 
 func load_script(path:String)->int:
-	var scr:GDScript = load(path)
+	var scr:GDScript = ResourceLoader.load(path,"GDScript",2)
 	set_unsaved(false)
 	if is_instance_valid(scr):
 		get_code_edit().text = scr.source_code
@@ -36,6 +36,7 @@ func save_script(reload:bool=false)->int:
 		GuiManager.console_print_success("插件保存成功！")
 		if reload:
 			var plug = PluginManager.get_plugin_with_filename(loaded_name)
+			await get_tree().process_frame
 			if is_instance_valid(plug):
 				PluginManager.reload_plugin(plug)
 				return err_code
