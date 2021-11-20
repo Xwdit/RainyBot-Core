@@ -4,7 +4,7 @@ extends Event
 class_name OtherClientEvent
 
 
-enum type{
+enum Type{
 	ONLINE,
 	OFFLINE
 }
