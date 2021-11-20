@@ -75,9 +75,9 @@ _global_script_classes=[{
 "path": "res://Adapters/Mirai/API/EventAPI/BotEvent/BotOnlineEvent.gd"
 }, {
 "base": "GroupBotEvent",
-"class": &"BotPermissionChangeEvent",
+"class": &"BotPermChangeEvent",
 "language": &"GDScript",
-"path": "res://Adapters/Mirai/API/EventAPI/GroupEvent/GroupBotEvent/BotPermissionChangeEvent.gd"
+"path": "res://Adapters/Mirai/API/EventAPI/GroupEvent/GroupBotEvent/BotPermChangeEvent.gd"
 }, {
 "base": "BotEvent",
 "class": &"BotReloginEvent",
@@ -498,7 +498,7 @@ _global_script_class_icons={
 "BotMuteEvent": "",
 "BotOfflineEvent": "",
 "BotOnlineEvent": "",
-"BotPermissionChangeEvent": "",
+"BotPermChangeEvent": "",
 "BotReloginEvent": "",
 "BotRequestResult": "",
 "BotUnmuteEvent": "",

@@ -23,7 +23,7 @@ var data_dic:Dictionary = {
 }
 
 
-static func init_meta(dic:Dictionary,reason:int)->NudgeEvent:
+static func init_meta(dic:Dictionary)->NudgeEvent:
 	var ins:NudgeEvent = NudgeEvent.new()
 	ins.data_dic = dic
 	return ins

@@ -1,7 +1,7 @@
 extends GroupBotEvent
 
 
-class_name BotPermissionChangeEvent
+class_name BotPermChangeEvent
 
 
 var data_dic:Dictionary = {
@@ -16,8 +16,8 @@ var data_dic:Dictionary = {
 }
 
 
-static func init_meta(dic:Dictionary)->BotPermissionChangeEvent:
-	var ins:BotPermissionChangeEvent = BotPermissionChangeEvent.new()
+static func init_meta(dic:Dictionary)->BotPermChangeEvent:
+	var ins:BotPermChangeEvent = BotPermChangeEvent.new()
 	ins.data_dic = dic
 	return ins
 	

@@ -19,10 +19,10 @@ var data_dic:Dictionary = {
 var event_reason:int = ReasonType.ACTIVE
 
 
-static func init_meta(dic:Dictionary,reason:int)->BotOfflineEvent:
+static func init_meta(dic:Dictionary,reason_type:int)->BotOfflineEvent:
 	var ins:BotOfflineEvent = BotOfflineEvent.new()
 	ins.data_dic = dic
-	ins.event_reason = reason
+	ins.event_reason = reason_type
 	return ins
 	
 	

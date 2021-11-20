@@ -217,4 +217,77 @@ func parse_event(result_dic:Dictionary):
 			ins = StrangerMessageEvent.init_meta(event_dic)
 		"OtherClientMessage":
 			ins = OtherClientMessageEvent.init_meta(event_dic)
-
+		"NudgeEvent":
+			ins = NudgeEvent.init_meta(event_dic)
+		"BotOnlineEvent":
+			ins = BotOnlineEvent.init_meta(event_dic)
+		"BotOfflineEventActive":
+			ins = BotOfflineEvent.init_meta(event_dic,BotOfflineEvent.ReasonType.ACTIVE)
+		"BotOfflineEventForce":
+			ins = BotOfflineEvent.init_meta(event_dic,BotOfflineEvent.ReasonType.FORCE)
+		"BotOfflineEventDropped":
+			ins = BotOfflineEvent.init_meta(event_dic,BotOfflineEvent.ReasonType.DROPPED)
+		"BotReloginEvent":
+			ins = BotReloginEvent.init_meta(event_dic)
+		"FriendInputStatusChangedEvent":
+			ins = FriendInputStatusChangeEvent.init_meta(event_dic)
+		"FriendNickChangedEvent":
+			ins = FriendNickChangeEvent.init_meta(event_dic)
+		"FriendRecallEvent":
+			ins = FriendRecallEvent.init_meta(event_dic)
+		"BotGroupPermissionChangeEvent":
+			ins = BotPermChangeEvent.init_meta(event_dic)
+		"BotMuteEvent":
+			ins = BotMuteEvent.init_meta(event_dic)
+		"BotUnmuteEvent":
+			ins = BotUnmuteEvent.init_meta(event_dic)
+		"BotJoinGroupEvent":
+			ins = BotJoinGroupEvent.init_meta(event_dic)
+		"BotLeaveEventActive":
+			ins = BotLeaveGroupEvent.init_meta(event_dic,BotLeaveGroupEvent.ReasonType.ACTIVE)
+		"BotLeaveEventKick":
+			ins = BotLeaveGroupEvent.init_meta(event_dic,BotLeaveGroupEvent.ReasonType.KICK)
+		"GroupRecallEvent":
+			ins = GroupRecallEvent.init_meta(event_dic)
+		"GroupNameChangeEvent":
+			ins = GroupNameChangeEvent.init_meta(event_dic)
+		"GroupEntranceAnnouncementChangeEvent":
+			ins = GroupAnnounceChangeEvent.init_meta(event_dic)
+		"GroupMuteAllEvent":
+			ins = GroupMuteAllEvent.init_meta(event_dic)
+		"GroupAllowAnonymousChatEvent":
+			ins = GroupAllowAnonyChatEvent.init_meta(event_dic)
+		"GroupAllowConfessTalkEvent":
+			ins = GroupAllowConfessTalkEvent.init_meta(event_dic)
+		"GroupAllowMemberInviteEvent":
+			ins = GroupAllowInviteEvent.init_meta(event_dic)
+		"MemberJoinEvent":
+			ins = MemberJoinEvent.init_meta(event_dic)
+		"MemberLeaveEventKick":
+			ins = MemberLeaveEvent.init_meta(event_dic,MemberLeaveEvent.ReasonType.KICK)
+		"MemberLeaveEventQuit":
+			ins = MemberLeaveEvent.init_meta(event_dic,MemberLeaveEvent.ReasonType.QUIT)
+		"MemberMuteEvent":
+			ins = MemberMuteEvent.init_meta(event_dic)
+		"MemberUnmuteEvent":
+			ins = MemberUnmuteEvent.init_meta(event_dic)
+		"MemberHonorChangeEvent":
+			ins = MemberHonorChangeEvent.init_meta(event_dic)
+		"MemberCardChangeEvent":
+			ins = MemberNameChangeEvent.init_meta(event_dic)
+		"MemberPermissionChangeEvent":
+			ins = MemberPermChangeEvent.init_meta(event_dic)
+		"MemberSpecialTitleChangeEvent":
+			ins = MemberTitleChangeEvent.init_meta(event_dic)
+		"NewFriendRequestEvent":
+			ins = NewFriendRequestEvent.init_meta(event_dic)
+		"MemberJoinRequestEvent":
+			ins = MemberJoinRequestEvent.init_meta(event_dic)
+		"BotInvitedJoinGroupRequestEvent":
+			ins = GroupInviteRequestEvent.init_meta(event_dic)
+		"OtherClientOnlineEvent":
+			ins = OtherClientOnlineEvent.init_meta(event_dic)
+		"OtherClientOfflineEvent":
+			ins = OtherClientOfflineEvent.init_meta(event_dic)
+		_:
+			return
