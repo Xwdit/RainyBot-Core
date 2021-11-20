@@ -5,7 +5,7 @@ class_name FriendEvent
 
 
 enum Type{
-	INPUT_STATUS_CHANGED,
-	NICK_CHANGED,
+	INPUT_STATUS_CHANGE,
+	NICK_CHANGE,
 	RECALL
 }

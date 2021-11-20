@@ -22,7 +22,7 @@ enum Type{
 	MUSIC_SHARE,
 	FORWARD_MESSAGE,
 	FILE,
-	RAINY_CODE
+	BOT_CODE
 }
 
 

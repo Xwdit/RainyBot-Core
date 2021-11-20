@@ -52,7 +52,7 @@ func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array
 		if types.size() > 0:
 			var _has = false
 			for _t in types:
-				if _dic.type == BotAdapter.message_type_name[_t]:
+				if _dic.type == BotAdapter.message_type_dic[int(_t)]:
 					_has = true
 					break
 			if exclude:
@@ -72,7 +72,7 @@ func get_message_text(types:Array=[],exclude:bool=false)->String:
 		if types.size() > 0:
 			var _has = false
 			for _t in types:
-				if _dic.type == BotAdapter.message_type_name[_t]:
+				if _dic.type == BotAdapter.message_type_dic[int(_t)]:
 					_has = true
 					break
 			if exclude:
@@ -102,7 +102,7 @@ func get_message_timestamp()->int:
 
 func has_message_type(type:int)->bool:
 	for _dic in data_array:
-		if _dic.type == BotAdapter.message_type_name[type]:
+		if _dic.type == BotAdapter.message_type_dic[type]:
 			return true
 	return false
 

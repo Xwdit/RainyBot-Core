@@ -39,6 +39,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/BotAPI.gd"
 }, {
+"base": "Message",
+"class": &"BotCodeMessage",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/API/MessageAPI/Types/BotCodeMessage.gd"
+}, {
 "base": "Event",
 "class": &"BotEvent",
 "language": &"GDScript",
@@ -434,11 +439,6 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/MessageAPI/Types/QuoteMessage.gd"
 }, {
-"base": "Message",
-"class": &"RainyCodeMessage",
-"language": &"GDScript",
-"path": "res://Adapters/Mirai/API/MessageAPI/Types/RainyCodeMessage.gd"
-}, {
 "base": "Event",
 "class": &"RequestEvent",
 "language": &"GDScript",
@@ -491,6 +491,7 @@ _global_script_class_icons={
 "AtMessage": "",
 "Bot": "",
 "BotAPI": "",
+"BotCodeMessage": "",
 "BotEvent": "",
 "BotJoinGroupEvent": "",
 "BotLeaveGroupEvent": "",
@@ -570,7 +571,6 @@ _global_script_class_icons={
 "PluginEditor": "",
 "PokeMessage": "",
 "QuoteMessage": "",
-"RainyCodeMessage": "",
 "RequestEvent": "",
 "RoleAPI": "",
 "SourceMessage": "",

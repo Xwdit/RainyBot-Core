@@ -5,11 +5,13 @@ class_name Event
 
 
 enum Category{
+	ACTION,
 	BOT,
 	FRIEND,
 	GROUP,
 	MESSAGE,
-	ACTION
+	OTHER_CLIENT,
+	REQUEST
 }
 
 

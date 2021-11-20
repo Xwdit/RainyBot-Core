@@ -1,36 +1,94 @@
 extends Node
 
 
-const message_type_name:Array = [
-	"Source",
-	"Quote",
-	"At",
-	"AtAll",
-	"Face",
-	"Plain",
-	"Image",
-	"FlashImage",
-	"Voice",
-	"Xml",
-	"Json",
-	"App",
-	"Poke",
-	"Dice",
-	"MusicShare",
-	"ForwardMessage",
-	"File",
-	"MiraiCode"
-]
+var message_type_dic:Dictionary = {
+	int(Message.Type.SOURCE):"Source",
+	int(Message.Type.QUOTE):"Quote",
+	int(Message.Type.AT):"At",
+	int(Message.Type.AT_ALL):"AtAll",
+	int(Message.Type.FACE):"Face",
+	int(Message.Type.TEXT):"Plain",
+	int(Message.Type.IMAGE):"Image",
+	int(Message.Type.FLASH_IMAGE):"FlashImage",
+	int(Message.Type.VOICE):"Voice",
+	int(Message.Type.XML):"Xml",
+	int(Message.Type.JSON_MSG):"Json",
+	int(Message.Type.APP):"App",
+	int(Message.Type.POKE):"Poke",
+	int(Message.Type.DICE):"Dice",
+	int(Message.Type.MUSIC_SHARE):"MusicShare",
+	int(Message.Type.FORWARD_MESSAGE):"ForwardMessage",
+	int(Message.Type.FILE):"File",
+	int(Message.Type.BOT_CODE):"MiraiCode"
+}
 
+var action_event_dic:Dictionary = {
+	int(ActionEvent.Type.NUDGE):"NudgeEvent"
+}
 
-const message_event_name:Array = [
-	"FriendMessage",
-	"GroupMessage",
-	"TempMessage",
-	"StrangerMessage",
-	"OtherClientMessage"
-]
+var bot_event_dic:Dictionary = {
+	int(BotEvent.Type.ONLINE):"BotOnlineEvent",
+	int(BotEvent.Type.OFFLINE):["BotOfflineEventActive","BotOfflineEventForce","BotOfflineEventDropped"],
+	int(BotEvent.Type.RELOGIN):"BotReloginEvent",
+}
 
+var friend_event_dic:Dictionary = {
+	int(FriendEvent.Type.INPUT_STATUS_CHANGE):"FriendInputStatusChangedEvent",
+	int(FriendEvent.Type.NICK_CHANGE):"FriendNickChangedEvent",
+	int(FriendEvent.Type.RECALL):"FriendRecallEvent"
+}
+
+var group_event_dic:Dictionary = {
+	int(GroupEvent.Type.BOT_PERM_CHANGE):"BotGroupPermissionChangeEvent",
+	int(GroupEvent.Type.BOT_MUTE):"BotMuteEvent",
+	int(GroupEvent.Type.BOT_UNMUTE):"BotUnmuteEvent",
+	int(GroupEvent.Type.BOT_JOIN):"BotJoinGroupEvent",
+	int(GroupEvent.Type.BOT_LEAVE):["BotLeaveEventActive","BotLeaveEventKick"],
+	int(GroupEvent.Type.RECALL):"GroupRecallEvent",
+	int(GroupEvent.Type.NAME_CHANGE):"GroupNameChangeEvent",
+	int(GroupEvent.Type.ANNOUNCE_CHANGE):"GroupEntranceAnnouncementChangeEvent",
+	int(GroupEvent.Type.MUTE_ALL):"GroupMuteAllEvent",
+	int(GroupEvent.Type.ALLOW_ANONY_CHAT):"GroupAllowAnonymousChatEvent",
+	int(GroupEvent.Type.ALLOW_CONFESS_TALK):"GroupAllowConfessTalkEvent",
+	int(GroupEvent.Type.ALLOW_INVITE):"GroupAllowMemberInviteEvent",
+	int(GroupEvent.Type.MEMBER_JOIN):"MemberJoinEvent",
+	int(GroupEvent.Type.MEMBER_LEAVE):["MemberLeaveEventKick","MemberLeaveEventQuit"],
+	int(GroupEvent.Type.MEMBER_MUTE):"MemberMuteEvent",
+	int(GroupEvent.Type.MEMBER_UNMUTE):"MemberUnmuteEvent",
+	int(GroupEvent.Type.MEMBER_HONOR_CHANGE):"MemberHonorChangeEvent",
+	int(GroupEvent.Type.MEMBER_NAME_CHANGE):"MemberCardChangeEvent",
+	int(GroupEvent.Type.MEMBER_PERM_CHANGE):"MemberPermissionChangeEvent",
+	int(GroupEvent.Type.MEMBER_TITLE_CHANGE):"MemberSpecialTitleChangeEvent"
+}
+
+var message_event_dic:Dictionary = {
+	int(MessageEvent.Type.FRIEND):"FriendMessage",
+	int(MessageEvent.Type.GROUP):"GroupMessage",
+	int(MessageEvent.Type.TEMP):"TempMessage",
+	int(MessageEvent.Type.STRANGER):"StrangerMessage",
+	int(MessageEvent.Type.OTHER_CLIENT):"OtherClientMessage"
+}
+
+var request_event_dic:Dictionary = {
+	int(RequestEvent.Type.NEW_FRIEND):"NewFriendRequestEvent",
+	int(RequestEvent.Type.MEMBER_JOIN):"MemberJoinRequestEvent",
+	int(RequestEvent.Type.GROUP_INVITE):"BotInvitedJoinGroupRequestEvent"
+}
+
+var other_client_event_dic:Dictionary = {
+	int(OtherClientEvent.Type.ONLINE):"OtherClientOnlineEvent",
+	int(OtherClientEvent.Type.OFFLINE):"OtherClientOfflineEvent"
+}
+
+var event_category_dic:Dictionary = {
+	int(Event.Category.ACTION):action_event_dic,
+	int(Event.Category.BOT):bot_event_dic,
+	int(Event.Category.FRIEND):friend_event_dic,
+	int(Event.Category.GROUP):group_event_dic,
+	int(Event.Category.MESSAGE):message_event_dic,
+	int(Event.Category.OTHER_CLIENT):other_client_event_dic,
+	int(Event.Category.REQUEST):request_event_dic
+}
 
 var mirai_client:= MiraiClient.new()
 var mirai_config_manager:=MiraiAdapterConfig.new()
@@ -140,19 +198,13 @@ func parse_message_dic(dic:Dictionary)->Message:
 		"File":
 			return FileMessage.init_meta(dic)
 		"MiraiCode":
-			return RainyCodeMessage.init_meta(dic)
+			return BotCodeMessage.init_meta(dic)
 	return null
 
 
 func parse_event(result_dic:Dictionary):
-	var event_dic = result_dic["data"]
-	var event_name:String = event_dic["type"]
-	if message_event_name.has(event_name):
-		parse_message_event(event_dic)
-		
-
-func parse_message_event(event_dic:Dictionary):
 	var ins:Event
+	var event_dic = result_dic["data"]
 	var event_name:String = event_dic["type"]
 	match event_name:
 		"FriendMessage":
@@ -165,4 +217,4 @@ func parse_message_event(event_dic:Dictionary):
 			ins = StrangerMessageEvent.init_meta(event_dic)
 		"OtherClientMessage":
 			ins = OtherClientMessageEvent.init_meta(event_dic)
-	get_tree().call_group(event_name,"_call_event",event_name,ins)
+
