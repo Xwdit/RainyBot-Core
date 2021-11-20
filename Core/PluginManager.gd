@@ -5,6 +5,8 @@ var plugin_path = OS.get_executable_path().get_base_dir() + "/plugins/"
 var plugin_config_path = OS.get_executable_path().get_base_dir() + "/config/" 
 var plugin_data_path = OS.get_executable_path().get_base_dir() + "/data/"
 
+var loaded_scripts:Dictionary = {}
+
 
 var default_plugin_info = {
 	"id":"",
@@ -105,9 +107,30 @@ func _call_console_command(cmd:String,args:Array):
 			GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
 
 
+func load_plugin_script(path:String)->GDScript:
+	var _file = File.new()
+	var _err = _file.open(path,File.READ)
+	if _err == OK:
+		var _str = _file.get_as_text()
+		_file.close()
+		var _script:GDScript
+		if !loaded_scripts.has(path):
+			_script = GDScript.new()
+			_script.resource_path = path
+			_script.resource_name = path.get_file()
+			loaded_scripts[path]=_script
+		else:
+			_script = loaded_scripts[path]
+		_script.source_code = _str
+		return _script
+	else:
+		_file.close()
+		return		
+
+
 func load_plugin(file:String):
-	var plugin_res = ResourceLoader.load(plugin_path + file,"GDScript",2)
-	if !plugin_res is GDScript:
+	var plugin_res = load_plugin_script(plugin_path + file)
+	if !is_instance_valid(plugin_res) || plugin_res.reload() != OK:
 		GuiManager.console_print_error("无法加载插件文件: " + file)
 		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
 		return
@@ -150,6 +173,7 @@ func unload_plugin(plugin:Plugin):
 	GuiManager.console_print_warning("正在卸载插件: " + _plugin_info["name"])
 	plugin.queue_free()
 	await plugin.tree_exited
+	plugin.set_script(null)
 	GuiManager.console_print_success("成功卸载插件 " + _plugin_info["name"] + " "+str(_plugin_info))
 
 
@@ -158,7 +182,6 @@ func reload_plugin(plugin:Plugin):
 	GuiManager.console_print_warning("正在重载插件: " + _plugin_info["name"])
 	var file = plugin.get_plugin_filename()
 	await unload_plugin(plugin)
-	await get_tree().process_frame
 	load_plugin(file)
 
 		
