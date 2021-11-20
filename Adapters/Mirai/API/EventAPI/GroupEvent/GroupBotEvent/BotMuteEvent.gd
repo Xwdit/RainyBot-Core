@@ -30,7 +30,7 @@ static func init_meta(dic:Dictionary)->BotMuteEvent:
 	return ins
 	
 	
-func get_mute_time()->int:
+func get_duration()->int:
 	return data_dic.durationSeconds
 	
 
