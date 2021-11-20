@@ -41,7 +41,7 @@ func get_target_id()->int:
 	return data_dic.target
 	
 	
-func get_subject_kind()->int:
+func get_subject_type()->int:
 	if data_dic.subject.kind == "Friend":
 		return SubjectType.FRIEND
 	else:
