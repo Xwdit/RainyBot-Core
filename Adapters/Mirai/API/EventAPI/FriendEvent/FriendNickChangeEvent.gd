@@ -28,3 +28,7 @@ func get_origin_nickname()->String:
 
 func get_current_nickname()->String:
 	return data_dic.to
+
+
+func get_member()->Member:
+	return Member.init_meta(data_dic.friend)

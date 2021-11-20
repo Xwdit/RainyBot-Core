@@ -23,3 +23,7 @@ static func init_meta(dic:Dictionary)->FriendInputStatusChangeEvent:
 	
 func get_input_state()->bool:
 	return data_dic.inputting
+	
+	
+func get_member()->Member:
+	return Member.init_meta(data_dic.friend)

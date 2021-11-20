@@ -9,7 +9,3 @@ enum Type{
 	NICK_CHANGED,
 	RECALL
 }
-
-
-func get_member()->Member:
-	return Member.init_meta(get("data_dic").friend)
