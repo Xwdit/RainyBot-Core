@@ -4,6 +4,15 @@ extends EventAPI
 class_name Event
 
 
+enum Category{
+	BOT,
+	FRIEND,
+	GROUP,
+	MESSAGE,
+	ACTION
+}
+
+
 func get_metadata()->Dictionary:
 	return get("data_dic")
 

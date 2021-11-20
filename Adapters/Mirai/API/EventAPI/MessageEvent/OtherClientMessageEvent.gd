@@ -24,10 +24,6 @@ func get_sender()->OtherClient:
 	return OtherClient.init_meta(data_dic.sender)
 	
 	
-func get_message_chain()->MessageChain:
-	return MessageChain.init_meta(data_dic.messageChain)
-	
-	
 func reply(msg:Message,quote:bool=false)->BotRequestResult:
 	var _req_dic = {
 		"target":data_dic.sender.id,
