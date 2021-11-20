@@ -103,14 +103,46 @@ func get_other_plugin_instance(plugin_id)->Plugin:
 	return PluginManager.get_plugin_instance(plugin_id)
 
 
-func register_message_event(msg_event:int,func_name:String):
-	plugin_event_dic[BotAdapter.message_event_name[msg_event]] = func_name
-	add_to_group(BotAdapter.message_event_name[msg_event])
+func register_event(category:int,event_type:int,func_name:String):
+	if BotAdapter.event_category_dic.has(category):
+		var cate = BotAdapter.event_category_dic[category]
+		if cate.has(event_type):
+			var e_name = cate[event_type]
+			if e_name is Array:
+				for e in e_name:
+					plugin_event_dic[e] = func_name
+					add_to_group(e)
+			else:
+				plugin_event_dic[e_name] = func_name
+				add_to_group(e_name)
+		else:
+			GuiManager.console_print_error("事件注册出错: 指定的事件类型在所选事件类别中不存在!")
+	else:
+		GuiManager.console_print_error("事件注册出错: 指定的事件类别不存在!")
 
 
-func unregister_message_event(msg_event:int):
-	plugin_event_dic.erase(BotAdapter.message_event_name[msg_event])
-	remove_from_group(BotAdapter.message_event_name[msg_event])
+func unregister_event(category:int,event_type:int):
+	if BotAdapter.event_category_dic.has(category):
+		var cate = BotAdapter.event_category_dic[category]
+		if cate.has(event_type):
+			var e_name = cate[event_type]
+			if e_name is Array:
+				for e in e_name:
+					if plugin_event_dic.has(e):
+						plugin_event_dic.erase(e)
+						remove_from_group(e)
+					else:
+						GuiManager.console_print_error("事件取消注册出错: 所选类别中的指定事件类型未被注册!")
+			else:
+				if plugin_event_dic.has(e_name):
+					plugin_event_dic.erase(e_name)
+					remove_from_group(e_name)
+				else:
+					GuiManager.console_print_error("事件取消注册出错: 所选类别中的指定事件类型未被注册!")
+		else:
+			GuiManager.console_print_error("事件取消注册出错: 指定的事件类型在所选事件类别中不存在!")
+	else:
+		GuiManager.console_print_error("事件取消注册出错: 指定的事件类别不存在")
 
 
 func register_console_command(command:String,func_name:String,need_arguments:bool=false,usages:Array=[]):

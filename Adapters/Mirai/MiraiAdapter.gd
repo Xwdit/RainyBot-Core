@@ -291,3 +291,4 @@ func parse_event(result_dic:Dictionary):
 			ins = OtherClientOfflineEvent.init_meta(event_dic)
 		_:
 			return
+	get_tree().call_group(event_name,"_call_event",event_name,ins)
