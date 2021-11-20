@@ -10,7 +10,6 @@ var mirai_login_path = mirai_path + "config/Console/"
 var mirai_http_file = mirai_http_path + "setting.yml"
 var mirai_login_file = mirai_login_path + "AutoLogin.yml"
 
-
 var mirai_http_config = """
 adapters: 
   - ws
@@ -107,8 +106,10 @@ func load_mirai():
 	if check_java_version():
 		GuiManager.console_print_success("Java环境检测通过，正在启动Mirai进程...")
 		init_mirai_cmd()
+		GuiManager.console_print_success("Mirai启动脚本初始化完毕!")
 		if File.new().file_exists(mirai_path+"start.cmd"):
 			init_mirai_config()
+			GuiManager.console_print_success("Mirai配置文件生成完毕!")
 			if OS.shell_open(mirai_path+"start.cmd") != OK:
 				GuiManager.console_print_error("无法启动Mirai,请检查以下目录中文件是否丢失或损坏:"+mirai_path)
 				return ERR_CANT_OPEN

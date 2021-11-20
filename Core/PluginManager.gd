@@ -196,6 +196,8 @@ func reload_plugins():
 	for path in files:
 		await get_tree().process_frame
 		load_plugin(path)
+	GuiManager.console_print_success("所有插件重载完毕!")
+	GuiManager.console_print_success("输入指令help可查看当前可用的指令列表!")
 
 
 func unload_plugins():

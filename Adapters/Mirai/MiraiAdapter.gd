@@ -96,7 +96,7 @@ var mirai_loader:=MiraiLoader.new()
 
 
 func init():
-	GuiManager.console_print_warning("正在加载内置模块: Mirai-Adapter 版本:V2.0-Pre-Alpha-1, 作者:Xwdit")
+	GuiManager.console_print_warning("正在加载内置模块: Mirai-Adapter 版本:V2.0-Pre-Alpha-2, 作者:Xwdit")
 	add_to_group("console_command_mirai")
 	var usages = [
 		"mirai status - 获取与Mirai框架的连接状态",
@@ -115,10 +115,7 @@ func init():
 
 
 func _mirai_config_loaded():
-	if await mirai_loader.load_mirai() == OK:
-		GuiManager.console_print_success("Mirai进程启动成功，正在等待Mirai进行初始化...")
-		await get_tree().create_timer(10).timeout
-		mirai_client.connect_to_mirai(get_ws_url())
+	mirai_client.connect_to_mirai(get_ws_url())
 
 
 func _call_console_command(cmd:String,args:Array):

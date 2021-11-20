@@ -6,6 +6,7 @@ class_name MiraiClient
 
 var _client = WebSocketClient.new()
 var processing_command:Dictionary = {}
+var first_connected = false
 
 
 func _ready():
@@ -17,13 +18,18 @@ func _ready():
 
 func connect_to_mirai(ws_url):
 	# Initiate connection to the given URL.
-	GuiManager.console_print_warning("正在尝试连接到Mirai框架中，连接地址: "+ws_url)
+	GuiManager.console_print_warning("正在尝试连接到Mirai框架中，请稍候... | 连接地址: "+ws_url)
 	var err = _client.connect_to_url(ws_url)
 	if err != OK:
 		GuiManager.console_print_error("无法连接到Mirai框架，请检查配置是否有误")
 		GuiManager.console_print_warning("将于10秒后尝试重新连接...")
 		await get_tree().create_timer(10).timeout
 		connect_to_mirai(BotAdapter.get_ws_url())
+	else:
+		await get_tree().create_timer(5).timeout
+		if _client.get_connection_status() == _client.CONNECTION_CONNECTING:
+			_client.disconnect_from_host()
+			_closed()
 
 
 func disconnect_to_mirai():
@@ -32,28 +38,28 @@ func disconnect_to_mirai():
 
 
 func _closed(was_clean = false):
-	# was_clean will tell you if the disconnection was correctly notified
-	# by the remote peer before closing the socket.
-	GuiManager.console_print_warning("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
-	GuiManager.console_print_warning("若Mirai进程被意外关闭，请使用命令 mirai restart 来重新启动")
-	GuiManager.console_print_warning("将于10秒后尝试重新连接...")
-	await get_tree().create_timer(10).timeout
-	connect_to_mirai(BotAdapter.get_ws_url())
+	if first_connected:
+		GuiManager.console_print_warning("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
+		GuiManager.console_print_warning("若Mirai进程被意外关闭，请使用命令 mirai restart 来重新启动")
+		GuiManager.console_print_warning("将于10秒后尝试重新连接...")
+		await get_tree().create_timer(10).timeout
+		connect_to_mirai(BotAdapter.get_ws_url())
+	else:
+		GuiManager.console_print_warning("未检测到可进行连接的Mirai框架，正在启动新的Mirai进程...")
+		if await BotAdapter.mirai_loader.load_mirai() == OK:
+			first_connected = true
+			GuiManager.console_print_success("Mirai进程启动成功，正在等待Mirai进行初始化...")
+			await get_tree().create_timer(10).timeout
+			connect_to_mirai(BotAdapter.get_ws_url())
 
 
 func _connected(proto = ""):
-	# This is called on connection, "proto" will be the selected WebSocket
-	# sub-protocol (which is optional)
+	first_connected = true
 	GuiManager.console_print_success("成功与Mirai框架进行通信，正在等待响应...")
-	# You MUST always use get_peer(1).put_packet to send data to server,
-	# and not put_packet directly when not using the MultiplayerAPI.
 	_client.get_peer(1).set_write_mode(WebSocketPeer.WRITE_MODE_TEXT)
 
 
 func _on_data():
-	# Print the received packet, you MUST always use get_peer(1).get_packet
-	# to receive data from server, and not get_packet directly when not
-	# using the MultiplayerAPI.
 	var json = JSON.new()
 	json.parse(_client.get_peer(1).get_packet().get_string_from_utf8())
 	var data = json.get_data()
@@ -68,8 +74,6 @@ func _on_data():
 
 
 func _process(delta):
-	# Call this in _process or _physics_process. Data transfer, and signals
-	# emission will only happen when calling this function.
 	_client.poll()
 
 
