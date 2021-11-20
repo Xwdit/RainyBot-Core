@@ -57,7 +57,7 @@
 
 [![截图][product-screenshot]](https://github.com/Xwdit/RainyBot-Core/)
 
-这是一个跨平台，跨协议 (实现中) 的机器人开发框架，基于Godot Engine 4.0进行开发。
+这是一个跨平台，跨协议 (实现中) 的机器人开发框架，基于 Godot Engine 4.0 进行开发。
 本项目成立的目的，是为了建立一个低门槛，简单易用的机器人开发框架。
 通过提供大量精心设计的交互API/预置功能，结合GDScript脚本语言的简便语法，
 来尽可能地提升开发效率/降低开发难度，让更多开发经验不足的用户也能够轻松开发属于自己的各类机器人应用。
@@ -65,8 +65,8 @@
 
 功能特色:
 * 傻瓜化配置，配置完成后自动管理各个协议后端的配置/运行/连接，无需每次手动启动 (当前仅支持Mirai-Http协议)
-* 完善易用的API与插件管理机制，支持插件间交互/热重载/热编辑，同时内置功能较为全面的插件编辑器 (暂不支持自动补全)
-* 人性化GUI界面，全中文
+* 完善易用的API与插件管理机制，支持插件间交互/热重载/热编辑等功能，同时内置功能较为全面的插件编辑器 (暂不支持自动补全)
+* 人性化GUI控制台界面，全中文调试信息输出，未来还将支持插件与GUI的交互（如自定义GUI)
 
 Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
