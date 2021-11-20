@@ -110,11 +110,19 @@ func register_event(category:int,event_type:int,func_name:String):
 			var e_name = cate[event_type]
 			if e_name is Array:
 				for e in e_name:
-					plugin_event_dic[e] = func_name
-					add_to_group(e)
+					if !plugin_event_dic.has(e):
+						plugin_event_dic[e] = func_name
+						add_to_group(e)
+					else:
+						GuiManager.console_print_error("事件注册出错: 所选类别中的指定事件类型已在当前插件中被注册!")
+						return
 			else:
-				plugin_event_dic[e_name] = func_name
-				add_to_group(e_name)
+				if !plugin_event_dic.has(e_name):
+					plugin_event_dic[e_name] = func_name
+					add_to_group(e_name)
+				else:
+					GuiManager.console_print_error("事件注册出错: 所选类别中的指定事件类型已在当前插件中被注册!")
+					return
 		else:
 			GuiManager.console_print_error("事件注册出错: 指定的事件类型在所选事件类别中不存在!")
 	else:
@@ -132,13 +140,15 @@ func unregister_event(category:int,event_type:int):
 						plugin_event_dic.erase(e)
 						remove_from_group(e)
 					else:
-						GuiManager.console_print_error("事件取消注册出错: 所选类别中的指定事件类型未被注册!")
+						GuiManager.console_print_error("事件取消注册出错: 所选类别中的指定事件类型未在当前插件中被注册!")
+						return
 			else:
 				if plugin_event_dic.has(e_name):
 					plugin_event_dic.erase(e_name)
 					remove_from_group(e_name)
 				else:
-					GuiManager.console_print_error("事件取消注册出错: 所选类别中的指定事件类型未被注册!")
+					GuiManager.console_print_error("事件取消注册出错: 所选类别中的指定事件类型未在当前插件中被注册!")
+					return
 		else:
 			GuiManager.console_print_error("事件取消注册出错: 指定的事件类型在所选事件类别中不存在!")
 	else:
