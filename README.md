@@ -53,16 +53,20 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## 关于本项目
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![截图][product-screenshot]](https://github.com/Xwdit/RainyBot-Core/)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+这是一个跨平台，跨协议 (实现中) 的机器人开发框架，基于Godot Engine 4.0进行开发。
+本项目成立的目的，是为了建立一个低门槛，简单易用的机器人开发框架。
+通过提供大量精心设计的交互API/预置功能，结合GDScript脚本语言的简便语法，
+来尽可能地提升开发效率/降低开发难度，让更多开发经验不足的用户也能够轻松开发属于自己的各类机器人应用。
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+
+功能特色:
+* 傻瓜化配置，配置完成后自动管理各个协议后端的配置/运行/连接，无需每次手动启动 (当前仅支持Mirai-Http协议)
+* 完善易用的API与插件管理机制，支持插件间交互/热重载/热编辑，同时内置功能较为全面的插件编辑器 (暂不支持自动补全)
+* 人性化GUI界面，全中文
 
 Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
@@ -208,19 +212,4 @@ Use this space to list resources you find helpful and would like to give credit 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: .github/images/screenshot.png
