@@ -19,7 +19,7 @@ var default_config = {
 var config_description = {
 	"mirai_address":"在这里填写连接到Mirai框架的地址，默认为127.0.0.1",
 	"mirai_port":"在这里填写连接到Mirai框架的端口，默认为8080",
-	"mirai_verify_key_enabled":"是否启用连接时的验证密钥，默认为true",
+	"mirai_verify_key_enabled":"是否启用连接时的验证密钥，默认为false",
 	"mirai_verify_key":"若启用连接验证，请在这里输入验证密钥",
 	"mirai_qq":"要连接到的机器人QQ号码",
 	"mirai_qq_password":"要连接到的机器人QQ密码",
