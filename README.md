@@ -190,6 +190,7 @@ Xwdit - xwditfr@gmail.com
 * [Godot使用文档](https://docs.godotengine.org/en/latest/)
 * [GDScript语言教程](https://docs.godotengine.org/en/latest/tutorials/scripting/gdscript/)
 * [Godot类参考API](https://docs.godotengine.org/en/latest/classes/index.html)
+* [Mirai-Api-Http文档](https://github.com/project-mirai/mirai-api-http/blob/master/docs/api/API.md)
 
 <p align="right">(<a href="#top">返回顶部</a>)</p>
 
