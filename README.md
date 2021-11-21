@@ -46,7 +46,7 @@
     <li><a href="#contributing">贡献指南</a></li>
     <li><a href="#license">项目许可</a></li>
     <li><a href="#contact">联系方式</a></li>
-    <li><a href="#acknowledgments">知识库</a></li>
+    <li><a href="#acknowledgments">更多信息</a></li>
   </ol>
 </details>
 
@@ -65,7 +65,7 @@
 
 功能特色:
 * 模块化设计，大部分API可独立于协议后端存在，通过不同适配器实现即可对接不同协议，实现一次编写多处运行 (当前仅支持Mirai-Http协议后端)
-* 简单易懂的配置与管理，配置完成后自动管理各个协议后端的配置/运行/连接，无需每次手动启动或进行设置
+* 简单易懂的配置与管理，一次配置完成后自动管理各个协议后端的配置/运行/连接，无需每次手动启动或进行设置
 * 完善易用的API与插件管理机制，支持插件间交互/热重载/热编辑等功能，同时内置功能较为全面的插件编辑器 (暂不支持自动补全)
 * 人性化GUI控制台界面，全中文调试信息输出，未来还将支持插件与GUI的交互（如自定义GUI界面)
 * 开箱即用的各类辅助功能接口，可便捷初始化并管理插件配置，插件数据，事件/命令注册等
@@ -73,7 +73,7 @@
 * 更多功能陆续增加中.....
 
 
-注意：本项目仍处于较早期开发阶段，虽然目前核心功能已基本完备，但依然有在未经提前通知的基础上进行重大API/功能更改的可能，且可能存在未知的Bug/不稳定因素，请谨慎用于生产环境。
+*注意：本项目仍处于较早期开发阶段，虽然目前核心功能已基本完备，但依然有在未经提前通知的基础上进行重大API/功能更改的可能，且可能存在未知的Bug/不稳定因素，请谨慎用于生产环境。*
 
 
 <p align="right">(<a href="#top">返回顶部</a>)</p>
@@ -110,7 +110,7 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 1. 从GitHub发布页下载最新的发布版本: <a href="https://github.com/Xwdit/RainyBot-Core/releases"><strong>立即下载</strong></a>
 2. 运行RainyBot，随后按照控制台显示的说明，打开指定的配置文件进行配置
 3. 配置完毕后请重新启动RainyBot。此时若配置正确，将自动开始加载内置的协议后端（当前版本内置了Mirai协议库)
-4. 请留意 *协议后端* 的控制台信息，可能会要求您进行登陆验证等操作，请检查不同协议后端的文档来获取相关帮助
+4. 请留意 *协议后端* 的控制台信息，可能会要求您进行登陆验证等操作，您可以从以下链接获取相关帮助: <a href="https://mirai.mamoe.net/topic/223/%E6%97%A0%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%B4%E6%97%B6%E5%A4%84%E7%90%86%E6%96%B9%E6%A1%88"><strong>Mirai协议库</strong></a>
 5. 若一切顺利，协议后端的控制台中将出现中文或英文的登录成功/加载成功字样，且RainyBot控制台中将出现加载成功字样
 6. 此时起可最小化协议后端的控制台窗口，后续操作均只需在RainyBot控制台中进行即可。从此处开始，将直接使用“控制台”来表示RainyBot的控制台界面
 7. 在控制台中输入指令`help`(或`/help`)来查看所有可用的控制台指令，如输入`plugins`可查看插件管理相关指令
@@ -133,75 +133,65 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 
 
 <!-- ROADMAP -->
-## Roadmap
+## 功能开发路线图
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+- [x] 核心功能完备
+- [x] 整理并将项目开源
+- [ ] 实现插件编辑器的自动补全
+- [ ] 添加版本检测与更新功能
+- [ ] 添加在线插件市场功能
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+对于更详细的功能计划，已知问题或功能建议，请访问储存库的 [Issues](https://github.com/Xwdit/RainyBot-Core/issues) 页面
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+## 贡献指南
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+我们非常感谢您有兴趣为本项目贡献源码来让它变得更好。对于代码贡献的流程，我们建议您遵循以下贡献指南：
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+1. 在您的储存库中Fork本项目
+2. 创建一个您准备开发的功能或修复的问题的分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的更改 (`git commit -m '添加一些功能'`)
+4. 将更改上传到您的储存库 (`git push origin feature/AmazingFeature`)
+5. 在本项目储存库中打开一个此分支的Pull Request，来让我们看到并对其进行审阅
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
 <!-- LICENSE -->
-## License
+## 项目许可
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+项目基于AGPL-3.0许可进行开源，具体内容请参见LICENSE文件
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
 <!-- CONTACT -->
-## Contact
+## 联系信息
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Xwdit - xwditfr@gmail.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+项目地址: [https://github.com/Xwdit/RainyBot-Core](https://github.com/Xwdit/RainyBot-Core)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+## 更多信息
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
+此处提供了一些可能与本项目有关，或对您有帮助的信息
 
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+* [Godot使用文档](https://docs.godotengine.org/en/latest/)
+* [GDScript语言教程](https://docs.godotengine.org/en/latest/tutorials/scripting/gdscript/)
+* [Godot类参考API](https://docs.godotengine.org/en/latest/classes/index.html)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 [product-screenshot]: .github/images/screenshot.png
