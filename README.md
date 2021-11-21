@@ -174,6 +174,8 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 <!-- CONTACT -->
 ## 联系信息
 
+交流QQ群: 429787496
+
 Xwdit - xwditfr@gmail.com
 
 项目地址: [https://github.com/Xwdit/RainyBot-Core](https://github.com/Xwdit/RainyBot-Core)
