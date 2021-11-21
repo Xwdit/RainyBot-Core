@@ -38,11 +38,11 @@
       <a href="#getting-started">开始使用</a>
       <ul>
         <li><a href="#prerequisites">运行需求</a></li>
-        <li><a href="#installation">配置RainyBot</a></li>
+        <li><a href="#installation">配置与使用</a></li>
       </ul>
     </li>
-    <li><a href="#usage">使用说明</a></li>
-    <li><a href="#roadmap">开发计划</a></li>
+    <li><a href="#usage">插件示例</a></li>
+    <li><a href="#roadmap">开发路线图</a></li>
     <li><a href="#contributing">向项目做出贡献</a></li>
     <li><a href="#license">项目许可</a></li>
     <li><a href="#contact">联系方式</a></li>
@@ -60,7 +60,7 @@
 这是一个跨平台，跨协议 (实现中) 的机器人开发框架，基于 Godot Engine 4.0 进行开发。
 本项目成立的目的，是为了建立一个低门槛，简单易用的机器人开发框架。
 通过提供大量精心设计的交互API/预置功能，结合GDScript脚本语言的简便语法，
-来尽可能地提升开发效率且降低开发难度，让更多开发经验不足乃至无经验的用户也能够轻松开发属于自己的各类机器人应用。
+来尽可能地提升开发效率且降低开发难度，让更多开发经验不足，乃至无经验的用户也能够轻松开发属于自己的各类机器人应用。
 
 
 功能特色:
@@ -73,60 +73,48 @@
 * 更多功能陆续增加中.....
 
 
+注意：本项目仍处于较早期开发阶段，虽然目前核心功能已基本完备，但依然有在未经提前通知的基础上进行重大API/功能更改的可能，且可能存在未知的Bug/不稳定因素，请谨慎用于生产环境。
 
 
 <p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
-### Built With
+### 基于的项目
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+以下列表列出了本项目所基于的项目，使用本项目时请同时参考它们的许可信息。
 
-* [Next.js](https://nextjs.org/)
-* [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
+* [Godot Engine](https://github.com/godotengine/godot)
+* [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http)
+* [Mirai](https://github.com/mamoe/mirai)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## 开始使用
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+接下来的部分将介绍如何配置与使用RainyBot
 
-### Prerequisites
+### 运行需求
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+支持的操作系统：Windows 7 或以上版本 (Mac OS/Linux支持将在后续版本中添加)
 
-### Installation
+Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，核心无需任何运行环境)
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+可选：支持Vulkan渲染器的图形卡 (可通过硬件加速提升性能)
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+### 配置与使用
+
+1. 从GitHub发布页下载最新的发布版本: <a href="https://github.com/Xwdit/RainyBot-Core/releases"><strong>立即下载</strong></a>
+2. 运行RainyBot，随后按照控制台显示的说明，打开指定的配置文件进行配置
+3. 配置完毕后请重新启动RainyBot。此时若配置正确，将自动开始加载内置的协议后端（当前版本内置了Mirai协议库)
+4. 请留意 *协议后端* 的控制台信息，可能会要求您进行登陆验证等操作，请检查不同协议后端的文档来获取相关帮助
+5. 若一切顺利，协议后端的控制台中将出现中文或英文的登录成功/加载成功字样，且RainyBot控制台中将出现加载成功字样
+6. 此时起可最小化协议后端的控制台窗口，后续操作均只需在RainyBot控制台中进行即可。从此处开始，将直接使用“控制台”来表示RainyBot的控制台界面
+7. 在控制台中输入指令help(或/help)来查看所有可用的控制台指令，如输入/plugins可查看插件管理相关指令
+8. 恭喜！您成功完成了RainyBot的基本配置，开始尽情使用吧~
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
