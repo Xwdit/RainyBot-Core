@@ -43,7 +43,7 @@
     </li>
     <li><a href="#usage">插件示例</a></li>
     <li><a href="#roadmap">开发路线图</a></li>
-    <li><a href="#contributing">向项目做出贡献</a></li>
+    <li><a href="#contributing">贡献指南</a></li>
     <li><a href="#license">项目许可</a></li>
     <li><a href="#contact">联系方式</a></li>
     <li><a href="#acknowledgments">知识库</a></li>
@@ -113,21 +113,22 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 4. 请留意 *协议后端* 的控制台信息，可能会要求您进行登陆验证等操作，请检查不同协议后端的文档来获取相关帮助
 5. 若一切顺利，协议后端的控制台中将出现中文或英文的登录成功/加载成功字样，且RainyBot控制台中将出现加载成功字样
 6. 此时起可最小化协议后端的控制台窗口，后续操作均只需在RainyBot控制台中进行即可。从此处开始，将直接使用“控制台”来表示RainyBot的控制台界面
-7. 在控制台中输入指令help(或/help)来查看所有可用的控制台指令，如输入/plugins可查看插件管理相关指令
+7. 在控制台中输入指令`help`(或`/help`)来查看所有可用的控制台指令，如输入`plugins`可查看插件管理相关指令
 8. 恭喜！您成功完成了RainyBot的基本配置，开始尽情使用吧~
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## 插件示例
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+当前的发布版本中随附了三个示例插件，分别为：聊天机器人，随机动漫音乐/图片，简易群管插件。您可以在`plugins`文件夹下找到它们，并使用`plugins edit`指令来进行编辑。
+同时，对于使用`plugins create`指令新建的插件，将自动使用内置的插件模板，以便于您快速开始开发流程。
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot-API](https://github.com/Xwdit/RainyBot-API) 储存库_
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
