@@ -60,19 +60,22 @@
 这是一个跨平台，跨协议 (实现中) 的机器人开发框架，基于 Godot Engine 4.0 进行开发。
 本项目成立的目的，是为了建立一个低门槛，简单易用的机器人开发框架。
 通过提供大量精心设计的交互API/预置功能，结合GDScript脚本语言的简便语法，
-来尽可能地提升开发效率/降低开发难度，让更多开发经验不足的用户也能够轻松开发属于自己的各类机器人应用。
+来尽可能地提升开发效率且降低开发难度，让更多开发经验不足乃至无经验的用户也能够轻松开发属于自己的各类机器人应用。
 
 
 功能特色:
-* 傻瓜化配置，配置完成后自动管理各个协议后端的配置/运行/连接，无需每次手动启动 (当前仅支持Mirai-Http协议)
+* 模块化设计，大部分API可独立于协议后端存在，通过不同适配器实现即可对接不同协议，实现一次编写多处运行 (当前仅支持Mirai-Http协议后端)
+* 简单易懂的配置与管理，配置完成后自动管理各个协议后端的配置/运行/连接，无需每次手动启动或进行设置
 * 完善易用的API与插件管理机制，支持插件间交互/热重载/热编辑等功能，同时内置功能较为全面的插件编辑器 (暂不支持自动补全)
-* 人性化GUI控制台界面，全中文调试信息输出，未来还将支持插件与GUI的交互（如自定义GUI)
+* 人性化GUI控制台界面，全中文调试信息输出，未来还将支持插件与GUI的交互（如自定义GUI界面)
+* 开箱即用的各类辅助功能接口，可便捷初始化并管理插件配置，插件数据，事件/命令注册等
+* 活跃的功能开发与问题修复，且将以社区为驱动，广泛采纳各类建议与需求，共同打造属于所有人的RainyBot
+* 更多功能陆续增加中.....
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
-Use the `BLANK_README.md` to get started.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+
+<p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
 
