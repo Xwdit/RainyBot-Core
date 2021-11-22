@@ -37,6 +37,7 @@ func unregister_console_command(command)->int:
 	if console_commands_dic.erase(command):
 		return OK
 	else:
+		GuiManager.console_print_error("无法取消注册以下命令，因为此命令不存在: " + command)
 		return ERR_DOES_NOT_EXIST
 
 

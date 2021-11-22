@@ -20,6 +20,8 @@ var plugin_event_dic:Dictionary = {}
 var plugin_console_command_dic:Dictionary = {}
 var plugin_timer:Timer = Timer.new()
 var plugin_time_passed:int = 0
+var plugin_config_loaded = false
+var plugin_data_loaded = false
 
 
 func _init():
@@ -162,6 +164,9 @@ func register_console_command(command:String,func_name:String,need_arguments:boo
 
 
 func unregister_console_command(command:String):
+	if !plugin_console_command_dic.has(command):
+		GuiManager.console_print_error("无法取消注册以下命令，因为此命令不属于此插件: " + command)
+		return
 	if CommandManager.unregister_console_command(command) == OK:
 		plugin_console_command_dic.erase(command)
 		remove_from_group("console_command_"+command)
@@ -185,6 +190,7 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 						GuiManager.console_print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+str(key))
 						GuiManager.console_print_warning("可以前往以下路径来验证与修改配置: "+config_path)
 				plugin_config = _config
+				plugin_config_loaded = true
 				GuiManager.console_print_success("插件配置加载成功")
 				return
 			else:
@@ -211,6 +217,9 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 
 
 func save_plugin_config():
+	if !plugin_config_loaded:
+		GuiManager.console_print_error("配置文件保存失败，请先初始化配置后再执行此操作")
+		return
 	GuiManager.console_print_warning("正在保存配置文件...")
 	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file = File.new()
@@ -226,30 +235,52 @@ func save_plugin_config():
 
 
 func get_plugin_config(key):
+	if !plugin_config_loaded:
+		GuiManager.console_print_error("配置内容获取失败，请先初始化配置后再执行此操作")
+		return
 	if plugin_config.has(key):
 		return plugin_config[key]
 		
 		
 func set_plugin_config(key,value,save_file:bool=true):
+	if !plugin_config_loaded:
+		GuiManager.console_print_error("配置内容设定失败，请先初始化配置后再执行此操作")
+		return
 	plugin_config[key]=value
 	if save_file:
 		save_plugin_config()
 
 
 func get_plugin_config_metadata()->Dictionary:
+	if !plugin_config_loaded:
+		GuiManager.console_print_error("配置内容获取失败，请先初始化配置后再执行此操作")
+		return
 	return plugin_config
 
 
-func set_plugin_config_metadata(dic:Dictionary):
+func set_plugin_config_metadata(dic:Dictionary,save_file:bool=true):
+	if !plugin_config_loaded:
+		GuiManager.console_print_error("配置内容设定失败，请先初始化配置后再执行此操作")
+		return
 	plugin_config = dic
+	if save_file:
+		save_plugin_config()
 	
 	
 func get_plugin_data_metadata()->Dictionary:
+	if !plugin_data_loaded:
+		GuiManager.console_print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
+		return
 	return plugin_data
 
 
-func set_plugin_data_metadata(dic:Dictionary):
+func set_plugin_data_metadata(dic:Dictionary,save_file:bool=true):
+	if !plugin_data_loaded:
+		GuiManager.console_print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
+		return
 	plugin_data = dic
+	if save_file:
+		save_plugin_data()
 
 
 func init_plugin_data():
@@ -262,6 +293,7 @@ func init_plugin_data():
 		file.close()
 		if _data is Dictionary:
 			plugin_data = _data
+			plugin_data_loaded = true
 			GuiManager.console_print_success("插件数据库加载成功")
 			return
 		else:
@@ -275,6 +307,7 @@ func init_plugin_data():
 		else:
 			file.store_var(plugin_data,true)
 			file.close()
+			plugin_data_loaded = true
 			GuiManager.console_print_success("数据库文件创建成功，路径: "+data_path)
 			GuiManager.console_print_warning("若发生任何数据库文件更改，请重载此插件")
 			return
@@ -282,6 +315,9 @@ func init_plugin_data():
 			
 			
 func save_plugin_data():
+	if !plugin_data_loaded:
+		GuiManager.console_print_error("数据库文件保存失败，请先初始化数据库后再执行此操作")
+		return
 	GuiManager.console_print_warning("正在保存插件数据库.....")
 	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file = File.new()
@@ -296,11 +332,17 @@ func save_plugin_data():
 		
 		
 func get_plugin_data(key):
+	if !plugin_data_loaded:
+		GuiManager.console_print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
+		return
 	if plugin_data.has(key):
 		return plugin_data[key]
 		
 		
 func set_plugin_data(key,value,save_file:bool=true):
+	if !plugin_data_loaded:
+		GuiManager.console_print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
+		return
 	plugin_data[key]=value
 	if save_file:
 		save_plugin_data()
