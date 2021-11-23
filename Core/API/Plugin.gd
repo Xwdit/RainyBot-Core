@@ -254,7 +254,7 @@ func set_plugin_config(key,value,save_file:bool=true):
 func get_plugin_config_metadata()->Dictionary:
 	if !plugin_config_loaded:
 		GuiManager.console_print_error("配置内容获取失败，请先初始化配置后再执行此操作")
-		return
+		return {}
 	return plugin_config
 
 
@@ -270,7 +270,7 @@ func set_plugin_config_metadata(dic:Dictionary,save_file:bool=true):
 func get_plugin_data_metadata()->Dictionary:
 	if !plugin_data_loaded:
 		GuiManager.console_print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
-		return
+		return {}
 	return plugin_data
 
 
