@@ -1,10 +1,13 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bu5jmoq2h301j"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://bu5jmoq2h301j"]
 
 [ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="1_s50o0"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2vcxy"]
+bg_color = Color(0.101961, 0.113725, 0.137255, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xqnh"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_top = 3
+border_width_top = 2
 border_color = Color(0.239216, 0.8, 0.8, 1)
 border_blend = true
 
@@ -31,6 +34,7 @@ data/0 = ExtResource( "1_s50o0" )
 [resource]
 default_font = SubResource( "Font_1rjje" )
 default_font_size = 15
+CodeEdit/styles/normal = SubResource( "StyleBoxFlat_2vcxy" )
 LineEdit/styles/normal = SubResource( "StyleBoxFlat_4xqnh" )
 RichTextLabel/colors/selection_color = Color(0.905882, 0.905882, 0.905882, 0.8)
 TabContainer/styles/panel = SubResource( "StyleBoxEmpty_0v8vd" )
