@@ -143,7 +143,7 @@ func get_bot_id()->int:
 	return mirai_config_manager.get_bot_id()
 	
 	
-func send_bot_request(_command,_sub_command=null,_content={},_timeout:float=20.0):
+func send_bot_request(_command,_sub_command=null,_content={},_timeout:float=20.0)->Dictionary:
 	return await mirai_client.send_bot_request(_command,_sub_command,_content,_timeout)
 			
 			

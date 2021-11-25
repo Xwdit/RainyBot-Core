@@ -77,10 +77,10 @@ func _process(delta):
 	_client.poll()
 
 
-func send_bot_request(command,sub_command=null,content={},timeout:float=20.0):
+func send_bot_request(command,sub_command=null,content={},timeout:float=20.0)->Dictionary:
 	if !is_bot_connected():
 		GuiManager.console_print_error("未连接到Mirai框架，指令请求发送失败: "+command+sub_command+content)
-		return null
+		return {}
 	var sync_id = randi()
 	while processing_command.has(sync_id):
 		sync_id = randi()
@@ -113,17 +113,17 @@ func _parse_command_result(result:Dictionary):
 func _tick_command_timeout(cmd_ins:MiraiRequestInstance,_timeout:float):
 	await get_tree().create_timer(_timeout).timeout
 	if is_instance_valid(cmd_ins) && cmd_ins.result == null:
-		cmd_ins.emit_signal("request_finished")
 		GuiManager.console_print_error("指令请求超时，无法获取到返回结果: "+str(cmd_ins.request))
+		cmd_ins.emit_signal("request_finished")
 		
 		
 class MiraiRequestInstance:
 	extends RefCounted
 	
 	signal request_finished
-	var request = null
-	var result = null
-	var sync_id = null
+	var request = {}
+	var result = {}
+	var sync_id = -1
 
-	func get_result():
+	func get_result()->Dictionary:
 		return result
