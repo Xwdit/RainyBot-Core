@@ -12,7 +12,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
+[node name="Name" type="Label" parent="."]
 anchor_right = 1.0
 offset_bottom = 26.0
 theme_override_font_sizes/font_size = 16
@@ -49,6 +49,7 @@ focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( "1_d2nse" )
+theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 scroll_following = true
 selection_enabled = true

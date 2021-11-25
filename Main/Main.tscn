@@ -15,6 +15,40 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Console" parent="." instance=ExtResource( "3_v6040" )]
+[node name="Background" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Status" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -391.0
+offset_right = -6.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 15
+text = "协议后端:Mirai | 已连接 | Bot ID:2220137236"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+tab_align = 0
+drag_to_rearrange_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Console" parent="TabContainer" instance=ExtResource( "3_v6040" )]
+offset_left = 4.0
+offset_top = 34.0
+offset_right = -4.0
+offset_bottom = -4.0
 size_flags_horizontal = 3
 size_flags_vertical = 3

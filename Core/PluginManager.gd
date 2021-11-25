@@ -37,7 +37,7 @@ func _call_console_command(cmd:String,args:Array):
 		"list":
 			GuiManager.console_print_text("-----插件列表-----")
 			for child in get_children():
-				GuiManager.console_print_text(str(child.get_plugin_info()))
+				GuiManager.console_print_text(get_beautify_plugin_info(child.get_plugin_info()))
 			GuiManager.console_print_text("-----插件列表-----")
 		"load":
 			if args.size() > 1:
@@ -158,7 +158,7 @@ func load_plugin(file:String):
 			plugin_ins.plugin_path = plugin_path + file
 			plugin_ins.plugin_file = file
 			add_child(plugin_ins,true)
-			GuiManager.console_print_success("成功加载插件 " + _plugin_info["name"] + " "+str(_plugin_info))
+			GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
 		else:
 			plugin_ins.queue_free()
 			GuiManager.console_print_error("无法加载插件文件: " + file)
@@ -170,16 +170,16 @@ func load_plugin(file:String):
 		
 func unload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
-	GuiManager.console_print_warning("正在卸载插件: " + _plugin_info["name"])
+	GuiManager.console_print_warning("正在卸载插件: "+get_beautify_plugin_info(_plugin_info))
 	plugin.queue_free()
 	await plugin.tree_exited
 	plugin.set_script(null)
-	GuiManager.console_print_success("成功卸载插件 " + _plugin_info["name"] + " "+str(_plugin_info))
+	GuiManager.console_print_success("成功卸载插件: " +get_beautify_plugin_info(_plugin_info))
 
 
 func reload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
-	GuiManager.console_print_warning("正在重载插件: " + _plugin_info["name"])
+	GuiManager.console_print_warning("正在重载插件: " + get_beautify_plugin_info(_plugin_info))
 	var file = plugin.get_plugin_filename()
 	await unload_plugin(plugin)
 	load_plugin(file)
@@ -238,3 +238,8 @@ func _list_files_in_directory(path):
 	dir.list_dir_end()
 
 	return files
+
+
+func get_beautify_plugin_info(_info:Dictionary)->String:
+	var _str = "{name} | ID:{id} | 作者:{author} | 版本:{version} | 描述:{description}".format(_info)
+	return _str
