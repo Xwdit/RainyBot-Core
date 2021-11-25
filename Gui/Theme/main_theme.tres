@@ -6,6 +6,7 @@
 bg_color = Color(0.101961, 0.113725, 0.137255, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xqnh"]
+content_margin_left = 2.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_top = 2
 border_color = Color(0.239216, 0.8, 0.8, 1)
