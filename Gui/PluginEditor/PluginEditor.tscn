@@ -1,14 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://btdilsic4yc8l"]
+[gd_scene load_steps=11 format=3 uid="uid://btdilsic4yc8l"]
 
-[ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_hsrho"]
 [ext_resource type="Script" path="res://Gui/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="3_5rcar"]
 [ext_resource type="PackedScene" uid="uid://do3ucpehwfiwq" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c8x14"]
-bg_color = Color(0.101961, 0.113725, 0.137255, 1)
-border_width_bottom = 2
-border_color = Color(0.254902, 0.776471, 0.8, 1)
-border_blend = true
+[sub_resource type="Font" id="Font_fdnmp"]
+data/0 = ExtResource( "3_5rcar" )
 
 [sub_resource type="InputEventKey" id="InputEventKey_oceml"]
 command_pressed = true
@@ -17,11 +14,30 @@ keycode = 83
 [sub_resource type="Shortcut" id="Shortcut_70cvl"]
 events = [SubResource( "InputEventKey_oceml" )]
 
+[sub_resource type="Font" id="Font_jnuyi"]
+data/0 = ExtResource( "3_5rcar" )
+
+[sub_resource type="Font" id="Font_kam1d"]
+data/0 = ExtResource( "3_5rcar" )
+
+[sub_resource type="Font" id="Font_oo60f"]
+data/0 = ExtResource( "3_5rcar" )
+
+[sub_resource type="Font" id="Font_6rswq"]
+data/0 = ExtResource( "3_5rcar" )
+
 [node name="PluginEditor" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( "1_hsrho" )
 script = ExtResource( "2_5p1sy" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.113725, 0.133333, 0.160784, 1)
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -34,21 +50,17 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath(".")
 focus_previous = NodePath(".")
-scroll_vertical = 1.0
+scroll_smooth = true
 delimiter_comments = []
 
-[node name="EditorPanel" type="Panel" parent="."]
+[node name="EditorPanel" type="Control" parent="."]
 anchor_right = 1.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource( "StyleBoxFlat_c8x14" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Menu" type="HBoxContainer" parent="EditorPanel"]
 offset_left = 4.0
-offset_top = 3.0
+offset_top = 2.0
 offset_right = 343.0
 offset_bottom = 30.0
 __meta__ = {
@@ -57,7 +69,8 @@ __meta__ = {
 
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
 offset_right = 92.0
-offset_bottom = 27.0
+offset_bottom = 28.0
+theme_override_fonts/font = SubResource( "Font_fdnmp" )
 theme_override_font_sizes/font_size = 16
 shortcut = SubResource( "Shortcut_70cvl" )
 text = "保存并重载"
@@ -65,8 +78,9 @@ flat = true
 
 [node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
 offset_left = 96.0
-offset_right = 190.0
-offset_bottom = 27.0
+offset_right = 197.0
+offset_bottom = 28.0
+theme_override_fonts/font = SubResource( "Font_jnuyi" )
 text = "打开API文档"
 flat = true
 
@@ -84,6 +98,7 @@ offset_left = 483.0
 offset_top = 6.0
 offset_right = 536.0
 offset_bottom = 26.0
+theme_override_fonts/font = SubResource( "Font_kam1d" )
 theme_override_font_sizes/font_size = 16
 text = "Test.gd"
 align = 1
@@ -97,7 +112,7 @@ offset_left = 540.0
 offset_top = 8.0
 offset_right = 541.0
 offset_bottom = 25.0
-theme_override_font_sizes/font_size = 16
+theme_override_fonts/font = SubResource( "Font_oo60f" )
 align = 1
 valign = 1
 __meta__ = {
@@ -122,7 +137,7 @@ offset_top = 6.0
 offset_right = 202.0
 offset_bottom = 26.0
 rect_min_size = Vector2(70, 0)
-theme_override_font_sizes/font_size = 16
+theme_override_fonts/font = SubResource( "Font_6rswq" )
 text = "1 : 1"
 align = 2
 valign = 1

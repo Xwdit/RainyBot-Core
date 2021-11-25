@@ -1,16 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://278vdckoipp1"]
+[gd_scene load_steps=5 format=3 uid="uid://278vdckoipp1"]
 
-[ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_tod83"]
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="1_84gla"]
 [ext_resource type="Script" path="res://Gui/Console/CommandInput.gd" id="3"]
+
+[sub_resource type="Font" id="Font_turmm"]
+data/0 = ExtResource( "1_84gla" )
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0ng3"]
+content_margin_left = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_top = 2
+border_color = Color(0.211765, 0.662745, 0.780392, 1)
+border_blend = true
 
 [node name="CommandInput" type="LineEdit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource( "1_tod83" )
 theme_override_colors/font_color = Color(0.878431, 0.878431, 0.878431, 1)
+theme_override_fonts/font = SubResource( "Font_turmm" )
 theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource( "StyleBoxFlat_h0ng3" )
 expand_to_text_length = true
 placeholder_text = "在此输入命令，回车键确认，输入help查看帮助"
 caret_blink = true

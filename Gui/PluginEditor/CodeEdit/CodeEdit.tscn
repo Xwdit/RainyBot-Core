@@ -1,6 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://do3ucpehwfiwq"]
+[gd_scene load_steps=6 format=3 uid="uid://do3ucpehwfiwq"]
 
 [ext_resource type="Script" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.gd" id="1_4pm0p"]
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="1_a66cx"]
+
+[sub_resource type="Font" id="Font_hr5py"]
+data/0 = ExtResource( "1_a66cx" )
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8lmgh"]
+bg_color = Color(0.101961, 0.113725, 0.137255, 0)
+border_width_top = 2
+border_color = Color(0.235294, 0.776471, 0.8, 1)
+border_blend = true
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_nyeeb"]
 number_color = Color(0.513726, 0.941176, 0.752941, 1)
@@ -21,7 +31,9 @@ color_regions = {
 [node name="CodeEdit" type="CodeEdit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme_override_fonts/font = SubResource( "Font_hr5py" )
 theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource( "StyleBoxFlat_8lmgh" )
 highlight_current_line = true
 draw_control_chars = true
 draw_tabs = true

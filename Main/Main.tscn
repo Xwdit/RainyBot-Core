@@ -1,27 +1,38 @@
-[gd_scene load_steps=5 format=3 uid="uid://ceoorqrpt5lkk"]
+[gd_scene load_steps=8 format=3 uid="uid://ceoorqrpt5lkk"]
 
-[ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_vb811"]
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="2_t511e"]
 [ext_resource type="Script" path="res://Main/Main.gd" id="2_viisr"]
 [ext_resource type="PackedScene" uid="uid://b4wvfslja5580" path="res://Gui/Console/Console.tscn" id="3_v6040"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dhuh"]
-bg_color = Color(0.101961, 0.113725, 0.137255, 1)
+[sub_resource type="Font" id="Font_ro2uw"]
+data/0 = ExtResource( "2_t511e" )
+
+[sub_resource type="Font" id="Font_spkjx"]
+data/0 = ExtResource( "2_t511e" )
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v2v7d"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50kw1"]
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource( "1_vb811" )
 script = ExtResource( "2_viisr" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_styles/panel = SubResource( "StyleBoxFlat_6dhuh" )
+color = Color(0.113725, 0.133333, 0.160784, 1)
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -32,7 +43,8 @@ anchor_right = 1.0
 offset_left = -415.0
 offset_right = -8.0
 offset_bottom = 32.0
-theme_override_font_sizes/font_size = 15
+theme_override_fonts/font = SubResource( "Font_ro2uw" )
+theme_override_font_sizes/font_size = 16
 text = "协议后端:Mirai | 已连接 | Bot ID:1234567898"
 align = 2
 valign = 1
@@ -44,6 +56,9 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/side_margin = 0
+theme_override_fonts/font = SubResource( "Font_spkjx" )
+theme_override_styles/tab_selected = SubResource( "StyleBoxFlat_v2v7d" )
+theme_override_styles/panel = SubResource( "StyleBoxEmpty_50kw1" )
 tab_align = 0
 drag_to_rearrange_enabled = true
 __meta__ = {
@@ -51,6 +66,6 @@ __meta__ = {
 }
 
 [node name="Console" parent="TabContainer" instance=ExtResource( "3_v6040" )]
-offset_top = 32.0
+offset_top = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
