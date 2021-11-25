@@ -121,8 +121,8 @@ func _mirai_config_loaded():
 func _call_console_command(cmd:String,args:Array):
 	match args[0]:
 		"status":
-			GuiManager.console_print_text("当前连接状态:"+str(is_bot_connected()))
-			GuiManager.console_print_text("连接地址:"+get_ws_url())
+			GuiManager.console_print_text("当前连接状态: "+"已连接" if is_bot_connected() else "未连接")
+			GuiManager.console_print_text("连接地址: "+get_ws_url())
 		"restart":
 			mirai_loader.load_mirai()
 		"command":

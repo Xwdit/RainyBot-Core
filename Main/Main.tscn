@@ -25,11 +25,11 @@ __meta__ = {
 [node name="Status" type="Label" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -391.0
+offset_left = -415.0
 offset_right = -6.0
 offset_bottom = 26.0
 theme_override_font_sizes/font_size = 15
-text = "协议后端:Mirai | 已连接 | Bot ID:2220137236"
+text = "协议后端:Mirai | 已连接 | Bot ID:1234567898"
 align = 2
 valign = 1
 __meta__ = {
