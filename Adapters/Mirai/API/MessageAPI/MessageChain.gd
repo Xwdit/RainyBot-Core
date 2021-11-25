@@ -123,3 +123,11 @@ func recall()->BotRequestResult:
 	var _result:Dictionary = await BotAdapter.send_bot_request("recall",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
+
+
+func is_at_bot()->bool:
+	for _dic in data_array:
+		if _dic.type == BotAdapter.message_type_dic[int(Message.Type.AT)]:
+			if _dic.target == BotAdapter.get_bot_id():
+				return true
+	return false
