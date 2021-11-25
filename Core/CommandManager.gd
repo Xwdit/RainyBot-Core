@@ -10,14 +10,16 @@ func _ready():
 
 
 func _call_console_command(cmd:String,args:Array):
-	GuiManager.console_print_text("--------------")
 	if args.size() > 0:
 		var _cmd = args[0]
+		GuiManager.console_print_text("-----命令列表(%s)-----"%[_cmd])
 		print_console_command_usages(_cmd)
+		GuiManager.console_print_text("-----命令列表(%s)-----"%[_cmd])
 	else:
+		GuiManager.console_print_text("-----命令列表(全部)-----")
 		for _cmd in console_commands_dic:
 			print_console_command_usages(_cmd)
-	GuiManager.console_print_text("--------------")
+		GuiManager.console_print_text("-----命令列表(全部)-----")
 
 
 func register_console_command(command:String,need_arguments:bool,usages:Array,source:String,need_connect:bool=true)->int:

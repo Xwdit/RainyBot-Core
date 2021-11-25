@@ -38,10 +38,10 @@ func get_group()->Group:
 	return Group.init_meta(data_dic.sender.group)
 	
 	
-func reply(msg:Message,quote:bool=false)->BotRequestResult:
+func reply(msg:Message,quote:bool=false,at:bool=false)->BotRequestResult:
 	var _req_dic = {
 		"target":data_dic.sender.group.id,
-		"messageChain":[msg.get_metadata()],
+		"messageChain":[AtMessage.init(data_dic.sender.id).get_metadata(),TextMessage.init(" ").get_metadata(),msg.get_metadata()] if at else [msg.get_metadata()],
 		"quote":get_message_chain().get_message_id() if quote else null
 	}
 	var _result:Dictionary = await BotAdapter.send_bot_request("sendGroupMessage",null,_req_dic)
@@ -63,3 +63,6 @@ func reply_chain(msg_chain:MessageChain,quote:bool=false)->BotRequestResult:
 func recall()->BotRequestResult:
 	return await get_message_chain().recall()
 	
+
+func is_at_bot()->bool:
+	return get_message_chain().is_at_bot()

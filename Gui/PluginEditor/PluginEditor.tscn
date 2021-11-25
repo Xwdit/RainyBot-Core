@@ -1,8 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://btdilsic4yc8l"]
+[gd_scene load_steps=7 format=3 uid="uid://btdilsic4yc8l"]
 
 [ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_hsrho"]
 [ext_resource type="Script" path="res://Gui/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
 [ext_resource type="PackedScene" uid="uid://do3ucpehwfiwq" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c8x14"]
+bg_color = Color(0.101961, 0.113725, 0.137255, 1)
+border_width_bottom = 2
+border_color = Color(0.254902, 0.776471, 0.8, 1)
+border_blend = true
 
 [sub_resource type="InputEventKey" id="InputEventKey_oceml"]
 command_pressed = true
@@ -35,22 +41,23 @@ delimiter_comments = []
 anchor_right = 1.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource( "StyleBoxFlat_c8x14" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Menu" type="HBoxContainer" parent="EditorPanel"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 1017.0
-offset_bottom = 29.0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = 343.0
+offset_bottom = 30.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
 offset_right = 92.0
-offset_bottom = 22.0
+offset_bottom = 27.0
 theme_override_font_sizes/font_size = 16
 shortcut = SubResource( "Shortcut_70cvl" )
 text = "保存并重载"
@@ -58,8 +65,8 @@ flat = true
 
 [node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
 offset_left = 96.0
-offset_right = 196.0
-offset_bottom = 22.0
+offset_right = 190.0
+offset_bottom = 27.0
 text = "打开API文档"
 flat = true
 
@@ -73,9 +80,9 @@ __meta__ = {
 }
 
 [node name="FileName" type="Label" parent="EditorPanel/File"]
-offset_left = 481.0
-offset_top = 7.0
-offset_right = 537.0
+offset_left = 483.0
+offset_top = 6.0
+offset_right = 536.0
 offset_bottom = 26.0
 theme_override_font_sizes/font_size = 16
 text = "Test.gd"
@@ -86,10 +93,10 @@ __meta__ = {
 }
 
 [node name="FileStatus" type="Label" parent="EditorPanel/File"]
-offset_left = 541.0
+offset_left = 540.0
 offset_top = 8.0
-offset_right = 542.0
-offset_bottom = 24.0
+offset_right = 541.0
+offset_bottom = 25.0
 theme_override_font_sizes/font_size = 16
 align = 1
 valign = 1
@@ -111,7 +118,7 @@ __meta__ = {
 
 [node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
 offset_left = 132.0
-offset_top = 7.0
+offset_top = 6.0
 offset_right = 202.0
 offset_bottom = 26.0
 rect_min_size = Vector2(70, 0)

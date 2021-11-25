@@ -1,24 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://b4wvfslja5580"]
+[gd_scene load_steps=5 format=3 uid="uid://b4wvfslja5580"]
 
 [ext_resource type="PackedScene" uid="uid://278vdckoipp1" path="res://Gui/Console/CommandInput.tscn" id="1"]
 [ext_resource type="Theme" uid="uid://bu5jmoq2h301j" path="res://Gui/Theme/main_theme.tres" id="1_d2nse"]
 [ext_resource type="Script" path="res://Gui/Console/ConsoleOutput.gd" id="3"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
+bg_color = Color(0.101961, 0.113725, 0.137255, 1)
+border_width_top = 2
+border_color = Color(0.266667, 0.768627, 0.8, 1)
+border_blend = true
+
 [node name="Console" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( "1_d2nse" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="."]
-anchor_right = 1.0
-offset_bottom = 26.0
-theme_override_font_sizes/font_size = 16
-text = "RainyBot控制台"
-align = 1
-valign = 1
+theme_override_styles/panel = SubResource( "StyleBoxFlat_qi3ek" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -26,10 +22,10 @@ __meta__ = {
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = 27.0
-offset_right = -5.0
-offset_bottom = -5.0
+offset_left = 8.0
+offset_top = 10.0
+offset_right = -8.0
+offset_bottom = -8.0
 theme = ExtResource( "1_d2nse" )
 split_offset = 200
 __meta__ = {
@@ -37,8 +33,8 @@ __meta__ = {
 }
 
 [node name="ConsoleOutput" type="RichTextLabel" parent="VSplitContainer" groups=["Console"]]
-offset_right = 1014.0
-offset_bottom = 478.0
+offset_right = 1008.0
+offset_bottom = 485.0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -49,6 +45,7 @@ focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( "1_d2nse" )
+theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 scroll_following = true
 selection_enabled = true
@@ -57,9 +54,9 @@ script = ExtResource( "3" )
 [node name="CommandInput" parent="VSplitContainer" instance=ExtResource( "1" )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 490.0
-offset_right = 1014.0
-offset_bottom = 568.0
+offset_top = 497.0
+offset_right = 1008.0
+offset_bottom = 582.0
 rect_min_size = Vector2(0, 60)
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
