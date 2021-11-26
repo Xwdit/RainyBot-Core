@@ -73,6 +73,6 @@ func get_size()->int:
 	return data_array.size()
 	
 	
-func append(msg_node:ForwardMessageNode):
+func append(msg_node:ForwardMessageNode)->ForwardMessageNodeList:
 	data_array.append(msg_node.get_metadata())
 	return self
