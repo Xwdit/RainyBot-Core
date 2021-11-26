@@ -5,6 +5,25 @@ class_name GroupList
 
 
 var data_array:Array = []
+var iter_current = 0
+
+
+func _iter_should_continue():
+	return (iter_current < data_array.size())
+
+
+func _iter_init(_arg):
+	iter_current = 0
+	return _iter_should_continue()
+
+
+func _iter_next(_arg):
+	iter_current += 1
+	return _iter_should_continue()
+
+
+func _iter_get(_arg):
+	return get_from_index(iter_current)
 
 
 static func init_meta(arr:Array)->GroupList:
@@ -22,7 +41,7 @@ func set_metadata(arr:Array):
 
 
 func get_from_index(index:int)->Group:
-	if (index >= 0) && (index < data_array.size()-1):
+	if (index >= 0) && (index <= data_array.size()-1):
 		var member_dic:Dictionary = data_array[index]
 		var ins = Group.init_meta(member_dic)
 		return ins

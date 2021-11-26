@@ -5,6 +5,25 @@ class_name MessageChain
 
 
 var data_array:Array = []
+var iter_current = 0
+
+
+func _iter_should_continue():
+	return (iter_current < data_array.size())
+
+
+func _iter_init(_arg):
+	iter_current = 0
+	return _iter_should_continue()
+
+
+func _iter_next(_arg):
+	iter_current += 1
+	return _iter_should_continue()
+
+
+func _iter_get(_arg):
+	return get_message(iter_current)
 
 
 static func init(msg:Message)->MessageChain:
@@ -42,8 +61,15 @@ func append(msg:Message)->MessageChain:
 	return self
 
 
+func get_size()->int:
+	return data_array.size()
+
+
 func get_message(index:int)->Message:
-	return BotAdapter.parse_message_dic(data_array[index])
+	if (index >= 0) && (index <= data_array.size()-1):
+		return BotAdapter.parse_message_dic(data_array[index])
+	else:
+		return null
 
 
 func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array:

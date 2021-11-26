@@ -114,7 +114,7 @@ func toggle_admin(enabled:bool)->BotRequestResult:
 	return _ins
 
 
-func kick(message:String)->BotRequestResult:
+func kick(message:String="")->BotRequestResult:
 	var _req_dic = {
 		"target":data_dic.group.id,
 		"memberId":get_id(),
@@ -125,7 +125,7 @@ func kick(message:String)->BotRequestResult:
 	return _ins
 
 
-func mute(time:int)->BotRequestResult:
+func mute(time:int=1800)->BotRequestResult:
 	var _req_dic = {
 		"target":data_dic.group.id,
 		"memberId":get_id(),

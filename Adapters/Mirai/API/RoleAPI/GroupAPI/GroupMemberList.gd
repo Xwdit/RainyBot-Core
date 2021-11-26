@@ -5,6 +5,25 @@ class_name GroupMemberList
 
 
 var data_array:Array = []
+var iter_current = 0
+
+
+func _iter_should_continue():
+	return (iter_current < data_array.size())
+
+
+func _iter_init(_arg):
+	iter_current = 0
+	return _iter_should_continue()
+
+
+func _iter_next(_arg):
+	iter_current += 1
+	return _iter_should_continue()
+
+
+func _iter_get(_arg):
+	return get_from_index(iter_current)
 
 
 static func init_meta(arr:Array)->GroupMemberList:
@@ -22,13 +41,27 @@ func set_metadata(arr:Array):
 
 
 func get_from_index(index:int)->GroupMember:
-	if (index >= 0) && (index < data_array.size()-1):
+	if (index >= 0) && (index <= data_array.size()-1):
 		var member_dic:Dictionary = data_array[index]
 		var ins = GroupMember.init_meta(member_dic)
 		return ins
 	else:
 		return null
 		
-		
+
+func get_from_id(member_id:int)->GroupMember:
+	for _member in data_array:
+		if _member.id == member_id:
+			return GroupMember.init_meta(_member)
+	return null
+
+
+func has_member(member_id:int)->bool:
+	for _member in data_array:
+		if _member.id == member_id:
+			return true
+	return false
+
+
 func get_size()->int:
 	return data_array.size()
