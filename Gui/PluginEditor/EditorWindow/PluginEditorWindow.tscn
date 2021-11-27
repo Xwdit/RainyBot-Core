@@ -15,7 +15,6 @@ script = ExtResource( "1_i830a" )
 
 [node name="ExitConfirmWindow" parent="." instance=ExtResource( "3_scsvk" )]
 title = "未保存的文件..."
-unresizable = true
 
 [connection signal="close_requested" from="." to="." method="_on_EditorWindow_close_requested"]
 [connection signal="confirm_pressed" from="ExitConfirmWindow" to="." method="_on_ExitConfirmWindow_confirm_pressed"]

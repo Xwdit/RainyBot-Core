@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://btdilsic4yc8l"]
+[gd_scene load_steps=9 format=3 uid="uid://btdilsic4yc8l"]
 
 [ext_resource type="Script" path="res://Gui/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
 [ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="3_5rcar"]
@@ -6,13 +6,6 @@
 
 [sub_resource type="Font" id="Font_fdnmp"]
 data/0 = ExtResource( "3_5rcar" )
-
-[sub_resource type="InputEventKey" id="InputEventKey_oceml"]
-command_pressed = true
-keycode = 83
-
-[sub_resource type="Shortcut" id="Shortcut_70cvl"]
-events = [SubResource( "InputEventKey_oceml" )]
 
 [sub_resource type="Font" id="Font_jnuyi"]
 data/0 = ExtResource( "3_5rcar" )
@@ -72,7 +65,6 @@ offset_right = 92.0
 offset_bottom = 28.0
 theme_override_fonts/font = SubResource( "Font_fdnmp" )
 theme_override_font_sizes/font_size = 16
-shortcut = SubResource( "Shortcut_70cvl" )
 text = "保存并重载"
 flat = true
 

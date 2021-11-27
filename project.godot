@@ -616,6 +616,14 @@ window/subwindows/embed_subwindows=false
 
 export/convert_text_resources_to_binary=true
 
+[input]
+
+save={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":true,"pressed":false,"keycode":83,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+
 [rendering]
 
 vulkan/rendering/back_end=1

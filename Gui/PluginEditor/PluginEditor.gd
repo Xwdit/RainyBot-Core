@@ -69,3 +69,8 @@ func _on_SaveButton_button_down():
 
 func _on_HelpButton_button_down():
 	OS.shell_open("https://github.com/Xwdit/RainyBot-API")
+
+
+func _input(event):
+	if event.is_action_pressed("save"):
+		save_script(true)
