@@ -14,6 +14,8 @@ func _init():
 
 func _ready():
 	get_tree().set_auto_accept_quit(false)
+	add_to_group("console_command_stop")
+	CommandManager.register_console_command("stop",false,["stop - 卸载所有插件并安全关闭RainyBot进程"],"RainyBot-Core",false)
 
 
 func init_dir():
@@ -30,3 +32,6 @@ func _notification(what):
 		BotAdapter.mirai_client.disconnect_to_mirai()
 		get_tree().quit()
 
+
+func _call_console_command(cmd:String,args:Array):
+	notification(NOTIFICATION_WM_CLOSE_REQUEST)

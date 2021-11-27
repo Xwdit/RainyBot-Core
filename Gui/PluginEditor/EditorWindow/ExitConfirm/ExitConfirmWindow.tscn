@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://8kd2x5uktfog"]
+
+[ext_resource type="Script" path="res://Gui/PluginEditor/EditorWindow/ExitConfirm/ExitConfirmWindow.gd" id="1_p5kjl"]
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="3_i45mw"]
+
+[sub_resource type="Font" id="Font_plwo6"]
+data/0 = ExtResource( "3_i45mw" )
+
+[sub_resource type="Font" id="Font_cxr2o"]
+data/0 = ExtResource( "3_i45mw" )
+
+[node name="ExitConfirmWindow" type="Window"]
+visible = false
+unresizable = true
+script = ExtResource( "1_p5kjl" )
+
+[node name="ExitConfirm" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="ExitConfirm"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.113725, 0.133333, 0.160784, 1)
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ExitConfirm"]
+anchor_right = 1.0
+offset_bottom = 68.0
+theme_override_fonts/font = SubResource( "Font_plwo6" )
+text = "检测到您还有未保存的文件，确定要退出编辑器吗？"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ExitConfirm"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -54.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmButton" type="Button" parent="ExitConfirm/HBoxContainer"]
+offset_right = 510.0
+offset_bottom = 54.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = SubResource( "Font_cxr2o" )
+text = "确定"
+flat = true
+icon_align = 1
+
+[node name="CancelButton" type="Button" parent="ExitConfirm/HBoxContainer"]
+offset_left = 514.0
+offset_right = 1024.0
+offset_bottom = 54.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = SubResource( "Font_cxr2o" )
+text = "取消"
+flat = true
+icon_align = 1
+
+[connection signal="button_up" from="ExitConfirm/HBoxContainer/ConfirmButton" to="." method="_on_ConfirmButton_button_up"]
+[connection signal="button_up" from="ExitConfirm/HBoxContainer/CancelButton" to="." method="_on_CancelButton_button_up"]

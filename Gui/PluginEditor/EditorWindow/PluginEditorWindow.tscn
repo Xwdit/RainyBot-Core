@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ckvqb72rosbl1"]
+[gd_scene load_steps=4 format=3 uid="uid://ckvqb72rosbl1"]
 
 [ext_resource type="Script" path="res://Gui/PluginEditor/EditorWindow/PluginEditorWindow.gd" id="1_i830a"]
 [ext_resource type="PackedScene" uid="uid://btdilsic4yc8l" path="res://Gui/PluginEditor/PluginEditor.tscn" id="2_1cb4y"]
+[ext_resource type="PackedScene" uid="uid://8kd2x5uktfog" path="res://Gui/PluginEditor/EditorWindow/ExitConfirm/ExitConfirmWindow.tscn" id="3_scsvk"]
 
 [node name="PluginEditorWindow" type="Window"]
 title = "RainyBot插件编辑器 (测试版)"
@@ -12,11 +13,9 @@ script = ExtResource( "1_i830a" )
 
 [node name="PluginEditor" parent="." instance=ExtResource( "2_1cb4y" )]
 
-[node name="ExitConfirmation" type="ConfirmationDialog" parent="."]
+[node name="ExitConfirmWindow" parent="." instance=ExtResource( "3_scsvk" )]
 title = "未保存的文件..."
-size = Vector2i(384, 100)
-min_size = Vector2i(200, 100)
-dialog_text = "您还未保存当前编辑中的插件文件，确定要退出吗？"
+unresizable = true
 
 [connection signal="close_requested" from="." to="." method="_on_EditorWindow_close_requested"]
-[connection signal="confirmed" from="ExitConfirmation" to="." method="_on_ExitConfirmation_confirmed"]
+[connection signal="confirm_pressed" from="ExitConfirmWindow" to="." method="_on_ExitConfirmWindow_confirm_pressed"]

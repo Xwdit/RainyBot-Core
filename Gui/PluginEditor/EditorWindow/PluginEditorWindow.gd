@@ -1,10 +1,6 @@
 extends Window
 
 
-func _ready():
-	hide()
-
-
 func _on_EditorWindow_close_requested():
 	exit()
 
@@ -29,12 +25,12 @@ func load_script(path:String):
 
 func exit():
 	if get_plugin_editor().unsaved:
-		$ExitConfirmation.popup_centered()
+		$ExitConfirmWindow.popup_centered(Vector2(430,130))
 	else:
 		hide()
 		GuiManager.console_print_success("插件编辑器已被成功关闭!")
 
 
-func _on_ExitConfirmation_confirmed():
+func _on_ExitConfirmWindow_confirm_pressed():
 	hide()
 	GuiManager.console_print_success("插件编辑器已被成功关闭!")

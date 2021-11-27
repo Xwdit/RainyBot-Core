@@ -50,7 +50,7 @@ func _call_console_command(cmd:String,args:Array):
 				if is_instance_valid(plugin):
 					unload_plugin(plugin)
 				else:
-					GuiManager.console_print_error("插件id不存在!")
+					GuiManager.console_print_error("插件ID不存在!")
 			else:
 				GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
 					
@@ -60,7 +60,7 @@ func _call_console_command(cmd:String,args:Array):
 				if is_instance_valid(plugin):
 					reload_plugin(plugin)
 				else:
-					GuiManager.console_print_error("插件id不存在!")
+					GuiManager.console_print_error("插件ID不存在!")
 			else:
 				GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
 		"areload":
@@ -133,6 +133,7 @@ func load_plugin(file:String):
 	if !is_instance_valid(plugin_res) || plugin_res.reload() != OK:
 		GuiManager.console_print_error("无法加载插件文件: " + file)
 		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
+		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
 		return
 	var plugin_ins:Plugin = plugin_res.new()
 	GuiManager.console_print_warning("正在尝试加载插件文件: " + file)
@@ -149,7 +150,7 @@ func load_plugin(file:String):
 				plugin_ins.queue_free()
 				return
 			for child in get_children():
-				if child.name == _plugin_info["id"]:
+				if str(child.name).to_lower() == _plugin_info["id"].to_lower():
 					GuiManager.console_print_error("无法加载插件文件: " + file)
 					GuiManager.console_print_error("已经存在相同ID的插件被加载: "+str(_plugin_info["id"]))
 					plugin_ins.queue_free()
@@ -165,7 +166,8 @@ func load_plugin(file:String):
 			GuiManager.console_print_error("此插件的插件信息存在缺失")
 	else:
 		GuiManager.console_print_error("无法加载插件文件: " + file)
-		GuiManager.console_print_error("此文件不是插件文件或已损坏...")
+		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
+		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
 		
 		
 func unload_plugin(plugin:Plugin):
@@ -214,7 +216,7 @@ func get_plugin_with_filename(f_name:String)->Plugin:
 	for child in arr:
 		var plug:Plugin = child
 		var file = plug.plugin_file
-		if file == f_name:
+		if file.to_lower() == f_name.to_lower():
 			return plug
 	return null
 
