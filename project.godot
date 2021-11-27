@@ -6,7 +6,7 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
+config_version=5
 
 _global_script_classes=[{
 "base": "Event",
@@ -592,6 +592,7 @@ boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://logo.png"
 config/windows_native_icon="res://logo.ico"
+config/features=PackedStringArray("4.0")
 
 [autoload]
 
