@@ -120,7 +120,7 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 ### 源码注意事项
 
 如果您希望从项目源码顺利运行/编译RainyBot，请确保遵循以下条目：
-- 请使用 Commit [[52b7d5fa34](https://github.com/godotengine/godot/commit/52b7d5fa347fb88aa016e1e30414abd01e800381)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目
+- 请使用 Commit [[52b7d5fa34](https://github.com/godotengine/godot/commit/52b7d5fa347fb88aa016e1e30414abd01e800381)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。[点此下载Windows预编译版](https://www.jianguoyun.com/p/DTrxaPsQgfb3CRjlh50E)
 - 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.8.0`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
 - 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.3.1`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
@@ -147,9 +147,10 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 
 - [x] 核心功能完备
 - [x] 整理并将项目开源
-- [ ] 实现插件编辑器的自动补全
+- [ ] 增加更多GUI相关功能
 - [ ] 添加版本检测与更新功能
 - [ ] 添加在线插件市场功能
+- [ ] 实现插件编辑器的自动补全
 
 对于更详细的功能计划，已知问题或功能建议，请访问储存库的 [Issues](https://github.com/Xwdit/RainyBot-Core/issues) 页面
 
