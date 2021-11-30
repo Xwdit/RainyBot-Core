@@ -29,24 +29,25 @@
   <summary>本页目录</summary>
   <ol>
     <li>
-      <a href="#about-the-project">关于本项目</a>
+      <a href="#关于本项目">关于本项目</a>
       <ul>
-        <li><a href="#built-with">基于的项目</a></li>
+        <li><a href="#基于的项目">基于的项目</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">开始使用</a>
+      <a href="#开始使用">开始使用</a>
       <ul>
-        <li><a href="#prerequisites">运行需求</a></li>
-        <li><a href="#installation">配置与使用</a></li>
+        <li><a href="#运行需求">运行需求</a></li>
+        <li><a href="#配置与使用">配置与使用</a></li>
+        <li><a href="#源码注意事项">源码注意事项</a></li>
       </ul>
     </li>
-    <li><a href="#usage">插件示例</a></li>
-    <li><a href="#roadmap">开发路线图</a></li>
-    <li><a href="#contributing">贡献指南</a></li>
-    <li><a href="#license">项目许可</a></li>
-    <li><a href="#contact">联系方式</a></li>
-    <li><a href="#acknowledgments">更多信息</a></li>
+    <li><a href="#插件示例">插件示例</a></li>
+    <li><a href="#功能开发路线图">开发路线图</a></li>
+    <li><a href="#贡献指南">贡献指南</a></li>
+    <li><a href="#项目许可">项目许可</a></li>
+    <li><a href="#联系信息">联系方式</a></li>
+    <li><a href="#更多信息">更多信息</a></li>
   </ol>
 </details>
 
@@ -116,6 +117,15 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 7. 在控制台中输入指令`help`(或`/help`)来查看所有可用的控制台指令，如输入`plugins`可查看插件管理相关指令
 8. 恭喜！您成功完成了RainyBot的基本配置，开始尽情使用吧~
 
+### 源码注意事项
+
+如果您希望从项目源码顺利运行/编译RainyBot，请确保遵循以下条目：
+- 请使用 Commit [[52b7d5fa34](https://github.com/godotengine/godot/commit/52b7d5fa347fb88aa016e1e30414abd01e800381)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目
+- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.8.0`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
+- 请将[Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.3.1`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
+
+RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已包含以上所需文件，因此无需额外进行配置。若您在配置以上文件时遇到问题，可以直接从最新的发布版本文件包中复制`adapters`文件夹以及其中的内容，并置于*Godot编辑器可执行文件同目录下*即可。
+
 <p align="right">(<a href="#top">返回顶部</a>)</p>
 
 
@@ -144,7 +154,6 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 对于更详细的功能计划，已知问题或功能建议，请访问储存库的 [Issues](https://github.com/Xwdit/RainyBot-Core/issues) 页面
 
 <p align="right">(<a href="#top">返回顶部</a>)</p>
-
 
 
 <!-- CONTRIBUTING -->
