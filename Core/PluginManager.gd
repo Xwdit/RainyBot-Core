@@ -129,47 +129,24 @@ func load_plugin_script(path:String)->GDScript:
 
 
 func load_plugin(file:String):
-	var plugin_res = load_plugin_script(plugin_path + file)
-	if !is_instance_valid(plugin_res) || plugin_res.reload() != OK:
-		GuiManager.console_print_error("无法加载插件文件: " + file)
-		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
-		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
+	if !check_plugin_valid(file):
 		return
+	var plugin_ins = create_plugin_instance(file)
+	var _plugin_info = plugin_ins.get_plugin_info()
+	add_child(plugin_ins,true)
+	GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
+		
+
+func create_plugin_instance(file:String)->Plugin:
+	var plugin_res = load_plugin_script(plugin_path + file)
 	var plugin_ins:Plugin = plugin_res.new()
-	GuiManager.console_print_warning("正在尝试加载插件文件: " + file)
-	if is_instance_valid(plugin_ins):
-		var _plugin_info = plugin_ins.get_plugin_info()
-		if _plugin_info.has_all(default_plugin_info.keys()):
-			var err_arr = []
-			for key in _plugin_info:
-				if _plugin_info[key] == "":
-					err_arr.append(key)
-			if !err_arr.is_empty():
-				GuiManager.console_print_error("无法加载插件文件: " + file)
-				GuiManager.console_print_error("此插件的以下插件信息参数不正确: "+str(err_arr))
-				plugin_ins.queue_free()
-				return
-			for child in get_children():
-				if str(child.name).to_lower() == _plugin_info["id"].to_lower():
-					GuiManager.console_print_error("无法加载插件文件: " + file)
-					GuiManager.console_print_error("已经存在相同ID的插件被加载: "+str(_plugin_info["id"]))
-					plugin_ins.queue_free()
-					return
-			plugin_ins.name = _plugin_info["id"]
-			plugin_ins.plugin_path = plugin_path + file
-			plugin_ins.plugin_file = file
-			add_child(plugin_ins,true)
-			GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
-		else:
-			plugin_ins.queue_free()
-			GuiManager.console_print_error("无法加载插件文件: " + file)
-			GuiManager.console_print_error("此插件的插件信息存在缺失")
-	else:
-		GuiManager.console_print_error("无法加载插件文件: " + file)
-		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
-		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
-		
-		
+	var _plugin_info = plugin_ins.get_plugin_info()
+	plugin_ins.name = _plugin_info["id"]
+	plugin_ins.plugin_path = plugin_path + file
+	plugin_ins.plugin_file = file
+	return plugin_ins
+
+
 func unload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	GuiManager.console_print_warning("正在卸载插件: "+get_beautify_plugin_info(_plugin_info))
@@ -186,25 +163,96 @@ func reload_plugin(plugin:Plugin):
 	await unload_plugin(plugin)
 	load_plugin(file)
 
-		
-func reload_plugins():
-	GuiManager.console_print_warning("正在重载所有插件.....插件目录: "+plugin_path)
-	for child in get_children():
-		await unload_plugin(child)
-	var files:Array = _list_files_in_directory(plugin_path)
-	if files.size() == 0:
+
+func check_plugin_valid(file:String)->bool:
+	GuiManager.console_print_warning("正在尝试加载插件文件: " + file)
+	var plugin_res = load_plugin_script(plugin_path + file)
+	if !is_instance_valid(plugin_res) || plugin_res.reload() != OK:
+		GuiManager.console_print_error("无法加载插件文件: " + file)
+		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
+		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
+		return false
+	var plugin_ins:Plugin = plugin_res.new()
+	if is_instance_valid(plugin_ins):
+		var _plugin_info = plugin_ins.get_plugin_info()
+		if _plugin_info.has_all(default_plugin_info.keys()):
+			var err_arr = []
+			for key in _plugin_info:
+				if (_plugin_info[key] is String) and (_plugin_info[key] == ""):
+					err_arr.append(key)
+			if !err_arr.is_empty():
+				GuiManager.console_print_error("无法加载插件文件: " + file)
+				GuiManager.console_print_error("此插件的以下插件信息不能为空: "+str(err_arr))
+				plugin_ins.queue_free()
+				return false
+			for child in get_children():
+				if str(child.name).to_lower() == _plugin_info["id"].to_lower():
+					GuiManager.console_print_error("无法加载插件文件: " + file)
+					GuiManager.console_print_error("已经存在相同ID的插件被加载: "+str(_plugin_info["id"]))
+					plugin_ins.queue_free()
+					return false
+			return true
+		else:
+			plugin_ins.queue_free()
+			GuiManager.console_print_error("无法加载插件文件: " + file)
+			GuiManager.console_print_error("此插件的插件信息存在缺失")
+			return false
+	else:
+		GuiManager.console_print_error("无法加载插件文件: " + file)
+		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
+		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
+		return false
+
+
+func get_plugin_file_list()->Array:
+	var _file_list:Array = []
+	var _dep_list:Array = []
+	var _files:Array = _list_files_in_directory(plugin_path)
+	if _files.size() == 0:
 		GuiManager.console_print_warning("插件目录下未找到任何插件...")
-		return
-	for path in files:
+		return []
+	for _file in _files:
+		if !check_plugin_valid(_file):
+			continue
+		var _plugin_ins = create_plugin_instance(_file)
+		var _plugin_info = _plugin_ins.get_plugin_info()
+		var _id = _plugin_info.id
+		var _dependency:Array = _plugin_info.dependency
+		var _i_max = 0
+		for _dep in _dependency:
+			var _i = _dep_list.find(_dep)
+			if _i != -1:
+				if _i > _i_max:
+					_i_max = _i
+		if _i_max != 0:
+			_dep_list.insert(_i_max+1,_id)
+			_file_list.insert(_i_max+1,_file)
+		else:
+			_dep_list.push_front(_id)
+			_file_list.push_front(_file)
+	return _file_list
+		
+
+func load_plugins():
+	for path in get_plugin_file_list():
 		await get_tree().process_frame
-		load_plugin(path)
-	GuiManager.console_print_success("所有插件重载完毕!")
-	GuiManager.console_print_success("输入指令help可查看当前可用的指令列表!")
+		var plugin_ins = create_plugin_instance(path)
+		var _plugin_info = plugin_ins.get_plugin_info()
+		add_child(plugin_ins,true)
+		GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
 
 
 func unload_plugins():
 	for child in get_children():
 		await unload_plugin(child)
+		
+		
+func reload_plugins():
+	GuiManager.console_print_warning("正在重载所有插件.....插件目录: "+plugin_path)
+	await unload_plugins()
+	await load_plugins()
+	GuiManager.console_print_success("所有插件重载完毕!")
+	GuiManager.console_print_success("输入指令help可查看当前可用的指令列表!")
 
 
 func get_plugin_instance(plugin_id):
@@ -245,3 +293,5 @@ func _list_files_in_directory(path):
 func get_beautify_plugin_info(_info:Dictionary)->String:
 	var _str = "{name} | ID:{id} | 作者:{author} | 版本:{version} | 描述:{description}".format(_info)
 	return _str
+
+

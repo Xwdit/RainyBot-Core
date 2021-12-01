@@ -11,7 +11,8 @@ var plugin_info:Dictionary = {
 	"name":"",
 	"author":"",
 	"version":"",
-	"description":""
+	"description":"",
+	"dependency":[]
 }
 
 var plugin_config:Dictionary = {}
@@ -73,12 +74,13 @@ func _plugin_timer_timeout():
 	_on_process()
 
 
-func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String):
+func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String,p_dependency:Array=[]):
 	plugin_info.id = p_id
 	plugin_info.name = p_name
 	plugin_info.author = p_author
 	plugin_info.version = p_version
 	plugin_info.description = p_description
+	plugin_info.dependency = p_dependency
 
 	
 func get_plugin_info()->Dictionary:
@@ -102,7 +104,10 @@ func get_plugin_runtime()->int:
 	
 
 func get_other_plugin_instance(plugin_id)->Plugin:
-	return PluginManager.get_plugin_instance(plugin_id)
+	var ins = PluginManager.get_plugin_instance(plugin_id)
+	if ins == null:
+		GuiManager.console_print_error("无法获取ID为%s的插件实例，可能是ID有误或插件未被加载；请检查依赖关系是否设置正确！" % [plugin_id])
+	return ins
 
 
 func register_event(category:int,event_type:int,func_name:String):
