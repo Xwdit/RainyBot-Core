@@ -6,6 +6,7 @@ var plugin_config_path = OS.get_executable_path().get_base_dir() + "/config/"
 var plugin_data_path = OS.get_executable_path().get_base_dir() + "/data/"
 
 var loaded_scripts:Dictionary = {}
+var file_load_status:Dictionary = {}
 
 
 var default_plugin_info = {
@@ -128,32 +129,73 @@ func load_plugin_script(path:String)->GDScript:
 		return		
 
 
-func load_plugin(file:String):
+func load_plugin(file:String,files_dic=null,source:String=""):
+	file_load_status[file] = false
 	GuiManager.console_print_warning("正在尝试加载插件文件: " + file)
-	if !check_plugin_valid(file):
-		return
-	var plugin_ins = create_plugin_instance(file)
-	var _plugin_info = plugin_ins.get_plugin_info()
-	add_child(plugin_ins,true)
-	GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
-		
-
-func create_plugin_instance(file:String)->Plugin:
-	var plugin_res = load_plugin_script(plugin_path + file)
-	var plugin_ins:Plugin = plugin_res.new()
-	var _plugin_info = plugin_ins.get_plugin_info()
-	plugin_ins.name = _plugin_info["id"]
-	plugin_ins.plugin_path = plugin_path + file
-	plugin_ins.plugin_file = file
-	return plugin_ins
+	var _f_dic:Dictionary
+	if files_dic is Dictionary:
+		_f_dic = files_dic
+	else:
+		_f_dic = get_plugin_files_dic()
+	for _id in _f_dic:
+		var _f = _f_dic[_id]
+		if _f.file == file:
+			var _info = _f.info
+			var _dependency = _info.dependency
+			var _inst_dic = get_plugin_instance_dic()
+			if _inst_dic.has(_info.id.to_lower()):
+				GuiManager.console_print_error("无法加载插件文件: " + file)
+				GuiManager.console_print_error("已经存在相同ID的插件被加载: "+str(_id))
+				return
+			for _dep in _dependency:
+				if !_inst_dic.has(_dep.to_lower()):
+					if _id.to_lower() == _dep.to_lower():
+						GuiManager.console_print_error("无法加载插件文件: " + file)
+						GuiManager.console_print_error("此插件将其自身设置为了所需的依赖插件！")
+						return
+					if source.to_lower() == _dep.to_lower():
+						GuiManager.console_print_error("无法加载插件文件: " + file)
+						GuiManager.console_print_error("此插件与以下插件出现了循环依赖: "+str(source))
+						return
+					if _f_dic.has(_dep.to_lower()):
+						if (!file_load_status.has(_f_dic[_dep.to_lower()].file)) || (file_load_status[_f_dic[_dep.to_lower()].file] != false):
+							GuiManager.console_print_warning("正在尝试加载此插件所需的依赖插件: " + _dep)
+							await load_plugin(_f_dic[_dep.to_lower()].file,_f_dic,_id)
+							await get_tree().process_frame
+							if !_inst_dic.has(_dep.to_lower()):
+								GuiManager.console_print_error("无法加载插件文件: " + file)
+								GuiManager.console_print_error("此插件所需的依赖插件加载失败: "+_dep)
+								return
+						else:
+							GuiManager.console_print_error("无法加载插件文件: " + file)
+							GuiManager.console_print_error("此插件所需的依赖插件加载失败: "+_dep)
+							return
+					else:
+						GuiManager.console_print_error("无法加载插件文件: " + file)
+						GuiManager.console_print_error("未找到此插件所需的依赖插件: "+_dep)
+						return
+			var plugin_res = load_plugin_script(plugin_path + file)
+			var plugin_ins:Plugin = plugin_res.new()
+			var _plugin_info = plugin_ins.get_plugin_info()
+			plugin_ins.name = _plugin_info["id"]
+			plugin_ins.plugin_path = plugin_path + file
+			plugin_ins.plugin_file = file
+			add_child(plugin_ins,true)
+			file_load_status[file] = true
+			GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
+			return
+	GuiManager.console_print_error("无法加载插件文件: " + file)
+	GuiManager.console_print_error("此插件文件不存在，或无法被加载！")
 
 
 func unload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
+	var _file = plugin.get_plugin_filename()
 	GuiManager.console_print_warning("正在卸载插件: "+get_beautify_plugin_info(_plugin_info))
 	plugin.queue_free()
 	await plugin.tree_exited
 	plugin.set_script(null)
+	file_load_status.erase(_file)
 	GuiManager.console_print_success("成功卸载插件: " +get_beautify_plugin_info(_plugin_info))
 
 
@@ -162,16 +204,19 @@ func reload_plugin(plugin:Plugin):
 	GuiManager.console_print_warning("正在重载插件: " + get_beautify_plugin_info(_plugin_info))
 	var file = plugin.get_plugin_filename()
 	await unload_plugin(plugin)
-	load_plugin(file)
+	await load_plugin(file)
 
 
-func check_plugin_valid(file:String,check_depend:bool=true)->bool:
+func get_plugin_file_info(file:String)->Dictionary:
 	var plugin_res = load_plugin_script(plugin_path + file)
+	for child in get_children():
+		if child.get_script() == plugin_res:
+			return child.get_plugin_info()
 	if !is_instance_valid(plugin_res) || plugin_res.reload() != OK:
-		GuiManager.console_print_error("无法加载插件文件: " + file)
+		GuiManager.console_print_error("无法读取插件文件: " + file)
 		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
 		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
-		return false
+		return {}
 	var plugin_ins:Plugin = plugin_res.new()
 	if is_instance_valid(plugin_ins):
 		var _plugin_info = plugin_ins.get_plugin_info()
@@ -182,71 +227,64 @@ func check_plugin_valid(file:String,check_depend:bool=true)->bool:
 				if (_plugin_info[key] is String) and (_plugin_info[key] == ""):
 					err_arr.append(key)
 			if !err_arr.is_empty():
-				GuiManager.console_print_error("无法加载插件文件: " + file)
-				GuiManager.console_print_error("此插件的以下插件信息不能为空: "+str(err_arr))
-				return false
-			var _plugin_dic = {}
-			for child in get_children():
-				_plugin_dic[str(child.name).to_lower()]=child
-			if _plugin_dic.has(_plugin_info["id"].to_lower()):
-				GuiManager.console_print_error("无法加载插件文件: " + file)
-				GuiManager.console_print_error("已经存在相同ID的插件被加载: "+str(_plugin_info["id"]))
-				return false
-			if check_depend:
-				for _d in _plugin_info.dependency:
-					if !_plugin_dic.has(_d.to_lower()):
-						GuiManager.console_print_error("无法加载插件文件: " + file)
-						GuiManager.console_print_error("未找到此插件所需的依赖插件: "+_d)
-						return false
-			return true
+				GuiManager.console_print_error("无法读取插件文件: " + file)
+				GuiManager.console_print_error("此文件的以下插件信息不能为空: "+str(err_arr))
+				return {}
+			return _plugin_info
 		else:
-			GuiManager.console_print_error("无法加载插件文件: " + file)
-			GuiManager.console_print_error("此插件的插件信息存在缺失")
-			return false
+			GuiManager.console_print_error("无法读取插件文件: " + file)
+			GuiManager.console_print_error("此文件的插件信息存在缺失")
+			return {}
 	else:
-		GuiManager.console_print_error("无法加载插件文件: " + file)
+		GuiManager.console_print_error("无法读取插件文件: " + file)
 		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
 		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
-		return false
+		return {}
 
 
-func get_plugin_file_list()->Array:
-	var _file_list:Array = []
-	var _dep_list:Array = []
+func get_plugin_files_dic()->Dictionary:
+	GuiManager.console_print_warning("正在扫描插件目录.....")
+	var _file_dic:Dictionary = {}
 	var _files:Array = _list_files_in_directory(plugin_path)
 	if _files.size() == 0:
 		GuiManager.console_print_warning("插件目录下未找到任何插件...")
-		return []
+		return {}
 	for _file in _files:
-		if !check_plugin_valid(_file,false):
+		var _plugin_info = get_plugin_file_info(_file)
+		if _plugin_info.is_empty():
+			file_load_status[_file] = false
 			continue
-		var _plugin_ins = create_plugin_instance(_file)
-		var _plugin_info = _plugin_ins.get_plugin_info()
-		_plugin_ins.queue_free()
-		var _id = _plugin_info.id
-		var _dependency:Array = _plugin_info.dependency
-		var _i_max = 0
-		for _dep in _dependency:
-			var _i = _dep_list.find(_dep)
-			if _i != -1:
-				if _i > _i_max:
-					_i_max = _i
-		if _i_max != 0:
-			_dep_list.insert(_i_max+1,_id)
-			_file_list.insert(_i_max+1,_file)
-		else:
-			_dep_list.push_front(_id)
-			_file_list.push_front(_file)
-	return _file_list
+		var _id = _plugin_info.id.to_lower()
+		if _file_dic.has(_id):
+			file_load_status[_file] = false
+			GuiManager.console_print_error("无法读取插件文件: " + _file)
+			GuiManager.console_print_error("已经存在ID为"+str(_id)+"的插件文件: "+str(_file_dic[_id].file))
+			continue
+		_file_dic[_id] = {"file":_file,"info":_plugin_info}
+	GuiManager.console_print_success("插件目录扫描完毕！")
+	return _file_dic
+	
+	
+func get_plugin_instance_dic()->Dictionary:
+	var _plugin_dic = {}
+	for child in get_children():
+		_plugin_dic[str(child.name).to_lower()]=child
+	return _plugin_dic
 		
 
 func load_plugins():
-	for path in get_plugin_file_list():
+	var _files_dic = get_plugin_files_dic()
+	for _id in _files_dic:
+		if file_load_status.has(_files_dic[_id].file):
+			continue
+		if get_plugin_instance_dic().has(_id.to_lower()):
+			continue
 		await get_tree().process_frame
-		load_plugin(path)
+		await load_plugin(_files_dic[_id].file,_files_dic)
 
 
 func unload_plugins():
+	file_load_status.clear()
 	for child in get_children():
 		await unload_plugin(child)
 		
