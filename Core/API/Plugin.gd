@@ -124,7 +124,7 @@ func register_event(event:GDScript,func_name:String,priority:bool=false):
 			else:
 				arr.push_back(_callable)
 			plugin_event_dic[event]=_callable
-			GuiManager.console_print_success("成功注册事件%s!" % [event.resource_path.get_file().replacen(".gd","")])
+			GuiManager.console_print_success("成功注册事件: %s!" % [event.resource_path.get_file().replacen(".gd","")])
 		else:
 			GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
 	else:
@@ -140,7 +140,7 @@ func unregister_event(event:GDScript):
 				if arr.is_empty():
 					PluginManager.plugin_event_dic.erase(event)
 				plugin_event_dic.erase(event)
-				GuiManager.console_print_success("成功取消注册事件%s!" % [event.resource_path.get_file().replacen(".gd","")])
+				GuiManager.console_print_success("成功取消注册事件: %s!" % [event.resource_path.get_file().replacen(".gd","")])
 				return
 			GuiManager.console_print_error("事件取消注册出错: 此插件未注册事件%s！"% [event.resource_path.get_file().replacen(".gd","")])
 		else:
@@ -150,9 +150,13 @@ func unregister_event(event:GDScript):
 
 
 func register_console_command(command:String,func_name:String,need_arguments:bool=false,usages:Array=[]):
+	if plugin_console_command_dic.has(command):
+		GuiManager.console_print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
+		return
 	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name)==OK:
 		plugin_console_command_dic[command] = func_name
 		add_to_group("console_command_"+command)
+		GuiManager.console_print_success("成功注册命令: %s!" % [command])
 
 
 func unregister_console_command(command:String):
@@ -162,6 +166,7 @@ func unregister_console_command(command:String):
 	if CommandManager.unregister_console_command(command) == OK:
 		plugin_console_command_dic.erase(command)
 		remove_from_group("console_command_"+command)
+		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
 	
 	
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={}):
@@ -353,7 +358,8 @@ func wait_context(context_id:String,timeout:float=20.0):
 		_cont = PluginContextHelper.new()
 		_cont.id = context_id
 		plugin_context_dic[context_id] = _cont
-	_tick_context_timeout(_cont,timeout)
+	if timeout > 0.0:
+		_tick_context_timeout(_cont,timeout)
 	await _cont.finished
 	plugin_context_dic.erase(context_id)
 	GuiManager.console_print_warning("上下文已完成，ID为: %s，响应结果为: %s！"%[context_id,str(_cont.get_result())])
