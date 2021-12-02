@@ -40,7 +40,7 @@ func _ready():
 	
 func _exit_tree():
 	_on_unload()
-	for ev in plugin_event_dic:
+	for ev in plugin_event_dic.duplicate():
 		unregister_event(ev)
 
 

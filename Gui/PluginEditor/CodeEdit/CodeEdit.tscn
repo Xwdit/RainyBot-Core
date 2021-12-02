@@ -31,6 +31,7 @@ color_regions = {
 [node name="CodeEdit" type="CodeEdit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme_override_constants/line_spacing = 5
 theme_override_fonts/font = SubResource( "Font_hr5py" )
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource( "StyleBoxFlat_8lmgh" )
@@ -39,6 +40,7 @@ draw_control_chars = true
 draw_tabs = true
 syntax_highlighter = SubResource( "CodeHighlighter_nyeeb" )
 scroll_smooth = true
+scroll_vertical = 1.0
 minimap_draw = true
 caret_type = 1
 caret_blink = true

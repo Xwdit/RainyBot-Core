@@ -38,7 +38,7 @@ func _ready():
 func _call_event(event:Event):
 	if plugin_event_dic.has(event.get_script()):
 		var arr:Array = plugin_event_dic[event.get_script()]
-		for c in arr:
+		for c in arr.duplicate():
 			var _callable:Callable = c
 			if _callable.is_valid():
 				var _continue = _callable.call(event)
