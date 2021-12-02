@@ -33,7 +33,7 @@ func _ready():
 	CommandManager.register_console_command("plugins",true,usages,"RainyBot-Core")
 
 
-func _call_console_command(cmd:String,args:Array):
+func _call_console_command(_cmd:String,args:Array):
 	match args[0]:
 		"list":
 			GuiManager.console_print_text("-----插件列表-----")
@@ -162,7 +162,7 @@ func load_plugin(file:String,files_dic=null,source:String=""):
 							GuiManager.console_print_warning("正在尝试加载此插件所需的依赖插件: " + _dep)
 							await load_plugin(_f_dic[_dep.to_lower()].file,_f_dic,_id)
 							await get_tree().process_frame
-							if !_inst_dic.has(_dep.to_lower()):
+							if (!file_load_status.has(_f_dic[_dep.to_lower()].file)) || (file_load_status[_f_dic[_dep.to_lower()].file] == false):
 								GuiManager.console_print_error("无法加载插件文件: " + file)
 								GuiManager.console_print_error("此插件所需的依赖插件加载失败: "+_dep)
 								return
@@ -243,7 +243,7 @@ func get_plugin_file_info(file:String)->Dictionary:
 
 
 func get_plugin_files_dic()->Dictionary:
-	GuiManager.console_print_warning("正在扫描插件目录.....")
+	GuiManager.console_print_warning("开始扫描插件目录.....")
 	var _file_dic:Dictionary = {}
 	var _files:Array = _list_files_in_directory(plugin_path)
 	if _files.size() == 0:

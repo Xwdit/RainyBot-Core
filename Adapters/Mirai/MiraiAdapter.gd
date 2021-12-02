@@ -96,7 +96,7 @@ var mirai_loader:=MiraiLoader.new()
 
 
 func init():
-	GuiManager.console_print_warning("正在加载内置模块: Mirai-Adapter | 版本:V2.0-Pre-Alpha-5 | 作者:Xwdit")
+	GuiManager.console_print_warning("正在加载内置模块: Mirai-Adapter | 版本:V2.0-Alpha-1 | 作者:Xwdit")
 	add_to_group("console_command_mirai")
 	var usages = [
 		"mirai status - 获取与Mirai框架的连接状态",
@@ -118,7 +118,7 @@ func _mirai_config_loaded():
 	mirai_client.connect_to_mirai(get_ws_url())
 
 
-func _call_console_command(cmd:String,args:Array):
+func _call_console_command(_cmd:String,args:Array):
 	match args[0]:
 		"status":
 			GuiManager.console_print_text("当前连接状态: "+"已连接" if is_bot_connected() else "未连接")

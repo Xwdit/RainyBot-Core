@@ -33,5 +33,5 @@ func _notification(what):
 		get_tree().quit()
 
 
-func _call_console_command(cmd:String,args:Array):
+func _call_console_command(_cmd:String,_args:Array):
 	notification(NOTIFICATION_WM_CLOSE_REQUEST)

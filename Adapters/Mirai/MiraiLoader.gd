@@ -48,7 +48,7 @@ pause
 
 func check_java_version():
 	var output = []
-	var exit_code = OS.execute("java", ["--version"], output)
+	var _exit_code = OS.execute("java", ["--version"], output)
 	if output.size() > 0:
 		var ver_str:String = output[0]
 		var ver_arr:Array = ver_str.split("\n")

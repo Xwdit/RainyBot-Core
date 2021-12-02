@@ -38,7 +38,7 @@ func disconnect_to_mirai():
 		_client.get_peer(1).close()
 
 
-func _closed(was_clean = false):
+func _closed(_was_clean = false):
 	if found_mirai:
 		GuiManager.console_print_warning("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
 		GuiManager.console_print_warning("若Mirai进程被意外关闭，请使用命令 mirai restart 来重新启动")
@@ -54,7 +54,7 @@ func _closed(was_clean = false):
 			connect_to_mirai(BotAdapter.get_ws_url())
 
 
-func _connected(proto = ""):
+func _connected(_proto = ""):
 	found_mirai = true
 	GuiManager.console_print_success("成功与Mirai框架进行通信，正在等待响应...")
 	_client.get_peer(1).set_write_mode(WebSocketPeer.WRITE_MODE_TEXT)
@@ -78,7 +78,7 @@ func _on_data():
 			GuiManager.console_print_success("成功恢复与Mirai框架的连接!")
 
 
-func _process(delta):
+func _process(_delta):
 	_client.poll()
 
 

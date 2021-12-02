@@ -38,6 +38,7 @@ highlight_current_line = true
 draw_control_chars = true
 draw_tabs = true
 syntax_highlighter = SubResource( "CodeHighlighter_nyeeb" )
+scroll_smooth = true
 minimap_draw = true
 caret_type = 1
 caret_blink = true

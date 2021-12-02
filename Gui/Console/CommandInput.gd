@@ -5,7 +5,16 @@ var n_history = -1
 var arr_history = []
 
 
-func _input(event):
+func _process(_delta):
+	var _text = ""
+	if has_focus() && !has_selection():
+		_text = text.insert(caret_column,"|")
+	else:
+		_text = text
+	$Caret.text = _text
+
+
+func _input(_event):
 	if Input.is_action_just_pressed("ui_up"):
 		if arr_history.size() > 0:
 			if n_history == -1:
@@ -27,3 +36,10 @@ func _on_CommandInput_text_submitted(new_text):
 	arr_history.append(new_text)
 	n_history = -1
 	CommandManager.parse_console_command(new_text)
+
+
+func _on_CommandInput_text_changed(new_text):
+	if new_text == "":
+		add_theme_color_override("font_color",Color(0.88,0.88,0.88,1))
+	else:
+		add_theme_color_override("font_color",Color(0.88,0.88,0.88,0))

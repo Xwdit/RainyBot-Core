@@ -9,16 +9,16 @@ func _ready():
 	register_console_command("help",false,["help - 查看命令列表","help <命令> - 查看某个命令的帮助"],"RainyBot-Core",false)
 
 
-func _call_console_command(cmd:String,args:Array):
+func _call_console_command(_cmd:String,args:Array):
 	if args.size() > 0:
-		var _cmd = args[0]
-		GuiManager.console_print_text("-----命令列表(%s)-----"%[_cmd])
-		print_console_command_usages(_cmd)
-		GuiManager.console_print_text("-----命令列表(%s)-----"%[_cmd])
+		var cmd = args[0]
+		GuiManager.console_print_text("-----命令列表(%s)-----"%[cmd])
+		print_console_command_usages(cmd)
+		GuiManager.console_print_text("-----命令列表(%s)-----"%[cmd])
 	else:
 		GuiManager.console_print_text("-----命令列表(全部)-----")
-		for _cmd in console_commands_dic:
-			print_console_command_usages(_cmd)
+		for cmd in console_commands_dic:
+			print_console_command_usages(cmd)
 		GuiManager.console_print_text("-----命令列表(全部)-----")
 
 

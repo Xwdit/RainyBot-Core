@@ -50,7 +50,7 @@ func init_config():
 						GuiManager.console_print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+key)
 						GuiManager.console_print_warning("可以前往以下路径来验证与修改配置: "+config_path)
 				loaded_config = _config
-				GuiManager.console_print_success("配置加载成功")
+				GuiManager.console_print_success("Mirai-Adapter配置文件加载成功！")
 				emit_signal("config_loaded")
 			else:
 				GuiManager.console_print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
