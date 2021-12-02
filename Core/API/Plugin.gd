@@ -111,14 +111,14 @@ func register_event(event:GDScript,func_name:String,priority:bool=false):
 	if has_method(func_name):
 		var _callable = Callable(self,func_name)
 		if is_instance_valid(event):
+			if plugin_event_dic.has(event):
+				GuiManager.console_print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
+				return
 			var arr:Array = []
 			if PluginManager.plugin_event_dic.has(event):
 				arr = PluginManager.plugin_event_dic[event]
 			else:
 				PluginManager.plugin_event_dic[event] = arr
-			if plugin_event_dic.has(event):
-				GuiManager.console_print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
-				return
 			if priority:
 				arr.push_front(_callable)
 			else:
