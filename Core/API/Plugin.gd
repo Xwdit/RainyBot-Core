@@ -18,6 +18,7 @@ var plugin_info:Dictionary = {
 var plugin_config:Dictionary = {}
 var plugin_data:Dictionary = {}
 var plugin_event_dic:Dictionary = {}
+var plugin_context_dic:Dictionary = {}
 var plugin_console_command_dic:Dictionary = {}
 var plugin_timer:Timer = Timer.new()
 var plugin_time_passed:int = 0
@@ -39,6 +40,8 @@ func _ready():
 	
 func _exit_tree():
 	_on_unload()
+	for ev in plugin_event_dic:
+		unregister_event(ev)
 
 
 func _on_init():
@@ -55,12 +58,6 @@ func _on_process():
 
 func _on_unload():
 	pass
-
-
-func _call_event(event:String,ins:Event):
-	if plugin_event_dic.has(event):
-		var func_name = plugin_event_dic[event]
-		call(func_name,ins)
 
 
 func _call_console_command(cmd:String,args:Array):
@@ -110,56 +107,46 @@ func get_other_plugin_instance(plugin_id)->Plugin:
 	return ins
 
 
-func register_event(category:int,event_type:int,func_name:String):
-	if BotAdapter.event_category_dic.has(category):
-		var cate = BotAdapter.event_category_dic[category]
-		if cate.has(event_type):
-			var e_name = cate[event_type]
-			if e_name is Array:
-				for e in e_name:
-					if !plugin_event_dic.has(e):
-						plugin_event_dic[e] = func_name
-						add_to_group(e)
-					else:
-						GuiManager.console_print_error("事件注册出错: 所选类别中的指定事件类型已在当前插件中被注册!")
-						return
+func register_event(event:GDScript,func_name:String,priority:bool=false):
+	if has_method(func_name):
+		var _callable = Callable(self,func_name)
+		if is_instance_valid(event):
+			var arr:Array = []
+			if PluginManager.plugin_event_dic.has(event):
+				arr = PluginManager.plugin_event_dic[event]
 			else:
-				if !plugin_event_dic.has(e_name):
-					plugin_event_dic[e_name] = func_name
-					add_to_group(e_name)
-				else:
-					GuiManager.console_print_error("事件注册出错: 所选类别中的指定事件类型已在当前插件中被注册!")
-					return
+				PluginManager.plugin_event_dic[event] = arr
+			if plugin_event_dic.has(event):
+				GuiManager.console_print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
+				return
+			if priority:
+				arr.push_front(_callable)
+			else:
+				arr.push_back(_callable)
+			plugin_event_dic[event]=_callable
+			GuiManager.console_print_success("成功注册事件%s!" % [event.resource_path.get_file().replacen(".gd","")])
 		else:
-			GuiManager.console_print_error("事件注册出错: 指定的事件类型在所选事件类别中不存在!")
+			GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
 	else:
-		GuiManager.console_print_error("事件注册出错: 指定的事件类别不存在!")
+		GuiManager.console_print_error("事件注册出错: 指定的函数名不存在！")
 
 
-func unregister_event(category:int,event_type:int):
-	if BotAdapter.event_category_dic.has(category):
-		var cate = BotAdapter.event_category_dic[category]
-		if cate.has(event_type):
-			var e_name = cate[event_type]
-			if e_name is Array:
-				for e in e_name:
-					if plugin_event_dic.has(e):
-						plugin_event_dic.erase(e)
-						remove_from_group(e)
-					else:
-						GuiManager.console_print_error("事件取消注册出错: 所选类别中的指定事件类型未在当前插件中被注册!")
-						return
-			else:
-				if plugin_event_dic.has(e_name):
-					plugin_event_dic.erase(e_name)
-					remove_from_group(e_name)
-				else:
-					GuiManager.console_print_error("事件取消注册出错: 所选类别中的指定事件类型未在当前插件中被注册!")
-					return
+func unregister_event(event:GDScript):
+	if is_instance_valid(event):
+		if PluginManager.plugin_event_dic.has(event):
+			var arr:Array = PluginManager.plugin_event_dic[event]
+			if plugin_event_dic.has(event):
+				arr.erase(plugin_event_dic[event])
+				if arr.is_empty():
+					PluginManager.plugin_event_dic.erase(event)
+				plugin_event_dic.erase(event)
+				GuiManager.console_print_success("成功取消注册事件%s!" % [event.resource_path.get_file().replacen(".gd","")])
+				return
+			GuiManager.console_print_error("事件取消注册出错: 此插件未注册事件%s！"% [event.resource_path.get_file().replacen(".gd","")])
 		else:
-			GuiManager.console_print_error("事件取消注册出错: 指定的事件类型在所选事件类别中不存在!")
+			GuiManager.console_print_error("事件取消注册出错: 事件%s未被任何插件注册！"% [event.resource_path.get_file().replacen(".gd","")])
 	else:
-		GuiManager.console_print_error("事件取消注册出错: 指定的事件类别不存在")
+		GuiManager.console_print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 
 
 func register_console_command(command:String,func_name:String,need_arguments:bool=false,usages:Array=[]):
@@ -355,3 +342,46 @@ func set_plugin_data(key,value,save_file:bool=true):
 
 func unload_plugin():
 	PluginManager.unload_plugin(self)
+
+
+func wait_context(context_id:String,timeout:float=20.0):
+	GuiManager.console_print_warning("开始等待上下文响应，ID为: %s，超时时间为: %s秒！"%[context_id,str(timeout)])
+	var _cont:PluginContextHelper
+	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
+		_cont = plugin_context_dic[context_id]
+	else:
+		_cont = PluginContextHelper.new()
+		_cont.id = context_id
+		plugin_context_dic[context_id] = _cont
+	_tick_context_timeout(_cont,timeout)
+	await _cont.finished
+	plugin_context_dic.erase(context_id)
+	GuiManager.console_print_warning("上下文已完成，ID为: %s，响应结果为: %s！"%[context_id,str(_cont.get_result())])
+	return _cont.get_result()
+
+
+func respond_context(context_id:String,response):
+	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
+		var _cont:PluginContextHelper = plugin_context_dic[context_id]
+		_cont.result = response
+		_cont.emit_signal("finished")
+		GuiManager.console_print_success("成功回应上下文，ID为: %s，响应结果为: %s！"%[context_id,str(response)])
+	else:
+		GuiManager.console_print_warning("未找到指定的上下文ID，无法进行回应: " + context_id)
+		
+
+func _tick_context_timeout(cont_ins:PluginContextHelper,_timeout:float):
+	await get_tree().create_timer(_timeout).timeout
+	if is_instance_valid(cont_ins) && cont_ins.result == null:
+		GuiManager.console_print_warning("等待上下文响应超时，无法获取到返回结果: "+str(cont_ins.id))
+		cont_ins.emit_signal("finished")
+
+
+class PluginContextHelper:
+	extends RefCounted
+	signal finished
+	var id:String = ""
+	var result = null
+	
+	func get_result():
+		return result

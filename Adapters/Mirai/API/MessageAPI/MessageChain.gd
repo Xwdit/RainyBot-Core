@@ -75,10 +75,11 @@ func get_message(index:int)->Message:
 func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array:
 	var arr:Array = []
 	for _dic in data_array:
+		var _msg = BotAdapter.parse_message_dic(_dic)
 		if types.size() > 0:
 			var _has = false
 			for _t in types:
-				if _dic.type == BotAdapter.message_type_dic[int(_t)]:
+				if _msg.get_script() == _t:
 					_has = true
 					break
 			if exclude:
@@ -86,7 +87,7 @@ func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array
 					continue
 			elif !_has:
 				continue
-		arr.append(BotAdapter.parse_message_dic(_dic))
+		arr.append(_msg)
 		if max_size != -1 && arr.size() >= max_size:
 			break
 	return arr
@@ -95,10 +96,11 @@ func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array
 func get_message_text(types:Array=[],exclude:bool=false)->String:
 	var text:String = ""
 	for _dic in data_array:
+		var _msg = BotAdapter.parse_message_dic(_dic)
 		if types.size() > 0:
 			var _has = false
 			for _t in types:
-				if _dic.type == BotAdapter.message_type_dic[int(_t)]:
+				if _msg.get_script() == _t:
 					_has = true
 					break
 			if exclude:
@@ -106,7 +108,7 @@ func get_message_text(types:Array=[],exclude:bool=false)->String:
 					continue
 			elif !_has:
 				continue
-		text += BotAdapter.parse_message_dic(_dic).get_as_text()
+		text += _msg.get_as_text()
 	return text
 
 
@@ -126,9 +128,10 @@ func get_message_timestamp()->int:
 	return _msg_time
 
 
-func has_message_type(type:int)->bool:
+func has_message_type(type:GDScript)->bool:
 	for _dic in data_array:
-		if _dic.type == BotAdapter.message_type_dic[type]:
+		var _msg = BotAdapter.parse_message_dic(_dic)
+		if _msg.get_script() == type:
 			return true
 	return false
 

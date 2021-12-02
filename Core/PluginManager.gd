@@ -7,6 +7,7 @@ var plugin_data_path = OS.get_executable_path().get_base_dir() + "/data/"
 
 var loaded_scripts:Dictionary = {}
 var file_load_status:Dictionary = {}
+var plugin_event_dic:Dictionary = {}
 
 
 var default_plugin_info = {
@@ -19,6 +20,7 @@ var default_plugin_info = {
 
 
 func _ready():
+	add_to_group("Event")
 	add_to_group("console_command_plugins")
 	var usages = [
 		"plugins list - 查看所有已加载的插件列表",
@@ -31,6 +33,17 @@ func _ready():
 		"plugins delete <文件名> - 删除一个插件"
 	]
 	CommandManager.register_console_command("plugins",true,usages,"RainyBot-Core")
+
+
+func _call_event(event:Event):
+	if plugin_event_dic.has(event.get_script()):
+		var arr:Array = plugin_event_dic[event.get_script()]
+		for c in arr:
+			var _callable:Callable = c
+			if _callable.is_valid():
+				var _continue = _callable.call(event)
+				if _continue is bool && _continue == false:
+					return
 
 
 func _call_console_command(_cmd:String,args:Array):
