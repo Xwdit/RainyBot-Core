@@ -9,6 +9,11 @@ var data_dic:Dictionary = {
 }
 
 
+static func init()->AtAllMessage:
+	var ins:AtAllMessage = AtAllMessage.new()
+	return ins
+
+
 static func init_meta(dic:Dictionary)->AtAllMessage:
 	var ins:AtAllMessage = AtAllMessage.new()
 	ins.data_dic = dic
