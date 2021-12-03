@@ -84,7 +84,7 @@ func _process(_delta):
 
 func send_bot_request(command,sub_command=null,content={},timeout:float=20.0)->Dictionary:
 	if !is_bot_connected():
-		GuiManager.console_print_error("未连接到Mirai框架，指令请求发送失败: "+command+sub_command+content)
+		GuiManager.console_print_error("未连接到Mirai框架，指令请求发送失败: "+str(command)+" "+str(sub_command)+" "+str(content))
 		return {}
 	var sync_id = randi()
 	while processing_command.has(sync_id):
