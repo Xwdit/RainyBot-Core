@@ -11,17 +11,13 @@ var data_dic:Dictionary = {
 }
 
 
-static func init_id(face_id:int)->FaceMessage:
+static func init(face)->FaceMessage:
 	var ins:FaceMessage = FaceMessage.new()
 	var dic:Dictionary = ins.data_dic
-	dic.faceId = face_id
-	return ins
-
-
-static func init_name(face_name:int)->FaceMessage:
-	var ins:FaceMessage = FaceMessage.new()
-	var dic:Dictionary = ins.data_dic
-	dic.name = face_name
+	if face is int:
+		dic.faceId = face
+	elif face is String:
+		dic.name = face
 	return ins
 
 

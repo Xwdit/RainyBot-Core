@@ -25,24 +25,19 @@ func get_sender()->Member:
 	return Member.init_meta(data_dic.sender,Member.Role.STRANGER)
 	
 	
-func reply(msg:Message,quote:bool=false)->BotRequestResult:
+func reply(msg,quote:bool=false)->BotRequestResult:
+	var _chain = []
+	if msg is String:
+		_chain.append(BotCodeMessage.init(msg).get_metadata())
+	elif msg is Message:
+		_chain.append(msg.get_metadata())
+	elif msg is MessageChain:
+		_chain = msg.get_metadata()
 	var _req_dic = {
 		"target":data_dic.sender.id,
-		"messageChain":[msg.get_metadata()],
+		"messageChain":_chain,
 		"quote":get_message_chain().get_message_id() if quote else null
 	}
 	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
-	
-	
-func reply_chain(msg_chain:MessageChain,quote:bool=false)->BotRequestResult:
-	var _req_dic = {
-		"target":data_dic.sender.id,
-		"messageChain":msg_chain.get_metadata(),
-		"quote":get_message_chain().get_message_id() if quote else null
-	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic)
-	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
-	return _ins
-	

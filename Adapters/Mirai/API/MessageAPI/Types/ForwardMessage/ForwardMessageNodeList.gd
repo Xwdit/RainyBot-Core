@@ -26,9 +26,14 @@ func _iter_get(_arg):
 	return get_from_index(iter_current)
 
 
-static func init(msg_node:ForwardMessageNode)->ForwardMessageNodeList:
+static func init(msg_node)->ForwardMessageNodeList:
 	var ins:ForwardMessageNodeList = ForwardMessageNodeList.new()
-	ins.data_array.append(msg_node.get_metadata())
+	if msg_node is Array:
+		for n in msg_node:
+			if n is ForwardMessageNode:
+				ins.data_array.append(n.get_metadata())
+	elif msg_node is ForwardMessageNode:
+		ins.data_array.append(msg_node.get_metadata())
 	return ins
 
 
@@ -73,6 +78,11 @@ func get_size()->int:
 	return data_array.size()
 	
 	
-func append(msg_node:ForwardMessageNode)->ForwardMessageNodeList:
-	data_array.append(msg_node.get_metadata())
+func append(msg_node)->ForwardMessageNodeList:
+	if msg_node is Array:
+		for n in msg_node:
+			if n is ForwardMessageNode:
+				data_array.append(n.get_metadata())
+	elif msg_node is ForwardMessageNode:
+		data_array.append(msg_node.get_metadata())
 	return self

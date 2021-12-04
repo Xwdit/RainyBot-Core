@@ -38,21 +38,20 @@ func get_group()->Group:
 	return Group.init_meta(data_dic.sender.group)
 	
 	
-func reply(msg:Message,quote:bool=false,at:bool=false)->BotRequestResult:
+func reply(msg,quote:bool=false,at:bool=false)->BotRequestResult:
+	var _chain = []
+	if msg is String:
+		_chain.append(BotCodeMessage.init(msg).get_metadata())
+	elif msg is Message:
+		_chain.append(msg.get_metadata())
+	elif msg is MessageChain:
+		_chain = msg.get_metadata()
+	if at:
+		var _arr = [AtMessage.init(data_dic.sender.id).get_metadata(),TextMessage.init(" ").get_metadata()]
+		_chain = _arr.append_array(_chain)
 	var _req_dic = {
 		"target":data_dic.sender.group.id,
-		"messageChain":[AtMessage.init(data_dic.sender.id).get_metadata(),TextMessage.init(" ").get_metadata(),msg.get_metadata()] if at else [msg.get_metadata()],
-		"quote":get_message_chain().get_message_id() if quote else null
-	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendGroupMessage",null,_req_dic)
-	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
-	return _ins
-	
-	
-func reply_chain(msg_chain:MessageChain,quote:bool=false)->BotRequestResult:
-	var _req_dic = {
-		"target":data_dic.sender.group.id,
-		"messageChain":msg_chain.get_metadata(),
+		"messageChain":_chain,
 		"quote":get_message_chain().get_message_id() if quote else null
 	}
 	var _result:Dictionary = await BotAdapter.send_bot_request("sendGroupMessage",null,_req_dic)
@@ -66,3 +65,7 @@ func recall()->BotRequestResult:
 
 func is_at_bot()->bool:
 	return get_message_chain().is_at_bot()
+
+
+func set_essence()->BotRequestResult:
+	return await get_message_chain().set_essence()

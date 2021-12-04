@@ -20,7 +20,7 @@ enum StatusCode{
 
 
 var data_dic:Dictionary = {
-	"code":StatusCode.SUCCESS,
+	"code":int(StatusCode.SUCCESS),
 	"msg":"",
 	"messageId":-1
 }
@@ -49,4 +49,14 @@ func get_status_msg()->String:
 	
 	
 func get_message_id()->int:
-	return data_dic.messageId
+	if data_dic.has("messageId"):
+		return data_dic.messageId
+	return 0
+
+
+func is_success()->bool:
+	return get_status_code() == int(StatusCode.SUCCESS)
+	
+	
+func recall()->BotRequestResult:
+	return await MessageChain.init(get_message_id()).recall()

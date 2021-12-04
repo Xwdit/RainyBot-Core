@@ -26,19 +26,20 @@ func _iter_get(_arg):
 	return get_message(iter_current)
 
 
-static func init(msg:Message)->MessageChain:
+static func init(msg)->MessageChain:
 	var ins:MessageChain = MessageChain.new()
-	ins.data_array.append(msg.get_metadata())
-	return ins
-
-
-static func init_id(msg_id:int)->MessageChain:
-	var ins:MessageChain = MessageChain.new()
-	ins.data_array.append({
+	if msg is Array:
+		for m in msg:
+			if m is Message:
+				ins.data_array.append(m.get_metadata())
+	elif msg is Message:
+		ins.data_array.append(msg.get_metadata())
+	elif msg is int:
+		ins.data_array.append({
 		"type": "Source",
-		"id": msg_id,
+		"id": msg,
 		"time": 0
-	})
+		})
 	return ins
 
 
@@ -56,8 +57,13 @@ func set_metadata(arr:Array):
 	data_array = arr
 
 
-func append(msg:Message)->MessageChain:
-	data_array.append(msg.get_metadata())
+func append(msg)->MessageChain:
+	if msg is Array:
+		for m in msg:
+			if m is Message:
+				data_array.append(m.get_metadata())
+	elif msg is Message:
+		data_array.append(msg.get_metadata())
 	return self
 
 
