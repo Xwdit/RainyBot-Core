@@ -78,19 +78,25 @@ func get_message(index:int)->Message:
 		return null
 
 
-func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array:
+func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
 	var arr:Array = []
 	for _dic in data_array:
 		var _msg = BotAdapter.parse_message_dic(_dic)
-		if types.size() > 0:
-			var _has = false
-			for _t in types:
-				if _msg.get_script() == _t:
-					_has = true
-					break
-			if exclude:
-				if _has:
+		var _has:bool = false
+		if types is Array:
+			if types.size() > 0:
+				for _t in types:
+					if _msg.get_script() == _t:
+						_has = true
+						break
+				if exclude && _has:
 					continue
+				elif !_has:
+					continue
+		elif types is Message:
+			_has = _msg.get_script() == types
+			if exclude && _has:
+				continue
 			elif !_has:
 				continue
 		arr.append(_msg)
@@ -99,19 +105,25 @@ func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array
 	return arr
 
 
-func get_message_text(types:Array=[],exclude:bool=false)->String:
+func get_message_text(types=[],exclude:bool=false)->String:
 	var text:String = ""
 	for _dic in data_array:
 		var _msg = BotAdapter.parse_message_dic(_dic)
-		if types.size() > 0:
-			var _has = false
-			for _t in types:
-				if _msg.get_script() == _t:
-					_has = true
-					break
-			if exclude:
-				if _has:
+		var _has:bool = false
+		if types is Array:
+			if types.size() > 0:
+				for _t in types:
+					if _msg.get_script() == _t:
+						_has = true
+						break
+				if exclude && _has:
 					continue
+				elif !_has:
+					continue
+		elif types is Message:
+			_has = _msg.get_script() == types
+			if exclude && _has:
+				continue
 			elif !_has:
 				continue
 		text += _msg.get_as_text()

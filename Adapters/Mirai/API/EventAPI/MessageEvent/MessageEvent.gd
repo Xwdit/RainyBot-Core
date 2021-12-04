@@ -17,11 +17,11 @@ func get_message_chain()->MessageChain:
 	return MessageChain.init_meta(get("data_dic").messageChain)
 
 
-func get_message_array(types:Array=[],exclude:bool=false,max_size:int=-1)->Array:
+func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
 	return get_message_chain().get_message_array(types,exclude,max_size)
 
 
-func get_message_text(types:Array=[],exclude:bool=false)->String:
+func get_message_text(types=[],exclude:bool=false)->String:
 	return get_message_chain().get_message_text(types,exclude)
 
 
@@ -35,3 +35,7 @@ func get_message_timestamp()->int:
 
 func get_sender_id()->int:
 	return call("get_sender").get_id()
+
+
+func reply(msg,quote:bool=false,at:bool=false)->BotRequestResult:
+	return null

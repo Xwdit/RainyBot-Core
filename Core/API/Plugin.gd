@@ -32,7 +32,7 @@ func _init():
 
 func _ready():
 	plugin_timer.wait_time = 1
-	plugin_timer.connect("timeout",Callable(self,"_plugin_timer_timeout"))
+	plugin_timer.connect("timeout",_plugin_timer_timeout)
 	add_child(plugin_timer)
 	plugin_timer.start()
 	_on_load()
@@ -42,6 +42,8 @@ func _exit_tree():
 	_on_unload()
 	for ev in plugin_event_dic.duplicate():
 		unregister_event(ev)
+	for cmd in plugin_console_command_dic.duplicate():
+		unregister_console_command(cmd)
 
 
 func _on_init():
@@ -62,8 +64,8 @@ func _on_unload():
 
 func _call_console_command(cmd:String,args:Array):
 	if plugin_console_command_dic.has(cmd):
-		var func_name = plugin_console_command_dic[cmd]
-		call(func_name,cmd,args)
+		var function:Callable = plugin_console_command_dic[cmd]
+		function.call(cmd,args)
 
 
 func _plugin_timer_timeout():
@@ -100,16 +102,16 @@ func get_plugin_runtime()->int:
 	return plugin_time_passed
 	
 
-func get_other_plugin_instance(plugin_id)->Plugin:
+func get_other_plugin_instance(plugin_id:String)->Plugin:
 	var ins = PluginManager.get_plugin_instance(plugin_id)
 	if ins == null:
 		GuiManager.console_print_error("无法获取ID为%s的插件实例，可能是ID有误或插件未被加载；请检查依赖关系是否设置正确！" % [plugin_id])
 	return ins
 
 
-func register_event(event:GDScript,func_name:String,priority:bool=false):
-	if has_method(func_name):
-		var _callable = Callable(self,func_name)
+func register_event(event:GDScript,function:Callable,priority:int=0):
+	if is_instance_valid(function) && function.is_valid():
+		var _callable = {"priority":priority,"function":function}
 		if is_instance_valid(event):
 			if plugin_event_dic.has(event):
 				GuiManager.console_print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
@@ -119,16 +121,24 @@ func register_event(event:GDScript,func_name:String,priority:bool=false):
 				arr = PluginManager.plugin_event_dic[event]
 			else:
 				PluginManager.plugin_event_dic[event] = arr
-			if priority:
-				arr.push_front(_callable)
+			if arr.size() != 0:
+				var _idx = 0
+				for _i in range(arr.size()):
+					var _pri:int = arr[_i]["priority"]
+					if priority >= _pri:
+						_idx = _i
+				if arr[_idx]["priority"] > priority:
+					arr.insert(_idx,_callable)
+				else:
+					arr.insert(_idx+1,_callable)
 			else:
-				arr.push_back(_callable)
+				arr.append(_callable)	
 			plugin_event_dic[event]=_callable
-			GuiManager.console_print_success("成功注册事件: %s!" % [event.resource_path.get_file().replacen(".gd","")])
+			GuiManager.console_print_success("成功注册事件: %s,优先级为: %s!" % [event.resource_path.get_file().replacen(".gd",""),str(priority)])
 		else:
 			GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
 	else:
-		GuiManager.console_print_error("事件注册出错: 指定的函数名不存在！")
+		GuiManager.console_print_error("事件注册出错: 指定的函数不存在！")
 
 
 func unregister_event(event:GDScript):
@@ -149,12 +159,15 @@ func unregister_event(event:GDScript):
 		GuiManager.console_print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 
 
-func register_console_command(command:String,func_name:String,need_arguments:bool=false,usages:Array=[]):
+func register_console_command(command:String,function:Callable,need_arguments:bool=false,usages:Array=[]):
 	if plugin_console_command_dic.has(command):
 		GuiManager.console_print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
 		return
+	if !is_instance_valid(function) or !function.is_valid():
+		GuiManager.console_print_error("无法注册以下命令，因为指定的函数不存在: " + command)
+		return
 	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name)==OK:
-		plugin_console_command_dic[command] = func_name
+		plugin_console_command_dic[command] = function
 		add_to_group("console_command_"+command)
 		GuiManager.console_print_success("成功注册命令: %s!" % [command])
 

@@ -25,7 +25,7 @@ func get_sender()->Member:
 	return Member.init_meta(data_dic.sender,Member.Role.STRANGER)
 	
 	
-func reply(msg,quote:bool=false)->BotRequestResult:
+func reply(msg,quote:bool=false,_at:bool=false)->BotRequestResult:
 	var _chain = []
 	if msg is String:
 		_chain.append(BotCodeMessage.init(msg).get_metadata())

@@ -81,6 +81,10 @@ func get_group()->Group:
 	return Group.init_meta(data_dic.group)
 
 
+func has_permission(perm:int)->bool:
+	return perm == get_permission()
+
+
 func change_name(new_name:String)->BotRequestResult:
 	var _req_dic = {
 		"target":data_dic.group.id,
