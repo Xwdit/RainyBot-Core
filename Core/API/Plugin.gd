@@ -110,7 +110,7 @@ func get_other_plugin_instance(plugin_id:String)->Plugin:
 
 
 func register_event(event:GDScript,function:Callable,priority:int=0):
-	if is_instance_valid(function) && function.is_valid():
+	if function.is_valid():
 		var _callable = {"priority":priority,"function":function}
 		if is_instance_valid(event):
 			if plugin_event_dic.has(event):
@@ -163,7 +163,7 @@ func register_console_command(command:String,function:Callable,need_arguments:bo
 	if plugin_console_command_dic.has(command):
 		GuiManager.console_print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
 		return
-	if !is_instance_valid(function) or !function.is_valid():
+	if !function.is_valid():
 		GuiManager.console_print_error("无法注册以下命令，因为指定的函数不存在: " + command)
 		return
 	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name)==OK:

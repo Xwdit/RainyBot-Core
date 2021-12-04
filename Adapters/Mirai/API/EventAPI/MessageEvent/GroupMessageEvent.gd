@@ -48,7 +48,8 @@ func reply(msg,quote:bool=false,at:bool=false)->BotRequestResult:
 		_chain = msg.get_metadata()
 	if at:
 		var _arr = [AtMessage.init(data_dic.sender.id).get_metadata(),TextMessage.init(" ").get_metadata()]
-		_chain = _arr.append_array(_chain)
+		_arr.append_array(_chain)
+		_chain = _arr
 	var _req_dic = {
 		"target":data_dic.sender.group.id,
 		"messageChain":_chain,
