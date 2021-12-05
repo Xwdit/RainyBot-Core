@@ -56,7 +56,11 @@ func get_message_id()->int:
 
 func is_success()->bool:
 	return get_status_code() == int(StatusCode.SUCCESS)
-	
+
+
+func is_status(code:int)->bool:
+	return get_status_code() == code
+
 	
 func recall()->BotRequestResult:
 	var _req_dic = {

@@ -50,6 +50,10 @@ func set_role(role:int):
 	member_role = role
 
 
+func is_role(role:int)->bool:
+	return role == get_role()
+
+
 func get_id()->int:
 	return data_dic.id
 

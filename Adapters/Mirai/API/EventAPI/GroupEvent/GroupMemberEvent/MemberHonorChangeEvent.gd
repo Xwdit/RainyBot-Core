@@ -54,3 +54,7 @@ func get_action_type()->int:
 		return ActionType.ACHIEVE
 	else:
 		return ActionType.LOST
+
+
+func is_action_type(action:int)->bool:
+	return action == get_action_type()

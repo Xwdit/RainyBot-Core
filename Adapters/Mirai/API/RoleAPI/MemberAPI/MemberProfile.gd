@@ -62,3 +62,7 @@ func get_sex()->int:
 		"FEMALE":
 			return Sex.FEMALE
 	return Sex.UNKNOWN
+	
+	
+func is_sex(sex:int)->bool:
+	return sex == get_sex()

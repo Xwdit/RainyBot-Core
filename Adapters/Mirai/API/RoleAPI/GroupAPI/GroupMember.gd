@@ -65,6 +65,10 @@ func get_permission()->int:
 	return BotAdapter.parse_permission_text(data_dic.permission)
 	
 	
+func is_permission(perm:int)->bool:
+	return perm == get_permission()
+	
+	
 func get_join_timestamp()->int:
 	return data_dic.joinTimestamp
 	
@@ -79,10 +83,6 @@ func get_mute_time_remaining()->int:
 
 func get_group()->Group:
 	return Group.init_meta(data_dic.group)
-
-
-func has_permission(perm:int)->bool:
-	return perm == get_permission()
 
 
 func change_name(new_name:String)->BotRequestResult:

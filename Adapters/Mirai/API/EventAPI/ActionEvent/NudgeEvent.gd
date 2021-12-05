@@ -48,6 +48,10 @@ func get_subject_type()->int:
 		return SubjectType.GROUP
 
 
+func is_subject_type(type:int)->bool:
+	return get_subject_type() == type
+
+
 func get_action_text()->String:
 	return data_dic.action
 	

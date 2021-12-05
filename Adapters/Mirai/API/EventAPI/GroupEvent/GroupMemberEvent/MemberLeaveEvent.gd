@@ -53,3 +53,7 @@ func get_group()->Group:
 	
 func get_reason_type()->int:
 	return event_reason
+	
+	
+func is_reason_type(reason:int)->bool:
+	return reason == event_reason
