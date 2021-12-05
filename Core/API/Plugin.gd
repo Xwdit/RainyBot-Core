@@ -54,6 +54,10 @@ func _on_load():
 	pass
 
 
+func _on_ready():
+	pass
+
+
 func _on_process():
 	pass
 

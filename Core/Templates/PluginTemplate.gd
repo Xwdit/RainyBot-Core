@@ -19,6 +19,11 @@ func _on_load():
 	register_console_command("example",_receive_console_command,false,["example - 这是一个测试命令"])
 
 
+#将在所有插件被完全加载后执行的操作
+func _on_ready():
+	Console.print_success("所有插件都加载完毕了~")
+
+
 #将在此插件运行的每一秒执行的操作
 func _on_process():
 	#获取插件自成功加载以来经过的时间

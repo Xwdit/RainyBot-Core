@@ -193,6 +193,7 @@ func load_plugin(file:String,files_dic=null,source:String=""):
 			plugin_ins.name = _plugin_info["id"]
 			plugin_ins.plugin_path = plugin_path + file
 			plugin_ins.plugin_file = file
+			plugin_ins.add_to_group("Plugin")
 			add_child(plugin_ins,true)
 			file_load_status[file] = true
 			GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
@@ -294,6 +295,7 @@ func load_plugins():
 			continue
 		await get_tree().process_frame
 		await load_plugin(_files_dic[_id].file,_files_dic)
+	get_tree().call_group("Plugin","_on_ready")
 
 
 func unload_plugins():
