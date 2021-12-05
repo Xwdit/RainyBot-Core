@@ -12,18 +12,18 @@ func _on_init():
 #将在此插件被完全加载后执行的操作
 func _on_load():
 	#注册群消息事件，将群消息事件绑定到_receive_group_event函数
-	register_event(GroupMessageEvent,"_receive_group_event")
+	register_event(GroupMessageEvent,_receive_group_event)
 	
 	#注册一个名为example的控制台指令，并将其绑定到_receive_console_command函数
 	#剩余两个参数分别为: 命令是否要求传入参数 , 命令的用法介绍
-	register_console_command("example","_receive_console_command",false,["example - 这是一个测试命令"])
+	register_console_command("example",_receive_console_command,false,["example - 这是一个测试命令"])
 
 
 #将在此插件运行的每一秒执行的操作
 func _on_process():
 	#获取插件自成功加载以来经过的时间
 	if get_plugin_runtime() % 3600 == 0:
-		Member.init(12345).send_message(TextMessage.init("时间又过去一个小时了哟~"))
+		Member.init(12345).send_message("时间又过去一个小时了哟~")
 
 
 #将在此插件即将被卸载时执行的操作
@@ -39,7 +39,7 @@ func _on_unload():
 func _receive_group_event(event:GroupMessageEvent):
 	#在此处处理事件
 	if event.get_group().get_id() == 123456789:
-		event.reply(TextMessage.init("这是一个回复"))
+		event.reply("这是一个回复")
 
 
 #指令在控制台被执行后将触发此函数
