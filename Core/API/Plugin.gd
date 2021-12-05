@@ -418,16 +418,15 @@ func unload_plugin():
 func wait_context(context_id:String,timeout:float=20.0):
 	GuiManager.console_print_warning("开始等待上下文响应，ID为: %s，超时时间为: %s秒！"%[context_id,str(timeout)])
 	var _cont:PluginContextHelper
-	var _timeout:int = timeout
 	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
 		_cont = plugin_context_dic[context_id]
-		_timeout = 0.0
+		timeout = 0.0
 	else:
 		_cont = PluginContextHelper.new()
 		_cont.id = context_id
 		plugin_context_dic[context_id] = _cont
-	if _timeout > 0.0:
-		_tick_context_timeout(_cont,_timeout)
+	if timeout > 0.0:
+		_tick_context_timeout(_cont,timeout)
 	await _cont.finished
 	GuiManager.console_print_warning("上下文已完成，ID为: %s，响应结果为: %s！"%[context_id,str(_cont.get_result())])
 	plugin_context_dic.erase(context_id)

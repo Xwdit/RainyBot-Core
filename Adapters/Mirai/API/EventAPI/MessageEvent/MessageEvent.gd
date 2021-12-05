@@ -37,5 +37,5 @@ func get_sender_id()->int:
 	return call("get_sender").get_id()
 
 
-func reply(msg,quote:bool=false,at:bool=false)->BotRequestResult:
+func reply(_msg,_quote:bool=false,_at:bool=false)->BotRequestResult:
 	return null

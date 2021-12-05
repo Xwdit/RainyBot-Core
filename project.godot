@@ -586,6 +586,8 @@ _global_script_class_icons={
 
 config/name="RainyBot-Core"
 run/main_scene="res://Main/Main.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="RainyBot"
 run/low_processor_mode=true
 boot_splash/image="res://logo.png"
 boot_splash/fullsize=false
