@@ -36,3 +36,7 @@ func set_metadata(dic:Dictionary):
 
 func get_as_text()->String:
 	return ""
+
+
+func append(msg)->MessageChain:
+	return MessageChain.init(self).append(msg)

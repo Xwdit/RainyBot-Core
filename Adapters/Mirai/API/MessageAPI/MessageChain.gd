@@ -32,6 +32,12 @@ static func init(msg)->MessageChain:
 		for m in msg:
 			if m is Message:
 				ins.data_array.append(m.get_metadata())
+			elif m is String:
+				ins.data_array.append(BotCodeMessage.init(m).get_metadata())
+			elif m is MessageChain:
+				ins.data_array.append_array(m.get_metadata())
+	elif msg is String:
+		ins.data_array.append(BotCodeMessage.init(msg).get_metadata())
 	elif msg is Message:
 		ins.data_array.append(msg.get_metadata())
 	elif msg is int:
@@ -40,6 +46,8 @@ static func init(msg)->MessageChain:
 		"id": msg,
 		"time": 0
 		})
+	elif msg is MessageChain:
+		ins.data_array.append_array(msg.get_metadata())
 	return ins
 
 
@@ -62,6 +70,12 @@ func append(msg)->MessageChain:
 		for m in msg:
 			if m is Message:
 				data_array.append(m.get_metadata())
+			elif m is String:
+				data_array.append(BotCodeMessage.init(m).get_metadata())
+			elif m is MessageChain:
+				data_array.append_array(m.get_metadata())
+	elif msg is String:
+		data_array.append(BotCodeMessage.init(msg).get_metadata())
 	elif msg is Message:
 		data_array.append(msg.get_metadata())
 	elif msg is MessageChain:
