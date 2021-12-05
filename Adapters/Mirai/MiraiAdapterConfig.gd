@@ -14,6 +14,7 @@ var default_config = {
 	"mirai_verify_key":"",
 	"mirai_qq":"",
 	"mirai_qq_password":"$DEFAULT12345",
+	"mirai_protocol":"ANDROID_PAD"
 }
 
 var config_description = {
@@ -21,8 +22,9 @@ var config_description = {
 	"mirai_port":"在这里填写连接到Mirai框架的端口，默认为8080",
 	"mirai_verify_key_enabled":"是否启用连接时的验证密钥，默认为false",
 	"mirai_verify_key":"若启用连接验证，请在这里输入验证密钥",
-	"mirai_qq":"要连接到的机器人QQ号码",
-	"mirai_qq_password":"要连接到的机器人QQ密码",
+	"mirai_qq":"要连接到的机器人的QQ号码",
+	"mirai_qq_password":"要连接到的机器人的QQ密码",
+	"mirai_protocol":"要使用的设备协议，默认为ANDROID_PAD"
 }
 
 var loaded_config = default_config
@@ -44,23 +46,28 @@ func init_config():
 				if _config["mirai_qq_password"] == "$DEFAULT12345":
 					GuiManager.console_print_error("检测到您还未修改默认配置，请进行修改!")
 					GuiManager.console_print_error("可以前往以下路径来验证与修改配置: "+config_path)
+					GuiManager.console_print_warning("配置完成后请重启RainyBot")
 					return
 				for key in _config:
 					if (_config[key] is String && _config[key] == "") or (_config[key] is bool && _config[key] == null):
 						GuiManager.console_print_warning("警告: 检测到内容为空的配置项，可能会导致出现问题: "+key)
 						GuiManager.console_print_warning("可以前往以下路径来验证与修改配置: "+config_path)
+						GuiManager.console_print_warning("配置完成后请重启RainyBot")
 				loaded_config = _config
 				GuiManager.console_print_success("Mirai-Adapter配置文件加载成功！")
 				emit_signal("config_loaded")
 			else:
 				GuiManager.console_print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
+				GuiManager.console_print_warning("删除完毕后请重启RainyBot")
 		else:
 			GuiManager.console_print_error("配置文件读取失败，请删除配置文件后重新生成! 路径:"+config_path)
+			GuiManager.console_print_warning("删除完毕后请重启RainyBot")
 	else:
 		GuiManager.console_print_warning("没有已存在的配置文件，正在生成新的配置文件...")
 		var _err = file.open(config_path,File.WRITE)
 		if _err != OK:
 			GuiManager.console_print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
+			GuiManager.console_print_warning("若要重试请重启RainyBot")
 			file.close()
 		else:
 			var json = JSON.new()

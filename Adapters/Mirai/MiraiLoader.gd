@@ -33,7 +33,7 @@ accounts:
 	  kind: PLAIN
 	  value: {mirai_qq_password}
 	configuration: 
-	  protocol: ANDROID_PAD
+	  protocol: {mirai_protocol}
 	  device: device.json
 """
 
