@@ -134,7 +134,7 @@ func register_event(event:GDScript,function:Callable,priority:int=0):
 			else:
 				arr.append(_callable)	
 			plugin_event_dic[event]=_callable
-			GuiManager.console_print_success("成功注册事件: %s,优先级为: %s!" % [event.resource_path.get_file().replacen(".gd",""),str(priority)])
+			GuiManager.console_print_success("成功注册事件: %s (优先级:%s)" % [event.resource_path.get_file().replacen(".gd",""),str(priority)])
 		else:
 			GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
 	else:
