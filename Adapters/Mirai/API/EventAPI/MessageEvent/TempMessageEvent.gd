@@ -46,6 +46,8 @@ func reply(msg,quote:bool=false,_at:bool=false)->BotRequestResult:
 		_chain.append(msg.get_metadata())
 	elif msg is MessageChain:
 		_chain = msg.get_metadata()
+	elif msg is Array:
+		_chain = MessageChain.init(msg).get_metadata()
 	var _req_dic = {
 		"qq":data_dic.sender.id,
 		"group":data_dic.sender.group.id,

@@ -46,6 +46,8 @@ func send_message(msg,quote_msgid:int=-1)->BotRequestResult:
 		_chain.append(msg.get_metadata())
 	elif msg is MessageChain:
 		_chain = msg.get_metadata()
+	elif msg is Array:
+		_chain = MessageChain.init(msg).get_metadata()
 	var _req_dic = {
 		"target":get_id(),
 		"messageChain":_chain,

@@ -50,6 +50,8 @@ func reply(msg,quote:bool=false,at:bool=false)->BotRequestResult:
 		_chain.append(msg.get_metadata())
 	elif msg is MessageChain:
 		_chain = msg.get_metadata()
+	elif msg is Array:
+		_chain = MessageChain.init(msg).get_metadata()
 	if at:
 		var _arr = [AtMessage.init(data_dic.sender.id).get_metadata(),TextMessage.init(" ").get_metadata()]
 		_arr.append_array(_chain)

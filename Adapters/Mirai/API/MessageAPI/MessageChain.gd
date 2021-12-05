@@ -64,6 +64,8 @@ func append(msg)->MessageChain:
 				data_array.append(m.get_metadata())
 	elif msg is Message:
 		data_array.append(msg.get_metadata())
+	elif msg is MessageChain:
+		data_array.append_array(msg.get_metadata())
 	return self
 
 
