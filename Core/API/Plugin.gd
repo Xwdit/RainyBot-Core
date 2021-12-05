@@ -19,6 +19,7 @@ var plugin_config:Dictionary = {}
 var plugin_data:Dictionary = {}
 var plugin_event_dic:Dictionary = {}
 var plugin_context_dic:Dictionary = {}
+var plugin_keyword_dic:Dictionary = {}
 var plugin_console_command_dic:Dictionary = {}
 var plugin_timer:Timer = Timer.new()
 var plugin_time_passed:int = 0
@@ -44,6 +45,8 @@ func _exit_tree():
 		unregister_event(ev)
 	for cmd in plugin_console_command_dic.duplicate():
 		unregister_console_command(cmd)
+	for kw in plugin_keyword_dic.duplicate():
+		unregister_keyword(kw)
 
 
 func _on_init():
@@ -185,7 +188,45 @@ func unregister_console_command(command:String):
 		remove_from_group("console_command_"+command)
 		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
 	
+
+func register_keyword(keyword:String,function:Callable,perm_filter:Callable=Callable(),no_perm_reply:String=""):
+	if plugin_keyword_dic.has(keyword):
+		GuiManager.console_print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
+		return
+	if !function.is_valid():
+		GuiManager.console_print_error("无法注册以下关键词，因为指定的函数不存在: " + keyword)
+		return
+	if !perm_filter.is_valid():
+		GuiManager.console_print_warning("警告:权限过滤器函数未定义或不存在，默认所有人将可触发此关键词！")
+	plugin_keyword_dic[keyword] = {"function":function,"perm_filter":perm_filter,"no_perm_reply":no_perm_reply}
+	GuiManager.console_print_success("成功注册关键词: %s!" % [keyword])
 	
+	
+func unregister_keyword(keyword:String):
+	if !plugin_keyword_dic.has(keyword):
+		GuiManager.console_print_error("无法取消注册以下关键词，因为此关键词未在此插件被注册: " + keyword)
+		return
+	plugin_keyword_dic.erase(keyword)
+	GuiManager.console_print_success("成功取消注册关键词: %s!" % [keyword])
+	
+	
+func trigger_keyword(event:MessageEvent)->bool:
+	var _text:String = event.get_message_text(TextMessage)
+	for _kw in plugin_keyword_dic:
+		if _text.begins_with(_kw):
+			var _func:Callable = plugin_keyword_dic[_kw]["function"]
+			var _filter:Callable = plugin_keyword_dic[_kw]["perm_filter"]
+			var _rep:String = plugin_keyword_dic[_kw]["no_perm_reply"]
+			if _filter.is_valid():
+				if !_filter.call(event):
+					event.reply(_rep,true,true)
+					return true
+			if _func.is_valid():
+				_func.call(_kw,_text.substr(_kw.length()),event)
+			return true
+	return false
+
+
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={}):
 	GuiManager.console_print_warning("正在加载插件配置文件.....")
 	plugin_config = default_config
