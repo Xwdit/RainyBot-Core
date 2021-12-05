@@ -41,8 +41,8 @@ func _call_event(event:Event):
 		for c in arr.duplicate():
 			var _callable:Callable = c["function"]
 			if _callable.is_valid():
-				var _continue = _callable.call(event)
-				if _continue is bool && _continue == false:
+				var _stop = _callable.call(event)
+				if _stop is bool && _stop == true:
 					return
 
 
@@ -206,6 +206,14 @@ func unload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	var _file = plugin.get_plugin_filename()
 	GuiManager.console_print_warning("正在卸载插件: "+get_beautify_plugin_info(_plugin_info))
+	var _dep_arr = []
+	for child in get_children():
+		if  child.get_plugin_info().dependency.has(_plugin_info.id):
+			_dep_arr.append(child.get_plugin_info().id)
+	if _dep_arr.size() != 0:
+		GuiManager.console_print_error("无法卸载插件，因为此插件被以下插件所依赖: " + str(_dep_arr))
+		GuiManager.console_print_error("请先卸载所有被依赖的插件，然后再试一次！")
+		return
 	plugin.queue_free()
 	await plugin.tree_exited
 	plugin.set_script(null)
@@ -215,8 +223,16 @@ func unload_plugin(plugin:Plugin):
 
 func reload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
-	GuiManager.console_print_warning("正在重载插件: " + get_beautify_plugin_info(_plugin_info))
 	var file = plugin.get_plugin_filename()
+	GuiManager.console_print_warning("正在重载插件: " + get_beautify_plugin_info(_plugin_info))
+	var _dep_arr = []
+	for child in get_children():
+		if  child.get_plugin_info().dependency.has(_plugin_info.id):
+			_dep_arr.append(child.get_plugin_info().id)
+	if _dep_arr.size() != 0:
+		GuiManager.console_print_error("无法重载插件，因为此插件被以下插件所依赖: " + str(_dep_arr))
+		GuiManager.console_print_error("请先卸载所有被依赖的插件，然后再试一次！")
+		return
 	await unload_plugin(plugin)
 	await load_plugin(file)
 
@@ -300,8 +316,10 @@ func load_plugins():
 
 func unload_plugins():
 	file_load_status.clear()
-	for child in get_children():
-		await unload_plugin(child)
+	var _childs = get_children()
+	_childs.reverse()
+	for _child in _childs:
+		await unload_plugin(_child)
 		
 		
 func reload_plugins():

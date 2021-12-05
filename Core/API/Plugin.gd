@@ -116,8 +116,10 @@ func get_other_plugin_instance(plugin_id:String)->Plugin:
 	return ins
 
 
-func register_event(event:GDScript,function:Callable,priority:int=0):
-	if function.is_valid():
+func register_event(event:GDScript,function,priority:int=0):
+	if function is String:
+		function = Callable(self,function)
+	if function is Callable and function.is_valid():
 		var _callable = {"priority":priority,"function":function}
 		if is_instance_valid(event):
 			if plugin_event_dic.has(event):
@@ -166,11 +168,13 @@ func unregister_event(event:GDScript):
 		GuiManager.console_print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 
 
-func register_console_command(command:String,function:Callable,need_arguments:bool=false,usages:Array=[]):
+func register_console_command(command:String,function,need_arguments:bool=false,usages:Array=[]):
 	if plugin_console_command_dic.has(command):
 		GuiManager.console_print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
 		return
-	if !function.is_valid():
+	if function is String:
+		function = Callable(self,function)
+	if (!function is Callable) or (!function.is_valid()):
 		GuiManager.console_print_error("无法注册以下命令，因为指定的函数不存在: " + command)
 		return
 	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name)==OK:
@@ -189,17 +193,21 @@ func unregister_console_command(command:String):
 		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
 	
 
-func register_keyword(keyword:String,function:Callable,perm_filter:Callable=Callable(),no_perm_reply:String=""):
+func register_keyword(keyword:String,function,perm_filter="null",no_perm_reply:String=""):
 	if plugin_keyword_dic.has(keyword):
 		GuiManager.console_print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
 		return
-	if !function.is_valid():
+	if function is String:
+		function = Callable(self,function)
+	if (!function is Callable) or (!function.is_valid()):
 		GuiManager.console_print_error("无法注册以下关键词，因为指定的函数不存在: " + keyword)
 		return
-	if !perm_filter.is_valid():
-		GuiManager.console_print_warning("警告:权限过滤器函数未定义或不存在，默认所有人将可触发此关键词！")
+	if perm_filter is String:
+		perm_filter = Callable(self,perm_filter)
+	if (!perm_filter is Callable) or (!perm_filter.is_valid()):
+		GuiManager.console_print_warning("警告: 权限过滤器函数未定义或不存在，所有人默认将可触发关键词\"%s\"!"%[keyword])
 	plugin_keyword_dic[keyword] = {"function":function,"perm_filter":perm_filter,"no_perm_reply":no_perm_reply}
-	GuiManager.console_print_success("成功注册关键词: %s!" % [keyword])
+	GuiManager.console_print_success("成功注册关键词: \"%s\"!" % [keyword])
 	
 	
 func unregister_keyword(keyword:String):
@@ -207,7 +215,7 @@ func unregister_keyword(keyword:String):
 		GuiManager.console_print_error("无法取消注册以下关键词，因为此关键词未在此插件被注册: " + keyword)
 		return
 	plugin_keyword_dic.erase(keyword)
-	GuiManager.console_print_success("成功取消注册关键词: %s!" % [keyword])
+	GuiManager.console_print_success("成功取消注册关键词: \"%s\"!" % [keyword])
 	
 	
 func trigger_keyword(event:MessageEvent)->bool:
