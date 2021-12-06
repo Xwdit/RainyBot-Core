@@ -13,7 +13,6 @@ func add_newline_with_time(_text):
 	var n_text = "["+Utils.get_formated_time()+"] "+_text
 	add_text(n_text)
 	newline()
-	print(n_text)
 	add_to_log(n_text)
 
 
