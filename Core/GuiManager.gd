@@ -27,3 +27,7 @@ func console_print_warning(text):
 
 func console_print_success(text):
 	get_tree().call_group("Console","add_success",text)
+	
+	
+func console_save_log(close:bool = false):
+	get_tree().call_group("Console","save_log",close)

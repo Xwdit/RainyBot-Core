@@ -56,7 +56,6 @@ theme_override_colors/selection_color = Color(0.701961, 0.701961, 0.701961, 1)
 theme_override_constants/line_separation = 5
 theme_override_fonts/normal_font = SubResource( "Font_g4cnj" )
 theme_override_font_sizes/normal_font_size = 15
-bbcode_enabled = true
 scroll_following = true
 selection_enabled = true
 script = ExtResource( "3" )

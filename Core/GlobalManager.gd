@@ -35,9 +35,7 @@ func _notification(what):
 		await get_tree().create_timer(0.5).timeout
 		GuiManager.console_print_success("RainyBot进程已被安全退出!")
 		await get_tree().create_timer(0.5).timeout
-		var _dir = Directory.new()
-		_dir.open(OS.get_executable_path().get_base_dir() + "/logs/")
-		_dir.copy("user://logs/rainybot.log",OS.get_executable_path().get_base_dir() + "/logs/rainybot_"+Time.get_datetime_string_from_system().replace("T","_").replace(":",".")+".log")
+		GuiManager.console_save_log(true)
 		get_tree().quit()
 
 
