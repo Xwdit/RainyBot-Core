@@ -10,8 +10,8 @@ var unsaved:bool = false
 
 
 func load_script(path:String)->int:
+	cleanup()
 	var scr:GDScript = PluginManager.load_plugin_script(path)
-	set_unsaved(false)
 	if is_instance_valid(scr):
 		get_code_edit().text = scr.source_code
 		$EditorPanel/File/FileName.text = path.get_file()
@@ -25,6 +25,14 @@ func load_script(path:String)->int:
 
 func get_code_edit()->CodeEdit:
 	return get_node("CodeEdit")
+
+
+func cleanup():
+	set_unsaved(false)
+	get_code_edit().clear()
+	$EditorPanel/File/FileName.text = ""
+	loaded_path = ""
+	loaded_name = ""
 
 
 func save_script(reload:bool=false)->int:

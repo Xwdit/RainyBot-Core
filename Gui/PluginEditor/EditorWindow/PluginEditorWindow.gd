@@ -28,9 +28,11 @@ func exit():
 		$ExitConfirmWindow.popup_centered(Vector2(430,130))
 	else:
 		hide()
+		get_plugin_editor().cleanup()
 		GuiManager.console_print_success("插件编辑器已被成功关闭!")
 
 
 func _on_ExitConfirmWindow_confirm_pressed():
 	hide()
+	get_plugin_editor().cleanup()
 	GuiManager.console_print_success("插件编辑器已被成功关闭!")
