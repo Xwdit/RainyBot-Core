@@ -8,7 +8,6 @@ var _client = WebSocketClient.new()
 var processing_command:Dictionary = {}
 var found_mirai = false
 var first_connected = false
-var session_key = ""
 
 
 func _ready():
@@ -19,9 +18,6 @@ func _ready():
 
 
 func connect_to_mirai(ws_url):
-	if session_key != "":
-		ws_url += "&sessionKey="+session_key
-	# Initiate connection to the given URL.
 	GuiManager.console_print_warning("正在尝试连接到Mirai框架中，请稍候... | 连接地址: "+ws_url)
 	var err = _client.connect_to_url(ws_url)
 	if err != OK:
@@ -73,7 +69,6 @@ func _on_data():
 	if data["data"].has("type"):
 		BotAdapter.parse_event(data)
 	if data["data"].has("session"):
-		session_key = data["data"]["session"]
 		if !first_connected:
 			GuiManager.console_print_success("成功连接至Mirai框架!开始加载插件.....")
 			PluginManager.reload_plugins()

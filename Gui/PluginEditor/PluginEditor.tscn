@@ -43,7 +43,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath(".")
 focus_previous = NodePath(".")
-scroll_vertical = 0.0
 delimiter_comments = []
 
 [node name="EditorPanel" type="Control" parent="."]
