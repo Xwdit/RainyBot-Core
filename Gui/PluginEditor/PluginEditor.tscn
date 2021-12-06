@@ -130,6 +130,7 @@ offset_right = 202.0
 offset_bottom = 26.0
 rect_min_size = Vector2(70, 0)
 theme_override_fonts/font = SubResource( "Font_6rswq" )
+theme_override_font_sizes/font_size = 16
 text = "1 : 1"
 align = 2
 valign = 1

@@ -31,6 +31,7 @@ func cleanup():
 	set_unsaved(false)
 	get_code_edit().clear()
 	$EditorPanel/File/FileName.text = ""
+	$EditorPanel/Edit/EditStatus.text = ""
 	loaded_path = ""
 	loaded_name = ""
 
