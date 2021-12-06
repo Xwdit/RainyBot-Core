@@ -67,7 +67,8 @@
 功能特色:
 * 模块化设计，大部分API可独立于协议后端存在，通过不同适配器实现即可对接不同协议，实现一次编写多处运行 (当前仅支持Mirai-Http协议后端)
 * 简单易懂的配置与管理，一次配置完成后自动管理各个协议后端的配置/运行/连接，无需每次手动启动或进行设置
-* 完善易用的API与插件管理机制，支持插件间交互/热重载/热编辑等功能，同时内置功能较为全面的插件编辑器 (暂不支持自动补全)
+* 完善易用且智能的API，可自动根据传入内容的类型决定与机器人的交互行为；同时内置大量诸如上下文交互，关键词触发，事件阻塞一类的便捷功能
+* 灵活的插件管理机制，支持插件间交互/热重载/热编辑/依赖设定等功能，同时内置功能较为全面的插件编辑器，可便捷地即时开发与修改插件
 * 人性化GUI控制台界面，全中文调试信息输出，未来还将支持插件与GUI的交互（如自定义GUI界面)
 * 开箱即用的各类辅助功能接口，可便捷初始化并管理插件配置，插件数据，事件/命令注册等
 * 活跃的功能开发与问题修复，且将以社区为驱动，广泛采纳各类建议与需求，共同打造属于所有人的RainyBot
@@ -120,9 +121,9 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 ### 源码注意事项
 
 如果您希望从项目源码顺利运行/编译RainyBot，请确保遵循以下条目：
-- 请使用 Commit [[52b7d5fa34](https://github.com/godotengine/godot/commit/52b7d5fa347fb88aa016e1e30414abd01e800381)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。[点此下载Windows预编译版](https://www.jianguoyun.com/p/DTrxaPsQgfb3CRjlh50E)
-- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.8.0`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
-- 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.3.1`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
+- 请使用 Commit [[97034939f](https://github.com/godotengine/godot/commit/97034939fec923dcb08016f77e7651baf29e29fc)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。[点此下载Windows预编译版](https://www.jianguoyun.com/p/DWDIRAoQgfb3CRit8p4E)
+- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.9.0-M1`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
+- 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.3.3`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
 RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已包含以上所需文件，因此无需额外进行配置。若您在配置以上文件时遇到问题，可以直接从最新的发布版本文件包中复制`adapters`文件夹以及其中的内容，并置于*Godot编辑器可执行文件同目录下*即可。
 
@@ -133,7 +134,7 @@ RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已
 <!-- USAGE EXAMPLES -->
 ## 插件示例
 
-当前的发布版本中随附了四个示例插件，分别为：聊天机器人，随机动漫音乐/图片，简易群管，好友/拉群请求管理插件。您可以在`plugins`文件夹下找到它们，并使用`plugins edit`指令来进行编辑。
+当前的发布版本中随附了六个示例插件，分别为：聊天机器人，随机动漫音乐/图片，简易群管，好友/拉群请求管理，轮盘赌，复读机插件。您可以在`plugins`文件夹下找到它们，并使用`plugins edit`指令来进行编辑。
 同时，对于使用`plugins create`指令新建的插件，将自动使用内置的插件模板，以便于您快速开始开发流程。
 
 _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot-API](https://github.com/Xwdit/RainyBot-API) 储存库_
@@ -143,14 +144,19 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 
 
 <!-- ROADMAP -->
-## 功能开发路线图
+## 主要功能开发路线图
 
 - [x] 核心功能完备
 - [x] 整理并将项目开源
-- [ ] 增加更多GUI相关功能
+- [x] 支持插件间依赖/加载顺序判断功能
+- [x] 实现上下文交互功能
+- [x] 完善事件系统，支持事件优先级与阻塞
+- [x] API简化/智能化-第一阶段
+- [ ] 为更多内置功能实现GUI化
 - [ ] 添加版本检测与更新功能
 - [ ] 添加在线插件市场功能
 - [ ] 实现插件编辑器的自动补全
+- [ ] 支持多机器人账号同时运行
 
 对于更详细的功能计划，已知问题或功能建议，请访问储存库的 [Issues](https://github.com/Xwdit/RainyBot-Core/issues) 页面
 
@@ -188,7 +194,9 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 
 Xwdit - xwditfr@gmail.com
 
-项目地址: [https://github.com/Xwdit/RainyBot-Core](https://github.com/Xwdit/RainyBot-Core)
+项目官网: [https://rainy.love/rainybot](https://rainy.love/rainybot)
+
+项目开源地址: [https://github.com/Xwdit/RainyBot-Core](https://github.com/Xwdit/RainyBot-Core)
 
 <p align="right">(<a href="#top">返回顶部</a>)</p>
 
