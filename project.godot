@@ -592,8 +592,11 @@ run/low_processor_mode=true
 boot_splash/image="res://logo.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
+boot_splash/bg_color=Color(0.113725, 0.133333, 0.160784, 1)
 config/icon="res://logo.png"
 config/windows_native_icon="res://logo.ico"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.0")
 
 [autoload]
@@ -627,6 +630,13 @@ save={
 ]
 }
 
+[physics]
+
+2d/run_on_thread=true
+3d/run_on_thread=true
+
 [rendering]
 
+driver/threads/thread_model=2
 vulkan/rendering/back_end=1
+batching/options/use_batching=true

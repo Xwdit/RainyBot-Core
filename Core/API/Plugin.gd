@@ -21,7 +21,7 @@ var plugin_event_dic:Dictionary = {}
 var plugin_context_dic:Dictionary = {}
 var plugin_keyword_dic:Dictionary = {}
 var plugin_console_command_dic:Dictionary = {}
-var plugin_timer:Timer = Timer.new()
+var plugin_timer:Timer = null
 var plugin_time_passed:int = 0
 var plugin_config_loaded = false
 var plugin_data_loaded = false
@@ -32,6 +32,8 @@ func _init():
 	
 
 func _ready():
+	plugin_timer = Timer.new()
+	plugin_timer.one_shot = false
 	plugin_timer.wait_time = 1
 	plugin_timer.connect("timeout",_plugin_timer_timeout)
 	add_child(plugin_timer)

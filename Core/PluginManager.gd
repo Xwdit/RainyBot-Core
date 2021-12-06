@@ -57,7 +57,7 @@ func _call_console_command(_cmd:String,args:Array):
 			if args.size() > 1:
 				load_plugin(args[1])
 			else:
-				GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
+				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"unload":
 			if args.size() > 1:
 				var plugin = get_node_or_null(args[1])
@@ -66,7 +66,7 @@ func _call_console_command(_cmd:String,args:Array):
 				else:
 					GuiManager.console_print_error("插件ID不存在!")
 			else:
-				GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
+				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 					
 		"reload":
 			if args.size() > 1:
@@ -76,7 +76,7 @@ func _call_console_command(_cmd:String,args:Array):
 				else:
 					GuiManager.console_print_error("插件ID不存在!")
 			else:
-				GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
+				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"areload":
 			reload_plugins()
 		"edit":
@@ -88,7 +88,7 @@ func _call_console_command(_cmd:String,args:Array):
 				else:
 					GuiManager.console_print_error("插件文件不存在或格式错误!")
 			else:
-				GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
+				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"create":
 			if args.size() > 1:
 				var file_name:String = args[1]
@@ -118,7 +118,7 @@ func _call_console_command(_cmd:String,args:Array):
 				else:
 					GuiManager.console_print_error("插件文件不存在或格式错误!")	
 		_:
-			GuiManager.console_print_error("错误的命令用法!输入help plugins来查看帮助")
+			GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 
 
 func load_plugin_script(path:String)->GDScript:
