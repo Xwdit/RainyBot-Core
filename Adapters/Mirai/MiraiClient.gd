@@ -103,8 +103,8 @@ func send_bot_request(command,sub_command=null,content={},timeout:float=20.0)->D
 	_client.get_peer(1).put_packet(json.stringify(request).to_utf8_buffer())
 	_tick_command_timeout(cmd,timeout)
 	await cmd.request_finished
-	var result = cmd.get_result()
-	return result
+	processing_command.erase(sync_id)
+	return cmd.get_result()
 
 
 func is_bot_connected()->bool:
@@ -116,6 +116,7 @@ func _parse_command_result(result:Dictionary):
 	if processing_command.has(sync_id):
 		var cmd:MiraiRequestInstance = processing_command[sync_id]
 		cmd.result = result["data"]
+		GuiManager.console_print_success("获取到Mirai框架的回应: "+str(result))
 		cmd.emit_signal("request_finished")
 
 
