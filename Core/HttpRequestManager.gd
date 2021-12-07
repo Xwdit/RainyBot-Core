@@ -21,7 +21,7 @@ func send_http_get_request(url:String,_timeout:float = 20.0)->Dictionary:
 
 func _tick_request_timeout(request_ins:HttpRequestInstance,_timeout:float):
 	await get_tree().create_timer(_timeout).timeout
-	if is_instance_valid(request_ins) && request_ins.result == null:
+	if is_instance_valid(request_ins) && request_ins.result == {}:
 		GuiManager.console_print_error("Http请求超时，无法获取到返回结果: "+str(request_ins.request_url))
 		request_ins.emit_signal("request_finished")
 
