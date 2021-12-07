@@ -61,7 +61,7 @@
 这是一个跨平台，跨协议 (实现中) 的机器人开发框架，基于 Godot Engine 4.0 进行开发。
 本项目成立的目的，是为了建立一个低门槛，简单易用的机器人开发框架。
 通过提供大量精心设计的交互API/预置功能，结合GDScript脚本语言的简便语法，
-来尽可能地提升开发效率且降低开发难度，让更多开发经验不足，乃至无经验的用户也能够轻松开发属于自己的各类机器人应用。
+来尽可能地提升开发效率且降低开发难度，且让更多开发经验不足，乃至无经验的用户也能够轻松开发属于自己的各类机器人应用。
 
 
 功能特色:
@@ -123,7 +123,7 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 如果您希望从项目源码顺利运行/编译RainyBot，请确保遵循以下条目：
 - 请使用 Commit [[97034939f](https://github.com/godotengine/godot/commit/97034939fec923dcb08016f77e7651baf29e29fc)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。[点此下载Windows预编译版](https://www.jianguoyun.com/p/DWDIRAoQgfb3CRit8p4E)
 - 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.9.0-M1`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
-- 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.3.3`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
+- 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.4.0`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
 RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已包含以上所需文件，因此无需额外进行配置。若您在配置以上文件时遇到问题，可以直接从最新的发布版本文件包中复制`adapters`文件夹以及其中的内容，并置于*Godot编辑器可执行文件同目录下*即可。
 
@@ -150,6 +150,7 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 - [x] 整理并将项目开源
 - [x] 支持插件间依赖/加载顺序判断功能
 - [x] 实现上下文交互功能
+- [x] 实现关键词注册与触发功能
 - [x] 完善事件系统，支持事件优先级与阻塞
 - [x] API简化/智能化-第一阶段
 - [ ] 为更多内置功能实现GUI化
