@@ -8,6 +8,7 @@ var _client = WebSocketClient.new()
 var processing_command:Dictionary = {}
 var found_mirai = false
 var first_connected = false
+var mirai_connected = false
 
 
 func _ready():
@@ -38,6 +39,9 @@ func disconnect_to_mirai():
 
 
 func _closed(_was_clean = false):
+	if mirai_connected:
+		mirai_connected = false
+		get_tree().call_group("Plugin","_on_disconnect")
 	if found_mirai:
 		GuiManager.console_print_warning("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
 		GuiManager.console_print_warning("若Mirai进程被意外关闭，请使用命令 mirai restart 来重新启动")
@@ -75,6 +79,8 @@ func _on_data():
 			first_connected = true
 		else:
 			GuiManager.console_print_success("成功恢复与Mirai框架的连接!")
+		mirai_connected = true
+		get_tree().call_group("Plugin","_on_connect")
 
 
 func _process(_delta):

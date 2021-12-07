@@ -22,7 +22,7 @@ func _call_console_command(_cmd:String,args:Array):
 		GuiManager.console_print_text("-----命令列表(全部)-----")
 
 
-func register_console_command(command:String,need_arguments:bool,usages:Array,source:String,need_connect:bool=true)->int:
+func register_console_command(command:String,need_arguments:bool,usages:Array,source:String,need_connect:bool=false)->int:
 	if console_commands_dic.has(command):
 		GuiManager.console_print_error("无法注册以下命令，因为已存在相同命令: " + command)
 		return ERR_ALREADY_EXISTS

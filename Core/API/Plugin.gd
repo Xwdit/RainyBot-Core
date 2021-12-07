@@ -55,6 +55,10 @@ func _on_init():
 	pass
 
 
+func _on_connect():
+	pass
+
+
 func _on_load():
 	pass
 
@@ -64,6 +68,10 @@ func _on_ready():
 
 
 func _on_process():
+	pass
+
+
+func _on_disconnect():
 	pass
 
 
@@ -170,7 +178,7 @@ func unregister_event(event:GDScript):
 		GuiManager.console_print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 
 
-func register_console_command(command:String,function,need_arguments:bool=false,usages:Array=[]):
+func register_console_command(command:String,function,need_arguments:bool=false,usages:Array=[],need_connect:bool=false):
 	if plugin_console_command_dic.has(command):
 		GuiManager.console_print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
 		return
@@ -179,7 +187,7 @@ func register_console_command(command:String,function,need_arguments:bool=false,
 	if (!function is Callable) or (!function.is_valid()):
 		GuiManager.console_print_error("无法注册以下命令，因为指定的函数不存在: " + command)
 		return
-	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name)==OK:
+	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name,need_connect)==OK:
 		plugin_console_command_dic[command] = function
 		add_to_group("console_command_"+command)
 		GuiManager.console_print_success("成功注册命令: %s!" % [command])

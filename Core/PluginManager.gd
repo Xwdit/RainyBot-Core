@@ -32,7 +32,7 @@ func _ready():
 		"plugins edit <文件名> - 编辑一个插件",
 		"plugins delete <文件名> - 删除一个插件"
 	]
-	CommandManager.register_console_command("plugins",true,usages,"RainyBot-Core")
+	CommandManager.register_console_command("plugins",true,usages,"RainyBot-Core",false)
 
 
 func _call_event(event:Event):
