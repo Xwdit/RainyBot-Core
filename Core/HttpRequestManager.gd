@@ -1,7 +1,7 @@
 extends Node
 
 
-func send_http_get_request(url:String,_timeout:float = 20.0)->Dictionary:
+func send_http_get_request(url:String,timeout:float = 20.0)->Dictionary:
 	GuiManager.console_print_warning("正在尝试发送Http Get请求到: "+url)
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
@@ -12,7 +12,8 @@ func send_http_get_request(url:String,_timeout:float = 20.0)->Dictionary:
 		node.queue_free()
 		GuiManager.console_print_error("发生了一个错误 " + str(error) + " 当发送Http Get请求到: " + url)
 		return {}
-	_tick_request_timeout(node,_timeout)
+	if timeout > 0.0:
+		_tick_request_timeout(node,timeout)
 	await node.request_finished
 	var result = node.get_result()
 	node.queue_free()

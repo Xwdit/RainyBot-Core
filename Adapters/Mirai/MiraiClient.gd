@@ -102,7 +102,8 @@ func send_bot_request(command,sub_command=null,content={},timeout:float=20.0)->D
 	processing_command[sync_id] = cmd
 	var json = JSON.new()
 	_client.get_peer(1).put_packet(json.stringify(request).to_utf8_buffer())
-	_tick_command_timeout(cmd,timeout)
+	if timeout > 0.0:
+		_tick_command_timeout(cmd,timeout)
 	await cmd.request_finished
 	processing_command.erase(sync_id)
 	return cmd.get_result()
@@ -123,7 +124,7 @@ func _parse_command_result(result:Dictionary):
 
 func _tick_command_timeout(cmd_ins:MiraiRequestInstance,_timeout:float):
 	await get_tree().create_timer(_timeout).timeout
-	if is_instance_valid(cmd_ins) && cmd_ins.result == null:
+	if is_instance_valid(cmd_ins) && cmd_ins.result == {}:
 		GuiManager.console_print_error("指令请求超时，无法获取到返回结果: "+str(cmd_ins.request))
 		cmd_ins.emit_signal("request_finished")
 		
