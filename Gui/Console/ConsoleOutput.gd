@@ -5,6 +5,7 @@ var file = File.new()
 
 
 func _ready():
+	save_log(false)
 	file.open(OS.get_executable_path().get_base_dir() + "/logs/rainybot.log",File.WRITE)
 
 
@@ -48,4 +49,5 @@ func save_log(_close:bool = false):
 		file.close()
 	var _dir = Directory.new()
 	_dir.open(OS.get_executable_path().get_base_dir() + "/logs/")
-	_dir.rename("rainybot.log","rainybot_"+Time.get_datetime_string_from_system().replace("T","_").replace(":",".")+".log")
+	if _dir.file_exists("rainybot.log"):
+		_dir.rename("rainybot.log","rainybot_"+Time.get_datetime_string_from_system().replace("T","_").replace(":",".")+".log")
