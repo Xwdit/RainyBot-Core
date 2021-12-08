@@ -4,13 +4,6 @@ extends Event
 class_name RequestEvent
 
 
-enum Type{
-	NEW_FRIEND,
-	MEMBER_JOIN,
-	GROUP_INVITE
-}
-
-
 func get_event_id()->int:
 	return get("data_dic").eventId
 	

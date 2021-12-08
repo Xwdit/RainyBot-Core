@@ -2,6 +2,17 @@ extends Node
 	
 class_name Plugin
 
+
+enum MatchMode{
+	BEGIN,
+	BETWEEN,
+	END,
+	CONTAIN,
+	EQUAL,
+	EXPRESS
+}
+
+
 var plugin_path:String = ""
 
 var plugin_file:String = ""
@@ -126,64 +137,97 @@ func get_other_plugin_instance(plugin_id:String)->Plugin:
 	return ins
 
 
-func register_event(event:GDScript,function,priority:int=0):
+func register_event(event,function,priority:int=0):
 	if function is String:
 		function = Callable(self,function)
 	if function is Callable and function.is_valid():
 		var _callable = {"priority":priority,"function":function}
-		if is_instance_valid(event):
-			if plugin_event_dic.has(event):
-				GuiManager.console_print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
-				return
-			var arr:Array = []
-			if PluginManager.plugin_event_dic.has(event):
-				arr = PluginManager.plugin_event_dic[event]
-			else:
-				PluginManager.plugin_event_dic[event] = arr
-			if arr.size() != 0:
-				var _idx = 0
-				for _i in range(arr.size()):
-					var _pri:int = arr[_i]["priority"]
-					if priority >= _pri:
-						_idx = _i
-				if arr[_idx]["priority"] > priority:
-					arr.insert(_idx,_callable)
+		if event is GDScript and is_instance_valid(event):
+			_register_event(event,_callable,priority)
+		elif event is Array and event.size() > 0:
+			for _e in event:
+				if _e is GDScript and is_instance_valid(_e):
+					_register_event(_e,_callable,priority)
 				else:
-					arr.insert(_idx+1,_callable)
-			else:
-				arr.append(_callable)	
-			plugin_event_dic[event]=_callable
-			GuiManager.console_print_success("成功注册事件: %s (优先级:%s)" % [event.resource_path.get_file().replacen(".gd",""),str(priority)])
+					GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
 		else:
 			GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
 	else:
 		GuiManager.console_print_error("事件注册出错: 指定的函数不存在！")
 
 
-func unregister_event(event:GDScript):
-	if is_instance_valid(event):
-		if PluginManager.plugin_event_dic.has(event):
-			var arr:Array = PluginManager.plugin_event_dic[event]
-			if plugin_event_dic.has(event):
-				arr.erase(plugin_event_dic[event])
-				if arr.is_empty():
-					PluginManager.plugin_event_dic.erase(event)
-				plugin_event_dic.erase(event)
-				GuiManager.console_print_success("成功取消注册事件: %s!" % [event.resource_path.get_file().replacen(".gd","")])
-				return
-			GuiManager.console_print_error("事件取消注册出错: 此插件未注册事件%s！"% [event.resource_path.get_file().replacen(".gd","")])
+func _register_event(event:GDScript,data_dic:Dictionary,priority:int):
+	if plugin_event_dic.has(event):
+		GuiManager.console_print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
+		return
+	var arr:Array = []
+	if PluginManager.plugin_event_dic.has(event):
+		arr = PluginManager.plugin_event_dic[event]
+	else:
+		PluginManager.plugin_event_dic[event] = arr
+	if arr.size() != 0:
+		var _idx = 0
+		for _i in range(arr.size()):
+			var _pri:int = arr[_i]["priority"]
+			if priority >= _pri:
+				_idx = _i
+		if arr[_idx]["priority"] > priority:
+			arr.insert(_idx,data_dic)
 		else:
-			GuiManager.console_print_error("事件取消注册出错: 事件%s未被任何插件注册！"% [event.resource_path.get_file().replacen(".gd","")])
+			arr.insert(_idx+1,data_dic)
+	else:
+		arr.append(data_dic)	
+	plugin_event_dic[event]=data_dic
+	GuiManager.console_print_success("成功注册事件: %s (优先级:%s)" % [event.resource_path.get_file().replacen(".gd",""),str(priority)])
+
+
+func unregister_event(event):
+	if event is GDScript and is_instance_valid(event):
+		_unregister_event(event)
+	elif event is Array and event.size() > 0:
+		for _e in event:
+			if _e is GDScript and is_instance_valid(_e):
+				_unregister_event(_e)
+			else:
+				GuiManager.console_print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 	else:
 		GuiManager.console_print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 
 
-func register_console_command(command:String,function,need_arguments:bool=false,usages:Array=[],need_connect:bool=false):
+func _unregister_event(event:GDScript):
+	if PluginManager.plugin_event_dic.has(event):
+		var arr:Array = PluginManager.plugin_event_dic[event]
+		if plugin_event_dic.has(event):
+			arr.erase(plugin_event_dic[event])
+			if arr.is_empty():
+				PluginManager.plugin_event_dic.erase(event)
+			plugin_event_dic.erase(event)
+			GuiManager.console_print_success("成功取消注册事件: %s!" % [event.resource_path.get_file().replacen(".gd","")])
+			return
+		GuiManager.console_print_error("事件取消注册出错: 此插件未注册事件%s！"% [event.resource_path.get_file().replacen(".gd","")])
+	else:
+		GuiManager.console_print_error("事件取消注册出错: 事件%s未被任何插件注册！"% [event.resource_path.get_file().replacen(".gd","")])
+
+
+func register_console_command(command,function,need_arguments:bool=false,usages:Array=[],need_connect:bool=false):
+	if function is String:
+		function = Callable(self,function)
+	if command is String and command.length() > 0:
+		_register_console_command(command,function,need_arguments,usages,need_connect)
+	elif command is Array and command.size() > 0:
+		for _c in command:
+			if _c is String and _c.length() > 0:
+				_register_console_command(_c,function,need_arguments,usages,need_connect)
+			else:
+				GuiManager.console_print_error("无法注册命令，因为传入的命令格式不合法！")
+	else:
+		GuiManager.console_print_error("无法注册命令，因为传入的命令格式不合法！")
+
+
+func _register_console_command(command:String,function:Callable,need_arguments:bool,usages:Array,need_connect:bool):
 	if plugin_console_command_dic.has(command):
 		GuiManager.console_print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
 		return
-	if function is String:
-		function = Callable(self,function)
 	if (!function is Callable) or (!function.is_valid()):
 		GuiManager.console_print_error("无法注册以下命令，因为指定的函数不存在: " + command)
 		return
@@ -193,7 +237,20 @@ func register_console_command(command:String,function,need_arguments:bool=false,
 		GuiManager.console_print_success("成功注册命令: %s!" % [command])
 
 
-func unregister_console_command(command:String):
+func unregister_console_command(command):
+	if command is String and command.length() > 0:
+		_unregister_console_command(command)
+	elif command is Array and command.size() > 0:
+		for _c in command:
+			if _c is String and _c.length() > 0:
+				_unregister_console_command(_c)
+			else:
+				GuiManager.console_print_error("无法取消注册命令，因为传入的命令格式不合法！")
+	else:
+		GuiManager.console_print_error("无法取消注册命令，因为传入的命令格式不合法！")
+
+
+func _unregister_console_command(command:String):
 	if !plugin_console_command_dic.has(command):
 		GuiManager.console_print_error("无法取消注册以下命令，因为此命令不属于此插件: " + command)
 		return
@@ -203,24 +260,50 @@ func unregister_console_command(command:String):
 		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
 	
 
-func register_keyword(keyword:String,function,perm_filter="null",no_perm_reply:String=""):
+func register_keyword(keyword,function,filter="null",fail_reply:String="",match_mode:int=MatchMode.BEGIN):
+	if function is String:
+		function = Callable(self,function)
+	if filter is String:
+		filter = Callable(self,filter)
+	if keyword is String and keyword.length() > 0:
+		_register_keyword(keyword,function,filter,fail_reply,match_mode)
+	elif keyword is Array and keyword.size() > 0:
+		for _k in keyword:
+			if _k is String and _k.length() > 0:
+				_register_keyword(_k,function,filter,fail_reply,match_mode)
+			else:
+				GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
+	else:
+		GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
+	
+	
+func _register_keyword(keyword:String,function:Callable,filter:Callable,fail_reply:String,match_mode:int):
 	if plugin_keyword_dic.has(keyword):
 		GuiManager.console_print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
 		return
-	if function is String:
-		function = Callable(self,function)
 	if (!function is Callable) or (!function.is_valid()):
 		GuiManager.console_print_error("无法注册以下关键词，因为指定的函数不存在: " + keyword)
 		return
-	if perm_filter is String:
-		perm_filter = Callable(self,perm_filter)
-	if (!perm_filter is Callable) or (!perm_filter.is_valid()):
+	if (!filter is Callable) or (!filter.is_valid()):
 		GuiManager.console_print_warning("警告: 权限过滤器函数未定义或不存在，所有人默认将可触发关键词\"%s\"!"%[keyword])
-	plugin_keyword_dic[keyword] = {"function":function,"perm_filter":perm_filter,"no_perm_reply":no_perm_reply}
+	plugin_keyword_dic[keyword] = {"function":function,"filter":filter,"fail_reply":fail_reply,"match_mode":match_mode}
 	GuiManager.console_print_success("成功注册关键词: \"%s\"!" % [keyword])
 	
 	
-func unregister_keyword(keyword:String):
+func unregister_keyword(keyword):
+	if keyword is String and keyword.length() > 0:
+		_unregister_keyword(keyword)
+	elif keyword is Array and keyword.size() > 0:
+		for _k in keyword:
+			if _k is String and _k.length() > 0:
+				_unregister_keyword(_k)
+			else:
+				GuiManager.console_print_error("无法取消注册关键词，因为传入的关键词格式不合法！")
+	else:
+		GuiManager.console_print_error("无法取消注册关键词，因为传入的关键词格式不合法！")
+	
+	
+func _unregister_keyword(keyword:String):
 	if !plugin_keyword_dic.has(keyword):
 		GuiManager.console_print_error("无法取消注册以下关键词，因为此关键词未在此插件被注册: " + keyword)
 		return
@@ -228,20 +311,92 @@ func unregister_keyword(keyword:String):
 	GuiManager.console_print_success("成功取消注册关键词: \"%s\"!" % [keyword])
 	
 	
-func trigger_keyword(event:MessageEvent)->bool:
-	var _text:String = event.get_message_text(TextMessage)
-	for _kw in plugin_keyword_dic:
-		if _text.begins_with(_kw):
+func trigger_keyword(event:Event)->bool:
+	if event is MessageEvent and is_instance_valid(event):
+		var _at:bool = event.is_at_bot()
+		var _text:String = event.get_message_text(TextMessage)
+		for _kw in plugin_keyword_dic:
 			var _func:Callable = plugin_keyword_dic[_kw]["function"]
-			var _filter:Callable = plugin_keyword_dic[_kw]["perm_filter"]
-			var _rep:String = plugin_keyword_dic[_kw]["no_perm_reply"]
-			if _filter.is_valid():
-				if !_filter.call(event):
-					event.reply(_rep,true,true)
-					return true
-			if _func.is_valid():
-				_func.call(_kw,_text.substr(_kw.length()),event)
-			return true
+			var _filter:Callable = plugin_keyword_dic[_kw]["filter"]
+			var _rep:String = plugin_keyword_dic[_kw]["fail_reply"]
+			var _mode:int = plugin_keyword_dic[_kw]["match_mode"]
+			var _word:String = _kw
+			if _kw.begins_with("[@]"):
+				if _at:
+					_word = _kw.substr(3)
+				else:
+					continue
+			match _mode:
+				int(MatchMode.BEGIN):
+					if _text.begins_with(_word):
+						var _arg = _text.substr(_word.length())
+						if _filter.is_valid():
+							if !_filter.call(_kw,_arg,event):
+								if _rep != "":
+									event.reply(_rep,true,true)
+								return true
+						if _func.is_valid():
+							_func.call(_kw,_arg,event)
+						return true
+				int(MatchMode.BETWEEN):
+					var _idx = _text.find(_word)
+					if _idx != -1 and (!(_text.begins_with(_word) or _text.ends_with(_word)) or _text == _word):
+						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
+						if _filter.is_valid():
+							if !_filter.call(_kw,_arg,event):
+								if _rep != "":
+									event.reply(_rep,true,true)
+								return true
+						if _func.is_valid():
+							_func.call(_kw,_arg,event)
+						return true
+				int(MatchMode.END):
+					if _text.ends_with(_word):
+						var _arg = _text.left(_text.length()-_word.length())
+						if _filter.is_valid():
+							if !_filter.call(_kw,_arg,event):
+								if _rep != "":
+									event.reply(_rep,true,true)
+								return true
+						if _func.is_valid():
+							_func.call(_kw,_arg,event)
+						return true
+				int(MatchMode.CONTAIN):
+					var _idx = _text.find(_word)
+					if _idx != -1:
+						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
+						if _filter.is_valid():
+							if !_filter.call(_kw,_arg,event):
+								if _rep != "":
+									event.reply(_rep,true,true)
+								return true
+						if _func.is_valid():
+							_func.call(_kw,_arg,event)
+						return true
+				int(MatchMode.EQUAL):
+					if _text == _word:
+						var _arg = ""
+						if _filter.is_valid():
+							if !_filter.call(_kw,_arg,event):
+								if _rep != "":
+									event.reply(_rep,true,true)
+								return true
+						if _func.is_valid():
+							_func.call(_kw,_arg,event)
+						return true
+				int(MatchMode.EXPRESS):
+					if _text.match(_word):
+						var _arg = _text
+						if _filter.is_valid():
+							if !_filter.call(_kw,_arg,event):
+								if _rep != "":
+									event.reply(_rep,true,true)
+								return true
+						if _func.is_valid():
+							_func.call(_kw,_arg,event)
+						return true
+	else:
+		GuiManager.console_print_error("无法使用传入的事件来解析关键词，请确保其是一个消息事件！")
 	return false
 
 

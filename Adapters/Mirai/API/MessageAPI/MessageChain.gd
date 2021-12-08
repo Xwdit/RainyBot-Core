@@ -162,11 +162,27 @@ func get_message_timestamp()->int:
 	return _msg_time
 
 
-func has_message_type(type:GDScript)->bool:
-	for _dic in data_array:
-		var _msg = BotAdapter.parse_message_dic(_dic)
-		if _msg.get_script() == type:
-			return true
+func has_message_type(type)->bool:
+	if type is GDScript and is_instance_valid(type):
+		for _dic in data_array:
+			var _msg = BotAdapter.parse_message_dic(_dic)
+			if _msg.get_script() == type:
+				return true		
+		return false
+	elif type is Array and type.size()>0:
+		for _t in type:
+			if _t is GDScript and is_instance_valid(_t):
+				var _has = false
+				for _dic in data_array:
+					var _msg = BotAdapter.parse_message_dic(_dic)
+					if _msg.get_script() == type:
+						_has = true
+						break
+				if !_has:
+					return false
+			else:
+				return false
+		return true
 	return false
 
 
@@ -190,7 +206,7 @@ func recall()->BotRequestResult:
 
 func is_at_bot()->bool:
 	for _dic in data_array:
-		if _dic.type == BotAdapter.message_type_dic[int(Message.Type.AT)]:
+		if _dic.type == "At":
 			if _dic.target == BotAdapter.get_bot_id():
 				return true
 	return false
