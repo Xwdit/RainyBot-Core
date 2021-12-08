@@ -7,9 +7,10 @@ enum MatchMode{
 	BEGIN,
 	BETWEEN,
 	END,
-	CONTAIN,
+	INCLUDE,
+	EXCLUDE,
 	EQUAL,
-	EXPRESS
+	EXPRESSION
 }
 
 
@@ -31,6 +32,7 @@ var plugin_data:Dictionary = {}
 var plugin_event_dic:Dictionary = {}
 var plugin_context_dic:Dictionary = {}
 var plugin_keyword_dic:Dictionary = {}
+var plugin_keyword_arr:Array = []
 var plugin_console_command_dic:Dictionary = {}
 var plugin_timer:Timer = null
 var plugin_time_passed:int = 0
@@ -260,24 +262,26 @@ func _unregister_console_command(command:String):
 		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
 	
 
-func register_keyword(keyword,function,filter="null",fail_reply:String="",match_mode:int=MatchMode.BEGIN):
+func register_keyword(keyword,function,filter="null",failed_reply:String="",match_mode:int=MatchMode.INCLUDE):
 	if function is String:
 		function = Callable(self,function)
 	if filter is String:
+		if filter == "":
+			filter = "null"
 		filter = Callable(self,filter)
 	if keyword is String and keyword.length() > 0:
-		_register_keyword(keyword,function,filter,fail_reply,match_mode)
+		_register_keyword(keyword,function,filter,failed_reply,match_mode)
 	elif keyword is Array and keyword.size() > 0:
 		for _k in keyword:
 			if _k is String and _k.length() > 0:
-				_register_keyword(_k,function,filter,fail_reply,match_mode)
+				_register_keyword(_k,function,filter,failed_reply,match_mode)
 			else:
 				GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	else:
 		GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	
 	
-func _register_keyword(keyword:String,function:Callable,filter:Callable,fail_reply:String,match_mode:int):
+func _register_keyword(keyword:String,function:Callable,filter:Callable,failed_reply:String,match_mode:int):
 	if plugin_keyword_dic.has(keyword):
 		GuiManager.console_print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
 		return
@@ -285,8 +289,9 @@ func _register_keyword(keyword:String,function:Callable,filter:Callable,fail_rep
 		GuiManager.console_print_error("无法注册以下关键词，因为指定的函数不存在: " + keyword)
 		return
 	if (!filter is Callable) or (!filter.is_valid()):
-		GuiManager.console_print_warning("警告: 权限过滤器函数未定义或不存在，所有人默认将可触发关键词\"%s\"!"%[keyword])
-	plugin_keyword_dic[keyword] = {"function":function,"filter":filter,"fail_reply":fail_reply,"match_mode":match_mode}
+		GuiManager.console_print_warning("警告: 过滤器函数未定义或不存在，所有人默认将可触发关键词\"%s\"!"%[keyword])
+	plugin_keyword_dic[keyword] = {"function":function,"filter":filter,"failed_reply":failed_reply,"match_mode":match_mode}
+	_update_keyword_arr()
 	GuiManager.console_print_success("成功注册关键词: \"%s\"!" % [keyword])
 	
 	
@@ -308,96 +313,93 @@ func _unregister_keyword(keyword:String):
 		GuiManager.console_print_error("无法取消注册以下关键词，因为此关键词未在此插件被注册: " + keyword)
 		return
 	plugin_keyword_dic.erase(keyword)
+	_update_keyword_arr()
 	GuiManager.console_print_success("成功取消注册关键词: \"%s\"!" % [keyword])
 	
+
+func _sort_keyword(_a:String,_b:String)->bool:
+	if _a.length() > _b.length():
+		return true
+	return false
+
+
+func _update_keyword_arr():
+	var _arr:Array = plugin_keyword_dic.keys()
+	_arr.sort_custom(_sort_keyword)
+	plugin_keyword_arr = _arr
+
 	
 func trigger_keyword(event:Event)->bool:
 	if event is MessageEvent and is_instance_valid(event):
-		var _at:bool = event.is_at_bot()
+		var _at:bool = event.is_at_bot() if event is GroupMessageEvent else false
 		var _text:String = event.get_message_text(TextMessage)
-		for _kw in plugin_keyword_dic:
+		for _kw in plugin_keyword_arr:
 			var _func:Callable = plugin_keyword_dic[_kw]["function"]
 			var _filter:Callable = plugin_keyword_dic[_kw]["filter"]
-			var _rep:String = plugin_keyword_dic[_kw]["fail_reply"]
+			var _rep:String = plugin_keyword_dic[_kw]["failed_reply"]
 			var _mode:int = plugin_keyword_dic[_kw]["match_mode"]
 			var _word:String = _kw
 			if _kw.begins_with("[@]"):
 				if _at:
 					_word = _kw.substr(3)
+					if _word.length() == 0:
+						var _arg = _text
+						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						return true
 				else:
 					continue
 			match _mode:
 				int(MatchMode.BEGIN):
 					if _text.begins_with(_word):
 						var _arg = _text.substr(_word.length())
-						if _filter.is_valid():
-							if !_filter.call(_kw,_arg,event):
-								if _rep != "":
-									event.reply(_rep,true,true)
-								return true
-						if _func.is_valid():
-							_func.call(_kw,_arg,event)
+						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
 						return true
 				int(MatchMode.BETWEEN):
 					var _idx = _text.find(_word)
 					if _idx != -1 and (!(_text.begins_with(_word) or _text.ends_with(_word)) or _text == _word):
 						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
-						if _filter.is_valid():
-							if !_filter.call(_kw,_arg,event):
-								if _rep != "":
-									event.reply(_rep,true,true)
-								return true
-						if _func.is_valid():
-							_func.call(_kw,_arg,event)
+						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
 						return true
 				int(MatchMode.END):
 					if _text.ends_with(_word):
 						var _arg = _text.left(_text.length()-_word.length())
-						if _filter.is_valid():
-							if !_filter.call(_kw,_arg,event):
-								if _rep != "":
-									event.reply(_rep,true,true)
-								return true
-						if _func.is_valid():
-							_func.call(_kw,_arg,event)
+						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
 						return true
-				int(MatchMode.CONTAIN):
+				int(MatchMode.INCLUDE):
 					var _idx = _text.find(_word)
 					if _idx != -1:
 						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
-						if _filter.is_valid():
-							if !_filter.call(_kw,_arg,event):
-								if _rep != "":
-									event.reply(_rep,true,true)
-								return true
-						if _func.is_valid():
-							_func.call(_kw,_arg,event)
+						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						return true
+				int(MatchMode.EXCLUDE):
+					var _idx = _text.find(_word)
+					if _idx == -1:
+						var _arg = _text
+						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
 						return true
 				int(MatchMode.EQUAL):
 					if _text == _word:
 						var _arg = ""
-						if _filter.is_valid():
-							if !_filter.call(_kw,_arg,event):
-								if _rep != "":
-									event.reply(_rep,true,true)
-								return true
-						if _func.is_valid():
-							_func.call(_kw,_arg,event)
+						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
 						return true
-				int(MatchMode.EXPRESS):
+				int(MatchMode.EXPRESSION):
 					if _text.match(_word):
 						var _arg = _text
-						if _filter.is_valid():
-							if !_filter.call(_kw,_arg,event):
-								if _rep != "":
-									event.reply(_rep,true,true)
-								return true
-						if _func.is_valid():
-							_func.call(_kw,_arg,event)
+						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
 						return true
 	else:
 		GuiManager.console_print_error("无法使用传入的事件来解析关键词，请确保其是一个消息事件！")
 	return false
+
+
+func _trigger_keyword(_func:Callable,_filter:Callable,_kw:String,_arg:String,event:MessageEvent,_rep:String):
+	if _filter.is_valid():
+		if !_filter.call(_kw,_arg,event):
+			if _rep != "":
+				event.reply(_rep,true,true)
+			return
+	if _func.is_valid():
+		_func.call(_kw,_arg,event)
 
 
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={}):
