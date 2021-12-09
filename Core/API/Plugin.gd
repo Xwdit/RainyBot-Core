@@ -10,7 +10,7 @@ enum MatchMode{
 	INCLUDE,
 	EXCLUDE,
 	EQUAL,
-	EXPRESSION
+	REGEX
 }
 
 
@@ -382,7 +382,7 @@ func trigger_keyword(event:Event)->bool:
 						var _arg = ""
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
 						return true
-				int(MatchMode.EXPRESSION):
+				int(MatchMode.REGEX):
 					if _text.match(_word):
 						var _arg = _text
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
@@ -393,13 +393,18 @@ func trigger_keyword(event:Event)->bool:
 
 
 func _trigger_keyword(_func:Callable,_filter:Callable,_kw:String,_arg:String,event:MessageEvent,_rep:String):
+	GuiManager.console_print_warning("检测到关键词:\"%s\"，参数为:\"%s\"；正在检查是否可以触发....."%[_kw,_arg])
 	if _filter.is_valid():
 		if !_filter.call(_kw,_arg,event):
+			GuiManager.console_print_warning("关键词触发过滤器检测不通过，未触发关键词.....")
 			if _rep != "":
 				event.reply(_rep,true,true)
 			return
 	if _func.is_valid():
+		GuiManager.console_print_success("成功触发关键词:\"%s\"，参数为:\"%s\"！"%[_kw,_arg])
 		_func.call(_kw,_arg,event)
+	else:
+		GuiManager.console_print_error("关键词试图触发的函数无效或不存在，请检查配置是否有误！")
 
 
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={}):
