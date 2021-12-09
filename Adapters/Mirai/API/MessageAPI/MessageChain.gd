@@ -107,13 +107,13 @@ func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
 						break
 				if exclude && _has:
 					continue
-				elif !_has:
+				elif !exclude && !_has:
 					continue
 		elif types is GDScript:
 			_has = _msg.get_script() == types
 			if exclude && _has:
 				continue
-			elif !_has:
+			elif !exclude && !_has:
 				continue
 		arr.append(_msg)
 		if max_size != -1 && arr.size() >= max_size:
@@ -134,13 +134,13 @@ func get_message_text(types=[],exclude:bool=false)->String:
 						break
 				if exclude && _has:
 					continue
-				elif !_has:
+				elif !exclude && !_has:
 					continue
 		elif types is GDScript:
 			_has = _msg.get_script() == types
 			if exclude && _has:
 				continue
-			elif !_has:
+			elif !exclude && !_has:
 				continue
 		text += _msg.get_as_text()
 	return text

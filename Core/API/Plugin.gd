@@ -343,8 +343,17 @@ func _update_keyword_arr():
 	
 func trigger_keyword(event:Event)->bool:
 	if event is MessageEvent and is_instance_valid(event):
-		var _at:bool = event.is_at_bot() if event is GroupMessageEvent else false
-		var _text:String = event.get_message_text(TextMessage)
+		var _at:bool = false
+		var _text:String = ""
+		for msg in event.get_message_chain():
+			if msg is AtMessage:
+				if msg.get_target_id() == BotAdapter.get_bot_id():
+					_text += msg.get_as_text()
+					_at = true
+			elif msg is TextMessage:
+				_text += msg.get_as_text()
+		if _at:
+			_text = _text.replace("@"+str(BotAdapter.get_bot_id())+" ","")
 		for _kw in plugin_keyword_arr:
 			var _func:Callable = plugin_keyword_dic[_kw]["function"]
 			var _filter:Callable = plugin_keyword_dic[_kw]["filter"]
