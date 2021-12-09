@@ -14,6 +14,16 @@ enum MatchMode{
 }
 
 
+var match_mode_dic:Dictionary = {
+	int(MatchMode.BEGIN) : "关键词位于开头",
+	int(MatchMode.BETWEEN) : "关键词位于中间",
+	int(MatchMode.END) : "关键词位于结尾",
+	int(MatchMode.INCLUDE) : "包含关键词",
+	int(MatchMode.EXCLUDE) : "不包含关键词",
+	int(MatchMode.EQUAL) : "与关键词完全相等",
+	int(MatchMode.REGEX) : "满足正则表达式"
+}
+
 var plugin_path:String = ""
 
 var plugin_file:String = ""
@@ -62,6 +72,10 @@ func _exit_tree():
 		unregister_console_command(cmd)
 	for kw in plugin_keyword_dic.duplicate():
 		unregister_keyword(kw)
+	if plugin_config_loaded:
+		save_plugin_config()
+	if plugin_data_loaded:
+		save_plugin_data()
 
 
 func _on_init():
@@ -103,12 +117,14 @@ func _plugin_timer_timeout():
 	_on_process()
 
 
-func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String,p_dependency:Array=[]):
+func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String,p_dependency=[]):
 	plugin_info.id = p_id
 	plugin_info.name = p_name
 	plugin_info.author = p_author
 	plugin_info.version = p_version
 	plugin_info.description = p_description
+	if p_dependency is String:
+		p_dependency = [p_dependency]
 	plugin_info.dependency = p_dependency
 
 	
@@ -124,15 +140,11 @@ func get_plugin_path()->String:
 	return plugin_path
 
 
-func set_plugin_runtime(time_sec:int):
-	plugin_time_passed = time_sec
-
-
 func get_plugin_runtime()->int:
 	return plugin_time_passed
 	
 
-func get_other_plugin_instance(plugin_id:String)->Plugin:
+func get_plugin_instance(plugin_id:String)->Plugin:
 	var ins = PluginManager.get_plugin_instance(plugin_id)
 	if ins == null:
 		GuiManager.console_print_error("无法获取ID为%s的插件实例，可能是ID有误或插件未被加载；请检查依赖关系是否设置正确！" % [plugin_id])
@@ -262,7 +274,7 @@ func _unregister_console_command(command:String):
 		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
 	
 
-func register_keyword(keyword,function,filter="null",failed_reply:String="",match_mode:int=MatchMode.INCLUDE):
+func register_keyword(keyword,function,filter="null",failed_reply:String="",match_mode:int=MatchMode.BEGIN):
 	if function is String:
 		function = Callable(self,function)
 	if filter is String:
@@ -292,7 +304,7 @@ func _register_keyword(keyword:String,function:Callable,filter:Callable,failed_r
 		GuiManager.console_print_warning("警告: 过滤器函数未定义或不存在，所有人默认将可触发关键词\"%s\"!"%[keyword])
 	plugin_keyword_dic[keyword] = {"function":function,"filter":filter,"failed_reply":failed_reply,"match_mode":match_mode}
 	_update_keyword_arr()
-	GuiManager.console_print_success("成功注册关键词: \"%s\"!" % [keyword])
+	GuiManager.console_print_success("成功注册关键词: \"%s\"，匹配模式为: %s" % [keyword,match_mode_dic[match_mode]])
 	
 	
 func unregister_keyword(keyword):
@@ -388,17 +400,17 @@ func trigger_keyword(event:Event)->bool:
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
 						return true
 	else:
-		GuiManager.console_print_error("无法使用传入的事件来解析关键词，请确保其是一个消息事件！")
+		GuiManager.console_print_error("无法使用传入的事件来匹配关键词，请确保其是一个消息事件！")
 	return false
 
 
 func _trigger_keyword(_func:Callable,_filter:Callable,_kw:String,_arg:String,event:MessageEvent,_rep:String):
-	GuiManager.console_print_warning("检测到关键词:\"%s\"，参数为:\"%s\" | 正在检查是否可以触发....."%[_kw,_arg])
+	GuiManager.console_print_warning("匹配到关键词:\"%s\"，参数为:\"%s\" | 正在检查是否可以触发....."%[_kw,_arg])
 	if _filter.is_valid():
 		if !_filter.call(_kw,_arg,event):
 			GuiManager.console_print_warning("关键词触发过滤器检测不通过，未触发关键词.....")
 			if _rep != "":
-				GuiManager.console_print_warning("正在发送检测未通过的自定义回复:\"%s\""%[_rep])
+				GuiManager.console_print_warning("正在发送检测未通过时的自定义回复:\"%s\""%[_rep])
 				event.reply(_rep,true,true)
 			return
 	else:

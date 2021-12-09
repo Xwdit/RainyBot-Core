@@ -1,53 +1,67 @@
-#RainyBot插件模板，相关帮助文档及API请访问 https://github.com/Xwdit/RainyBot-API 进行查阅
+#RainyBot插件模板，相关帮助文档，示例插件及API请访问 https://github.com/Xwdit/RainyBot-API 进行查阅
 
 extends Plugin #默认继承插件类，请勿随意改动
 
 
+#可以在此处定义各种插件范围的全局变量/常量/枚举等，例如：
+#var data:Dictionary = {}
+#var lib:Plugin = null
+#var connected:bool = true
+
+
 #将在此插件的文件被读取时执行的操作
+#必须在此处使用set_plugin_info函数来设置插件信息，插件才能被正常加载
+#例如：set_plugin_info("example","示例插件","author","1.0","这是插件的介绍")
+#可以在此处初始化一些基本变量，但不建议执行其它代码，可能会导致出现未知问题
 func _on_init():
-	#设定插件相关信息(全部必填)
-	set_plugin_info("example","示例插件", "author","1.0","这是插件的介绍" )
+	#set_plugin_info("","","","","")
+	pass
+	
+
+#将在RainyBot与协议后端恢复连接时执行的操作
+#可以在此处进行一些与连接状态相关的操作，例如恢复连接后发送通知等
+func _on_connect():
+	#connected = true
+	pass
 
 
 #将在此插件被完全加载后执行的操作
+#可以在此处进行各类事件/关键词/命令的注册，以及配置/数据文件的初始化等
 func _on_load():
-	#注册群消息事件，将群消息事件绑定到_receive_group_event函数
-	register_event(GroupMessageEvent,_receive_group_event)
-	
-	#注册一个名为example的控制台指令，并将其绑定到_receive_console_command函数
-	#剩余两个参数分别为: 命令是否要求传入参数 , 命令的用法介绍
-	register_console_command("example",_receive_console_command,false,["example - 这是一个测试命令"])
+	#register_event(Event,"")
+	#register_keyword("","")
+	#register_console_command("","")
+	#init_plugin_config({})
+	#init_plugin_data()
+	pass
 
 
 #将在所有插件被完全加载后执行的操作
+#可以在此处进行一些与其他插件交互相关的操作，例如获取某插件的实例等
+#注意：如果此插件硬性依赖某插件，推荐在插件信息中注册所依赖的插件，以确保其在此插件之前被正确加载
 func _on_ready():
-	Console.print_success("所有插件都加载完毕了~")
+	#lib = get_plugin_instance("")
+	pass
 
 
 #将在此插件运行的每一秒执行的操作
+#可在此处进行一些计时，或时间判定相关的操作，例如整点报时等
 func _on_process():
-	#获取插件自成功加载以来经过的时间
-	if get_plugin_runtime() % 3600 == 0:
-		Member.init(12345).send_message("时间又过去一个小时了哟~")
+	#var _runtime = get_plugin_runtime()
+	pass
+
+
+#将在RainyBot与协议后端断开连接时执行的操作
+#可以在此处进行一些与连接状态相关的操作，例如断开连接后暂停某些任务的运行等
+func _on_disconnect():
+	#connected = false
+	pass
 
 
 #将在此插件即将被卸载时执行的操作
+#可在此处执行一些自定义保存或清理相关的操作，例如储存自定义的文件或清除缓存等
+#无需在此处取消注册事件/关键词/命令，或者对内置的配置/数据功能进行保存，插件卸载时将会自动进行处理
 func _on_unload():
-	#取消注册群消息事件(可选，插件卸载时会自动取消注册所有事件)
-	unregister_event(GroupMessageEvent)
-	#取消注册名为example的控制台指令(可选，插件卸载时会自动取消注册所有命令)
-	unregister_console_command("example")
-
-
-#接收到群消息事件后将触发此函数
-#被事件触发的函数需要接收一个参数，参数为事件的实例
-func _receive_group_event(event:GroupMessageEvent):
-	#在此处处理事件
-	if event.get_group_id() == 123456789:
-		event.reply("这是一个回复")
-
-
-#指令在控制台被执行后将触发此函数
-#被控制台指令触发的函数需要接收两个参数，分别为命令名称及参数列表(数组)
-func _receive_console_command(cmd:String,arg:Array):
-	Console.print_success("命令执行测试成功!")
+	#lib.save_file("")
+	pass
+	
