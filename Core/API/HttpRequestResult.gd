@@ -5,7 +5,7 @@ class_name HttpRequestResult
 
 
 var request_url:String = ""
-var request_data = null
+var request_data:String = ""
 var request_headers:PackedStringArray = []
 var result_code:int = 0
 var response_code:int = 0
@@ -17,8 +17,20 @@ func get_request_url()->String:
 	return request_url
 	
 	
-func get_request_data():
+func get_request_data()->String:
 	return request_data
+	
+	
+func get_request_data_dic()->Dictionary:
+	var _json = JSON.new()
+	var _error = _json.parse(request_data)
+	var _data:Dictionary = {}
+	if _error == OK:
+		_data = _json.get_data()
+		GuiManager.console_print_success("成功将Http请求数据获取为字典: "+str(_data))
+	else:
+		GuiManager.console_print_error("无法将Http请求数据获取为字典!")
+	return _data
 	
 	
 func get_request_headers()->PackedStringArray:

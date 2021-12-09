@@ -20,11 +20,11 @@ static func get_beautifuler_num(num)->String:
 		return str(num)
 
 
-static func send_http_get_request(url:String,timeout:int = 20)->HttpRequestResult:
+static func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
 	var result = await HttpRequestManager.send_http_get_request(url,timeout)
 	return result
 
 
-static func send_http_post_request(url:String,request_data,headers:PackedStringArray=PackedStringArray([]),timeout:int = 20)->HttpRequestResult:
+static func send_http_post_request(url:String,request_data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	var result = await HttpRequestManager.send_http_post_request(url,request_data,headers,timeout)
 	return result

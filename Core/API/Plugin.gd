@@ -393,13 +393,16 @@ func trigger_keyword(event:Event)->bool:
 
 
 func _trigger_keyword(_func:Callable,_filter:Callable,_kw:String,_arg:String,event:MessageEvent,_rep:String):
-	GuiManager.console_print_warning("检测到关键词:\"%s\"，参数为:\"%s\"；正在检查是否可以触发....."%[_kw,_arg])
+	GuiManager.console_print_warning("检测到关键词:\"%s\"，参数为:\"%s\" | 正在检查是否可以触发....."%[_kw,_arg])
 	if _filter.is_valid():
 		if !_filter.call(_kw,_arg,event):
 			GuiManager.console_print_warning("关键词触发过滤器检测不通过，未触发关键词.....")
 			if _rep != "":
+				GuiManager.console_print_warning("正在发送检测未通过的自定义回复:\"%s\""%[_rep])
 				event.reply(_rep,true,true)
 			return
+	else:
+		GuiManager.console_print_warning("关键词触发过滤器函数无效或未定义，将直接触发关键词.....")
 	if _func.is_valid():
 		GuiManager.console_print_success("成功触发关键词:\"%s\"，参数为:\"%s\"！"%[_kw,_arg])
 		_func.call(_kw,_arg,event)
