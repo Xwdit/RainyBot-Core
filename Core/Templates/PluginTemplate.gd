@@ -1,4 +1,6 @@
-#RainyBot插件模板，相关帮助文档，示例插件及API请访问 https://github.com/Xwdit/RainyBot-API 进行查阅
+#RainyBot插件模板
+#相关帮助文档，示例插件及API请访问 https://github.com/Xwdit/RainyBot-API 进行查阅
+
 
 extends Plugin #默认继承插件类，请勿随意改动
 
@@ -12,7 +14,7 @@ extends Plugin #默认继承插件类，请勿随意改动
 #将在此插件的文件被读取时执行的操作
 #必须在此处使用set_plugin_info函数来设置插件信息，插件才能被正常加载
 #例如：set_plugin_info("example","示例插件","author","1.0","这是插件的介绍")
-#可以在此处初始化一些基本变量，但不建议执行其它代码，可能会导致出现未知问题
+#可以在此处初始化和使用一些基本变量，但不建议执行其它代码，可能会导致出现未知问题
 func _on_init():
 	#set_plugin_info("","","","","")
 	pass
@@ -64,4 +66,3 @@ func _on_disconnect():
 func _on_unload():
 	#lib.save_file("")
 	pass
-	
