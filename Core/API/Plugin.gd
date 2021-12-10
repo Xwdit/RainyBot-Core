@@ -144,8 +144,12 @@ func get_plugin_filename()->String:
 	return plugin_file
 
 
-func get_plugin_path()->String:
+func get_plugin_filepath()->String:
 	return plugin_path
+
+
+func get_plugin_path()->String:
+	return PluginManager.plugin_path
 
 
 func get_plugin_runtime()->int:
@@ -157,6 +161,30 @@ func get_plugin_instance(plugin_id:String)->Plugin:
 	if ins == null:
 		GuiManager.console_print_error("无法获取ID为%s的插件实例，可能是ID有误或插件未被加载；请检查依赖关系是否设置正确！" % [plugin_id])
 	return ins
+
+
+func get_data_path()->String:
+	return PluginManager.plugin_data_path
+	
+
+func get_data_filepath()->String:
+	return PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
+	
+	
+func get_config_path()->String:
+	return PluginManager.plugin_config_path
+	
+	
+func get_config_filepath()->String:
+	return PluginManager.plugin_config_path + plugin_info["id"] + ".json"
+	
+	
+func is_config_loaded()->bool:
+	return plugin_config_loaded
+	
+	
+func is_data_loaded()->bool:
+	return plugin_data_loaded
 
 
 func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL):
