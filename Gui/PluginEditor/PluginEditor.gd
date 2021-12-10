@@ -73,6 +73,10 @@ func _on_CodeEdit_caret_changed():
 
 
 func _on_SaveButton_button_down():
+	save_script(false)
+
+
+func _on_SaveReloadButton_button_down():
 	save_script(true)
 
 
@@ -81,5 +85,7 @@ func _on_HelpButton_button_down():
 
 
 func _input(event):
-	if event.is_action_pressed("save"):
+	if event.is_action_pressed("save_reload"):
 		save_script(true)
+	elif event.is_action_pressed("save"):
+		save_script(false)

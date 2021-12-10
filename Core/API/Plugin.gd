@@ -14,6 +14,14 @@ enum MatchMode{
 }
 
 
+enum BlockMode{
+	DISABLE,
+	EVENT,
+	FUNCTION,
+	ALL
+}
+
+
 var match_mode_dic:Dictionary = {
 	int(MatchMode.BEGIN) : "关键词位于开头",
 	int(MatchMode.BETWEEN) : "关键词位于中间",
@@ -151,12 +159,21 @@ func get_plugin_instance(plugin_id:String)->Plugin:
 	return ins
 
 
-func register_event(event,function,priority:int=0):
-func register_event(event,function="",priority:int=0,can_block:bool=true):
+func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL):
 	if function is String:
-		function = Callable(self,function)
-	if function is Callable and function.is_valid():
-		var _callable = {"priority":priority,"function":function,"can_block":can_block}
+		function = [Callable(self,function)]
+	elif function is Callable:
+		function = [function]
+	if function is Array and function.size() > 0:
+		var _arr = []
+		for _func in function:
+			if _func is String:
+				_func = Callable(self,_func)
+			if !(_func is Callable) or !_func.is_valid():
+				GuiManager.console_print_error("事件注册出错: 指定的函数无效或不存在！")
+				return
+			_arr.append(_func)
+		var _callable = {"priority":priority,"function":_arr,"block_mode":block_mode}
 		if event is GDScript and is_instance_valid(event):
 			_register_event(event,_callable,priority)
 		elif event is Array and event.size() > 0:
@@ -168,7 +185,7 @@ func register_event(event,function="",priority:int=0,can_block:bool=true):
 		else:
 			GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
 	else:
-		GuiManager.console_print_error("事件注册出错: 指定的函数不存在！")
+		GuiManager.console_print_error("事件注册出错: 指定的函数无效或不存在！")
 
 
 func _register_event(event:GDScript,data_dic:Dictionary,priority:int):
@@ -275,7 +292,7 @@ func _unregister_console_command(command:String):
 		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
 	
 
-func register_keyword(keyword,function,filter="null",failed_reply:String="",match_mode:int=MatchMode.BEGIN):
+func register_keyword(keyword,function,filter="null",failed_reply:String="",match_mode:int=MatchMode.BEGIN,block:bool=true):
 	if function is String:
 		function = Callable(self,function)
 	if filter is String:
@@ -283,18 +300,18 @@ func register_keyword(keyword,function,filter="null",failed_reply:String="",matc
 			filter = "null"
 		filter = Callable(self,filter)
 	if keyword is String and keyword.length() > 0:
-		_register_keyword(keyword,function,filter,failed_reply,match_mode)
+		_register_keyword(keyword,function,filter,failed_reply,match_mode,block)
 	elif keyword is Array and keyword.size() > 0:
 		for _k in keyword:
 			if _k is String and _k.length() > 0:
-				_register_keyword(_k,function,filter,failed_reply,match_mode)
+				_register_keyword(_k,function,filter,failed_reply,match_mode,block)
 			else:
 				GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	else:
 		GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	
 	
-func _register_keyword(keyword:String,function:Callable,filter:Callable,failed_reply:String,match_mode:int):
+func _register_keyword(keyword:String,function:Callable,filter:Callable,failed_reply:String,match_mode:int,block:bool):
 	if plugin_keyword_dic.has(keyword):
 		GuiManager.console_print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
 		return
@@ -303,7 +320,7 @@ func _register_keyword(keyword:String,function:Callable,filter:Callable,failed_r
 		return
 	if (!filter is Callable) or (!filter.is_valid()):
 		GuiManager.console_print_warning("警告: 过滤器函数未定义或不存在，所有人默认将可触发关键词\"%s\"!"%[keyword])
-	plugin_keyword_dic[keyword] = {"function":function,"filter":filter,"failed_reply":failed_reply,"match_mode":match_mode}
+	plugin_keyword_dic[keyword] = {"function":function,"filter":filter,"failed_reply":failed_reply,"match_mode":match_mode,"block":block}
 	_update_keyword_arr()
 	GuiManager.console_print_success("成功注册关键词: \"%s\"，匹配模式为: %s" % [keyword,match_mode_dic[match_mode]])
 	
@@ -360,6 +377,7 @@ func trigger_keyword(event:Event)->bool:
 			var _filter:Callable = plugin_keyword_dic[_kw]["filter"]
 			var _rep:String = plugin_keyword_dic[_kw]["failed_reply"]
 			var _mode:int = plugin_keyword_dic[_kw]["match_mode"]
+			var _block:bool = plugin_keyword_dic[_kw]["block"]
 			var _word:String = _kw
 			if _kw.begins_with("[@]"):
 				if _at:
@@ -367,7 +385,7 @@ func trigger_keyword(event:Event)->bool:
 					if _word.length() == 0:
 						var _arg = _text
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
-						return true
+						return _block
 				else:
 					continue
 			match _mode:
@@ -375,40 +393,40 @@ func trigger_keyword(event:Event)->bool:
 					if _text.begins_with(_word):
 						var _arg = _text.substr(_word.length())
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
-						return true
+						return _block
 				int(MatchMode.BETWEEN):
 					var _idx = _text.find(_word)
 					if _idx != -1 and (!(_text.begins_with(_word) or _text.ends_with(_word)) or _text == _word):
 						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
-						return true
+						return _block
 				int(MatchMode.END):
 					if _text.ends_with(_word):
 						var _arg = _text.left(_text.length()-_word.length())
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
-						return true
+						return _block
 				int(MatchMode.INCLUDE):
 					var _idx = _text.find(_word)
 					if _idx != -1:
 						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
-						return true
+						return _block
 				int(MatchMode.EXCLUDE):
 					var _idx = _text.find(_word)
 					if _idx == -1:
 						var _arg = _text
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
-						return true
+						return _block
 				int(MatchMode.EQUAL):
 					if _text == _word:
 						var _arg = ""
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
-						return true
+						return _block
 				int(MatchMode.REGEX):
 					if _text.match(_word):
 						var _arg = _text
 						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
-						return true
+						return _block
 	else:
 		GuiManager.console_print_error("无法使用传入的事件来匹配关键词，请确保其是一个消息事件！")
 	return false
@@ -612,7 +630,29 @@ func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
-func wait_context(context_id:String,timeout:float=20.0):
+func wait_message_context(event_type:GDScript,sender_id:int,group_id:int=-1,timeout:float=20.0,block:bool=true):
+	var _dic = {}
+	_dic["event"] = event_type.resource_path.get_file().replacen(".gd","")
+	_dic["sender_id"] = sender_id
+	if group_id != -1:
+		_dic["group_id"] = group_id
+	var context_id = str(_dic)
+	return await wait_context(context_id,timeout,block)
+
+
+func wait_context(context,timeout:float=20.0,block:bool=true):
+	var context_id = ""
+	if context is String and context.length() > 0:
+		context_id = context
+	elif context is MessageEvent and is_instance_valid(context):
+		var _dic = {}
+		_dic["event"] = context.get_script().resource_path.get_file().replacen(".gd","")
+		_dic["sender_id"] = context.get_sender_id()
+		if (context is GroupMessageEvent) or (context is TempMessageEvent):
+			_dic["group_id"] = context.get_group_id()
+		context_id = str(_dic)
+	else:
+		GuiManager.console_print_error("无法开始等待上下文响应，需要等待的内容应该是一个上下文ID或一个消息事件")
 	GuiManager.console_print_warning("开始等待上下文响应，ID为: %s，超时时间为: %s秒！"%[context_id,str(timeout)])
 	var _cont:PluginContextHelper
 	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
@@ -621,6 +661,7 @@ func wait_context(context_id:String,timeout:float=20.0):
 	else:
 		_cont = PluginContextHelper.new()
 		_cont.id = context_id
+		_cont.block = block
 		plugin_context_dic[context_id] = _cont
 	if timeout > 0.0:
 		_tick_context_timeout(_cont,timeout)
@@ -630,14 +671,29 @@ func wait_context(context_id:String,timeout:float=20.0):
 	return _cont.get_result()
 
 
-func respond_context(context_id:String,response):
+func respond_context(context,response=true)->bool:
+	var context_id = ""
+	if context is String and context.length() > 0:
+		context_id = context
+	elif context is MessageEvent and is_instance_valid(context):
+		var _dic = {}
+		_dic["event"] = context.get_script().resource_path.get_file().replacen(".gd","")
+		_dic["sender_id"] = context.get_sender_id()
+		if (context is GroupMessageEvent) or (context is TempMessageEvent):
+			_dic["group_id"] = context.get_group_id()
+		context_id = str(_dic)
+		response = context
+	else:
+		GuiManager.console_print_error("无法响应上下文，需要响应的内容应该是一个上下文ID或一个消息事件")
 	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
 		var _cont:PluginContextHelper = plugin_context_dic[context_id]
 		_cont.result = response
 		_cont.emit_signal("finished")
-		GuiManager.console_print_success("成功回应上下文，ID为: %s，响应结果为: %s！"%[context_id,str(response)])
-	else:
-		GuiManager.console_print_warning("未找到指定的上下文ID，无法进行回应: " + context_id)
+		GuiManager.console_print_success("成功响应上下文，ID为: %s，响应结果为: %s！"%[context_id,str(response)])
+		return _cont.block
+	elif context is String:
+		GuiManager.console_print_warning("未找到指定的上下文ID，无法进行响应: " + context_id)
+	return false
 		
 
 func _tick_context_timeout(cont_ins:PluginContextHelper,_timeout:float):
@@ -651,6 +707,7 @@ class PluginContextHelper:
 	extends RefCounted
 	signal finished
 	var id:String = ""
+	var block:bool = false
 	var result = null
 	
 	func get_result():

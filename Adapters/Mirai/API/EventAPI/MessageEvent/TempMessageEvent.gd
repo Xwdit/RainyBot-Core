@@ -37,6 +37,10 @@ func get_sender()->GroupMember:
 func get_group()->Group:
 	return Group.init_meta(data_dic.sender.group)
 	
+
+func get_group_id()->int:
+	return get_group().get_id()
+
 	
 func reply(msg,quote:bool=false,_at:bool=false)->BotRequestResult:
 	var _chain = []

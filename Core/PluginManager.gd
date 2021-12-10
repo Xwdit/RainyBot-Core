@@ -39,12 +39,22 @@ func _call_event(event:Event):
 	if plugin_event_dic.has(event.get_script()):
 		var arr:Array = plugin_event_dic[event.get_script()]
 		for c in arr.duplicate():
-			var _callable:Callable = c["function"]
-			var _can_block:bool = c["can_block"]
-			if _callable.is_valid():
-				var _stop = _callable.call(event)
-				if _stop is bool && _stop == true:
-					return
+			var _func:Array = c["function"]
+			var _block_mode:int = c["block_mode"]
+			var _stop:bool = false
+			for _callable in _func:
+				if _callable is Callable and _callable.is_valid():
+					var _block = _callable.call(event)
+					if _block is bool && _block == true:
+						match _block_mode:
+							int(Plugin.BlockMode.ALL):
+								return
+							int(Plugin.BlockMode.FUNCTION):
+								break
+							int(Plugin.BlockMode.EVENT):
+								_stop = true
+			if _stop:
+				return
 
 
 func _call_console_command(_cmd:String,args:Array):
