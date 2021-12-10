@@ -152,10 +152,11 @@ func get_plugin_instance(plugin_id:String)->Plugin:
 
 
 func register_event(event,function,priority:int=0):
+func register_event(event,function="",priority:int=0,can_block:bool=true):
 	if function is String:
 		function = Callable(self,function)
 	if function is Callable and function.is_valid():
-		var _callable = {"priority":priority,"function":function}
+		var _callable = {"priority":priority,"function":function,"can_block":can_block}
 		if event is GDScript and is_instance_valid(event):
 			_register_event(event,_callable,priority)
 		elif event is Array and event.size() > 0:

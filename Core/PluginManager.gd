@@ -40,6 +40,7 @@ func _call_event(event:Event):
 		var arr:Array = plugin_event_dic[event.get_script()]
 		for c in arr.duplicate():
 			var _callable:Callable = c["function"]
+			var _can_block:bool = c["can_block"]
 			if _callable.is_valid():
 				var _stop = _callable.call(event)
 				if _stop is bool && _stop == true:
