@@ -7,7 +7,7 @@ var mirai_loader:=MiraiLoader.new()
 
 
 func init():
-	GuiManager.console_print_warning("正在加载内置模块: Mirai-Adapter | 版本:V2.0-Alpha-5 | 作者:Xwdit")
+	GuiManager.console_print_warning("正在加载内置模块: Mirai-Adapter | 版本:V2.0-Alpha-6 | 作者:Xwdit")
 	add_to_group("console_command_mirai")
 	var usages = [
 		"mirai status - 获取与Mirai框架的连接状态",
