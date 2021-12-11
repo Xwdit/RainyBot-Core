@@ -641,13 +641,7 @@ save_reload={
 ]
 }
 
-[physics]
-
-2d/run_on_thread=true
-3d/run_on_thread=true
-
 [rendering]
 
-driver/threads/thread_model=2
 vulkan/rendering/back_end=1
 batching/options/use_batching=true
