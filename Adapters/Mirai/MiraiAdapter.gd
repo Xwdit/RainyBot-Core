@@ -101,7 +101,7 @@ func parse_message_dic(dic:Dictionary)->Message:
 			return DiceMessage.init_meta(dic)
 		"MusicShare":
 			return MusicShareMessage.init_meta(dic)
-		"ForwardMessage":
+		"Forward":
 			return ForwardMessage.init_meta(dic)
 		"File":
 			return FileMessage.init_meta(dic)
