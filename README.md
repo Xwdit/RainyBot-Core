@@ -56,7 +56,7 @@
 <!-- ABOUT THE PROJECT -->
 ## 关于本项目
 
-<img src=".github/images/screenshot.png" alt="Logo" width="960" height="540">
+![ScreenShot](.github/images/screenshot.png)
 
 这是一个跨平台，跨协议 (实现中) 的机器人开发框架，基于 Godot Engine 4.0 进行开发。
 本项目成立的目的，是为了建立一个低门槛，简单易用的机器人开发框架。
