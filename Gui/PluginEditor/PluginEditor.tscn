@@ -101,8 +101,8 @@ offset_bottom = 26.0
 theme_override_fonts/font = SubResource( "Font_kam1d" )
 theme_override_font_sizes/font_size = 16
 text = "Test.gd"
-align = 1
-valign = 1
+horizontal_alignment = 1
+vertical_alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -113,8 +113,8 @@ offset_top = 8.0
 offset_right = 541.0
 offset_bottom = 25.0
 theme_override_fonts/font = SubResource( "Font_oo60f" )
-align = 1
-valign = 1
+horizontal_alignment = 1
+vertical_alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -140,8 +140,8 @@ rect_min_size = Vector2(70, 0)
 theme_override_fonts/font = SubResource( "Font_6rswq" )
 theme_override_font_sizes/font_size = 16
 text = "1 : 1"
-align = 2
-valign = 1
+horizontal_alignment = 2
+vertical_alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

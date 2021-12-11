@@ -36,8 +36,8 @@ anchor_right = 1.0
 offset_bottom = 68.0
 theme_override_fonts/font = SubResource( "Font_plwo6" )
 text = "检测到您还有未保存的文件，确定要退出编辑器吗？"
-align = 1
-valign = 1
+horizontal_alignment = 1
+vertical_alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -59,7 +59,6 @@ size_flags_vertical = 3
 theme_override_fonts/font = SubResource( "Font_cxr2o" )
 text = "确定"
 flat = true
-icon_align = 1
 
 [node name="CancelButton" type="Button" parent="ExitConfirm/HBoxContainer"]
 offset_left = 514.0
@@ -70,7 +69,6 @@ size_flags_vertical = 3
 theme_override_fonts/font = SubResource( "Font_cxr2o" )
 text = "取消"
 flat = true
-icon_align = 1
 
 [connection signal="button_up" from="ExitConfirm/HBoxContainer/ConfirmButton" to="." method="_on_ConfirmButton_button_up"]
 [connection signal="button_up" from="ExitConfirm/HBoxContainer/CancelButton" to="." method="_on_CancelButton_button_up"]
