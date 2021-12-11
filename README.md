@@ -121,7 +121,7 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 ### 源码注意事项
 
 如果您希望从项目源码顺利运行/编译RainyBot，请确保遵循以下条目：
-- 请使用 Commit [[97034939f](https://github.com/godotengine/godot/commit/97034939fec923dcb08016f77e7651baf29e29fc)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。[点此下载Windows预编译版](https://www.jianguoyun.com/p/DWDIRAoQgfb3CRit8p4E)
+- 请使用 Commit [[092a286127](https://github.com/godotengine/godot/commit/092a2861277e7df87aec10516d713d0bf4adba79)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。[点此下载Windows预编译版](https://www.jianguoyun.com/p/DcbS-00Qgfb3CRiVoaAE)
 - 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.9.0-M1`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
 - 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.4.0`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
