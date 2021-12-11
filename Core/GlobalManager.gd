@@ -10,7 +10,7 @@ const INIT_PATH = [
 
 
 func _init():
-	init_dir()
+	_init_dir()
 
 
 func _ready():
@@ -19,7 +19,7 @@ func _ready():
 	CommandManager.register_console_command("stop",false,["stop - 卸载所有插件并安全退出RainyBot进程"],"RainyBot-Core",false)
 
 
-func init_dir():
+func _init_dir():
 	var dir = Directory.new()
 	for p in INIT_PATH:
 		var path = OS.get_executable_path().get_base_dir() + p

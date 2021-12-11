@@ -320,35 +320,29 @@ func _unregister_console_command(command:String):
 		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
 	
 
-func register_keyword(keyword,function,filter="null",failed_reply:String="",match_mode:int=MatchMode.BEGIN,block:bool=true):
+func register_keyword(keyword,function,match_mode:int=MatchMode.BEGIN,block:bool=true):
 	if function is String:
 		function = Callable(self,function)
-	if filter is String:
-		if filter == "":
-			filter = "null"
-		filter = Callable(self,filter)
 	if keyword is String and keyword.length() > 0:
-		_register_keyword(keyword,function,filter,failed_reply,match_mode,block)
+		_register_keyword(keyword,function,match_mode,block)
 	elif keyword is Array and keyword.size() > 0:
 		for _k in keyword:
 			if _k is String and _k.length() > 0:
-				_register_keyword(_k,function,filter,failed_reply,match_mode,block)
+				_register_keyword(_k,function,match_mode,block)
 			else:
 				GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	else:
 		GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	
 	
-func _register_keyword(keyword:String,function:Callable,filter:Callable,failed_reply:String,match_mode:int,block:bool):
+func _register_keyword(keyword:String,function:Callable,match_mode:int,block:bool):
 	if plugin_keyword_dic.has(keyword):
 		GuiManager.console_print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
 		return
 	if (!function is Callable) or (!function.is_valid()):
 		GuiManager.console_print_error("无法注册以下关键词，因为指定的函数不存在: " + keyword)
 		return
-	if (!filter is Callable) or (!filter.is_valid()):
-		GuiManager.console_print_warning("警告: 过滤器函数未定义或不存在，所有人默认将可触发关键词\"%s\"!"%[keyword])
-	plugin_keyword_dic[keyword] = {"function":function,"filter":filter,"failed_reply":failed_reply,"match_mode":match_mode,"block":block}
+	plugin_keyword_dic[keyword] = {"function":function,"match_mode":match_mode,"block":block}
 	_update_keyword_arr()
 	GuiManager.console_print_success("成功注册关键词: \"%s\"，匹配模式为: %s" % [keyword,match_mode_dic[match_mode]])
 	
@@ -402,8 +396,6 @@ func trigger_keyword(event:Event)->bool:
 			_text = _text.replace("@"+str(BotAdapter.get_bot_id())+" ","")
 		for _kw in plugin_keyword_arr:
 			var _func:Callable = plugin_keyword_dic[_kw]["function"]
-			var _filter:Callable = plugin_keyword_dic[_kw]["filter"]
-			var _rep:String = plugin_keyword_dic[_kw]["failed_reply"]
 			var _mode:int = plugin_keyword_dic[_kw]["match_mode"]
 			var _block:bool = plugin_keyword_dic[_kw]["block"]
 			var _word:String = _kw
@@ -412,7 +404,7 @@ func trigger_keyword(event:Event)->bool:
 					_word = _kw.substr(3)
 					if _word.length() == 0:
 						var _arg = _text
-						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						_trigger_keyword(_func,_kw,_arg,event)
 						return _block
 				else:
 					continue
@@ -420,57 +412,47 @@ func trigger_keyword(event:Event)->bool:
 				int(MatchMode.BEGIN):
 					if _text.begins_with(_word):
 						var _arg = _text.substr(_word.length())
-						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						_trigger_keyword(_func,_kw,_arg,event)
 						return _block
 				int(MatchMode.BETWEEN):
 					var _idx = _text.find(_word)
 					if _idx != -1 and (!(_text.begins_with(_word) or _text.ends_with(_word)) or _text == _word):
 						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
-						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						_trigger_keyword(_func,_kw,_arg,event)
 						return _block
 				int(MatchMode.END):
 					if _text.ends_with(_word):
 						var _arg = _text.left(_text.length()-_word.length())
-						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						_trigger_keyword(_func,_kw,_arg,event)
 						return _block
 				int(MatchMode.INCLUDE):
 					var _idx = _text.find(_word)
 					if _idx != -1:
 						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
-						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						_trigger_keyword(_func,_kw,_arg,event)
 						return _block
 				int(MatchMode.EXCLUDE):
 					var _idx = _text.find(_word)
 					if _idx == -1:
 						var _arg = _text
-						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						_trigger_keyword(_func,_kw,_arg,event)
 						return _block
 				int(MatchMode.EQUAL):
 					if _text == _word:
 						var _arg = ""
-						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						_trigger_keyword(_func,_kw,_arg,event)
 						return _block
 				int(MatchMode.REGEX):
 					if _text.match(_word):
 						var _arg = _text
-						_trigger_keyword(_func,_filter,_kw,_arg,event,_rep)
+						_trigger_keyword(_func,_kw,_arg,event)
 						return _block
 	else:
 		GuiManager.console_print_error("无法使用传入的事件来匹配关键词，请确保其是一个消息事件！")
 	return false
 
 
-func _trigger_keyword(_func:Callable,_filter:Callable,_kw:String,_arg:String,event:MessageEvent,_rep:String):
-	GuiManager.console_print_warning("匹配到关键词:\"%s\"，参数为:\"%s\" | 正在检查是否可以触发....."%[_kw,_arg])
-	if _filter.is_valid():
-		if !_filter.call(_kw,_arg,event):
-			GuiManager.console_print_warning("关键词触发过滤器检测不通过，未触发关键词.....")
-			if _rep != "":
-				GuiManager.console_print_warning("正在发送检测未通过时的自定义回复:\"%s\""%[_rep])
-				event.reply(_rep,true,true)
-			return
-	else:
-		GuiManager.console_print_warning("关键词触发过滤器函数无效或未定义，将直接触发关键词.....")
+func _trigger_keyword(_func:Callable,_kw:String,_arg:String,event:MessageEvent):
 	if _func.is_valid():
 		GuiManager.console_print_success("成功触发关键词:\"%s\"，参数为:\"%s\"！"%[_kw,_arg])
 		_func.call(_kw,_arg,event)
