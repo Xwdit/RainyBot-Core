@@ -175,7 +175,7 @@ func register_api_script(path:String):
 
 
 func _on_CodeEdit_request_code_completion():
-	var _line = get_line(get_caret_line())
+	var _line = get_line(get_caret_line()).strip_edges()
 	var _chr = _line.substr(get_caret_column()-1)
 	var _l_arr = _line.split(" ")
 	var _latest = _l_arr[_l_arr.size()-1]

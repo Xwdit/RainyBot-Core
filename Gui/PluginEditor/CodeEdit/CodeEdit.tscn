@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://do3ucpehwfiwq"]
 
 [ext_resource type="Script" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.gd" id="1_4pm0p"]
-[ext_resource type="FontData" uid="uid://drrnjqqitsad5" path="res://Gui/Theme/hansans-regular.otf" id="1_a66cx"]
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="1_a66cx"]
 
 [sub_resource type="Font" id="Font_hr5py"]
 data/0 = ExtResource( "1_a66cx" )

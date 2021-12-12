@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://btdilsic4yc8l"]
 
 [ext_resource type="Script" path="res://Gui/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
-[ext_resource type="FontData" uid="uid://drrnjqqitsad5" path="res://Gui/Theme/hansans-regular.otf" id="3_5rcar"]
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="3_5rcar"]
 [ext_resource type="PackedScene" uid="uid://do3ucpehwfiwq" path="res://Gui/PluginEditor/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
 
 [sub_resource type="Font" id="Font_fdnmp"]

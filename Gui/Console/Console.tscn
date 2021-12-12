@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://b4wvfslja5580"]
 
 [ext_resource type="PackedScene" uid="uid://278vdckoipp1" path="res://Gui/Console/CommandInput.tscn" id="1"]
-[ext_resource type="FontData" uid="uid://drrnjqqitsad5" path="res://Gui/Theme/hansans-regular.otf" id="2_g1djo"]
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="2_g1djo"]
 [ext_resource type="Script" path="res://Gui/Console/ConsoleOutput.gd" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
