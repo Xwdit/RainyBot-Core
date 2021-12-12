@@ -379,5 +379,3 @@ func _list_files_in_directory(path):
 func get_beautify_plugin_info(_info:Dictionary)->String:
 	var _str = "{name} | ID:{id} | 作者:{author} | 版本:{version} | 描述:{description}".format(_info)
 	return _str
-
-

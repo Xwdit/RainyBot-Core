@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://278vdckoipp1"]
 
-[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="1_84gla"]
+[ext_resource type="FontData" uid="uid://drrnjqqitsad5" path="res://Gui/Theme/hansans-regular.otf" id="1_84gla"]
 [ext_resource type="Script" path="res://Gui/Console/CommandInput.gd" id="3"]
 
 [sub_resource type="Font" id="Font_turmm"]
