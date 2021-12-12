@@ -108,19 +108,33 @@ var color_regions = {
 
 var api_dic = {}
 var class_dic = {}
+var kw_keys = []
+var api_keys = []
+var class_keys = []
 
 
 func _ready():
 	init_auto_complete()
 	init_syntax_highlight()
+	init_keys_arr()
 	
-	
+
+func init_keys_arr():
+	kw_keys = keyword_colors.keys()
+	api_keys = api_dic.keys()
+	class_keys = class_dic.keys()
+	kw_keys.sort()
+	api_keys.sort()
+	class_keys.sort()
+
+
 func init_auto_complete():
 	api_dic["BotAdapter"]= build_script_dic(BotAdapter.get_script())
 	add_comment_delimiter("#","",true)
 	build_class_dics()
 	build_api_dics("res://Core/API/")
 	build_api_dics("res://Adapters/Mirai/API/")
+	
 
 
 func build_class_dics():
@@ -239,9 +253,8 @@ func _on_CodeEdit_request_code_completion():
 	var _latest = _l_arr[_l_arr.size()-1]
 	if _latest.findn(".")!=-1 and get_word_under_caret() == "":
 		var _l_spl = _latest.split(".")
-		var _type = ""
+		var _type = "@"
 		for _t in _l_spl:
-			
 			_t = _t.split("(")[0]
 			if _t.ends_with("\"") or _t.ends_with("'") or _t.begins_with("str("):
 				_t = "String"
@@ -252,20 +265,47 @@ func _on_CodeEdit_request_code_completion():
 				
 			if class_dic.has(_t) or api_dic.has(_t):
 				_type = _t
-			if class_dic.has(_type):
-				if class_dic[_type]["m"].has(_t):
-					_type = class_dic[_type]["m"][_t]
-				elif class_dic[_type]["p"].has(_t):
-					_type = class_dic[_type]["p"][_t]
+			
+			if _type == "@":
+				var _types = ["@GlobalScope","@GDScript","Node","Plugin"]
+				for _tp in _types:
+					if class_dic.has(_tp):
+						if class_dic[_tp]["m"].has(_t):
+							_type = class_dic[_tp]["m"][_t]
+						elif class_dic[_tp]["p"].has(_t):
+							_type = class_dic[_tp]["p"][_t]
+					if api_dic.has(_tp):
+						if api_dic[_tp]["m"].has(_t):
+							_type = api_dic[_tp]["m"][_t]
+			else:
+				if class_dic.has(_type):
+					if class_dic[_type]["m"].has(_t):
+						_type = class_dic[_type]["m"][_t]
+					elif class_dic[_type]["p"].has(_t):
+						_type = class_dic[_type]["p"][_t]
+				if api_dic.has(_type):
+					if api_dic[_type]["m"].has(_t):
+						_type = api_dic[_type]["m"][_t]
+		print(_type)
+		if (!api_dic.has(_type) and !class_dic.has(_type)) or _type=="Variant":
+			for _a in api_keys:
+				_add_completion_api_dic(_a,true)
+			for _c in class_keys:
+				if !ClassDB.class_exists(_c):
+					_add_completion_class_dic(_c,true)
+			_add_completion_class_dic("Node",true)
+			for _k in kw_keys:
+				add_code_completion_option(CodeEdit.KIND_MEMBER,_k,_k,keyword_colors[_k])
+			for _a in api_keys:
+				add_code_completion_option(CodeEdit.KIND_CLASS,_a,_a,API_COLOR)
+			for _c in class_keys:
+				add_code_completion_option(CodeEdit.KIND_CLASS,_c,_c,CLASS_COLOR)
+		else:	
+			_add_completion_api_dic(_type)
+			_add_completion_class_dic(_type)
 				
-			if api_dic.has(_type):
-				if api_dic[_type]["m"].has(_t):
-					_type = api_dic[_type]["m"][_t]
+	elif _latest.length() >= 1:
 		
-		_add_completion_api_dic(_type)
-		_add_completion_class_dic(_type)
-		
-	else:
 		var _type = "@GlobalScope"
 		_add_completion_class_dic(_type)
 		_type = "@GDScript"
@@ -275,38 +315,67 @@ func _on_CodeEdit_request_code_completion():
 		_type = "Plugin"
 		_add_completion_api_dic(_type)
 		
-		for _k in keyword_colors:
+		for _k in kw_keys:
 			add_code_completion_option(CodeEdit.KIND_MEMBER,_k,_k,keyword_colors[_k])
-		for _a in api_dic:
+		for _a in api_keys:
 			add_code_completion_option(CodeEdit.KIND_CLASS,_a,_a,API_COLOR)
-		for _c in class_dic:
+		for _c in class_keys:
 			add_code_completion_option(CodeEdit.KIND_CLASS,_c,_c,CLASS_COLOR)
-		
 	update_code_completion_options(false)
 
 
-func _add_completion_api_dic(_type):
+func _add_completion_api_dic(_type:String,show_source:bool=false):
 	if !api_dic.has(_type):
 		return
-	for _m in api_dic[_type]["m"]:
-		add_code_completion_option(CodeEdit.KIND_FUNCTION,_m+"( )",_m+"()",FUNCTION_COLOR)
-	for _c in api_dic[_type]["c"]:
-		add_code_completion_option(CodeEdit.KIND_CONSTANT,_c,_c,MEMBER_VAR_COLOR)
-	for _e in api_dic[_type]["e"]:
-		add_code_completion_option(CodeEdit.KIND_ENUM,_e,_e,MEMBER_VAR_COLOR)
+	var _s_text = ""
+	if show_source:
+		_s_text = " [%s]"%[_type]
+	
+	var _m_list:Array = api_dic[_type]["m"].keys()
+	var _c_list:Array = api_dic[_type]["c"].keys()
+	var _e_list:Array = api_dic[_type]["e"].keys()
+	
+	_m_list.sort()
+	_c_list.sort()
+	_e_list.sort()
+	
+	for _m in _m_list:
+		if _m.begins_with("@"):
+			continue
+		add_code_completion_option(CodeEdit.KIND_FUNCTION,_m+"( )"+_s_text,_m+"()",FUNCTION_COLOR)
+	for _c in _c_list:
+		add_code_completion_option(CodeEdit.KIND_CONSTANT,_c+_s_text,_c,MEMBER_VAR_COLOR)
+	for _e in _e_list:
+		add_code_completion_option(CodeEdit.KIND_ENUM,_e+_s_text,_e,MEMBER_VAR_COLOR)
 
 
-func _add_completion_class_dic(_type):
+func _add_completion_class_dic(_type:String,show_source:bool=false):
 	if !class_dic.has(_type):
 		return
-	for _m in class_dic[_type]["m"]:
-		add_code_completion_option(CodeEdit.KIND_FUNCTION,_m+"( )",_m+"()",FUNCTION_COLOR)
-	for _p in class_dic[_type]["p"]:
-		add_code_completion_option(CodeEdit.KIND_MEMBER,_p,_p,MEMBER_VAR_COLOR)
-	for _s in class_dic[_type]["s"]:
-		add_code_completion_option(CodeEdit.KIND_SIGNAL,_s,_s,MEMBER_VAR_COLOR)
-	for _c in class_dic[_type]["c"]:
-		add_code_completion_option(CodeEdit.KIND_CONSTANT,_c,_c,MEMBER_VAR_COLOR)
+	var _s_text = ""
+	if show_source:
+		_s_text = " [%s]"%[_type]
+		
+	var _m_list:Array = class_dic[_type]["m"].keys()
+	var _c_list:Array = class_dic[_type]["c"].keys()
+	var _p_list:Array = class_dic[_type]["p"].keys()
+	var _s_list:Array = class_dic[_type]["s"].keys()
+	
+	_m_list.sort()
+	_c_list.sort()
+	_p_list.sort()
+	_s_list.sort()
+	
+	for _m in _m_list:
+		if _m.begins_with("@"):
+			continue
+		add_code_completion_option(CodeEdit.KIND_FUNCTION,_m+"( )"+_s_text,_m+"()",FUNCTION_COLOR)
+	for _p in _p_list:
+		add_code_completion_option(CodeEdit.KIND_MEMBER,_p+_s_text,_p,MEMBER_VAR_COLOR)
+	for _s in _s_list:
+		add_code_completion_option(CodeEdit.KIND_SIGNAL,_s+_s_text,_s,MEMBER_VAR_COLOR)
+	for _c in _c_list:
+		add_code_completion_option(CodeEdit.KIND_CONSTANT,_c+_s_text,_c,MEMBER_VAR_COLOR)
 
 
 func _on_CodeEdit_text_changed():
