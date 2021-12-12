@@ -59,36 +59,44 @@ var keyword_colors := {
 	"super":KEYWORD_COLOR,
 	"true":KEYWORD_COLOR,
 	"false":KEYWORD_COLOR,
-	"String":CLASS_COLOR,
-	"StringName":CLASS_COLOR,
-	"NodePath":CLASS_COLOR,
-	"Vector2":CLASS_COLOR,
-	"Vector2i":CLASS_COLOR,
-	"Rect2":CLASS_COLOR,
-	"Rect2i":CLASS_COLOR,
-	"Vector3":CLASS_COLOR,
-	"Vector3i":CLASS_COLOR,
-	"Transform2D":CLASS_COLOR,
-	"Transform3D":CLASS_COLOR,
-	"Plane":CLASS_COLOR,
-	"Quaternion":CLASS_COLOR,
-	"AABB":CLASS_COLOR,
-	"Basis":CLASS_COLOR,
-	"Color":CLASS_COLOR,
-	"RID":CLASS_COLOR,
-	"Array":CLASS_COLOR,
-	"PackedByteArray":CLASS_COLOR,
-	"PackedInt32Array":CLASS_COLOR,
-	"PackedInt64Array":CLASS_COLOR,
-	"PackedFloat32Array":CLASS_COLOR,
-	"PackedFloat64Array":CLASS_COLOR,
-	"PackedStringArray":CLASS_COLOR,
-	"PackedVector2Array":CLASS_COLOR,
-	"PackedVector3Array":CLASS_COLOR,
-	"PackedColorArray":CLASS_COLOR,
-	"Dictionary":CLASS_COLOR,
-	"Signal":CLASS_COLOR,
-	"Callable":CLASS_COLOR,
+}
+
+var type_dic = {
+	TYPE_NIL:"null",
+	TYPE_BOOL:"bool",
+	TYPE_INT:"int",
+	TYPE_FLOAT:"float",
+	TYPE_STRING:"String",
+	TYPE_VECTOR2:"Vector2",
+	TYPE_VECTOR2I:"Vector2i",
+	TYPE_RECT2:"Rect2",
+	TYPE_RECT2I:"Rect2i",
+	TYPE_VECTOR3:"Vector3",
+	TYPE_VECTOR3I:"Vector3i",
+	TYPE_TRANSFORM2D:"Transform2D",
+	TYPE_PLANE:"Plane",
+	TYPE_QUATERNION:"Quaternion",
+	TYPE_AABB:"AABB",
+	TYPE_BASIS:"Basis",
+	TYPE_TRANSFORM3D:"Transform3D",
+	TYPE_COLOR:"Color",
+	TYPE_STRING_NAME:"StringName",
+	TYPE_NODE_PATH:"NodePath",
+	TYPE_RID:"RID",
+	TYPE_OBJECT:"Object",
+	TYPE_CALLABLE:"Callable",
+	TYPE_SIGNAL:"Signal",
+	TYPE_DICTIONARY:"Dictionary",
+	TYPE_ARRAY:"Array",
+	TYPE_RAW_ARRAY:"PackedByteArray",
+	TYPE_INT32_ARRAY:"PackedInt32Array",
+	TYPE_INT64_ARRAY:"PackedInt64Array",
+	TYPE_FLOAT32_ARRAY:"PackedFloat32Array",
+	TYPE_FLOAT64_ARRAY:"PackedFloat64Array",
+	TYPE_STRING_ARRAY:"PackedStringArray",
+	TYPE_VECTOR2_ARRAY:"PackedVector2Array",
+	TYPE_VECTOR3_ARRAY:"PackedVector3Array",
+	TYPE_COLOR_ARRAY:"PackedColorArray"
 }
 
 var color_regions = {
@@ -99,45 +107,61 @@ var color_regions = {
 }
 
 var api_dic = {}
-
 var class_dic = {}
 
 
 func _ready():
-	init_syntax_highlight()
 	init_auto_complete()
+	init_syntax_highlight()
 	
 	
 func init_auto_complete():
+	api_dic["BotAdapter"]= build_script_dic(BotAdapter.get_script())
 	add_comment_delimiter("#","",true)
-	build_doc_dics()
-	var _scr:GDScript = BotAdapter.get_script()
-	api_dic["BotAdapter"]= build_script_dic(_scr)
+	build_class_dics()
 	build_api_dics("res://Core/API/")
 	build_api_dics("res://Adapters/Mirai/API/")
 
 
-func build_doc_dics():
+func build_class_dics():
 	var dir = Directory.new()
 	dir.open("res://Gui/PluginEditor/CodeEdit/ClassDocs/")
 	var files = dir.get_files()
 	for f in files:
 		var _c = f.replacen(".xml","")
 		if !class_dic.has(_c):
-			class_dic[_c]={"m":[],"p":[],"c":[]}
+			class_dic[_c]={"m":{},"p":{},"c":{},"s":{}}
 		var _xml = XMLParser.new()
 		_xml.open("res://Gui/PluginEditor/CodeEdit/ClassDocs/"+f)
+		var _m = ""
+		var _p = ""
 		while _xml.read() == OK:
 			if _xml.get_node_type() == _xml.NODE_ELEMENT:
 				var _name = _xml.get_named_attribute_value_safe("name")
 				match _xml.get_node_name():
 					"method":
-						class_dic[_c]["m"].append(_name)
+						_m = _name
+						class_dic[_c]["m"][_name]=""
 					"member":
-						class_dic[_c]["p"].append(_name)
+						_p = _name
+						class_dic[_c]["p"][_name]=""
 					"constant":
-						class_dic[_c]["c"].append(_name)
-
+						class_dic[_c]["c"][_name]=""
+					"signal":
+						class_dic[_c]["s"][_name]=""
+					"return":
+						if _m != "":
+							class_dic[_c]["m"][_m]=_xml.get_named_attribute_value_safe("type")
+							_m = ""
+						if _p != "":
+							class_dic[_c]["p"][_p]=_xml.get_named_attribute_value_safe("type")
+							_p = ""
+			if _xml.get_node_type()==_xml.NODE_ELEMENT_END:
+				if _xml.get_node_name() == "method" && _m != "":
+					_m = ""
+				if _xml.get_node_name() == "member" && _p != "":
+					_p = ""
+					
 
 func build_api_dics(path:String):
 	var dir = Directory.new()
@@ -164,65 +188,49 @@ func build_api_dics(path:String):
 func build_script_dic(script)->Dictionary:
 	var _scr:GDScript = script
 	var _dic = {}
-	_dic["c"] = []
-	_dic["e"] = []
-	_dic["m"] = []
-	_dic["p"] = []
+	_dic["c"] = {}
+	_dic["e"] = {}
+	_dic["m"] = {}
+	_dic["p"] = {}
 	var _m_list = _scr.get_script_method_list()
 	var _e_list = _scr.get_script_constant_map()
 	var _p_list = _scr.get_script_property_list()
 	var _c_list = []
 	for m in _m_list:
-		_dic["m"].append(m["name"])
+		if m["return"]["class_name"] != "":
+			_dic["m"][m["name"]] = m["return"]["class_name"]
+		else:
+			_dic["m"][m["name"]] = type_dic[m["return"]["type"]]
 	for p in _p_list:
-		_dic["p"].append(p["name"])
+		if p["class_name"] != "":
+			_dic["p"][p["name"]] = p["class_name"]
+		else:
+			_dic["p"][p["name"]] = type_dic[p["type"]]
 	for e in _e_list:
-		_dic["e"].append(e)
+		_dic["e"][e]=_e_list[e]
 		if _e_list[e] is Dictionary:
 			_c_list.append_array(_e_list[e].keys())
 	for c in _c_list:
 		if c is String:
-			_dic["c"].append(c)
+			_dic["c"][c]=""
 	return _dic
 
 
 func init_syntax_highlight():
-	var class_arr = ClassDB.get_class_list()
-	for c_name in class_arr:
-		keyword_colors[c_name] = CLASS_COLOR
+	var _dic = keyword_colors.duplicate()
 	keyword_colors["BotAdapter"]=API_COLOR
-	register_api_highlight("res://Core/API/")
-	register_api_highlight("res://Adapters/Mirai/API/")
+	for c_name in class_dic:
+		_dic[c_name] = CLASS_COLOR
+	for a_name in api_dic:
+		_dic[a_name] = API_COLOR
 	var chl = CodeHighlighter.new()
 	chl.number_color = NUMBER_COLOR
 	chl.symbol_color = SYMBOL_COLOR
 	chl.function_color = FUNCTION_COLOR
 	chl.member_variable_color = MEMBER_VAR_COLOR
-	chl.keyword_colors = keyword_colors
+	chl.keyword_colors = _dic
 	chl.color_regions = color_regions
 	syntax_highlighter = chl
-
-
-func register_api_highlight(path:String):
-	var dir = Directory.new()
-	var error = dir.open(path)
-	if error!=OK:
-		print(error_string(error))
-		return
-		
-	dir.list_dir_begin()
-
-	while true:
-		var file = dir.get_next()
-		if file == "":
-			break
-		if dir.current_is_dir():
-			register_api_highlight(path+file+"/")
-			continue
-		elif !file.begins_with(".") && file.ends_with(".gd"):
-			keyword_colors[file.replace(".gd","")]=API_COLOR
-
-	dir.list_dir_end()
 
 
 func _on_CodeEdit_request_code_completion():
@@ -231,132 +239,74 @@ func _on_CodeEdit_request_code_completion():
 	var _latest = _l_arr[_l_arr.size()-1]
 	if _latest.findn(".")!=-1 and get_word_under_caret() == "":
 		var _l_spl = _latest.split(".")
-		var _cls = _l_spl[0]
-		
-		if _cls.ends_with("\"") or _cls.ends_with("'") or _cls.begins_with("str("):
-			_cls = "String"
-		elif _cls.ends_with("}"):
-			_cls = "Dictionary"
-		elif _cls.ends_with("]"):
-			_cls = "Array"
-		
-		if _cls == "Plugin" and _l_spl.size() <= 2:
-			var _m_list = api_dic[_cls]["m"]
-			var _p_vm_list = ["_on_init","_on_connect","_on_load","_on_ready","_on_process","_on_disconnect","_on_unload"]
-			for m in _m_list:
-				if !m.begins_with("_") and !m.begins_with("@"):
-					add_code_completion_option(CodeEdit.KIND_FUNCTION,m+"( )",m+"()",FUNCTION_COLOR)
-			for vm in _p_vm_list:
-				add_code_completion_option(CodeEdit.KIND_FUNCTION,vm+"( )",vm+"()",FUNCTION_COLOR)
-		
-		elif api_dic.has(_cls) and _l_spl.size() <= 2:
-			var _m_list = api_dic[_cls]["m"]
-			var _e_list = api_dic[_cls]["e"]
-			for m in _m_list:
-				if !m.begins_with("@"):
-					add_code_completion_option(CodeEdit.KIND_FUNCTION,m+"( )",m+"()",FUNCTION_COLOR)
-			for e in _e_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,e,e,MEMBER_VAR_COLOR)
-		
-		elif class_dic.has(_cls) and _l_spl.size() <= 2:
-			var _m_list = class_dic[_cls]["m"]
-			var _c_list = class_dic[_cls]["c"]
-			var _p_list = class_dic[_cls]["p"]
-			for m in _m_list:
-				add_code_completion_option(CodeEdit.KIND_FUNCTION,m+"( )",m+"()",FUNCTION_COLOR)
-			for c in _c_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,c,c,MEMBER_VAR_COLOR)
-			for p in _p_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,p,p,MEMBER_VAR_COLOR)
-		
-		elif ClassDB.class_exists(_cls) and _l_spl.size() <= 2:
-			var _m_list = ClassDB.class_get_method_list(_cls)
-			var _p_list = ClassDB.class_get_property_list(_cls)
-			var _s_list = ClassDB.class_get_signal_list(_cls)
-			var _c_list = ClassDB.class_get_integer_constant_list(_cls)
-			var _e_list = ClassDB.class_get_enum_list(_cls)
-			for m in _m_list:
-				add_code_completion_option(CodeEdit.KIND_FUNCTION,m["name"]+"( )",m["name"]+"()",FUNCTION_COLOR)
-			for p in _p_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,p["name"],p["name"],MEMBER_VAR_COLOR)
-			for s in _s_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,s["name"],s["name"],MEMBER_VAR_COLOR)
-			for c in _c_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,c,c,MEMBER_VAR_COLOR)
-			for e in _e_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,e,e,MEMBER_VAR_COLOR)
-		
-		else:
-			var _sort = func(_a,_b):return _b.length()>_a.length()
-			var _keys = api_dic.keys()
-			_keys.sort_custom(_sort)
+		var _type = ""
+		for _t in _l_spl:
 			
-			for _k in _keys:
-				var _m_list = api_dic[_k]["m"]
-				var _e_list = api_dic[_k]["e"]
-				var _c_list = api_dic[_k]["c"]
-				for m in _m_list:
-					if !m.begins_with("@") and (_k != "Plugin" or !m.begins_with("_")):
-						add_code_completion_option(CodeEdit.KIND_FUNCTION,m+"( ) [%s]"%["BotAPI: "+_k],m+"()",FUNCTION_COLOR)
-				for e in _e_list:
-					add_code_completion_option(CodeEdit.KIND_MEMBER,e+" [%s]"%["BotAPI: "+_k],e,MEMBER_VAR_COLOR)
-				for c in _c_list:
-					add_code_completion_option(CodeEdit.KIND_MEMBER,c+" [%s]"%["BotAPI: "+_k],c,MEMBER_VAR_COLOR)
-			
-			for _cl in class_dic:
-				var _m_list = class_dic[_cl]["m"]
-				var _c_list = class_dic[_cl]["c"]
-				var _p_list = class_dic[_cl]["p"]
-				for m in _m_list:
-					add_code_completion_option(CodeEdit.KIND_FUNCTION,m+"( ) [%s]"%["GodotAPI: "+_cl],m+"()",FUNCTION_COLOR)
-				for c in _c_list:
-					add_code_completion_option(CodeEdit.KIND_MEMBER,c+" [%s]"%["GodotAPI: "+_cl],c,MEMBER_VAR_COLOR)
-				for p in _p_list:
-					add_code_completion_option(CodeEdit.KIND_MEMBER,p+" [%s]"%["GodotAPI: "+_cl],p,MEMBER_VAR_COLOR)
-			
-			var _kw = keyword_colors
-			var _p_vm_list = ["_on_init","_on_connect","_on_load","_on_ready","_on_process","_on_disconnect","_on_unload"]
-			var _kw_keys = _kw.keys()
-			_kw_keys.sort_custom(_sort)
-			for k in _kw_keys:
-				add_code_completion_option(CodeEdit.KIND_CLASS,k,k,_kw[k])
-			for vm in _p_vm_list:
-				add_code_completion_option(CodeEdit.KIND_FUNCTION,vm+"( ) [BotAPI: Plugin]",vm+"()",FUNCTION_COLOR)
+			_t = _t.split("(")[0]
+			if _t.ends_with("\"") or _t.ends_with("'") or _t.begins_with("str("):
+				_t = "String"
+			elif _t.ends_with("}"):
+				_t = "Dictionary"
+			elif _t.ends_with("]"):
+				_t = "Array"
+				
+			if class_dic.has(_t) or api_dic.has(_t):
+				_type = _t
+			if class_dic.has(_type):
+				if class_dic[_type]["m"].has(_t):
+					_type = class_dic[_type]["m"][_t]
+				elif class_dic[_type]["p"].has(_t):
+					_type = class_dic[_type]["p"][_t]
+				
+			if api_dic.has(_type):
+				if api_dic[_type]["m"].has(_t):
+					_type = api_dic[_type]["m"][_t]
 		
-		update_code_completion_options(false)
-	
-	elif _latest.length() > 0:
-		var _kw = keyword_colors
-		var _m_list = api_dic["Plugin"]["m"]
-		var _p_vm_list = ["_on_init","_on_connect","_on_load","_on_ready","_on_process","_on_disconnect","_on_unload"]
-		var _kw_keys = _kw.keys()
-		var _sort = func(_a,_b):return _b.length()>_a.length()
-		_kw_keys.sort_custom(_sort)
+		_add_completion_api_dic(_type)
+		_add_completion_class_dic(_type)
 		
-		for k in _kw_keys:
-			add_code_completion_option(CodeEdit.KIND_CLASS,k,k,_kw[k])
-		for m in _m_list:
-			if !m.begins_with("_") and !m.begins_with("@"):
-				add_code_completion_option(CodeEdit.KIND_FUNCTION,m+"( )",m+"()",FUNCTION_COLOR)
-		for vm in _p_vm_list:
-			add_code_completion_option(CodeEdit.KIND_FUNCTION,vm+"( )",vm+"()",FUNCTION_COLOR)
-		for _cl in class_dic:
-			if !_cl.begins_with("@"):
-				continue
-			_m_list = class_dic[_cl]["m"]
-			var _c_list = class_dic[_cl]["c"]
-			var _p_list = class_dic[_cl]["p"]
-			for m in _m_list:
-				add_code_completion_option(CodeEdit.KIND_FUNCTION,m+"( )",m+"()",FUNCTION_COLOR)
-			for c in _c_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,c,c,MEMBER_VAR_COLOR)
-			for p in _p_list:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,p,p,MEMBER_VAR_COLOR)
-		
-		update_code_completion_options(false)
-	
 	else:
-		cancel_code_completion()
+		var _type = "@GlobalScope"
+		_add_completion_class_dic(_type)
+		_type = "@GDScript"
+		_add_completion_class_dic(_type)	
+		_type = "Node"
+		_add_completion_class_dic(_type)	
+		_type = "Plugin"
+		_add_completion_api_dic(_type)
+		
+		for _k in keyword_colors:
+			add_code_completion_option(CodeEdit.KIND_MEMBER,_k,_k,keyword_colors[_k])
+		for _a in api_dic:
+			add_code_completion_option(CodeEdit.KIND_CLASS,_a,_a,API_COLOR)
+		for _c in class_dic:
+			add_code_completion_option(CodeEdit.KIND_CLASS,_c,_c,CLASS_COLOR)
+		
+	update_code_completion_options(false)
+
+
+func _add_completion_api_dic(_type):
+	if !api_dic.has(_type):
+		return
+	for _m in api_dic[_type]["m"]:
+		add_code_completion_option(CodeEdit.KIND_FUNCTION,_m+"( )",_m+"()",FUNCTION_COLOR)
+	for _c in api_dic[_type]["c"]:
+		add_code_completion_option(CodeEdit.KIND_CONSTANT,_c,_c,MEMBER_VAR_COLOR)
+	for _e in api_dic[_type]["e"]:
+		add_code_completion_option(CodeEdit.KIND_ENUM,_e,_e,MEMBER_VAR_COLOR)
+
+
+func _add_completion_class_dic(_type):
+	if !class_dic.has(_type):
+		return
+	for _m in class_dic[_type]["m"]:
+		add_code_completion_option(CodeEdit.KIND_FUNCTION,_m+"( )",_m+"()",FUNCTION_COLOR)
+	for _p in class_dic[_type]["p"]:
+		add_code_completion_option(CodeEdit.KIND_MEMBER,_p,_p,MEMBER_VAR_COLOR)
+	for _s in class_dic[_type]["s"]:
+		add_code_completion_option(CodeEdit.KIND_SIGNAL,_s,_s,MEMBER_VAR_COLOR)
+	for _c in class_dic[_type]["c"]:
+		add_code_completion_option(CodeEdit.KIND_CONSTANT,_c,_c,MEMBER_VAR_COLOR)
 
 
 func _on_CodeEdit_text_changed():
