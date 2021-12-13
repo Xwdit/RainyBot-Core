@@ -1,6 +1,9 @@
 extends CodeEdit
 
 
+signal update_finished
+
+
 const CLASS_COLOR = Color(0.25,1,0.75)
 const API_COLOR = Color(0.2,0.9,0.8)
 const KEYWORD_COLOR = Color(1,0.44,0.52)
@@ -112,8 +115,14 @@ var kw_keys = []
 var api_keys = []
 var class_keys = []
 
+var error_lines = {}
+var last_text = ""
+
 
 func _ready():
+	grab_focus()
+	set_caret_line(0)
+	set_caret_column(0)
 	init_auto_complete()
 	init_syntax_highlight()
 	init_keys_arr()
@@ -403,8 +412,11 @@ func _add_completion_class_dic(_type:String,show_source:bool=false):
 
 
 func _on_CodeEdit_text_changed():
-	if (is_in_comment(get_caret_line(),get_caret_column())==-1) and (is_in_string(get_caret_line(),get_caret_column())==-1):
-		request_code_completion()
+	$Timer.start(0.25)
+
+
+func _on_CodeEdit_caret_changed():
+	$Timer.start(0.25)
 
 
 func parse_code_text():
@@ -462,3 +474,36 @@ func parse_code_text():
 			if _o["display_text"] == _dw:
 				return
 		add_code_completion_option(CodeEdit.KIND_MEMBER,_dw,_iw,_dic[_w])
+
+
+func check_error():
+	for _l in error_lines:
+		set_line_background_color(_l,Color(Color.WHITE,0.0))
+	error_lines.clear()
+	var _f = File.new()
+	_f.open("user://logs/rainybot.log",File.READ)
+	var curr_text = _f.get_as_text()
+	_f.close()
+	var _scr = GDScript.new()
+	_scr.source_code = text
+	if _scr.reload() != OK:
+		_f.open("user://logs/rainybot.log",File.READ)
+		var _err = _f.get_as_text().replacen(curr_text,"").split("\n")
+		_f.close()
+		for _l in _err:
+			if _l.findn("built-in:")!=-1:
+				var _sl = _l.split(" - ")
+				var _num = max(abs(_sl[0].to_int())-1,0)
+				var _error = _sl[1]
+				set_line_background_color(_num,Color(1,0.47,0.42,0.3))
+				error_lines[_num]=_error
+
+
+func _on_Timer_timeout():
+	if last_text != text:
+		last_text = text
+		check_error()
+		if (is_in_comment(get_caret_line(),get_caret_column())==-1) and (is_in_string(get_caret_line(),get_caret_column())==-1):
+			request_code_completion()
+	emit_signal("update_finished")
+	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://btdilsic4yc8l"]
+[gd_scene load_steps=10 format=3 uid="uid://btdilsic4yc8l"]
 
 [ext_resource type="Script" path="res://Gui/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
 [ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Theme/hansans-regular.otf" id="3_5rcar"]
@@ -19,6 +19,9 @@ data/0 = ExtResource( "3_5rcar" )
 [sub_resource type="Font" id="Font_6rswq"]
 data/0 = ExtResource( "3_5rcar" )
 
+[sub_resource type="Font" id="Font_ohfm0"]
+data/0 = ExtResource( "3_5rcar" )
+
 [node name="PluginEditor" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -37,18 +40,21 @@ __meta__ = {
 
 [node name="CodeEdit" parent="." instance=ExtResource( "3_ku66v" )]
 offset_top = 32.0
+offset_bottom = -30.0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath(".")
 focus_previous = NodePath(".")
-scroll_vertical = 1.0
 
 [node name="EditorPanel" type="Control" parent="."]
 anchor_right = 1.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Menu" type="HBoxContainer" parent="EditorPanel"]
 offset_left = 4.0
@@ -146,8 +152,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="StatusPanel" type="Control" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CodeStatus" type="Label" parent="StatusPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource( "Font_ohfm0" )
+text = "当前文件中未发现任何错误"
+horizontal_alignment = 1
+vertical_alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="caret_changed" from="CodeEdit" to="." method="_on_CodeEdit_caret_changed"]
 [connection signal="text_changed" from="CodeEdit" to="." method="_on_CodeEdit_text_changed"]
+[connection signal="update_finished" from="CodeEdit" to="." method="_on_CodeEdit_update_finished"]
 [connection signal="button_down" from="EditorPanel/Menu/SaveButton" to="." method="_on_SaveButton_button_down"]
 [connection signal="button_down" from="EditorPanel/Menu/SaveReloadButton" to="." method="_on_SaveReloadButton_button_down"]
 [connection signal="button_down" from="EditorPanel/Menu/HelpButton" to="." method="_on_HelpButton_button_down"]

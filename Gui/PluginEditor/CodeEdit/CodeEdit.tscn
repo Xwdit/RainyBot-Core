@@ -9,6 +9,7 @@ data/0 = ExtResource( "1_a66cx" )
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8lmgh"]
 bg_color = Color(0.101961, 0.113725, 0.137255, 0)
 border_width_top = 2
+border_width_bottom = 3
 border_color = Color(0.235294, 0.776471, 0.8, 1)
 border_blend = true
 
@@ -41,7 +42,6 @@ draw_control_chars = true
 draw_tabs = true
 syntax_highlighter = SubResource( "CodeHighlighter_nyeeb" )
 scroll_smooth = true
-scroll_vertical = 1.0
 minimap_draw = true
 caret_type = 1
 symbol_lookup_on_click = true
@@ -60,5 +60,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="caret_changed" from="." to="." method="_on_CodeEdit_caret_changed"]
 [connection signal="request_code_completion" from="." to="." method="_on_CodeEdit_request_code_completion"]
 [connection signal="text_changed" from="." to="." method="_on_CodeEdit_text_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

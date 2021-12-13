@@ -79,3 +79,17 @@ func _input(event):
 		save_script(true)
 	elif event.is_action_pressed("save"):
 		save_script(false)
+
+
+func _on_CodeEdit_update_finished():
+	var _err_dic:Dictionary = get_code_edit().error_lines
+	var _l_num:int = get_code_edit().get_caret_line()
+	if _err_dic.has(_l_num):
+		$StatusPanel/CodeStatus.text = "错误: "+_err_dic[_l_num]
+	elif !_err_dic.is_empty():
+		var _ln = []
+		for _l in _err_dic:
+			_ln.append(_l+1)
+		$StatusPanel/CodeStatus.text = "在以下行检测到错误，请移动到对应行查看详情: "+str(_ln)
+	else:
+		$StatusPanel/CodeStatus.text = "当前文件中未发现任何错误"

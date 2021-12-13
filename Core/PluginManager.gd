@@ -257,6 +257,7 @@ func get_plugin_file_info(file:String)->Dictionary:
 		GuiManager.console_print_error("无法读取插件文件: " + file)
 		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
 		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
+		GuiManager.console_print_error("您可以使用指令 plugins edit %s 打开内置编辑器来进行错误检查！"%[file])
 		return {}
 	var plugin_ins:Plugin = plugin_res.new()
 	if is_instance_valid(plugin_ins):
@@ -280,6 +281,7 @@ func get_plugin_file_info(file:String)->Dictionary:
 		GuiManager.console_print_error("无法读取插件文件: " + file)
 		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
 		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
+		GuiManager.console_print_error("您可以使用指令 plugins edit %s 打开内置编辑器来进行错误检查！"%[file])
 		return {}
 
 
