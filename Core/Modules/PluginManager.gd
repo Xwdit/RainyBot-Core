@@ -93,11 +93,7 @@ func _call_console_command(_cmd:String,args:Array):
 		"edit":
 			if args.size() > 1:
 				var file_name:String = args[1]
-				if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
-					GuiManager.console_print_warning("正在启动插件编辑器...")
-					GuiManager.open_plugin_editor(plugin_path+file_name)
-				else:
-					GuiManager.console_print_error("插件文件不存在或格式错误!")
+				GuiManager.open_plugin_editor(plugin_path+file_name)
 			else:
 				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"create":

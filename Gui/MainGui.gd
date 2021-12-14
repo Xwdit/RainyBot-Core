@@ -2,7 +2,7 @@ extends Control
 
 
 const NAME = "RainyBot-Core"
-const VERSION = "V2.0-Alpha-6"
+const VERSION = "V2.0-Beta-1"
 const AUTHOR = "Xwdit"
 
 

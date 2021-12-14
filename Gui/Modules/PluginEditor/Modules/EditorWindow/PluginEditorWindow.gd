@@ -27,10 +27,10 @@ func exit():
 	if get_plugin_editor().unsaved:
 		$ExitConfirmWindow.popup_centered(Vector2(430,130))
 	else:
-		GuiManager.console_print_success("插件编辑器已被成功关闭!")
+		GuiManager.console_print_success("插件编辑器已被成功关闭! | 文件:"+get_plugin_editor().loaded_name)
 		queue_free()
 
 
 func _on_ExitConfirmWindow_confirm_pressed():
-	GuiManager.console_print_success("插件编辑器已被成功关闭!")
+	GuiManager.console_print_success("插件编辑器已被成功关闭! | 文件:"+get_plugin_editor().loaded_name)
 	queue_free()

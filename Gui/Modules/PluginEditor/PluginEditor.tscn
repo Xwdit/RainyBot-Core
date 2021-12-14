@@ -47,7 +47,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath(".")
 focus_previous = NodePath(".")
-scroll_vertical = 1.0
 
 [node name="EditorPanel" type="Control" parent="."]
 anchor_right = 1.0

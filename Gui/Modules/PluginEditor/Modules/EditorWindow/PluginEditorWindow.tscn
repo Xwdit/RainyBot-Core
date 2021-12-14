@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b0acwi2mxar4s"]
 
 [ext_resource type="Script" path="res://Gui/Modules/PluginEditor/Modules/EditorWindow/PluginEditorWindow.gd" id="1_i830a"]
-[ext_resource type="PackedScene" path="res://Gui/Modules/PluginEditor/PluginEditor.tscn" id="2_1cb4y"]
+[ext_resource type="PackedScene" uid="uid://dy3xg5rbxj5gi" path="res://Gui/Modules/PluginEditor/PluginEditor.tscn" id="2_1cb4y"]
 [ext_resource type="PackedScene" path="res://Gui/Modules/PluginEditor/Modules/EditorWindow/Modules/ExitConfirm/ExitConfirmWindow.tscn" id="3_scsvk"]
 
 [node name="PluginEditorWindow" type="Window"]
