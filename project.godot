@@ -32,12 +32,12 @@ _global_script_classes=[{
 "base": "CoreAPI",
 "class": &"Bot",
 "language": &"GDScript",
-"path": "res://Adapters/Mirai/API/CoreAPI/Bot.gd"
+"path": "res://Adapters/Mirai/API/BotAPI/Bot.gd"
 }, {
-"base": "RefCounted",
+"base": "RainyBotAPI",
 "class": &"BotAPI",
 "language": &"GDScript",
-"path": "res://Adapters/Mirai/API/BotAPI.gd"
+"path": "res://Adapters/Mirai/API/BotAPI/BotAPI.gd"
 }, {
 "base": "Message",
 "class": &"BotCodeMessage",
@@ -87,7 +87,7 @@ _global_script_classes=[{
 "base": "CoreAPI",
 "class": &"BotRequestResult",
 "language": &"GDScript",
-"path": "res://Adapters/Mirai/API/CoreAPI/BotRequestResult.gd"
+"path": "res://Adapters/Mirai/API/BotAPI/BotRequestResult.gd"
 }, {
 "base": "GroupBotEvent",
 "class": &"BotUnmuteEvent",
@@ -102,12 +102,12 @@ _global_script_classes=[{
 "base": "CoreAPI",
 "class": &"Console",
 "language": &"GDScript",
-"path": "res://Adapters/Mirai/API/CoreAPI/Console.gd"
+"path": "res://Core/API/CoreAPI/Console.gd"
 }, {
-"base": "BotAPI",
+"base": "RainyBotAPI",
 "class": &"CoreAPI",
 "language": &"GDScript",
-"path": "res://Adapters/Mirai/API/CoreAPI/CoreAPI.gd"
+"path": "res://Core/API/CoreAPI/CoreAPI.gd"
 }, {
 "base": "Message",
 "class": &"DiceMessage",
@@ -119,7 +119,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/EventAPI/Event.gd"
 }, {
-"base": "BotAPI",
+"base": "RainyBotAPI",
 "class": &"EventAPI",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/EventAPI/EventAPI.gd"
@@ -272,7 +272,7 @@ _global_script_classes=[{
 "base": "RefCounted",
 "class": &"HttpRequestResult",
 "language": &"GDScript",
-"path": "res://Core/API/HttpRequestResult.gd"
+"path": "res://Core/API/CoreAPI/HttpRequestResult.gd"
 }, {
 "base": "Message",
 "class": &"ImageMessage",
@@ -354,7 +354,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/MessageAPI/Message.gd"
 }, {
-"base": "BotAPI",
+"base": "RainyBotAPI",
 "class": &"MessageAPI",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/MessageAPI/MessageAPI.gd"
@@ -370,19 +370,19 @@ _global_script_classes=[{
 "path": "res://Adapters/Mirai/API/EventAPI/MessageEvent/MessageEvent.gd"
 }, {
 "base": "Node",
-"class": &"MiraiAdapterConfig",
-"language": &"GDScript",
-"path": "res://Adapters/Mirai/MiraiAdapterConfig.gd"
-}, {
-"base": "Node",
 "class": &"MiraiClient",
 "language": &"GDScript",
-"path": "res://Adapters/Mirai/MiraiClient.gd"
+"path": "res://Adapters/Mirai/Modules/MiraiClient.gd"
+}, {
+"base": "Node",
+"class": &"MiraiConfigManager",
+"language": &"GDScript",
+"path": "res://Adapters/Mirai/Modules/MiraiConfigManager.gd"
 }, {
 "base": "Node",
 "class": &"MiraiLoader",
 "language": &"GDScript",
-"path": "res://Adapters/Mirai/MiraiLoader.gd"
+"path": "res://Adapters/Mirai/Modules/MiraiLoader.gd"
 }, {
 "base": "Message",
 "class": &"MusicShareMessage",
@@ -432,7 +432,7 @@ _global_script_classes=[{
 "base": "Control",
 "class": &"PluginEditor",
 "language": &"GDScript",
-"path": "res://Gui/PluginEditor/PluginEditor.gd"
+"path": "res://Gui/Modules/PluginEditor/PluginEditor.gd"
 }, {
 "base": "Message",
 "class": &"PokeMessage",
@@ -444,12 +444,17 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/MessageAPI/Types/QuoteMessage.gd"
 }, {
+"base": "RefCounted",
+"class": &"RainyBotAPI",
+"language": &"GDScript",
+"path": "res://Core/API/RainyBotAPI.gd"
+}, {
 "base": "Event",
 "class": &"RequestEvent",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/EventAPI/RequestEvent/RequestEvent.gd"
 }, {
-"base": "BotAPI",
+"base": "RainyBotAPI",
 "class": &"RoleAPI",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/RoleAPI/RoleAPI.gd"
@@ -477,7 +482,7 @@ _global_script_classes=[{
 "base": "CoreAPI",
 "class": &"Utils",
 "language": &"GDScript",
-"path": "res://Core/API/Utils.gd"
+"path": "res://Core/API/CoreAPI/Utils.gd"
 }, {
 "base": "Message",
 "class": &"VoiceMessage",
@@ -562,8 +567,8 @@ _global_script_class_icons={
 "MessageAPI": "",
 "MessageChain": "",
 "MessageEvent": "",
-"MiraiAdapterConfig": "",
 "MiraiClient": "",
+"MiraiConfigManager": "",
 "MiraiLoader": "",
 "MusicShareMessage": "",
 "NewFriendRequestEvent": "",
@@ -577,6 +582,7 @@ _global_script_class_icons={
 "PluginEditor": "",
 "PokeMessage": "",
 "QuoteMessage": "",
+"RainyBotAPI": "",
 "RequestEvent": "",
 "RoleAPI": "",
 "SourceMessage": "",
@@ -591,7 +597,7 @@ _global_script_class_icons={
 [application]
 
 config/name="RainyBot-Core"
-run/main_scene="res://Main/Main.tscn"
+run/main_scene="res://Gui/MainGui.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="RainyBot"
 run/low_processor_mode=true
@@ -607,12 +613,12 @@ config/features=PackedStringArray("4.0")
 
 [autoload]
 
-GlobalManager="*res://Core/GlobalManager.gd"
+GlobalManager="*res://Core/Modules/GlobalManager.gd"
 BotAdapter="*res://Adapters/Mirai/MiraiAdapter.gd"
-HttpRequestManager="*res://Core/HttpRequestManager.gd"
-CommandManager="*res://Core/CommandManager.gd"
-PluginManager="*res://Core/PluginManager.gd"
-GuiManager="*res://Core/GuiManager.gd"
+HttpRequestManager="*res://Core/Modules/HttpRequestManager.gd"
+CommandManager="*res://Core/Modules/CommandManager.gd"
+PluginManager="*res://Core/Modules/PluginManager.gd"
+GuiManager="*res://Core/Modules/GuiManager.gd"
 
 [debug]
 

@@ -1,9 +1,9 @@
 extends Node
 
 
-var mirai_client:= MiraiClient.new()
-var mirai_config_manager:=MiraiAdapterConfig.new()
+var mirai_client:=MiraiClient.new()
 var mirai_loader:=MiraiLoader.new()
+var mirai_config_manager:=MiraiConfigManager.new()
 
 
 func init():
@@ -16,7 +16,7 @@ func init():
 	]
 	CommandManager.register_console_command("mirai",true,usages,"Mirai-Adapter",false)
 	mirai_config_manager.connect("config_loaded",Callable(self,"_mirai_config_loaded"))
-	mirai_config_manager.name = "MiraiAdapterConfig"
+	mirai_config_manager.name = "MiraiConfigManager"
 	mirai_client.name = "MiraiClient"
 	mirai_loader.name = "MiraiLoader"
 	add_child(mirai_config_manager,true)

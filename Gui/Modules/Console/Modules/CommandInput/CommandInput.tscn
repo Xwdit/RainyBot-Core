@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Font/hansans-regular.otf" id="1_0khd1"]
+[ext_resource type="Script" path="res://Gui/Modules/Console/Modules/CommandInput/CommandInput.gd" id="2_hiu0h"]
+
+[sub_resource type="Font" id="Font_turmm"]
+data/0 = ExtResource( "1_0khd1" )
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0ng3"]
+content_margin_left = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_top = 2
+border_color = Color(0.211765, 0.662745, 0.780392, 1)
+border_blend = true
+
+[sub_resource type="Font" id="Font_fko5p"]
+data/0 = ExtResource( "1_0khd1" )
+
+[node name="CommandInput" type="LineEdit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_selected_color = Color(0, 0, 0, 0)
+theme_override_colors/font_color = Color(0.878431, 0.878431, 0.878431, 1)
+theme_override_fonts/font = SubResource( "Font_turmm" )
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource( "StyleBoxFlat_h0ng3" )
+expand_to_text_length = true
+placeholder_text = "在此输入命令，回车键确认，输入help查看帮助"
+caret_blink_speed = 0.5
+script = ExtResource( "2_hiu0h" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Caret" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+theme_override_fonts/font = SubResource( "Font_fko5p" )
+vertical_alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="text_changed" from="." to="." method="_on_CommandInput_text_changed"]
+[connection signal="text_submitted" from="." to="." method="_on_CommandInput_text_submitted"]
