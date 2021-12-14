@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://brxt1i2p5uge7"]
 
 [ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Font/hansans-regular.otf" id="2_t511e"]
 [ext_resource type="Script" path="res://Gui/MainGui.gd" id="2_viisr"]
-[ext_resource type="PackedScene" path="res://Gui/Modules/Console/Console.tscn" id="3_v6040"]
-
+[ext_resource type="PackedScene" uid="uid://b5wqou4t780l0" path="res://Gui/Modules/Console/Console.tscn" id="3_v6040"]
 
 [sub_resource type="Font" id="Font_ro2uw"]
 data/0 = ExtResource( "2_t511e" )
