@@ -496,7 +496,7 @@ func check_error():
 		for _l in _err:
 			if _l.findn("built-in:")!=-1:
 				var _sl = _l.split(" - ")
-				var _num = max(abs(_sl[0].to_int())-1,0)
+				var _num = clampi(abs(_sl[0].to_int())-1,0,get_line_count()-1)
 				var _error = _sl[1]
 				set_line_background_color(_num,Color(1,0.47,0.42,0.3))
 				error_lines[_num]=_error
