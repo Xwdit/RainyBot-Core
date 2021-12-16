@@ -1,13 +1,6 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://bay7sogxwg0he"]
 
 [ext_resource type="Script" path="res://Gui/Modules/PluginEditor/Modules/EditorWindow/Modules/ExitConfirm/ExitConfirmWindow.gd" id="1_p5kjl"]
-[ext_resource type="FontData" path="res://Gui/Font/main_font.otf" id="3_i45mw"]
-
-[sub_resource type="Font" id="Font_plwo6"]
-data/0 = ExtResource( "3_i45mw" )
-
-[sub_resource type="Font" id="Font_cxr2o"]
-data/0 = ExtResource( "3_i45mw" )
 
 [node name="ExitConfirmWindow" type="Window"]
 visible = false
@@ -34,7 +27,6 @@ __meta__ = {
 [node name="Label" type="Label" parent="ExitConfirm"]
 anchor_right = 1.0
 offset_bottom = 68.0
-theme_override_fonts/font = SubResource( "Font_plwo6" )
 text = "检测到您还有未保存的文件，确定要退出编辑器吗？"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -56,7 +48,6 @@ offset_right = 510.0
 offset_bottom = 54.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_fonts/font = SubResource( "Font_cxr2o" )
 text = "确定"
 flat = true
 
@@ -66,7 +57,6 @@ offset_right = 1024.0
 offset_bottom = 54.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_fonts/font = SubResource( "Font_cxr2o" )
 text = "取消"
 flat = true
 
