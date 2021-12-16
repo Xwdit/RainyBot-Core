@@ -634,6 +634,10 @@ window/subwindows/embed_subwindows=false
 
 export/convert_text_resources_to_binary=true
 
+[gui]
+
+theme/custom_font="res://Gui/Font/main_font.tres"
+
 [input]
 
 save={

@@ -1,10 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxi7obweynqt0"]
+[gd_scene load_steps=4 format=3 uid="uid://duiy0ayrbv5vk"]
 
 [ext_resource type="Script" path="res://Gui/Modules/PluginEditor/Modules/CodeEdit/CodeEdit.gd" id="1_4pm0p"]
-[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Font/hansans-regular.otf" id="1_ii8wn"]
-
-[sub_resource type="Font" id="Font_iomw2"]
-data/0 = ExtResource( "1_ii8wn" )
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8lmgh"]
 bg_color = Color(0.101961, 0.113725, 0.137255, 0)
@@ -34,8 +30,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/line_spacing = 5
 theme_override_constants/outline_size = 0
-theme_override_fonts/font = SubResource( "Font_iomw2" )
-theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource( "StyleBoxFlat_8lmgh" )
 highlight_current_line = true
 draw_control_chars = true

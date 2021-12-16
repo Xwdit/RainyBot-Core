@@ -1,26 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://dy3xg5rbxj5gi"]
+[gd_scene load_steps=3 format=3 uid="uid://1c73ugy4gogj"]
 
 [ext_resource type="Script" path="res://Gui/Modules/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
-[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Font/hansans-regular.otf" id="3_5rcar"]
-[ext_resource type="PackedScene" uid="uid://bxi7obweynqt0" path="res://Gui/Modules/PluginEditor/Modules/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
-
-[sub_resource type="Font" id="Font_fdnmp"]
-data/0 = ExtResource( "3_5rcar" )
-
-[sub_resource type="Font" id="Font_jnuyi"]
-data/0 = ExtResource( "3_5rcar" )
-
-[sub_resource type="Font" id="Font_kam1d"]
-data/0 = ExtResource( "3_5rcar" )
-
-[sub_resource type="Font" id="Font_oo60f"]
-data/0 = ExtResource( "3_5rcar" )
-
-[sub_resource type="Font" id="Font_6rswq"]
-data/0 = ExtResource( "3_5rcar" )
-
-[sub_resource type="Font" id="Font_ohfm0"]
-data/0 = ExtResource( "3_5rcar" )
+[ext_resource type="PackedScene" uid="uid://duiy0ayrbv5vk" path="res://Gui/Modules/PluginEditor/Modules/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
 
 [node name="PluginEditor" type="Control"]
 anchor_right = 1.0
@@ -68,8 +49,6 @@ __meta__ = {
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
 offset_right = 76.0
 offset_bottom = 28.0
-theme_override_fonts/font = SubResource( "Font_fdnmp" )
-theme_override_font_sizes/font_size = 16
 text = "保存文件"
 flat = true
 
@@ -77,8 +56,6 @@ flat = true
 offset_left = 80.0
 offset_right = 172.0
 offset_bottom = 28.0
-theme_override_fonts/font = SubResource( "Font_fdnmp" )
-theme_override_font_sizes/font_size = 16
 text = "保存并重载"
 flat = true
 
@@ -86,7 +63,6 @@ flat = true
 offset_left = 176.0
 offset_right = 277.0
 offset_bottom = 28.0
-theme_override_fonts/font = SubResource( "Font_jnuyi" )
 text = "打开API文档"
 flat = true
 
@@ -104,8 +80,6 @@ offset_left = 483.0
 offset_top = 6.0
 offset_right = 536.0
 offset_bottom = 26.0
-theme_override_fonts/font = SubResource( "Font_kam1d" )
-theme_override_font_sizes/font_size = 16
 text = "Test.gd"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -118,7 +92,6 @@ offset_left = 540.0
 offset_top = 8.0
 offset_right = 541.0
 offset_bottom = 25.0
-theme_override_fonts/font = SubResource( "Font_oo60f" )
 horizontal_alignment = 1
 vertical_alignment = 1
 __meta__ = {
@@ -143,8 +116,6 @@ offset_top = 6.0
 offset_right = 202.0
 offset_bottom = 26.0
 rect_min_size = Vector2(70, 0)
-theme_override_fonts/font = SubResource( "Font_6rswq" )
-theme_override_font_sizes/font_size = 16
 text = "1 : 1"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -165,7 +136,6 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource( "Font_ohfm0" )
 text = "当前文件中未发现任何错误"
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://Gui/Modules/PluginEditor/Modules/EditorWindow/Modules/ExitConfirm/ExitConfirmWindow.gd" id="1_p5kjl"]
-[ext_resource type="FontData" uid="uid://ccq8fir7txlcc" path="res://Gui/Font/hansans-regular.otf" id="3_i45mw"]
+[ext_resource type="FontData" path="res://Gui/Font/main_font.otf" id="3_i45mw"]
 
 [sub_resource type="Font" id="Font_plwo6"]
 data/0 = ExtResource( "3_i45mw" )

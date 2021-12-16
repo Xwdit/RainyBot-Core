@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontData"
 uid="uid://ccq8fir7txlcc"
-path="res://.godot/imported/hansans-regular.otf-2e7f1776dfb4531bcc8ac5fc75f5aef3.fontdata"
+path="res://.godot/imported/main_font.otf-bcce20b2093a33ad8bc900d00945dc55.fontdata"
 
 [deps]
 
-source_file="res://Gui/Font/hansans-regular.otf"
-dest_files=["res://.godot/imported/hansans-regular.otf-2e7f1776dfb4531bcc8ac5fc75f5aef3.fontdata"]
+source_file="res://Gui/Font/main_font.otf"
+dest_files=["res://.godot/imported/main_font.otf-bcce20b2093a33ad8bc900d00945dc55.fontdata"]
 
 [params]
 

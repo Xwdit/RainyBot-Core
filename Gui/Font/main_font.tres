@@ -1,0 +1,6 @@
+[gd_resource type="Font" load_steps=2 format=3]
+
+[ext_resource type="FontData" path="res://Gui/Font/main_font.otf" id="1_igb1w"]
+
+[resource]
+data/0 = ExtResource( "1_igb1w" )
