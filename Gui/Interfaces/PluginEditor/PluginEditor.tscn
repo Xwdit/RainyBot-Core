@@ -1,12 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://1c73ugy4gogj"]
+[gd_scene load_steps=3 format=3 uid="uid://b510lxixq4cxs"]
 
-[ext_resource type="Script" path="res://Gui/Modules/PluginEditor/PluginEditor.gd" id="2_5p1sy"]
-[ext_resource type="PackedScene" uid="uid://duiy0ayrbv5vk" path="res://Gui/Modules/PluginEditor/Modules/CodeEdit/CodeEdit.tscn" id="3_ku66v"]
+[ext_resource type="Script" path="res://Gui/Interfaces/PluginEditor/PluginEditor.gd" id="1_afc2x"]
+[ext_resource type="PackedScene" uid="uid://dstcpdf5qorbc" path="res://Gui/Interfaces/PluginEditor/Modules/CodeEdit/CodeEdit.tscn" id="2_mo1oq"]
 
 [node name="PluginEditor" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( "2_5p1sy" )
+script = ExtResource( "1_afc2x" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -19,7 +19,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CodeEdit" parent="." instance=ExtResource( "3_ku66v" )]
+[node name="CodeEdit" parent="." instance=ExtResource( "2_mo1oq" )]
 offset_top = 32.0
 offset_bottom = -30.0
 focus_neighbor_left = NodePath(".")

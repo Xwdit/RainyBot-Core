@@ -432,7 +432,7 @@ _global_script_classes=[{
 "base": "Control",
 "class": &"PluginEditor",
 "language": &"GDScript",
-"path": "res://Gui/Modules/PluginEditor/PluginEditor.gd"
+"path": "res://Gui/Interfaces/PluginEditor/PluginEditor.gd"
 }, {
 "base": "Message",
 "class": &"PokeMessage",
@@ -597,7 +597,7 @@ _global_script_class_icons={
 [application]
 
 config/name="RainyBot-Core"
-run/main_scene="res://Gui/MainGui.tscn"
+run/main_scene="res://Core/Core.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="RainyBot"
 run/low_processor_mode=true

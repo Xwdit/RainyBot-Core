@@ -159,7 +159,7 @@ func get_plugin_runtime()->int:
 func get_plugin_instance(plugin_id:String)->Plugin:
 	var ins = PluginManager.get_plugin_instance(plugin_id)
 	if ins == null:
-		GuiManager.console_print_error("无法获取ID为%s的插件实例，可能是ID有误或插件未被加载；请检查依赖关系是否设置正确！" % [plugin_id])
+		Console.print_error("无法获取ID为%s的插件实例，可能是ID有误或插件未被加载；请检查依赖关系是否设置正确！" % [plugin_id])
 	return ins
 
 
@@ -198,7 +198,7 @@ func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL):
 			if _func is String:
 				_func = Callable(self,_func)
 			if !(_func is Callable) or !_func.is_valid():
-				GuiManager.console_print_error("事件注册出错: 指定的函数无效或不存在！")
+				Console.print_error("事件注册出错: 指定的函数无效或不存在！")
 				return
 			_arr.append(_func)
 		var _callable = {"priority":priority,"function":_arr,"block_mode":block_mode}
@@ -209,16 +209,16 @@ func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL):
 				if _e is GDScript and is_instance_valid(_e):
 					_register_event(_e,_callable,priority)
 				else:
-					GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
+					Console.print_error("事件注册出错: 指定内容不是一个事件类型！")
 		else:
-			GuiManager.console_print_error("事件注册出错: 指定内容不是一个事件类型！")
+			Console.print_error("事件注册出错: 指定内容不是一个事件类型！")
 	else:
-		GuiManager.console_print_error("事件注册出错: 指定的函数无效或不存在！")
+		Console.print_error("事件注册出错: 指定的函数无效或不存在！")
 
 
 func _register_event(event:GDScript,data_dic:Dictionary,priority:int):
 	if plugin_event_dic.has(event):
-		GuiManager.console_print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
+		Console.print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
 		return
 	var arr:Array = []
 	if PluginManager.plugin_event_dic.has(event):
@@ -238,7 +238,7 @@ func _register_event(event:GDScript,data_dic:Dictionary,priority:int):
 	else:
 		arr.append(data_dic)	
 	plugin_event_dic[event]=data_dic
-	GuiManager.console_print_success("成功注册事件: %s (优先级:%s)" % [event.resource_path.get_file().replacen(".gd",""),str(priority)])
+	Console.print_success("成功注册事件: %s (优先级:%s)" % [event.resource_path.get_file().replacen(".gd",""),str(priority)])
 
 
 func unregister_event(event):
@@ -249,9 +249,9 @@ func unregister_event(event):
 			if _e is GDScript and is_instance_valid(_e):
 				_unregister_event(_e)
 			else:
-				GuiManager.console_print_error("事件取消注册出错: 指定内容不是一个事件类型！")
+				Console.print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 	else:
-		GuiManager.console_print_error("事件取消注册出错: 指定内容不是一个事件类型！")
+		Console.print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 
 
 func _unregister_event(event:GDScript):
@@ -262,11 +262,11 @@ func _unregister_event(event:GDScript):
 			if arr.is_empty():
 				PluginManager.plugin_event_dic.erase(event)
 			plugin_event_dic.erase(event)
-			GuiManager.console_print_success("成功取消注册事件: %s!" % [event.resource_path.get_file().replacen(".gd","")])
+			Console.print_success("成功取消注册事件: %s!" % [event.resource_path.get_file().replacen(".gd","")])
 			return
-		GuiManager.console_print_error("事件取消注册出错: 此插件未注册事件%s！"% [event.resource_path.get_file().replacen(".gd","")])
+		Console.print_error("事件取消注册出错: 此插件未注册事件%s！"% [event.resource_path.get_file().replacen(".gd","")])
 	else:
-		GuiManager.console_print_error("事件取消注册出错: 事件%s未被任何插件注册！"% [event.resource_path.get_file().replacen(".gd","")])
+		Console.print_error("事件取消注册出错: 事件%s未被任何插件注册！"% [event.resource_path.get_file().replacen(".gd","")])
 
 
 func register_console_command(command,function,need_arguments:bool=false,usages:Array=[],need_connect:bool=false):
@@ -279,22 +279,22 @@ func register_console_command(command,function,need_arguments:bool=false,usages:
 			if _c is String and _c.length() > 0:
 				_register_console_command(_c,function,need_arguments,usages,need_connect)
 			else:
-				GuiManager.console_print_error("无法注册命令，因为传入的命令格式不合法！")
+				Console.print_error("无法注册命令，因为传入的命令格式不合法！")
 	else:
-		GuiManager.console_print_error("无法注册命令，因为传入的命令格式不合法！")
+		Console.print_error("无法注册命令，因为传入的命令格式不合法！")
 
 
 func _register_console_command(command:String,function:Callable,need_arguments:bool,usages:Array,need_connect:bool):
 	if plugin_console_command_dic.has(command):
-		GuiManager.console_print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
+		Console.print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
 		return
 	if (!function is Callable) or (!function.is_valid()):
-		GuiManager.console_print_error("无法注册以下命令，因为指定的函数不存在: " + command)
+		Console.print_error("无法注册以下命令，因为指定的函数不存在: " + command)
 		return
 	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name,need_connect)==OK:
 		plugin_console_command_dic[command] = function
 		add_to_group("console_command_"+command)
-		GuiManager.console_print_success("成功注册命令: %s!" % [command])
+		Console.print_success("成功注册命令: %s!" % [command])
 
 
 func unregister_console_command(command):
@@ -305,19 +305,19 @@ func unregister_console_command(command):
 			if _c is String and _c.length() > 0:
 				_unregister_console_command(_c)
 			else:
-				GuiManager.console_print_error("无法取消注册命令，因为传入的命令格式不合法！")
+				Console.print_error("无法取消注册命令，因为传入的命令格式不合法！")
 	else:
-		GuiManager.console_print_error("无法取消注册命令，因为传入的命令格式不合法！")
+		Console.print_error("无法取消注册命令，因为传入的命令格式不合法！")
 
 
 func _unregister_console_command(command:String):
 	if !plugin_console_command_dic.has(command):
-		GuiManager.console_print_error("无法取消注册以下命令，因为此命令不属于此插件: " + command)
+		Console.print_error("无法取消注册以下命令，因为此命令不属于此插件: " + command)
 		return
 	if CommandManager.unregister_console_command(command) == OK:
 		plugin_console_command_dic.erase(command)
 		remove_from_group("console_command_"+command)
-		GuiManager.console_print_success("成功取消注册命令: %s!" % [command])
+		Console.print_success("成功取消注册命令: %s!" % [command])
 	
 
 func register_keyword(keyword,function,var_dic:Dictionary={},match_mode:int=MatchMode.BEGIN,block:bool=true):
@@ -330,21 +330,21 @@ func register_keyword(keyword,function,var_dic:Dictionary={},match_mode:int=Matc
 			if _k is String and _k.length() > 0:
 				_register_keyword(_k,function,var_dic,match_mode,block)
 			else:
-				GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
+				Console.print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	else:
-		GuiManager.console_print_error("无法注册关键词，因为传入的关键词格式不合法！")
+		Console.print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	
 	
 func _register_keyword(keyword:String,function:Callable,var_dic:Dictionary,match_mode:int,block:bool):
 	if plugin_keyword_dic.has(keyword):
-		GuiManager.console_print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
+		Console.print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
 		return
 	if (!function is Callable) or (!function.is_valid()):
-		GuiManager.console_print_error("无法注册以下关键词，因为指定的函数不存在: " + keyword)
+		Console.print_error("无法注册以下关键词，因为指定的函数不存在: " + keyword)
 		return
 	plugin_keyword_dic[keyword] = {"function":function,"var_dic":var_dic,"match_mode":match_mode,"block":block}
 	_update_keyword_arr()
-	GuiManager.console_print_success("成功注册关键词: \"%s\"，匹配模式为: %s" % [keyword,match_mode_dic[match_mode]])
+	Console.print_success("成功注册关键词: \"%s\"，匹配模式为: %s" % [keyword,match_mode_dic[match_mode]])
 	
 	
 func unregister_keyword(keyword):
@@ -355,18 +355,18 @@ func unregister_keyword(keyword):
 			if _k is String and _k.length() > 0:
 				_unregister_keyword(_k)
 			else:
-				GuiManager.console_print_error("无法取消注册关键词，因为传入的关键词格式不合法！")
+				Console.print_error("无法取消注册关键词，因为传入的关键词格式不合法！")
 	else:
-		GuiManager.console_print_error("无法取消注册关键词，因为传入的关键词格式不合法！")
+		Console.print_error("无法取消注册关键词，因为传入的关键词格式不合法！")
 	
 	
 func _unregister_keyword(keyword:String):
 	if !plugin_keyword_dic.has(keyword):
-		GuiManager.console_print_error("无法取消注册以下关键词，因为此关键词未在此插件被注册: " + keyword)
+		Console.print_error("无法取消注册以下关键词，因为此关键词未在此插件被注册: " + keyword)
 		return
 	plugin_keyword_dic.erase(keyword)
 	_update_keyword_arr()
-	GuiManager.console_print_success("成功取消注册关键词: \"%s\"!" % [keyword])
+	Console.print_success("成功取消注册关键词: \"%s\"!" % [keyword])
 	
 
 func _sort_keyword(_a:String,_b:String)->bool:
@@ -449,20 +449,20 @@ func trigger_keyword(event:Event)->bool:
 						_trigger_keyword(_func,_kw,_word,_arg,event)
 						return _block
 	else:
-		GuiManager.console_print_error("无法使用传入的事件来匹配关键词，请确保其是一个消息事件！")
+		Console.print_error("无法使用传入的事件来匹配关键词，请确保其是一个消息事件！")
 	return false
 
 
 func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:MessageEvent):
 	if _func.is_valid():
-		GuiManager.console_print_success("成功触发关键词:\"%s\"(解析后:\"%s\")，参数为:\"%s\"！"%[_kw,_word,_arg])
+		Console.print_success("成功触发关键词:\"%s\"(解析后:\"%s\")，参数为:\"%s\"！"%[_kw,_word,_arg])
 		_func.call(_kw,_word,_arg,event)
 	else:
-		GuiManager.console_print_error("关键词\"%s\"试图触发的函数无效或不存在，请检查配置是否有误！"%[_kw])
+		Console.print_error("关键词\"%s\"试图触发的函数无效或不存在，请检查配置是否有误！"%[_kw])
 
 
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={}):
-	GuiManager.console_print_warning("正在加载插件配置文件.....")
+	Console.print_warning("正在加载插件配置文件.....")
 	plugin_config = default_config
 	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file = File.new()
@@ -476,56 +476,56 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 			if _config.has_all(default_config.keys()):
 				for key in _config:
 					if (_config[key] is String && _config[key] == "") or (_config[key] is bool && _config[key] == null):
-						GuiManager.console_print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+str(key))
-						GuiManager.console_print_warning("可以前往以下路径来验证与修改配置: "+config_path)
+						Console.print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+str(key))
+						Console.print_warning("可以前往以下路径来验证与修改配置: "+config_path)
 				plugin_config = _config
 				plugin_config_loaded = true
-				GuiManager.console_print_success("插件配置加载成功")
+				Console.print_success("插件配置加载成功")
 				return
 			else:
-				GuiManager.console_print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
+				Console.print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
 		else:
-			GuiManager.console_print_error("配置文件读取失败，请删除配置文件后重新生成! 路径:"+config_path)
+			Console.print_error("配置文件读取失败，请删除配置文件后重新生成! 路径:"+config_path)
 	else:
-		GuiManager.console_print_warning("没有已存在的配置文件，正在生成新的配置文件...")
+		Console.print_warning("没有已存在的配置文件，正在生成新的配置文件...")
 		var _err = file.open(config_path,File.WRITE)
 		if _err != OK:
-			GuiManager.console_print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
+			Console.print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
 			file.close()
 		else:
 			var json = JSON.new()
 			file.store_string(json.stringify(plugin_config,"\t"))
 			file.close()
-			GuiManager.console_print_success("配置文件创建成功，请访问以下路径进行配置: "+config_path)
+			Console.print_success("配置文件创建成功，请访问以下路径进行配置: "+config_path)
 			if !config_description.is_empty():
-				GuiManager.console_print_text("配置选项说明:")
+				Console.print_text("配置选项说明:")
 				for key in config_description:
-					GuiManager.console_print_text(key+":"+config_description[key])
-			GuiManager.console_print_warning("配置完成后请重新加载此插件")
+					Console.print_text(key+":"+config_description[key])
+			Console.print_warning("配置完成后请重新加载此插件")
 	unload_plugin()
 
 
 func save_plugin_config():
 	if !plugin_config_loaded:
-		GuiManager.console_print_error("配置文件保存失败，请先初始化配置后再执行此操作")
+		Console.print_error("配置文件保存失败，请先初始化配置后再执行此操作")
 		return
-	GuiManager.console_print_warning("正在保存配置文件...")
+	Console.print_warning("正在保存配置文件...")
 	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file = File.new()
 	var _err = file.open(config_path,File.WRITE)
 	if _err != OK:
-		GuiManager.console_print_error("配置文件保存失败，请检查文件权限是否配置正确! 路径:"+config_path)
+		Console.print_error("配置文件保存失败，请检查文件权限是否配置正确! 路径:"+config_path)
 		file.close()
 	else:
 		var json = JSON.new()
 		file.store_string(json.stringify(plugin_config,"\t"))
 		file.close()
-		GuiManager.console_print_success("配置文件保存成功，路径: "+config_path)
+		Console.print_success("配置文件保存成功，路径: "+config_path)
 
 
 func get_plugin_config(key):
 	if !plugin_config_loaded:
-		GuiManager.console_print_error("配置内容获取失败，请先初始化配置后再执行此操作")
+		Console.print_error("配置内容获取失败，请先初始化配置后再执行此操作")
 		return
 	if plugin_config.has(key):
 		return plugin_config[key]
@@ -533,7 +533,7 @@ func get_plugin_config(key):
 		
 func set_plugin_config(key,value,save_file:bool=true):
 	if !plugin_config_loaded:
-		GuiManager.console_print_error("配置内容设定失败，请先初始化配置后再执行此操作")
+		Console.print_error("配置内容设定失败，请先初始化配置后再执行此操作")
 		return
 	plugin_config[key]=value
 	if save_file:
@@ -542,14 +542,14 @@ func set_plugin_config(key,value,save_file:bool=true):
 
 func get_plugin_config_metadata()->Dictionary:
 	if !plugin_config_loaded:
-		GuiManager.console_print_error("配置内容获取失败，请先初始化配置后再执行此操作")
+		Console.print_error("配置内容获取失败，请先初始化配置后再执行此操作")
 		return {}
 	return plugin_config
 
 
 func set_plugin_config_metadata(dic:Dictionary,save_file:bool=true):
 	if !plugin_config_loaded:
-		GuiManager.console_print_error("配置内容设定失败，请先初始化配置后再执行此操作")
+		Console.print_error("配置内容设定失败，请先初始化配置后再执行此操作")
 		return
 	plugin_config = dic
 	if save_file:
@@ -558,14 +558,14 @@ func set_plugin_config_metadata(dic:Dictionary,save_file:bool=true):
 	
 func get_plugin_data_metadata()->Dictionary:
 	if !plugin_data_loaded:
-		GuiManager.console_print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
+		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
 		return {}
 	return plugin_data
 
 
 func set_plugin_data_metadata(dic:Dictionary,save_file:bool=true):
 	if !plugin_data_loaded:
-		GuiManager.console_print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
+		Console.print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
 		return
 	plugin_data = dic
 	if save_file:
@@ -573,7 +573,7 @@ func set_plugin_data_metadata(dic:Dictionary,save_file:bool=true):
 
 
 func init_plugin_data():
-	GuiManager.console_print_warning("正在加载插件数据库.....")
+	Console.print_warning("正在加载插件数据库.....")
 	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file = File.new()
 	if file.file_exists(data_path):
@@ -583,46 +583,46 @@ func init_plugin_data():
 		if _data is Dictionary:
 			plugin_data = _data
 			plugin_data_loaded = true
-			GuiManager.console_print_success("插件数据库加载成功")
+			Console.print_success("插件数据库加载成功")
 			return
 		else:
-			GuiManager.console_print_error("插件数据库读取失败，请删除后重新生成! 路径:"+data_path)
+			Console.print_error("插件数据库读取失败，请删除后重新生成! 路径:"+data_path)
 	else:
-		GuiManager.console_print_warning("没有已存在的数据库文件，正在生成新的数据库文件...")
+		Console.print_warning("没有已存在的数据库文件，正在生成新的数据库文件...")
 		var _err = file.open(data_path,File.WRITE)
 		if _err != OK:
-			GuiManager.console_print_error("数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
+			Console.print_error("数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
 			file.close()
 		else:
 			file.store_var(plugin_data,true)
 			file.close()
 			plugin_data_loaded = true
-			GuiManager.console_print_success("数据库文件创建成功，路径: "+data_path)
-			GuiManager.console_print_warning("若发生任何数据库文件更改，请重载此插件")
+			Console.print_success("数据库文件创建成功，路径: "+data_path)
+			Console.print_warning("若发生任何数据库文件更改，请重载此插件")
 			return
 	unload_plugin()
 			
 			
 func save_plugin_data():
 	if !plugin_data_loaded:
-		GuiManager.console_print_error("数据库文件保存失败，请先初始化数据库后再执行此操作")
+		Console.print_error("数据库文件保存失败，请先初始化数据库后再执行此操作")
 		return
-	GuiManager.console_print_warning("正在保存插件数据库.....")
+	Console.print_warning("正在保存插件数据库.....")
 	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file = File.new()
 	var _err = file.open(data_path,File.WRITE)
 	if _err != OK:
-		GuiManager.console_print_error("数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
+		Console.print_error("数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
 		file.close()
 	else:
 		file.store_var(plugin_data,true)
 		file.close()
-		GuiManager.console_print_success("数据库文件保存成功，路径: "+data_path)
+		Console.print_success("数据库文件保存成功，路径: "+data_path)
 		
 		
 func get_plugin_data(key):
 	if !plugin_data_loaded:
-		GuiManager.console_print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
+		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
 		return
 	if plugin_data.has(key):
 		return plugin_data[key]
@@ -630,7 +630,7 @@ func get_plugin_data(key):
 		
 func set_plugin_data(key,value,save_file:bool=true):
 	if !plugin_data_loaded:
-		GuiManager.console_print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
+		Console.print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
 		return
 	plugin_data[key]=value
 	if save_file:
@@ -663,8 +663,8 @@ func wait_context(context,timeout:float=20.0,block:bool=true):
 			_dic["group_id"] = context.get_group_id()
 		context_id = str(_dic)
 	else:
-		GuiManager.console_print_error("无法开始等待上下文响应，需要等待的内容应该是一个上下文ID或一个消息事件")
-	GuiManager.console_print_warning("开始等待上下文响应，ID为: %s，超时时间为: %s秒！"%[context_id,str(timeout)])
+		Console.print_error("无法开始等待上下文响应，需要等待的内容应该是一个上下文ID或一个消息事件")
+	Console.print_warning("开始等待上下文响应，ID为: %s，超时时间为: %s秒！"%[context_id,str(timeout)])
 	var _cont:PluginContextHelper
 	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
 		_cont = plugin_context_dic[context_id]
@@ -677,7 +677,7 @@ func wait_context(context,timeout:float=20.0,block:bool=true):
 	if timeout > 0.0:
 		_tick_context_timeout(_cont,timeout)
 	await _cont.finished
-	GuiManager.console_print_warning("上下文已完成，ID为: %s，响应结果为: %s！"%[context_id,str(_cont.get_result())])
+	Console.print_warning("上下文已完成，ID为: %s，响应结果为: %s！"%[context_id,str(_cont.get_result())])
 	plugin_context_dic.erase(context_id)
 	return _cont.get_result()
 
@@ -695,22 +695,22 @@ func respond_context(context,response=true)->bool:
 		context_id = str(_dic)
 		response = context
 	else:
-		GuiManager.console_print_error("无法响应上下文，需要响应的内容应该是一个上下文ID或一个消息事件")
+		Console.print_error("无法响应上下文，需要响应的内容应该是一个上下文ID或一个消息事件")
 	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
 		var _cont:PluginContextHelper = plugin_context_dic[context_id]
 		_cont.result = response
 		_cont.emit_signal("finished")
-		GuiManager.console_print_success("成功响应上下文，ID为: %s，响应结果为: %s！"%[context_id,str(response)])
+		Console.print_success("成功响应上下文，ID为: %s，响应结果为: %s！"%[context_id,str(response)])
 		return _cont.block
 	elif context is String:
-		GuiManager.console_print_warning("未找到指定的上下文ID，无法进行响应: " + context_id)
+		Console.print_warning("未找到指定的上下文ID，无法进行响应: " + context_id)
 	return false
 		
 
 func _tick_context_timeout(cont_ins:PluginContextHelper,_timeout:float):
 	await get_tree().create_timer(_timeout).timeout
 	if is_instance_valid(cont_ins) && cont_ins.result == null:
-		GuiManager.console_print_warning("等待上下文响应超时，无法获取到返回结果: "+str(cont_ins.id))
+		Console.print_warning("等待上下文响应超时，无法获取到返回结果: "+str(cont_ins.id))
 		cont_ins.emit_signal("finished")
 
 

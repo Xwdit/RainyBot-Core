@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bghrlq2fjvm08"]
+[gd_scene load_steps=2 format=3 uid="uid://dv2rnvye3sjhb"]
 
-[ext_resource type="Script" path="res://Gui/Modules/Console/Modules/ConsoleOutput/ConsoleOutput.gd" id="2_x748p"]
+[ext_resource type="Script" path="res://Gui/Interfaces/Console/Modules/ConsoleOutput/ConsoleOutput.gd" id="1_yyqsj"]
 
 [node name="ConsoleOutput" type="RichTextLabel" groups=["Console"]]
 offset_right = 1008.0
@@ -16,9 +16,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/selection_color = Color(0.701961, 0.701961, 0.701961, 1)
 theme_override_constants/line_separation = 5
+theme_override_font_sizes/normal_font_size = 16
 scroll_following = true
 selection_enabled = true
-script = ExtResource( "2_x748p" )
+script = ExtResource( "1_yyqsj" )
 __meta__ = {
 "_edit_use_anchors_": false
 }

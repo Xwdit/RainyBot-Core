@@ -60,24 +60,24 @@ func _call_event(event:Event):
 func _call_console_command(_cmd:String,args:Array):
 	match args[0]:
 		"list":
-			GuiManager.console_print_text("-----插件列表-----")
+			Console.print_text("-----插件列表-----")
 			for child in get_children():
-				GuiManager.console_print_text(get_beautify_plugin_info(child.get_plugin_info()))
-			GuiManager.console_print_text("-----插件列表-----")
+				Console.print_text(get_beautify_plugin_info(child.get_plugin_info()))
+			Console.print_text("-----插件列表-----")
 		"load":
 			if args.size() > 1:
 				load_plugin(args[1])
 			else:
-				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
+				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"unload":
 			if args.size() > 1:
 				var plugin = get_node_or_null(args[1])
 				if is_instance_valid(plugin):
 					unload_plugin(plugin)
 				else:
-					GuiManager.console_print_error("插件ID不存在!")
+					Console.print_error("插件ID不存在!")
 			else:
-				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
+				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 					
 		"reload":
 			if args.size() > 1:
@@ -85,9 +85,9 @@ func _call_console_command(_cmd:String,args:Array):
 				if is_instance_valid(plugin):
 					reload_plugin(plugin)
 				else:
-					GuiManager.console_print_error("插件ID不存在!")
+					Console.print_error("插件ID不存在!")
 			else:
-				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
+				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"areload":
 			reload_plugins()
 		"edit":
@@ -95,21 +95,21 @@ func _call_console_command(_cmd:String,args:Array):
 				var file_name:String = args[1]
 				GuiManager.open_plugin_editor(plugin_path+file_name)
 			else:
-				GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
+				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"create":
 			if args.size() > 1:
 				var file_name:String = args[1]
 				if File.new().file_exists(plugin_path+file_name):
-					GuiManager.console_print_error("此插件文件已存在!")
+					Console.print_error("此插件文件已存在!")
 				elif file_name.ends_with(".gd"):
 					var scr:GDScript = load("res://Core/Templates/PluginTemplate.gd")
 					if ResourceSaver.save(plugin_path+file_name,scr) == OK:
-						GuiManager.console_print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
-						GuiManager.console_print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
+						Console.print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
+						Console.print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
 					else:
-						GuiManager.console_print_error("插件文件创建失败，请检查文件权限是否正确!")
+						Console.print_error("插件文件创建失败，请检查文件权限是否正确!")
 				else:
-					GuiManager.console_print_error("插件文件名格式错误，正确格式: <文件名>.gd")
+					Console.print_error("插件文件名格式错误，正确格式: <文件名>.gd")
 		"delete":
 			if args.size() > 1:
 				var file_name:String = args[1]
@@ -119,13 +119,13 @@ func _call_console_command(_cmd:String,args:Array):
 						var plug = get_plugin_with_filename(file_name)
 						if is_instance_valid(plug):
 							unload_plugin(plug)
-						GuiManager.console_print_success("插件文件删除成功!")
+						Console.print_success("插件文件删除成功!")
 					else:
-						GuiManager.console_print_error("插件文件删除失败，请检查文件权限是否正确!")
+						Console.print_error("插件文件删除失败，请检查文件权限是否正确!")
 				else:
-					GuiManager.console_print_error("插件文件不存在或格式错误!")	
+					Console.print_error("插件文件不存在或格式错误!")	
 		_:
-			GuiManager.console_print_error("错误的命令用法! 请输入help plugins来查看帮助!")
+			Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 
 
 func load_plugin_script(path:String)->GDScript:
@@ -151,7 +151,7 @@ func load_plugin_script(path:String)->GDScript:
 
 func load_plugin(file:String,files_dic=null,source:String=""):
 	file_load_status[file] = false
-	GuiManager.console_print_warning("正在尝试加载插件文件: " + file)
+	Console.print_warning("正在尝试加载插件文件: " + file)
 	var _f_dic:Dictionary
 	if files_dic is Dictionary:
 		_f_dic = files_dic
@@ -164,35 +164,35 @@ func load_plugin(file:String,files_dic=null,source:String=""):
 			var _dependency = _info.dependency
 			var _inst_dic = get_plugin_instance_dic()
 			if _inst_dic.has(_info.id.to_lower()):
-				GuiManager.console_print_error("无法加载插件文件: " + file)
-				GuiManager.console_print_error("已经存在相同ID的插件被加载: "+str(_id))
+				Console.print_error("无法加载插件文件: " + file)
+				Console.print_error("已经存在相同ID的插件被加载: "+str(_id))
 				return
 			for _dep in _dependency:
 				if !_inst_dic.has(_dep.to_lower()):
 					if _id.to_lower() == _dep.to_lower():
-						GuiManager.console_print_error("无法加载插件文件: " + file)
-						GuiManager.console_print_error("此插件将其自身设置为了所需的依赖插件！")
+						Console.print_error("无法加载插件文件: " + file)
+						Console.print_error("此插件将其自身设置为了所需的依赖插件！")
 						return
 					if source.to_lower() == _dep.to_lower():
-						GuiManager.console_print_error("无法加载插件文件: " + file)
-						GuiManager.console_print_error("此插件与以下插件出现了循环依赖: "+str(source))
+						Console.print_error("无法加载插件文件: " + file)
+						Console.print_error("此插件与以下插件出现了循环依赖: "+str(source))
 						return
 					if _f_dic.has(_dep.to_lower()):
 						if (!file_load_status.has(_f_dic[_dep.to_lower()].file)) || (file_load_status[_f_dic[_dep.to_lower()].file] != false):
-							GuiManager.console_print_warning("正在尝试加载此插件所需的依赖插件: " + _dep)
+							Console.print_warning("正在尝试加载此插件所需的依赖插件: " + _dep)
 							await load_plugin(_f_dic[_dep.to_lower()].file,_f_dic,_id)
 							await get_tree().process_frame
 							if (!file_load_status.has(_f_dic[_dep.to_lower()].file)) || (file_load_status[_f_dic[_dep.to_lower()].file] == false):
-								GuiManager.console_print_error("无法加载插件文件: " + file)
-								GuiManager.console_print_error("此插件所需的依赖插件加载失败: "+_dep)
+								Console.print_error("无法加载插件文件: " + file)
+								Console.print_error("此插件所需的依赖插件加载失败: "+_dep)
 								return
 						else:
-							GuiManager.console_print_error("无法加载插件文件: " + file)
-							GuiManager.console_print_error("此插件所需的依赖插件加载失败: "+_dep)
+							Console.print_error("无法加载插件文件: " + file)
+							Console.print_error("此插件所需的依赖插件加载失败: "+_dep)
 							return
 					else:
-						GuiManager.console_print_error("无法加载插件文件: " + file)
-						GuiManager.console_print_error("未找到此插件所需的依赖插件: "+_dep)
+						Console.print_error("无法加载插件文件: " + file)
+						Console.print_error("未找到此插件所需的依赖插件: "+_dep)
 						return
 			var plugin_res = load_plugin_script(plugin_path + file)
 			var plugin_ins:Plugin = plugin_res.new()
@@ -203,42 +203,42 @@ func load_plugin(file:String,files_dic=null,source:String=""):
 			plugin_ins.add_to_group("Plugin")
 			add_child(plugin_ins,true)
 			file_load_status[file] = true
-			GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
+			Console.print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
 			return
-	GuiManager.console_print_error("无法加载插件文件: " + file)
-	GuiManager.console_print_error("此插件文件不存在，或无法被加载！")
+	Console.print_error("无法加载插件文件: " + file)
+	Console.print_error("此插件文件不存在，或无法被加载！")
 
 
 func unload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	var _file = plugin.get_plugin_filename()
-	GuiManager.console_print_warning("正在卸载插件: "+get_beautify_plugin_info(_plugin_info))
+	Console.print_warning("正在卸载插件: "+get_beautify_plugin_info(_plugin_info))
 	var _dep_arr = []
 	for child in get_children():
 		if  child.get_plugin_info().dependency.has(_plugin_info.id):
 			_dep_arr.append(child.get_plugin_info().id)
 	if _dep_arr.size() != 0:
-		GuiManager.console_print_error("无法卸载插件，因为此插件被以下插件所依赖: " + str(_dep_arr))
-		GuiManager.console_print_error("请先卸载所有被依赖的插件，然后再试一次！")
+		Console.print_error("无法卸载插件，因为此插件被以下插件所依赖: " + str(_dep_arr))
+		Console.print_error("请先卸载所有被依赖的插件，然后再试一次！")
 		return
 	plugin.queue_free()
 	await plugin.tree_exited
 	plugin.set_script(null)
 	file_load_status.erase(_file)
-	GuiManager.console_print_success("成功卸载插件: " +get_beautify_plugin_info(_plugin_info))
+	Console.print_success("成功卸载插件: " +get_beautify_plugin_info(_plugin_info))
 
 
 func reload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	var file = plugin.get_plugin_filename()
-	GuiManager.console_print_warning("正在重载插件: " + get_beautify_plugin_info(_plugin_info))
+	Console.print_warning("正在重载插件: " + get_beautify_plugin_info(_plugin_info))
 	var _dep_arr = []
 	for child in get_children():
 		if  child.get_plugin_info().dependency.has(_plugin_info.id):
 			_dep_arr.append(child.get_plugin_info().id)
 	if _dep_arr.size() != 0:
-		GuiManager.console_print_error("无法重载插件，因为此插件被以下插件所依赖: " + str(_dep_arr))
-		GuiManager.console_print_error("请先卸载所有被依赖的插件，然后再试一次！")
+		Console.print_error("无法重载插件，因为此插件被以下插件所依赖: " + str(_dep_arr))
+		Console.print_error("请先卸载所有被依赖的插件，然后再试一次！")
 		return
 	await unload_plugin(plugin)
 	await load_plugin(file)
@@ -250,10 +250,10 @@ func get_plugin_file_info(file:String)->Dictionary:
 		if child.get_script() == plugin_res:
 			return child.get_plugin_info()
 	if !is_instance_valid(plugin_res) || plugin_res.reload() != OK:
-		GuiManager.console_print_error("无法读取插件文件: " + file)
-		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
-		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
-		GuiManager.console_print_error("您可以使用指令 plugins edit %s 打开内置编辑器来进行错误检查！"%[file])
+		Console.print_error("无法读取插件文件: " + file)
+		Console.print_error("此文件不存在，不是插件文件或已损坏...")
+		Console.print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
+		Console.print_error("您可以使用指令 plugins edit %s 打开内置编辑器来进行错误检查！"%[file])
 		return {}
 	var plugin_ins:Plugin = plugin_res.new()
 	if is_instance_valid(plugin_ins):
@@ -265,28 +265,28 @@ func get_plugin_file_info(file:String)->Dictionary:
 				if (_plugin_info[key] is String) and (_plugin_info[key] == ""):
 					err_arr.append(key)
 			if !err_arr.is_empty():
-				GuiManager.console_print_error("无法读取插件文件: " + file)
-				GuiManager.console_print_error("此文件的以下插件信息不能为空: "+str(err_arr))
+				Console.print_error("无法读取插件文件: " + file)
+				Console.print_error("此文件的以下插件信息不能为空: "+str(err_arr))
 				return {}
 			return _plugin_info
 		else:
-			GuiManager.console_print_error("无法读取插件文件: " + file)
-			GuiManager.console_print_error("此文件的插件信息存在缺失")
+			Console.print_error("无法读取插件文件: " + file)
+			Console.print_error("此文件的插件信息存在缺失")
 			return {}
 	else:
-		GuiManager.console_print_error("无法读取插件文件: " + file)
-		GuiManager.console_print_error("此文件不存在，不是插件文件或已损坏...")
-		GuiManager.console_print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
-		GuiManager.console_print_error("您可以使用指令 plugins edit %s 打开内置编辑器来进行错误检查！"%[file])
+		Console.print_error("无法读取插件文件: " + file)
+		Console.print_error("此文件不存在，不是插件文件或已损坏...")
+		Console.print_error("若文件确认无误，请检查插件脚本中是否存在错误！")
+		Console.print_error("您可以使用指令 plugins edit %s 打开内置编辑器来进行错误检查！"%[file])
 		return {}
 
 
 func get_plugin_files_dic()->Dictionary:
-	GuiManager.console_print_warning("开始扫描插件目录.....")
+	Console.print_warning("开始扫描插件目录.....")
 	var _file_dic:Dictionary = {}
 	var _files:Array = _list_files_in_directory(plugin_path)
 	if _files.size() == 0:
-		GuiManager.console_print_warning("插件目录下未找到任何插件...")
+		Console.print_warning("插件目录下未找到任何插件...")
 		return {}
 	for _file in _files:
 		var _plugin_info = get_plugin_file_info(_file)
@@ -296,11 +296,11 @@ func get_plugin_files_dic()->Dictionary:
 		var _id = _plugin_info.id.to_lower()
 		if _file_dic.has(_id):
 			file_load_status[_file] = false
-			GuiManager.console_print_error("无法读取插件文件: " + _file)
-			GuiManager.console_print_error("已经存在ID为"+str(_id)+"的插件文件: "+str(_file_dic[_id].file))
+			Console.print_error("无法读取插件文件: " + _file)
+			Console.print_error("已经存在ID为"+str(_id)+"的插件文件: "+str(_file_dic[_id].file))
 			continue
 		_file_dic[_id] = {"file":_file,"info":_plugin_info}
-	GuiManager.console_print_success("插件目录扫描完毕！")
+	Console.print_success("插件目录扫描完毕！")
 	return _file_dic
 	
 	
@@ -332,11 +332,11 @@ func unload_plugins():
 		
 		
 func reload_plugins():
-	GuiManager.console_print_warning("正在重载所有插件.....插件目录: "+plugin_path)
+	Console.print_warning("正在重载所有插件.....插件目录: "+plugin_path)
 	await unload_plugins()
 	await load_plugins()
-	GuiManager.console_print_success("所有插件重载完毕!")
-	GuiManager.console_print_success("输入指令help可查看当前可用的指令列表!")
+	Console.print_success("所有插件重载完毕!")
+	Console.print_success("输入指令help可查看当前可用的指令列表!")
 
 
 func get_plugin_instance(plugin_id):
@@ -358,7 +358,7 @@ func _list_files_in_directory(path):
 	var dir = Directory.new()
 	if !dir.dir_exists(path):
 		dir.make_dir(path)
-		GuiManager.console_print_warning("插件目录不存在，已创建新的插件目录!")
+		Console.print_warning("插件目录不存在，已创建新的插件目录!")
 	dir.open(path)
 	dir.list_dir_begin()
 

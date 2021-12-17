@@ -102,16 +102,16 @@ func init_mirai_cmd():
 
 
 func load_mirai():
-	GuiManager.console_print_warning("正在检查Java运行时版本")
+	Console.print_warning("正在检查Java运行时版本")
 	if check_java_version():
-		GuiManager.console_print_success("Java环境检测通过，正在启动Mirai进程...")
+		Console.print_success("Java环境检测通过，正在启动Mirai进程...")
 		init_mirai_cmd()
-		GuiManager.console_print_success("Mirai启动脚本初始化完毕!")
+		Console.print_success("Mirai启动脚本初始化完毕!")
 		if File.new().file_exists(mirai_path+"start.cmd"):
 			init_mirai_config()
-			GuiManager.console_print_success("Mirai配置文件生成完毕!")
+			Console.print_success("Mirai配置文件生成完毕!")
 			if OS.shell_open(mirai_path+"start.cmd") != OK:
-				GuiManager.console_print_error("无法启动Mirai,请检查以下目录中文件是否丢失或损坏:"+mirai_path)
+				Console.print_error("无法启动Mirai,请检查以下目录中文件是否丢失或损坏:"+mirai_path)
 				return ERR_CANT_OPEN
 			var dir = Directory.new()
 			await get_tree().create_timer(1).timeout
@@ -119,9 +119,9 @@ func load_mirai():
 			dir.remove(mirai_path+"start.cmd")
 			return OK
 		else:
-			GuiManager.console_print_error("无法初始化Mirai启动脚本，请检查以下目录文件权限是否正确:"+mirai_path)
+			Console.print_error("无法初始化Mirai启动脚本，请检查以下目录文件权限是否正确:"+mirai_path)
 			return ERR_FILE_NOT_FOUND
 	else:
-		GuiManager.console_print_error("检测到您还未安装启动Mirai所需的Java运行时(版本 >= Java 11),请访问 https://www.oracle.com/java/technologies/downloads/#jdk17-windows 进行下载并安装")
-		GuiManager.console_print_error("安装完毕后请重新启动RainyBot")
+		Console.print_error("检测到您还未安装启动Mirai所需的Java运行时(版本 >= Java 11),请访问 https://www.oracle.com/java/technologies/downloads/#jdk17-windows 进行下载并安装")
+		Console.print_error("安装完毕后请重新启动RainyBot")
 		return ERR_FILE_NOT_FOUND

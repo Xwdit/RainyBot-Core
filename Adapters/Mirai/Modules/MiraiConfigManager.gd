@@ -33,7 +33,7 @@ var config_path = OS.get_executable_path().get_base_dir() + "/config/" + "mirai_
 
 
 func init_config():
-	GuiManager.console_print_warning("正在加载Mirai-Adapter配置文件.....")
+	Console.print_warning("正在加载Mirai-Adapter配置文件.....")
 	var file = File.new()
 	if file.file_exists(config_path):
 		var _err = file.open(config_path,File.READ)
@@ -44,40 +44,40 @@ func init_config():
 		if _config is Dictionary:
 			if _config.has_all(default_config.keys()):
 				if _config["mirai_qq_password"] == "$DEFAULT12345":
-					GuiManager.console_print_error("检测到您还未修改默认配置，请进行修改!")
-					GuiManager.console_print_error("可以前往以下路径来验证与修改配置: "+config_path)
-					GuiManager.console_print_warning("配置完成后请重启RainyBot")
+					Console.print_error("检测到您还未修改默认配置，请进行修改!")
+					Console.print_error("可以前往以下路径来验证与修改配置: "+config_path)
+					Console.print_warning("配置完成后请重启RainyBot")
 					return
 				for key in _config:
 					if (_config[key] is String && _config[key] == "") or (_config[key] is bool && _config[key] == null):
-						GuiManager.console_print_warning("警告: 检测到内容为空的配置项，可能会导致出现问题: "+key)
-						GuiManager.console_print_warning("可以前往以下路径来验证与修改配置: "+config_path)
-						GuiManager.console_print_warning("配置完成后请重启RainyBot")
+						Console.print_warning("警告: 检测到内容为空的配置项，可能会导致出现问题: "+key)
+						Console.print_warning("可以前往以下路径来验证与修改配置: "+config_path)
+						Console.print_warning("配置完成后请重启RainyBot")
 				loaded_config = _config
-				GuiManager.console_print_success("Mirai-Adapter配置文件加载成功！")
+				Console.print_success("Mirai-Adapter配置文件加载成功！")
 				emit_signal("config_loaded")
 			else:
-				GuiManager.console_print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
-				GuiManager.console_print_warning("删除完毕后请重启RainyBot")
+				Console.print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
+				Console.print_warning("删除完毕后请重启RainyBot")
 		else:
-			GuiManager.console_print_error("配置文件读取失败，请删除配置文件后重新生成! 路径:"+config_path)
-			GuiManager.console_print_warning("删除完毕后请重启RainyBot")
+			Console.print_error("配置文件读取失败，请删除配置文件后重新生成! 路径:"+config_path)
+			Console.print_warning("删除完毕后请重启RainyBot")
 	else:
-		GuiManager.console_print_warning("没有已存在的配置文件，正在生成新的配置文件...")
+		Console.print_warning("没有已存在的配置文件，正在生成新的配置文件...")
 		var _err = file.open(config_path,File.WRITE)
 		if _err != OK:
-			GuiManager.console_print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
-			GuiManager.console_print_warning("若要重试请重启RainyBot")
+			Console.print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
+			Console.print_warning("若要重试请重启RainyBot")
 			file.close()
 		else:
 			var json = JSON.new()
 			file.store_string(json.stringify(loaded_config,"\t"))
 			file.close()
-			GuiManager.console_print_success("配置文件创建成功，请访问以下路径进行配置: "+config_path)
-			GuiManager.console_print_text("配置选项说明:")
+			Console.print_success("配置文件创建成功，请访问以下路径进行配置: "+config_path)
+			Console.print_text("配置选项说明:")
 			for key in config_description:
-				GuiManager.console_print_text(key+":"+config_description[key])
-			GuiManager.console_print_warning("配置完成后请重启RainyBot")
+				Console.print_text(key+":"+config_description[key])
+			Console.print_warning("配置完成后请重启RainyBot")
 			
 
 func get_ws_address(config_dic:Dictionary):

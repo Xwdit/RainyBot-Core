@@ -1,11 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://bay7sogxwg0he"]
+[gd_scene load_steps=2 format=3 uid="uid://cut4qjm81k3vy"]
 
-[ext_resource type="Script" path="res://Gui/Modules/PluginEditor/Modules/EditorWindow/Modules/ExitConfirm/ExitConfirmWindow.gd" id="1_p5kjl"]
+[ext_resource type="Script" path="res://Gui/Interfaces/PluginEditor/Modules/EditorWindow/Modules/ExitConfirm/ExitConfirmWindow.gd" id="1_tub67"]
 
 [node name="ExitConfirmWindow" type="Window"]
 visible = false
 unresizable = true
-script = ExtResource( "1_p5kjl" )
+script = ExtResource( "1_tub67" )
 
 [node name="ExitConfirm" type="Control" parent="."]
 anchor_right = 1.0

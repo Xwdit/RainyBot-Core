@@ -2,7 +2,7 @@ extends Node
 
 
 func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
-	GuiManager.console_print_warning("正在尝试发送Http Get请求到: "+url)
+	Console.print_warning("正在尝试发送Http Get请求到: "+url)
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
 	node.use_threads = true
@@ -12,7 +12,7 @@ func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
 	var error = node.request(url)
 	if error != OK:
 		node.queue_free()
-		GuiManager.console_print_error("当发送Http Get请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
+		Console.print_error("当发送Http Get请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
 		var _r = HttpRequestResult.new()
 		_r.request_url = url
 		return _r
@@ -23,7 +23,7 @@ func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
 	
 	
 func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
-	GuiManager.console_print_warning("正在尝试发送Http Post请求到: "+url)
+	Console.print_warning("正在尝试发送Http Post请求到: "+url)
 	if (data is Dictionary) or (data is Array):
 		var _json = JSON.new()
 		data = _json.stringify(data)
@@ -31,7 +31,7 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 			headers.append("Content-Type: application/json")
 	elif !(data is String):
 		data = ""
-		GuiManager.console_print_warning("警告: 传入的请求数据不是一个字典/数组/字符串，因此已将其替换为空字符串(\"\")！")
+		Console.print_warning("警告: 传入的请求数据不是一个字典/数组/字符串，因此已将其替换为空字符串(\"\")！")
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
 	node.request_data = data
@@ -43,7 +43,7 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 	var error = node.request(url,headers,true,HTTPClient.METHOD_POST,data)
 	if error != OK:
 		node.queue_free()
-		GuiManager.console_print_error("在发送Http Post请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
+		Console.print_error("在发送Http Post请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
 		var _r = HttpRequestResult.new()
 		_r.request_url = url
 		_r.request_data = data
@@ -77,9 +77,9 @@ class HttpRequestInstance:
 		result.headers = _headers
 		result.body = _body
 		if _result != HTTPRequest.RESULT_SUCCESS:
-			GuiManager.console_print_error("从 %s 获取Http请求结果时出现错误，错误代码为: %s"%[request_url,ClassDB.class_get_enum_constants("HTTPRequest","Result")[int(_result)]])
+			Console.print_error("从 %s 获取Http请求结果时出现错误，错误代码为: %s"%[request_url,ClassDB.class_get_enum_constants("HTTPRequest","Result")[int(_result)]])
 		else:
-			GuiManager.console_print_success("成功从 %s 获取到Http请求的返回结果！"%[request_url])
+			Console.print_success("成功从 %s 获取到Http请求的返回结果！"%[request_url])
 		emit_signal("request_finished")
 		
 	func get_result()->HttpRequestResult:

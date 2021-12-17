@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b5wqou4t780l0"]
+[gd_scene load_steps=5 format=3 uid="uid://uqp3bd6064bn"]
 
-[ext_resource type="PackedScene" uid="uid://di0scjkd8gach" path="res://Gui/Modules/Console/Modules/CommandInput/CommandInput.tscn" id="1"]
-[ext_resource type="PackedScene" uid="uid://bghrlq2fjvm08" path="res://Gui/Modules/Console/Modules/ConsoleOutput/ConsoleOutput.tscn" id="1_f1jm3"]
+[ext_resource type="PackedScene" uid="uid://dv2rnvye3sjhb" path="res://Gui/Interfaces/Console/Modules/ConsoleOutput/ConsoleOutput.tscn" id="1_yhib5"]
+[ext_resource type="PackedScene" uid="uid://chorn71unlnt6" path="res://Gui/Interfaces/Console/Modules/CommandInput/CommandInput.tscn" id="2_i0io6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
 bg_color = Color(0.101961, 0.113725, 0.137255, 0)
@@ -36,9 +36,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource( "1_f1jm3" )]
+[node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource( "1_yhib5" )]
 
-[node name="CommandInput" parent="VSplitContainer" instance=ExtResource( "1" )]
+[node name="CommandInput" parent="VSplitContainer" instance=ExtResource( "2_i0io6" )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_top = 497.0

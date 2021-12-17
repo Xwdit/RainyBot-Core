@@ -29,13 +29,12 @@ func _init_dir():
 			
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		GuiManager.console_print_warning("正在安全退出RainyBot进程.....")
+		Console.print_warning("正在安全退出RainyBot进程.....")
 		await PluginManager.unload_plugins()
 		BotAdapter.mirai_client.disconnect_to_mirai()
 		await get_tree().create_timer(0.5).timeout
-		GuiManager.console_print_success("RainyBot进程已被安全退出!")
+		Console.print_success("RainyBot进程已被安全退出!")
 		await get_tree().create_timer(0.5).timeout
-		GuiManager.console_save_log(true)
 		get_tree().quit()
 
 
