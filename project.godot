@@ -269,7 +269,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/EventAPI/GroupEvent/GroupRecallEvent.gd"
 }, {
-"base": "RefCounted",
+"base": "CoreAPI",
 "class": &"HttpRequestResult",
 "language": &"GDScript",
 "path": "res://Core/API/CoreAPI/HttpRequestResult.gd"
@@ -449,6 +449,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Core/API/RainyBotAPI.gd"
 }, {
+"base": "RefCounted",
+"class": &"RainyBotCore",
+"language": &"GDScript",
+"path": "res://Core/Core.gd"
+}, {
 "base": "Event",
 "class": &"RequestEvent",
 "language": &"GDScript",
@@ -583,6 +588,7 @@ _global_script_class_icons={
 "PokeMessage": "",
 "QuoteMessage": "",
 "RainyBotAPI": "",
+"RainyBotCore": "",
 "RequestEvent": "",
 "RoleAPI": "",
 "SourceMessage": "",
@@ -597,7 +603,7 @@ _global_script_class_icons={
 [application]
 
 config/name="RainyBot-Core"
-run/main_scene="res://Core/Core.tscn"
+run/main_scene="res://Gui/MainGui.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="RainyBot"
 run/low_processor_mode=true
@@ -614,11 +620,11 @@ config/features=PackedStringArray("4.0")
 [autoload]
 
 GlobalManager="*res://Core/Modules/GlobalManager.gd"
-BotAdapter="*res://Adapters/Mirai/MiraiAdapter.gd"
 HttpRequestManager="*res://Core/Modules/HttpRequestManager.gd"
 CommandManager="*res://Core/Modules/CommandManager.gd"
 PluginManager="*res://Core/Modules/PluginManager.gd"
-GuiManager="*res://Core/Modules/GuiManager.gd"
+GuiManager="*res://Gui/Modules/GuiManager.gd"
+BotAdapter="*res://Adapters/Mirai/MiraiAdapter.gd"
 
 [debug]
 

@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dc2j87v87dllp"]
+[gd_scene load_steps=5 format=3 uid="uid://bfrn7f13fj71v"]
 
-[ext_resource type="Script" path="res://Gui/Interfaces/MainGui/MainGui.gd" id="2_viisr"]
-[ext_resource type="PackedScene" uid="uid://uqp3bd6064bn" path="res://Gui/Interfaces/Console/Console.tscn" id="3_v6040"]
+[ext_resource type="Script" path="res://Gui/MainGui.gd" id="1_cbsnb"]
+[ext_resource type="PackedScene" uid="uid://uqp3bd6064bn" path="res://Gui/Interfaces/Console/Console.tscn" id="2_53msf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v2v7d"]
 content_margin_left = 8.0
@@ -17,7 +17,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( "2_viisr" )
+script = ExtResource( "1_cbsnb" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -55,7 +55,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Console" parent="TabContainer" instance=ExtResource( "3_v6040" )]
+[node name="Console" parent="TabContainer" instance=ExtResource( "2_53msf" )]
 offset_top = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 3

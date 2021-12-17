@@ -6,8 +6,8 @@ var mirai_loader:=MiraiLoader.new()
 var mirai_config_manager:=MiraiConfigManager.new()
 
 
-func init():
-	Console.print_warning("正在加载内置模块: Mirai-Adapter | 版本:V2.0-Beta-1 | 作者:Xwdit")
+func start():
+	Console.print_warning("正在加载模块: Mirai-Adapter | 版本:V2.0-Beta-1 | 作者:Xwdit")
 	add_to_group("console_command_mirai")
 	var usages = [
 		"mirai status - 获取与Mirai框架的连接状态",

@@ -1,4 +1,4 @@
-extends RefCounted
+extends CoreAPI
 
 
 class_name HttpRequestResult

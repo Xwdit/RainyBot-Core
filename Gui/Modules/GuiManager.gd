@@ -10,7 +10,7 @@ func open_plugin_editor(path:String):
 		return
 	console_print_warning("正在启动插件编辑器，请稍候..... | 文件:"+path.get_file())
 	await get_tree().physics_frame
-	var _editor = load("res://Gui/Modules/PluginEditor/Modules/EditorWindow/PluginEditorWindow.tscn")
+	var _editor = load("res://Gui/Interfaces/PluginEditor/Modules/EditorWindow/PluginEditorWindow.tscn")
 	var _ins = _editor.instantiate()
 	_ins.name = "PluginEditorWindow"
 	add_child(_ins,true)

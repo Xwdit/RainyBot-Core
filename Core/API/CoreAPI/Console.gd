@@ -17,4 +17,8 @@ static func print_warning(text):
 	
 
 static func print_success(text):
-	GuiManager.console_print_warning(text)
+	GuiManager.console_print_success(text)
+
+
+static func save_log(close:bool=false):
+	GuiManager.console_save_log(close)

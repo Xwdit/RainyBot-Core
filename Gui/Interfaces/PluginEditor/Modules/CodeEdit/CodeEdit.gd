@@ -111,7 +111,7 @@ var color_regions = {
 
 var core_api_path = "res://Core/API/"
 var adapter_api_path = "res://Adapters/Mirai/API/"
-var class_doc_path = "res://Gui/Modules/PluginEditor/Modules/CodeEdit/ClassDocs/"
+var class_doc_path = "res://Gui/Interfaces/PluginEditor/Modules/CodeEdit/ClassDocs/"
 
 
 var api_dic = {}

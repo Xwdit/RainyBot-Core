@@ -2,7 +2,10 @@ extends Control
 
 
 func _ready():
+	DisplayServer.window_set_title("RainyBot-Gui")
 	$TabContainer.set_tab_title(0,"RainyBot控制台")
+	Console.print_success("成功加载 RainyBot-Gui | 版本:V2.0-Beta-1 | 作者:Xwdit")
+	RainyBotCore.start()
 
 
 func _process(_delta):
