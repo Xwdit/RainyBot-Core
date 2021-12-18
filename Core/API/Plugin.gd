@@ -461,7 +461,7 @@ func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:M
 		Console.print_error("关键词\"%s\"试图触发的函数无效或不存在，请检查配置是否有误！"%[_kw])
 
 
-func init_plugin_config(default_config:Dictionary,config_description:Dictionary={}):
+func init_plugin_config(default_config:Dictionary,config_description:Dictionary={})->int:
 	Console.print_warning("正在加载插件配置文件.....")
 	plugin_config = default_config
 	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
@@ -475,40 +475,44 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 		if _config is Dictionary:
 			if _config.has_all(default_config.keys()):
 				for key in _config:
-					if (_config[key] is String && _config[key] == "") or (_config[key] is bool && _config[key] == null):
+					if (_config[key] is String && _config[key] == "") or (_config[key] == null):
 						Console.print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+str(key))
 						Console.print_warning("可以前往以下路径来验证与修改配置: "+config_path)
 				plugin_config = _config
 				plugin_config_loaded = true
 				Console.print_success("插件配置加载成功")
-				return
+				return OK
 			else:
 				Console.print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
+				return ERR_FILE_MISSING_DEPENDENCIES
 		else:
 			Console.print_error("配置文件读取失败，请删除配置文件后重新生成! 路径:"+config_path)
+			return ERR_FILE_CANT_READ
 	else:
 		Console.print_warning("没有已存在的配置文件，正在生成新的配置文件...")
 		var _err = file.open(config_path,File.WRITE)
 		if _err != OK:
 			Console.print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
 			file.close()
+			return _err
 		else:
 			var json = JSON.new()
 			file.store_string(json.stringify(plugin_config,"\t"))
 			file.close()
-			Console.print_success("配置文件创建成功，请访问以下路径进行配置: "+config_path)
+			Console.print_success("配置文件创建成功，可以访问以下路径进行配置: "+config_path)
 			if !config_description.is_empty():
 				Console.print_text("配置选项说明:")
 				for key in config_description:
-					Console.print_text(key+":"+config_description[key])
-			Console.print_warning("配置完成后请重新加载此插件")
-	unload_plugin()
+					Console.print_text(str(key)+":"+str(config_description[key]))
+			Console.print_warning("配置完成后请重新加载此插件!")
+			plugin_config_loaded = true
+			return OK
 
 
-func save_plugin_config():
+func save_plugin_config()->int:
 	if !plugin_config_loaded:
 		Console.print_error("配置文件保存失败，请先初始化配置后再执行此操作")
-		return
+		return ERR_FILE_CANT_WRITE
 	Console.print_warning("正在保存配置文件...")
 	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file = File.new()
@@ -516,28 +520,38 @@ func save_plugin_config():
 	if _err != OK:
 		Console.print_error("配置文件保存失败，请检查文件权限是否配置正确! 路径:"+config_path)
 		file.close()
+		return _err
 	else:
 		var json = JSON.new()
 		file.store_string(json.stringify(plugin_config,"\t"))
 		file.close()
 		Console.print_success("配置文件保存成功，路径: "+config_path)
+		return OK
 
 
 func get_plugin_config(key):
 	if !plugin_config_loaded:
 		Console.print_error("配置内容获取失败，请先初始化配置后再执行此操作")
-		return
+		return null
 	if plugin_config.has(key):
 		return plugin_config[key]
+	else:
+		Console.print_error("配置内容获取失败，试图获取的key在插件数据库中不存在!")
+		return null
 		
 		
-func set_plugin_config(key,value,save_file:bool=true):
+func set_plugin_config(key,value,save_file:bool=true)->int:
 	if !plugin_config_loaded:
 		Console.print_error("配置内容设定失败，请先初始化配置后再执行此操作")
-		return
-	plugin_config[key]=value
-	if save_file:
-		save_plugin_config()
+		return ERR_FILE_CANT_WRITE
+	if plugin_config.has(key):
+		plugin_config[key]=value
+		if save_file:
+			save_plugin_config()
+		return OK
+	else:
+		Console.print_error("配置内容设定失败，试图设置的key在插件配置中不存在!")
+		return ERR_FILE_CANT_WRITE
 
 
 func get_plugin_config_metadata()->Dictionary:
@@ -547,13 +561,14 @@ func get_plugin_config_metadata()->Dictionary:
 	return plugin_config
 
 
-func set_plugin_config_metadata(dic:Dictionary,save_file:bool=true):
+func set_plugin_config_metadata(dic:Dictionary,save_file:bool=true)->int:
 	if !plugin_config_loaded:
 		Console.print_error("配置内容设定失败，请先初始化配置后再执行此操作")
-		return
+		return ERR_FILE_CANT_WRITE
 	plugin_config = dic
 	if save_file:
 		save_plugin_config()
+	return OK
 	
 	
 func get_plugin_data_metadata()->Dictionary:
@@ -563,16 +578,17 @@ func get_plugin_data_metadata()->Dictionary:
 	return plugin_data
 
 
-func set_plugin_data_metadata(dic:Dictionary,save_file:bool=true):
+func set_plugin_data_metadata(dic:Dictionary,save_file:bool=true)->int:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
-		return
+		return ERR_DATABASE_CANT_WRITE
 	plugin_data = dic
 	if save_file:
 		save_plugin_data()
+	return OK
 
 
-func init_plugin_data():
+func init_plugin_data()->int:
 	Console.print_warning("正在加载插件数据库.....")
 	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file = File.new()
@@ -584,29 +600,30 @@ func init_plugin_data():
 			plugin_data = _data
 			plugin_data_loaded = true
 			Console.print_success("插件数据库加载成功")
-			return
+			return OK
 		else:
 			Console.print_error("插件数据库读取失败，请删除后重新生成! 路径:"+data_path)
+			return ERR_DATABASE_CANT_READ
 	else:
 		Console.print_warning("没有已存在的数据库文件，正在生成新的数据库文件...")
 		var _err = file.open(data_path,File.WRITE)
 		if _err != OK:
 			Console.print_error("数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
 			file.close()
+			return _err
 		else:
 			file.store_var(plugin_data,true)
 			file.close()
 			plugin_data_loaded = true
 			Console.print_success("数据库文件创建成功，路径: "+data_path)
 			Console.print_warning("若发生任何数据库文件更改，请重载此插件")
-			return
-	unload_plugin()
+			return OK
 			
 			
-func save_plugin_data():
+func save_plugin_data()->int:
 	if !plugin_data_loaded:
 		Console.print_error("数据库文件保存失败，请先初始化数据库后再执行此操作")
-		return
+		return ERR_DATABASE_CANT_WRITE
 	Console.print_warning("正在保存插件数据库.....")
 	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file = File.new()
@@ -614,27 +631,57 @@ func save_plugin_data():
 	if _err != OK:
 		Console.print_error("数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
 		file.close()
+		return _err
 	else:
 		file.store_var(plugin_data,true)
 		file.close()
 		Console.print_success("数据库文件保存成功，路径: "+data_path)
+		return OK
 		
 		
 func get_plugin_data(key):
 	if !plugin_data_loaded:
-		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
-		return
+		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作!")
+		return null
 	if plugin_data.has(key):
 		return plugin_data[key]
+	else:
+		Console.print_error("数据库内容获取失败，试图获取的key在插件数据库中不存在!")
+		return null
 		
 		
-func set_plugin_data(key,value,save_file:bool=true):
+func set_plugin_data(key,value,save_file:bool=true)->int:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
-		return
+		return ERR_DATABASE_CANT_WRITE
 	plugin_data[key]=value
 	if save_file:
 		save_plugin_data()
+	return OK
+
+
+func remove_plugin_data(key,save_file:bool=true)->int:
+	if !plugin_data_loaded:
+		Console.print_error("数据库内容删除失败，请先初始化数据库后再执行此操作!")
+		return ERR_DATABASE_CANT_WRITE
+	if plugin_data.has(key):
+		plugin_data.erase(key)
+		if save_file:
+			save_plugin_data()
+		return OK
+	else:
+		Console.print_error("数据库内容删除失败，试图删除的key在插件数据库中不存在!")
+		return ERR_DATABASE_CANT_WRITE
+		
+		
+func clear_plugin_data(save_file:bool=true)->int:
+	if !plugin_data_loaded:
+		Console.print_error("数据库内容清空失败，请先初始化数据库后再执行此操作!")
+		return ERR_DATABASE_CANT_WRITE
+	plugin_data.clear()
+	if save_file:
+		save_plugin_data()
+	return OK
 
 
 func unload_plugin():
