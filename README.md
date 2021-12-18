@@ -121,8 +121,8 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 ### 源码注意事项
 
 如果您希望从项目源码顺利运行/编译RainyBot，请确保遵循以下条目：
-- 请使用 Commit [[092a286127](https://github.com/godotengine/godot/commit/092a2861277e7df87aec10516d713d0bf4adba79)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。[点此下载Windows预编译版](https://www.jianguoyun.com/p/DcbS-00Qgfb3CRiVoaAE)
-- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.9.0-M1`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
+- 请使用 Commit [[8485d0c53a](https://github.com/godotengine/godot/commit/8485d0c53a55ee0295187a3144b390f35787b57d)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。
+- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.9.0-RC`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
 - 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.4.0`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
 RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已包含以上所需文件，因此无需额外进行配置。若您在配置以上文件时遇到问题，可以直接从最新的发布版本文件包中复制`adapters`文件夹以及其中的内容，并置于*Godot编辑器可执行文件同目录下*即可。
@@ -156,12 +156,12 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 - [x] 关键词相关功能的大幅改进
 - [x] 上下文交互功能的大幅改进与简化
 - [x] 完善Http请求功能，支持更多类型的请求与响应
+- [x] 实现插件编辑器的自动补全
 - [ ] 实现节点化的权限系统
 - [ ] 支持通过聊天消息来使用命令系统
 - [ ] 为更多内置功能实现GUI化
 - [ ] 添加版本检测与更新功能
 - [ ] 添加在线插件市场功能
-- [ ] 实现插件编辑器的自动补全
 - [ ] 支持多机器人账号同时运行
 - [ ] 简化对内部图形相关API的调用，支持可视化制图排版
 
