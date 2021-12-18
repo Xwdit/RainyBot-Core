@@ -641,29 +641,50 @@ func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
-func wait_message_context(event_type:GDScript,sender_id:int,group_id:int=-1,timeout:float=20.0,block:bool=true):
+func wait_context_custom(event_type:GDScript,sender_id:int=-1,group_id:int=-1,timeout:float=20.0,block:bool=true):
+	if event_type.get_base_script() != MessageEvent:
+		Console.print_error("无法开始等待上下文响应，需要等待的事件类型应该是一个消息事件!")
+		return null
+	if group_id == -1 and sender_id == -1:
+		Console.print_error("无法开始等待上下文响应，需要至少指定一个发送者ID或群组ID!")
+		return null
+	if !((event_type == GroupMessageEvent) or (event_type == TempMessageEvent)) and sender_id == -1:
+		Console.print_error("无法开始等待上下文响应，此消息事件类型必须指定一个发送者ID!")
+		return null
 	var _dic = {}
 	_dic["event"] = event_type.resource_path.get_file().replacen(".gd","")
-	_dic["sender_id"] = sender_id
-	if group_id != -1:
+	if sender_id != -1:
+		_dic["sender_id"] = sender_id
+	if ((event_type == GroupMessageEvent) or (event_type == TempMessageEvent)) and group_id != -1:
 		_dic["group_id"] = group_id
 	var context_id = str(_dic)
-	return await wait_context(context_id,timeout,block)
+	return await wait_context_id(context_id,timeout,block)
 
 
-func wait_context(context,timeout:float=20.0,block:bool=true):
-	var context_id = ""
-	if context is String and context.length() > 0:
-		context_id = context
-	elif context is MessageEvent and is_instance_valid(context):
-		var _dic = {}
-		_dic["event"] = context.get_script().resource_path.get_file().replacen(".gd","")
-		_dic["sender_id"] = context.get_sender_id()
-		if (context is GroupMessageEvent) or (context is TempMessageEvent):
-			_dic["group_id"] = context.get_group_id()
-		context_id = str(_dic)
-	else:
-		Console.print_error("无法开始等待上下文响应，需要等待的内容应该是一个上下文ID或一个消息事件")
+func wait_context(event:MessageEvent,match_sender:bool=true,match_group:bool=true,timeout:float=20.0,block:bool=true):
+	if !is_instance_valid(event):
+		Console.print_error("无法开始等待上下文响应，需要等待的事件应该是一个有效的消息事件!")
+		return null
+	if !match_sender and !match_group:
+		Console.print_error("无法开始等待上下文响应，需要至少指定一个将要匹配的条目!")
+		return null
+	if !((event is GroupMessageEvent) or (event is TempMessageEvent)) and !match_sender:
+		Console.print_error("无法开始等待上下文响应，此类消息事件必须对发送者ID进行匹配!")
+		return null
+	var _dic = {}
+	_dic["event"] = event.get_script().resource_path.get_file().replacen(".gd","")
+	if match_sender:
+		_dic["sender_id"] = event.get_sender_id()
+	if ((event is GroupMessageEvent) or (event is TempMessageEvent)) and match_group:
+		_dic["group_id"] = event.get_group_id()
+	var context_id = str(_dic)
+	return await wait_context_id(context_id,timeout,block)
+	
+	
+func wait_context_id(context_id:String,timeout:float=20.0,block:bool=true):
+	if context_id.length() < 1:
+		Console.print_error("无法开始等待上下文响应，需要等待的上下文ID不能为空!")
+		return null
 	Console.print_warning("开始等待上下文响应，ID为: %s，超时时间为: %s秒！"%[context_id,str(timeout)])
 	var _cont:PluginContextHelper
 	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
@@ -687,12 +708,26 @@ func respond_context(context,response=true)->bool:
 	if context is String and context.length() > 0:
 		context_id = context
 	elif context is MessageEvent and is_instance_valid(context):
-		var _dic = {}
-		_dic["event"] = context.get_script().resource_path.get_file().replacen(".gd","")
-		_dic["sender_id"] = context.get_sender_id()
+		var _event = context.get_script().resource_path.get_file().replacen(".gd","")
+		var _sender = context.get_sender_id()
+		var _dic_sender = {}
+		var _dic_group = {}
+		var _dic_all = {}
+		_dic_sender["event"] = _event
+		_dic_group["event"] = _event
+		_dic_all["event"] = _event
+		_dic_all["sender_id"] = _sender
+		_dic_sender["sender_id"] = _sender
 		if (context is GroupMessageEvent) or (context is TempMessageEvent):
-			_dic["group_id"] = context.get_group_id()
-		context_id = str(_dic)
+			var _group = context.get_group_id()
+			_dic_all["group_id"] = _group
+			_dic_group["group_id"] = _group
+		if plugin_context_dic.has(str(_dic_all)):
+			context_id = str(_dic_all)
+		elif plugin_context_dic.has(str(_dic_sender)):
+			context_id = str(_dic_sender)
+		elif plugin_context_dic.has(str(_dic_group)):
+			context_id = str(_dic_group)
 		response = context
 	else:
 		Console.print_error("无法响应上下文，需要响应的内容应该是一个上下文ID或一个消息事件")
