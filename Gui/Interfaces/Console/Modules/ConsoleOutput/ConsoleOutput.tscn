@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Gui/Interfaces/Console/Modules/ConsoleOutput/ConsoleOutput.gd" id="1_yyqsj"]
 
 [node name="ConsoleOutput" type="RichTextLabel" groups=["Console"]]
-offset_right = 1008.0
-offset_bottom = 485.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -16,7 +16,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/selection_color = Color(0.701961, 0.701961, 0.701961, 1)
 theme_override_constants/line_separation = 5
-theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/normal_font_size = 15
 scroll_following = true
 selection_enabled = true
 script = ExtResource( "1_yyqsj" )

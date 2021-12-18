@@ -11,7 +11,7 @@ func _ready():
 
 func add_newline_with_time(_text):
 	_text = str(_text)
-	var n_text = "["+Utils.get_formated_time()+"] "+_text
+	var n_text = "["+Time.get_datetime_string_from_system(false,true)+"] "+_text
 	add_text(n_text)
 	newline()
 	add_to_log(n_text)

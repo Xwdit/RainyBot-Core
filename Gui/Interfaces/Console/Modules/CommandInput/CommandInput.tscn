@@ -16,6 +16,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_selected_color = Color(0, 0, 0, 0)
 theme_override_colors/font_color = Color(0.878431, 0.878431, 0.878431, 1)
+theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource( "StyleBoxFlat_h0ng3" )
 expand_to_text_length = true
 placeholder_text = "在此输入命令，回车键确认，输入help查看帮助"

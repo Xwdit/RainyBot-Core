@@ -31,17 +31,21 @@ offset_left = 8.0
 offset_top = 10.0
 offset_right = -8.0
 offset_bottom = -8.0
-split_offset = 200
+split_offset = 220
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource( "1_yhib5" )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1008.0
+offset_bottom = 505.0
 
 [node name="CommandInput" parent="VSplitContainer" instance=ExtResource( "2_i0io6" )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 497.0
+offset_top = 517.0
 offset_right = 1008.0
 offset_bottom = 582.0
 rect_min_size = Vector2(0, 60)
