@@ -540,6 +540,13 @@ func get_plugin_config(key):
 		return null
 		
 		
+func has_plugin_config(key)->bool:
+	if !plugin_config_loaded:
+		Console.print_error("配置内容获取失败，请先初始化配置后再执行此操作")
+		return false
+	return plugin_config.has(key)
+		
+		
 func set_plugin_config(key,value,save_file:bool=true)->int:
 	if !plugin_config_loaded:
 		Console.print_error("配置内容设定失败，请先初始化配置后再执行此操作")
@@ -648,6 +655,13 @@ func get_plugin_data(key):
 	else:
 		Console.print_error("数据库内容获取失败，试图获取的key在插件数据库中不存在!")
 		return null
+		
+		
+func has_plugin_data(key)->bool:
+	if !plugin_data_loaded:
+		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作!")
+		return false
+	return plugin_data.has(key)
 		
 		
 func set_plugin_data(key,value,save_file:bool=true)->int:
