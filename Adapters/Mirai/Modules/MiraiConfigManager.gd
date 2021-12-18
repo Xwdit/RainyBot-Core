@@ -49,7 +49,7 @@ func init_config():
 					Console.print_warning("配置完成后请重启RainyBot")
 					return
 				for key in _config:
-					if (_config[key] is String && _config[key] == "") or (_config[key] is bool && _config[key] == null):
+					if (_config[key] is String && _config[key] == "") or (_config[key] == null):
 						Console.print_warning("警告: 检测到内容为空的配置项，可能会导致出现问题: "+key)
 						Console.print_warning("可以前往以下路径来验证与修改配置: "+config_path)
 						Console.print_warning("配置完成后请重启RainyBot")
