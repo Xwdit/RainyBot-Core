@@ -1,16 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bfrn7f13fj71v"]
+[gd_scene load_steps=3 format=3 uid="uid://bfrn7f13fj71v"]
 
 [ext_resource type="Script" path="res://Gui/MainGui.gd" id="1_cbsnb"]
 [ext_resource type="PackedScene" uid="uid://uqp3bd6064bn" path="res://Gui/Interfaces/Console/Console.tscn" id="2_53msf"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v2v7d"]
-content_margin_left = 8.0
-content_margin_right = 8.0
-content_margin_top = 8.0
-content_margin_bottom = 8.0
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50kw1"]
 
 [node name="MainGui" type="Control"]
 anchor_right = 1.0
@@ -43,19 +34,120 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TabContainer" type="TabContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme_override_constants/side_margin = 0
-theme_override_styles/tab_selected = SubResource( "StyleBoxFlat_v2v7d" )
-theme_override_styles/panel = SubResource( "StyleBoxEmpty_50kw1" )
-tab_alignment = 0
-drag_to_rearrange_enabled = true
+[node name="Console" parent="." instance=ExtResource( "2_53msf" )]
+offset_top = 33.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ControlBar" type="HBoxContainer" parent="."]
+offset_right = 604.0
+offset_bottom = 33.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Console" parent="TabContainer" instance=ExtResource( "2_53msf" )]
-offset_top = 33.0
-size_flags_horizontal = 3
+[node name="MainMenu" type="MenuButton" parent="ControlBar"]
+offset_right = 60.0
+offset_bottom = 33.0
 size_flags_vertical = 3
+text = "主菜单"
+alignment = 0
+expand_icon = true
+item_count = 2
+popup/item_0/text = "检查更新"
+popup/item_0/id = 0
+popup/item_1/text = "退出"
+popup/item_1/id = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConsoleMenu" type="MenuButton" parent="ControlBar"]
+offset_left = 64.0
+offset_right = 124.0
+offset_bottom = 33.0
+size_flags_vertical = 3
+text = "控制台"
+alignment = 0
+expand_icon = true
+item_count = 2
+popup/item_0/text = "清空控制台"
+popup/item_0/id = 0
+popup/item_1/text = "打开日志文件夹"
+popup/item_1/id = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PluginMenu" type="MenuButton" parent="ControlBar"]
+offset_left = 128.0
+offset_right = 172.0
+offset_bottom = 33.0
+size_flags_vertical = 3
+text = "插件"
+alignment = 0
+expand_icon = true
+item_count = 4
+popup/item_0/text = "插件市场"
+popup/item_0/id = 0
+popup/item_1/text = "插件管理器"
+popup/item_1/id = 0
+popup/item_2/text = "重载所有插件"
+popup/item_2/id = 0
+popup/item_3/text = "打开插件文件夹"
+popup/item_3/id = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AdapterMenu" type="MenuButton" parent="ControlBar"]
+offset_left = 176.0
+offset_right = 252.0
+offset_bottom = 33.0
+size_flags_vertical = 3
+text = "协议后端"
+alignment = 0
+expand_icon = true
+item_count = 4
+popup/item_0/text = "配置管理器"
+popup/item_0/id = 0
+popup/item_1/text = "重新启动"
+popup/item_1/id = 0
+popup/item_2/text = "状态信息"
+popup/item_2/id = 0
+popup/item_3/text = "打开协议后端文件夹"
+popup/item_3/id = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HelpMenu" type="MenuButton" parent="ControlBar"]
+offset_left = 256.0
+offset_right = 300.0
+offset_bottom = 33.0
+size_flags_vertical = 3
+text = "帮助"
+alignment = 0
+expand_icon = true
+item_count = 9
+popup/item_0/text = "在线文档"
+popup/item_0/id = 0
+popup/item_1/text = "插件API文档"
+popup/item_1/id = 0
+popup/item_2/text = "问与答"
+popup/item_2/id = 0
+popup/item_3/text = "报告问题"
+popup/item_3/id = 0
+popup/item_4/text = "提交新特性建议"
+popup/item_4/id = 0
+popup/item_5/text = "发送文档反馈"
+popup/item_5/id = 0
+popup/item_6/text = "社区群聊"
+popup/item_6/id = 0
+popup/item_7/text = "官方网站"
+popup/item_7/id = 0
+popup/item_8/text = "关于RainyBot"
+popup/item_8/id = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
