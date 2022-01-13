@@ -47,22 +47,22 @@ __meta__ = {
 }
 
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
-offset_right = 76.0
-offset_bottom = 28.0
+offset_right = 60.0
+offset_bottom = 29.0
 text = "保存文件"
 flat = true
 
 [node name="SaveReloadButton" type="Button" parent="EditorPanel/Menu"]
-offset_left = 80.0
-offset_right = 172.0
-offset_bottom = 28.0
+offset_left = 64.0
+offset_right = 136.0
+offset_bottom = 29.0
 text = "保存并重载"
 flat = true
 
 [node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
-offset_left = 176.0
-offset_right = 277.0
-offset_bottom = 28.0
+offset_left = 140.0
+offset_right = 226.0
+offset_bottom = 29.0
 text = "打开API文档"
 flat = true
 
@@ -76,10 +76,10 @@ __meta__ = {
 }
 
 [node name="FileName" type="Label" parent="EditorPanel/File"]
-offset_left = 483.0
-offset_top = 6.0
-offset_right = 536.0
-offset_bottom = 26.0
+offset_left = 482.0
+offset_top = 3.0
+offset_right = 537.0
+offset_bottom = 29.0
 text = "Test.gd"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -88,10 +88,10 @@ __meta__ = {
 }
 
 [node name="FileStatus" type="Label" parent="EditorPanel/File"]
-offset_left = 540.0
-offset_top = 8.0
-offset_right = 541.0
-offset_bottom = 25.0
+offset_left = 541.0
+offset_top = 5.0
+offset_right = 542.0
+offset_bottom = 28.0
 horizontal_alignment = 1
 vertical_alignment = 1
 __meta__ = {
@@ -112,9 +112,9 @@ __meta__ = {
 
 [node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
 offset_left = 132.0
-offset_top = 6.0
+offset_top = 3.0
 offset_right = 202.0
-offset_bottom = 26.0
+offset_bottom = 29.0
 rect_min_size = Vector2(70, 0)
 text = "1 : 1"
 horizontal_alignment = 2

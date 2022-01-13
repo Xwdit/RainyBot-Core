@@ -91,15 +91,15 @@ var type_dic = {
 	TYPE_SIGNAL:"Signal",
 	TYPE_DICTIONARY:"Dictionary",
 	TYPE_ARRAY:"Array",
-	TYPE_RAW_ARRAY:"PackedByteArray",
-	TYPE_INT32_ARRAY:"PackedInt32Array",
-	TYPE_INT64_ARRAY:"PackedInt64Array",
-	TYPE_FLOAT32_ARRAY:"PackedFloat32Array",
-	TYPE_FLOAT64_ARRAY:"PackedFloat64Array",
-	TYPE_STRING_ARRAY:"PackedStringArray",
-	TYPE_VECTOR2_ARRAY:"PackedVector2Array",
-	TYPE_VECTOR3_ARRAY:"PackedVector3Array",
-	TYPE_COLOR_ARRAY:"PackedColorArray"
+	TYPE_PACKED_BYTE_ARRAY:"PackedByteArray",
+	TYPE_PACKED_INT32_ARRAY:"PackedInt32Array",
+	TYPE_PACKED_INT64_ARRAY:"PackedInt64Array",
+	TYPE_PACKED_FLOAT32_ARRAY:"PackedFloat32Array",
+	TYPE_PACKED_FLOAT64_ARRAY:"PackedFloat64Array",
+	TYPE_PACKED_STRING_ARRAY:"PackedStringArray",
+	TYPE_PACKED_VECTOR2_ARRAY:"PackedVector2Array",
+	TYPE_PACKED_VECTOR3_ARRAY:"PackedVector3Array",
+	TYPE_PACKED_COLOR_ARRAY:"PackedColorArray"
 }
 
 var color_regions = {

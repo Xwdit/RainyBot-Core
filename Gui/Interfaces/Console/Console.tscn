@@ -57,4 +57,3 @@ focus_next = NodePath(".")
 focus_previous = NodePath(".")
 theme_override_styles/normal = SubResource( "StyleBoxFlat_5jndw" )
 expand_to_text_length = false
-caret_force_displayed = true
