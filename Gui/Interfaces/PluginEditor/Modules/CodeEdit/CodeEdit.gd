@@ -510,3 +510,17 @@ func _on_Timer_timeout():
 		if (is_in_comment(get_caret_line(),get_caret_column())==-1) and (is_in_string(get_caret_line(),get_caret_column())==-1):
 			request_code_completion()
 	emit_signal("update_finished")
+
+
+func _gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_comment"):
+		# If no selection is active, toggle comment on the line the cursor is currently on.
+		var from := get_selection_from_line() if has_selection() else get_caret_line()
+		var to := get_selection_to_line() if has_selection() else get_caret_line()
+		for line in range(from, to + 1):
+			if not get_line(line).begins_with("#"):
+				# Code is already commented out at the beginning of the line. Uncomment it.
+				set_line(line, "#%s" % get_line(line))
+			else:
+				# Code isn't commented out at the beginning of the line. Comment it.
+				set_line(line, get_line(line).substr(1))

@@ -2,7 +2,7 @@ class_name RainyBotCore
 
 
 const NAME = "RainyBot-Core"
-const VERSION = "V2.0-Beta-1"
+const VERSION = "V2.0-Beta-2"
 const AUTHOR = "Xwdit"
 
 

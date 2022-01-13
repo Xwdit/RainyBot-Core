@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfrn7f13fj71v"]
+[gd_scene load_steps=4 format=3 uid="uid://bfrn7f13fj71v"]
 
 [ext_resource type="Script" path="res://Gui/MainGui.gd" id="1_cbsnb"]
 [ext_resource type="PackedScene" uid="uid://uqp3bd6064bn" path="res://Gui/Interfaces/Console/Console.tscn" id="2_53msf"]
+[ext_resource type="Script" path="res://Gui/ControlBar.gd" id="3_cgp1a"]
 
 [node name="MainGui" type="Control"]
 anchor_right = 1.0
@@ -42,6 +43,7 @@ size_flags_vertical = 3
 [node name="ControlBar" type="HBoxContainer" parent="."]
 offset_right = 604.0
 offset_bottom = 33.0
+script = ExtResource( "3_cgp1a" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -56,8 +58,9 @@ expand_icon = true
 item_count = 2
 popup/item_0/text = "检查更新"
 popup/item_0/id = 0
+popup/item_0/disabled = true
 popup/item_1/text = "退出"
-popup/item_1/id = 0
+popup/item_1/id = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -74,7 +77,7 @@ item_count = 2
 popup/item_0/text = "清空控制台"
 popup/item_0/id = 0
 popup/item_1/text = "打开日志文件夹"
-popup/item_1/id = 0
+popup/item_1/id = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -90,12 +93,14 @@ expand_icon = true
 item_count = 4
 popup/item_0/text = "插件市场"
 popup/item_0/id = 0
+popup/item_0/disabled = true
 popup/item_1/text = "插件管理器"
-popup/item_1/id = 0
+popup/item_1/id = 1
+popup/item_1/disabled = true
 popup/item_2/text = "重载所有插件"
-popup/item_2/id = 0
+popup/item_2/id = 2
 popup/item_3/text = "打开插件文件夹"
-popup/item_3/id = 0
+popup/item_3/id = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -111,12 +116,13 @@ expand_icon = true
 item_count = 4
 popup/item_0/text = "配置管理器"
 popup/item_0/id = 0
+popup/item_0/disabled = true
 popup/item_1/text = "重新启动"
-popup/item_1/id = 0
+popup/item_1/id = 1
 popup/item_2/text = "状态信息"
-popup/item_2/id = 0
+popup/item_2/id = 2
 popup/item_3/text = "打开协议后端文件夹"
-popup/item_3/id = 0
+popup/item_3/id = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -132,22 +138,25 @@ expand_icon = true
 item_count = 9
 popup/item_0/text = "在线文档"
 popup/item_0/id = 0
+popup/item_0/disabled = true
 popup/item_1/text = "插件API文档"
-popup/item_1/id = 0
+popup/item_1/id = 1
 popup/item_2/text = "问与答"
-popup/item_2/id = 0
+popup/item_2/id = 2
+popup/item_2/disabled = true
 popup/item_3/text = "报告问题"
-popup/item_3/id = 0
+popup/item_3/id = 3
 popup/item_4/text = "提交新特性建议"
-popup/item_4/id = 0
+popup/item_4/id = 4
 popup/item_5/text = "发送文档反馈"
-popup/item_5/id = 0
+popup/item_5/id = 5
 popup/item_6/text = "社区群聊"
-popup/item_6/id = 0
+popup/item_6/id = 6
 popup/item_7/text = "官方网站"
-popup/item_7/id = 0
+popup/item_7/id = 7
 popup/item_8/text = "关于RainyBot"
-popup/item_8/id = 0
+popup/item_8/id = 8
+popup/item_8/disabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

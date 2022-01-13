@@ -1,0 +1,8 @@
+[gd_resource type="StyleBoxFlat" format=3 uid="uid://btogefokonry7"]
+
+[resource]
+bg_color = Color(0.101961, 0.113725, 0.137255, 0)
+border_width_top = 2
+border_width_bottom = 3
+border_color = Color(0.235294, 0.776471, 0.8, 1)
+border_blend = true

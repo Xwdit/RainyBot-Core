@@ -1,13 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dstcpdf5qorbc"]
 
+[ext_resource type="StyleBox" uid="uid://btogefokonry7" path="res://Gui/Interfaces/PluginEditor/Modules/CodeEdit/CodeEdit.tres" id="1_c1dt0"]
 [ext_resource type="Script" path="res://Gui/Interfaces/PluginEditor/Modules/CodeEdit/CodeEdit.gd" id="1_ds5mq"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8lmgh"]
-bg_color = Color(0.101961, 0.113725, 0.137255, 0)
-border_width_top = 2
-border_width_bottom = 3
-border_color = Color(0.235294, 0.776471, 0.8, 1)
-border_blend = true
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_nyeeb"]
 number_color = Color(0.513726, 0.941176, 0.752941, 1)
@@ -30,7 +24,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/line_spacing = 5
 theme_override_constants/outline_size = 0
-theme_override_styles/normal = SubResource( "StyleBoxFlat_8lmgh" )
+theme_override_styles/focus = ExtResource( "1_c1dt0" )
+theme_override_styles/normal = ExtResource( "1_c1dt0" )
 highlight_current_line = true
 draw_control_chars = true
 draw_tabs = true
