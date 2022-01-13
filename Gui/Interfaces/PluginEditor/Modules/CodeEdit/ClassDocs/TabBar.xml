@@ -49,19 +49,6 @@
 				Returns [code]true[/code] if select with right mouse button is enabled.
 			</description>
 		</method>
-		<method name="get_tab_count" qualifiers="const">
-			<return type="int" />
-			<description>
-				Returns the number of tabs.
-			</description>
-		</method>
-		<method name="get_tab_disabled" qualifiers="const">
-			<return type="bool" />
-			<argument index="0" name="tab_idx" type="int" />
-			<description>
-				Returns [code]true[/code] if the tab at index [code]tab_idx[/code] is disabled.
-			</description>
-		</method>
 		<method name="get_tab_icon" qualifiers="const">
 			<return type="Texture2D" />
 			<argument index="0" name="tab_idx" type="int" />
@@ -115,6 +102,13 @@
 			<return type="int" />
 			<description>
 				Returns the [TabBar]'s rearrange group ID.
+			</description>
+		</method>
+		<method name="is_tab_disabled" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="tab_idx" type="int" />
+			<description>
+				Returns [code]true[/code] if the tab at index [code]tab_idx[/code] is disabled.
 			</description>
 		</method>
 		<method name="move_tab">
@@ -214,6 +208,9 @@
 		<member name="tab_close_display_policy" type="int" setter="set_tab_close_display_policy" getter="get_tab_close_display_policy" enum="TabBar.CloseButtonDisplayPolicy" default="0">
 			Sets when the close button will appear on the tabs. See [enum CloseButtonDisplayPolicy] for details.
 		</member>
+		<member name="tab_count" type="int" setter="set_tab_count" getter="get_tab_count" default="0">
+			The number of tabs currently in the bar.
+		</member>
 	</members>
 	<signals>
 		<signal name="active_tab_rearranged">
@@ -238,7 +235,7 @@
 			<argument index="0" name="tab" type="int" />
 			<description>
 				Emitted when a tab's close button is pressed.
-				[b]Note:[/b] Tabs are not removed automatically once the close button is pressed, this behaviour needs to be programmed manually. For example:
+				[b]Note:[/b] Tabs are not removed automatically once the close button is pressed, this behavior needs to be programmed manually. For example:
 				[codeblocks]
 				[gdscript]
 				$TabBar.tab_close_pressed.connect($TabBar.remove_tab)

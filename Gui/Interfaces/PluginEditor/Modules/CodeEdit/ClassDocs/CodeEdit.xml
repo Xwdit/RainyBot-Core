@@ -234,7 +234,7 @@
 		<method name="get_folded_lines" qualifiers="const">
 			<return type="int[]" />
 			<description>
-				Return all lines that are current folded.
+				Returns all lines that are current folded.
 			</description>
 		</method>
 		<method name="get_text_for_code_completion" qualifiers="const">
@@ -288,7 +288,7 @@
 			<argument index="0" name="line" type="int" />
 			<argument index="1" name="column" type="int" default="-1" />
 			<description>
-				Return delimiter index if [code]line[/code] [code]column[/code] is in a comment. If [code]column[/code] is not provided, will return delimiter index if the entire [code]line[/code] is a comment. Otherwise [code]-1[/code].
+				Returns delimiter index if [code]line[/code] [code]column[/code] is in a comment. If [code]column[/code] is not provided, will return delimiter index if the entire [code]line[/code] is a comment. Otherwise [code]-1[/code].
 			</description>
 		</method>
 		<method name="is_in_string" qualifiers="const">
@@ -296,7 +296,7 @@
 			<argument index="0" name="line" type="int" />
 			<argument index="1" name="column" type="int" default="-1" />
 			<description>
-				Return the delimiter index if [code]line[/code] [code]column[/code] is in a string. If [code]column[/code] is not provided, will return the delimiter index if the entire [code]line[/code] is a string. Otherwise [code]-1[/code].
+				Returns the delimiter index if [code]line[/code] [code]column[/code] is in a string. If [code]column[/code] is not provided, will return the delimiter index if the entire [code]line[/code] is a string. Otherwise [code]-1[/code].
 			</description>
 		</method>
 		<method name="is_line_bookmarked" qualifiers="const">
@@ -680,7 +680,7 @@
 			[StyleBox] for the code completion popup.
 		</theme_item>
 		<theme_item name="focus" data_type="style" type="StyleBox">
-			Sets the [StyleBox] when in focus.
+			Sets the [StyleBox] when in focus. The [code]focus[/code] [StyleBox] is displayed [i]over[/i] the base [StyleBox], so a partially transparent [StyleBox] should be used to ensure the base [StyleBox] remains visible. A [StyleBox] that represents an outline or an underline works well for this purpose. To disable the focus visual effect, assign a [StyleBoxEmpty] resource. Note that disabling the focus visual effect will harm keyboard/controller navigation usability, so this is not recommended for accessibility reasons.
 		</theme_item>
 		<theme_item name="normal" data_type="style" type="StyleBox">
 			Sets the [StyleBox].

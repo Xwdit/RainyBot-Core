@@ -174,7 +174,7 @@
 		<member name="caret_force_displayed" type="bool" setter="set_caret_force_displayed" getter="is_caret_force_displayed" default="false">
 			If [code]true[/code], the [LineEdit] will always show the caret, even if focus is lost.
 		</member>
-		<member name="caret_mid_grapheme" type="bool" setter="set_caret_mid_grapheme_enabled" getter="is_caret_mid_grapheme_enabled" default="false">
+		<member name="caret_mid_grapheme" type="bool" setter="set_caret_mid_grapheme_enabled" getter="is_caret_mid_grapheme_enabled" default="true">
 			Allow moving caret, selecting and removing the individual composite character components.
 			[b]Note:[/b] [kbd]Backspace[/kbd] is always removing individual composite character components.
 		</member>
@@ -422,7 +422,7 @@
 			Texture for the clear button. See [member clear_button_enabled].
 		</theme_item>
 		<theme_item name="focus" data_type="style" type="StyleBox">
-			Background used when [LineEdit] has GUI focus.
+			Background used when [LineEdit] has GUI focus. The [code]focus[/code] [StyleBox] is displayed [i]over[/i] the base [StyleBox], so a partially transparent [StyleBox] should be used to ensure the base [StyleBox] remains visible. A [StyleBox] that represents an outline or an underline works well for this purpose. To disable the focus visual effect, assign a [StyleBoxEmpty] resource. Note that disabling the focus visual effect will harm keyboard/controller navigation usability, so this is not recommended for accessibility reasons.
 		</theme_item>
 		<theme_item name="normal" data_type="style" type="StyleBox">
 			Default background for the [LineEdit].
