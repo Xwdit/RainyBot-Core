@@ -39,6 +39,7 @@
       <ul>
         <li><a href="#运行需求">运行需求</a></li>
         <li><a href="#配置与使用">配置与使用</a></li>
+        <li><a href="#故障排除">故障排除</a></li>
         <li><a href="#源码注意事项">源码注意事项</a></li>
       </ul>
     </li>
@@ -118,6 +119,14 @@ RainyBot默认使用SwiftShader软件渲染器以提升兼容性，若您的图�
 6. 此时起可最小化协议后端的控制台窗口，后续操作均只需在RainyBot控制台中进行即可。从此处开始，将直接使用“控制台”来表示RainyBot的控制台界面
 7. 在控制台中输入指令`help`(或`/help`)来查看所有可用的控制台指令，如输入`plugins`可查看插件管理相关指令
 8. 恭喜！您成功完成了RainyBot的基本配置，开始尽情使用吧~
+
+### 故障排除
+
+启动时提示当前图形卡不支持Vulkan/OpenGL，因而无法启动：
+
+- 若您未删除软件目录下的vulkan-1.dll，则此问题通常因为您的系统中缺失SwiftShader软件渲染器所必需的Visual C++ 2015运行时，您可以[点此下载](https://docs.microsoft.com/zh-cn/cpp/windows/latest-supported-vc-redist?view=msvc-170)安装即可解决此问题。
+- 若您删除了vulkan-1.dll并弹出此提示，说明您的电脑显示卡不支持Vulkan渲染器，请还原软件目录下的vulkan-1.dll以便使用软件渲染器来显示软件窗口。
+
 
 ### 源码注意事项
 
