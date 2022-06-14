@@ -1,4 +1,4 @@
-extends CoreAPI
+extends BotAPI
 
 
 class_name Bot
