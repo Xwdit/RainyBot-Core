@@ -1,24 +1,34 @@
-extends Node
-	
-class_name Plugin
+extends Node #继承Node类，用于RainyBot内部处理与加载，请勿进行改动
+
+##
+## RainyBot的插件类，代表一个实例，用于在插件中实现各类相关功能
+##
+##
+## 这是RainyBot的插件类，代表一个插件实例，用于在插件中实现各类相关功能。
+## 所有插件应当继承此类，以便在RainyBot中正确加载与运行。
+##
+
+class_name Plugin #定义类名为Plugin，请勿进行改动
 
 
+## 关键词的匹配模式枚举，决定了触发某关键词判定的条件
 enum MatchMode{
-	BEGIN,
-	BETWEEN,
-	END,
-	INCLUDE,
-	EXCLUDE,
-	EQUAL,
-	REGEX
+	BEGIN, ## 仅当关键词位于消息开头时触发判定
+	BETWEEN, ## 仅当关键词位于消息中间时触发判定
+	END, ## 仅当关键词位于消息末尾时触发判定
+	INCLUDE, ## 消息中只要包含关键词就触发判定
+	EXCLUDE, ## 消息中只要不包含关键词就触发判定
+	EQUAL, ## 消息与关键词完全匹配时触发判定
+	REGEX ## 消息满足正则表达式时触发判定（此时关键词内容应为一个正则表达式）
 }
 
 
+## 事件在处理时被标记为停止传递后的阻断模式枚举，决定了该事件将如何被阻断传递
 enum BlockMode{
-	DISABLE,
-	EVENT,
-	FUNCTION,
-	ALL
+	DISABLE, ## 即使标记为停止传递也不会进行阻断
+	EVENT, ## 在当前插件中的所有该事件函数处理完毕后，将阻断传递，即不会传递给后续插件
+	FUNCTION, ## 当前函数处理完毕后，阻断事件在当前插件内的传递，但后续插件仍会接收到事件
+	ALL ## 当前函数处理完毕后，将完全阻断事件传递，事件后续函数及其他插件均不会收到事件
 }
 
 
@@ -86,30 +96,45 @@ func _exit_tree():
 		save_plugin_data()
 
 
+## 在插件中覆盖此虚函数，以便定义插件在即将被加载时执行的操作
+## 所有插件在任何情况下都需要在其中执行set_plugin_info()函数来设定您的插件信息，
+## 以便RainyBot能正确处理与加载您的插件 (参见插件模板或示例插件)
 func _on_init():
 	pass
 
 
+## 在插件中覆盖此虚函数，以便定义RainyBot在与协议后端建立连接后插件将执行的操作
+## 可以在此处进行如记录运行状态一类的操作
 func _on_connect():
 	pass
 
 
+## 在插件中覆盖此虚函数，以便定义插件在被加载完毕后执行的操作
+## 通常情况下，各类事件的注册与函数绑定都可以在这里进行
 func _on_load():
 	pass
 
 
+## 在插件中覆盖此虚函数，以便定义插件在所有其他插件加载完毕后执行的操作
+## 可以在此处进行插件间互联互通相关的操作
 func _on_ready():
 	pass
 
 
+## 在插件中覆盖此虚函数，以便定义插件运行中的每一秒将执行的操作
+## 通常情况下，各类与计时相关的操作都可以在这里进行
 func _on_process():
 	pass
 
 
+## 在插件中覆盖此虚函数，以便定义RainyBot在与协议后端断开建立连接后插件将执行的操作
+## 可以在此处进行如记录运行状态一类的操作
 func _on_disconnect():
 	pass
 
 
+## 在插件中覆盖此虚函数，以便定义插件在即将被卸载时执行的操作
+## 通常情况下，命令的取消注册，插件的数据保存等操作都可以在这里进行
 func _on_unload():
 	pass
 
@@ -125,6 +150,10 @@ func _plugin_timer_timeout():
 	_on_process()
 
 
+## 用于设定插件的相关信息，需要在_on_init()虚函数中执行以便RainyBot正确加载您的插件
+## 需要的参数从左到右分别为插件ID(不可与其它已加载插件重复),插件名,插件作者,插件版本,插件描述,插件依赖(可选)
+## 最后一项可选参数为此插件的依赖插件列表(数组)，需要以所依赖的插件的ID作为列表中的元素，如:["example","example_1"]
+## 设置了插件依赖后，可以保证所依赖的插件一定在此插件之前被加载
 func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String,p_dependency=[]):
 	plugin_info.id = p_id
 	plugin_info.name = p_name
@@ -135,27 +164,35 @@ func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,
 		p_dependency = [p_dependency]
 	plugin_info.dependency = p_dependency
 
-	
+
+## 用于获取插件的相关信息，将返回一个包含插件信息的字典
+## 使用id,name,author,version,description,dependency作为key即可从字典中获取对应信息
 func get_plugin_info()->Dictionary:
 	return plugin_info
 
 
+## 用于获取插件对应的文件名，将返回插件文件的名称 (如ChatBot.gd)
 func get_plugin_filename()->String:
 	return plugin_file
 
 
+## 用于获取插件对应的文件路径，将返回插件文件的绝对路径 (如 D://RainyBot/plugins/ChatBot.gd)
 func get_plugin_filepath()->String:
 	return plugin_path
 
 
+## 用于获取RainyBot的插件文件夹的路径，将返回插件文件夹的绝对路径 (如 D://RainyBot/plugins/)
 func get_plugin_path()->String:
 	return PluginManager.plugin_path
 
 
+## 用于获取插件的已运行时间，默认情况下为插件成功加载以来经过的秒数
 func get_plugin_runtime()->int:
 	return plugin_time_passed
 	
 
+## 用于获取其他插件的实例引用，可用于插件之间的联动与数据互通等
+## 需要传入其他插件的ID作为参数来获取其实例，若未找到插件则返回null
 func get_plugin_instance(plugin_id:String)->Plugin:
 	var ins = PluginManager.get_plugin_instance(plugin_id)
 	if ins == null:
@@ -163,30 +200,53 @@ func get_plugin_instance(plugin_id:String)->Plugin:
 	return ins
 
 
+## 用于获取RainyBot的数据文件夹的路径，将返回数据文件夹的绝对路径 (如 D://RainyBot/data/)
 func get_data_path()->String:
 	return PluginManager.plugin_data_path
 	
 
+## 用于获取该插件对应的数据库文件的路径，即插件对应的.rdb格式文件的绝对路径
 func get_data_filepath()->String:
 	return PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	
-	
+
+## 用于获取RainyBot的配置文件夹的路径，将返回配置文件夹的绝对路径 (如 D://RainyBot/config/)	
 func get_config_path()->String:
 	return PluginManager.plugin_config_path
 	
-	
+
+## 用于获取该插件对应的配置文件的路径，即插件对应的.json格式文件的绝对路径
 func get_config_filepath()->String:
 	return PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	
-	
+
+## 用于检查插件对应的配置文件内容是否已被加载
 func is_config_loaded()->bool:
 	return plugin_config_loaded
 	
-	
+
+## 用于检查插件对应的数据库文件内容是否已被加载
 func is_data_loaded()->bool:
 	return plugin_data_loaded
 
 
+## 用于注册一个或多个事件并将其绑定到一个或多个函数，事件发生时将触发绑定的函数并传入事件实例
+## 需要的参数从左到右分别为:
+## 事件的类型:
+## - 此处可传入单个事件类型名，或一个包含了任意数量事件类型名的数组以批量注册事件
+## - 传入的事件需要直接或间接继承Event类，如GroupMessageEvent(群消息事件)
+##
+## 事件绑定的函数名:
+## - 此处可传入单个函数名，或一个包含了任意数量函数名的数组以批量绑定函数
+## - 当对应事件发生时将依次传递并触发绑定的函数，绑定的函数需要定义一个参数用于接收事件实例
+##
+## 事件的全局优先级(可选,默认为0):
+## - 在多个插件同时注册了同一事件后，事件发生时将按照优先级由高到低的顺序传递事件到对应的插件
+## - 优先级相同时，将根据注册事件的时间顺序来依次传递事件
+##
+## 事件的阻断模式(可选,默认为BlockMode.ALL):
+## - 事件绑定的函数若返回true，将阻断事件被传递到后续函数或插件中 (异步函数无效)
+## - 阻断的具体行为将由阻断模式决定, 每种阻断模式的具体效果请参见上方的BlockMode枚举
 func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL):
 	if function is String:
 		function = [Callable(self,function)]
@@ -241,6 +301,8 @@ func _register_event(event:GDScript,data_dic:Dictionary,priority:int):
 	Console.print_success("成功注册事件: %s (优先级:%s)" % [event.resource_path.get_file().replacen(".gd",""),str(priority)])
 
 
+## 用于取消注册一个或多个事件，取消注册后插件将不再对此事件做出响应
+## 此处可传入单个事件类型名，或一个包含了任意数量事件类型名的数组以批量取消注册事件
 func unregister_event(event):
 	if event is GDScript and is_instance_valid(event):
 		_unregister_event(event)
@@ -269,6 +331,16 @@ func _unregister_event(event:GDScript):
 		Console.print_error("事件取消注册出错: 事件%s未被任何插件注册！"% [event.resource_path.get_file().replacen(".gd","")])
 
 
+## 用于注册一个控制台命令并将其绑定到指定函数，命令被执行时将触发此函数，并传入对应的命令名与参数数组
+## 命令被注册后将会在帮助菜单中自动显示，无法注册已经存在的命令
+## 绑定函数接收的参数数组中包含了以空格分隔的命令参数的列表，如命令 plugins load xxx.gd ，传入的数组中将包含["load","xxx.gd"]
+## 注册命令需要的参数从左到右分别为:
+## 命令的名称 (即为在控制台触发此命令需要输入的内容，请勿包含空格，不可与已存在的命令重复):
+## - Tips: 此处可传入单个命令名，或一个包含了任意数量命令名的数组以批量注册某个命令及其别称
+## 命令触发的函数名(当命令被执行时将触发的函数，此函数需要定义两个参数，分别用于接收命令名与传入的参数数组)
+## [可选,默认为false]命令是否强制要求传入参数(若为true则在执行命令时必须传入参数，否则判定为用法错误)
+## [可选,默认为空数组]命令的用法介绍(将在使用help指令或命令用法错误时显示。数组中的每项需为字符串，代表着一个子命令的用法)
+## [可选,默认为false]命令是否需要在连接到协议后端后才能使用(若为true则在未连接协议后端时无法在控制台调用此命令)
 func register_console_command(command,function,need_arguments:bool=false,usages:Array=[],need_connect:bool=false):
 	if function is String:
 		function = Callable(self,function)
@@ -297,6 +369,8 @@ func _register_console_command(command:String,function:Callable,need_arguments:b
 		Console.print_success("成功注册命令: %s!" % [command])
 
 
+## 用于取消注册一个控制台命令，命令被取消注册后将无法在控制台被执行，且不会在帮助菜单中显示
+## 需要传入对应的命令名来将其取消注册，无法取消注册不属于此插件的命令
 func unregister_console_command(command):
 	if command is String and command.length() > 0:
 		_unregister_console_command(command)
@@ -320,6 +394,32 @@ func _unregister_console_command(command:String):
 		Console.print_success("成功取消注册命令: %s!" % [command])
 	
 
+## 用于注册一个或多个关键词并将其绑定到某个函数，关键词匹配时将触发绑定的函数并传入相关数据
+## 注册的关键词不会自动进行匹配，而是需要手动调用或者在注册事件时将需要检测关键词的消息事件手动绑定到"trigger_keyword"函数即可
+## 注册需要的参数从左到右分别为:
+## 关键词的内容:
+## - 此处可传入单个关键词字符串，或一个包含了任意数量关键词字符串的数组以批量注册关键词
+## - 若关键词包含{@}，则满足匹配条件的同时还需要At机器人才视为匹配成功
+## - 若匹配模式为正则表达式模式，则关键词需要为一个正则表达式
+##
+## 关键词绑定的函数名:
+## - 当对应关键词匹配成功后将调用此函数，并传入四个参数
+## - 传入的四个参数分别为：关键词文本，解析后的关键词文本，关键词参数(通常为原消息去掉关键词后的文本)，触发关键词的事件实例引用
+##
+## 动态解析字典:
+## - 此处可以传入一个字典的引用，字典中的键与值均需要为字符串类型
+## - 若关键词中包含如"{xxx}"格式的文本，并且字典中拥有"xxx"这个键，那么实际用于匹配的关键词中的"{xxx}"文本将会被替换成字典中"xxx"键对应的值
+## - 例如，若您希望在运行时更改某插件中机器人的唤醒词，则只需将"{name}"注册为关键词，并指定一个包含"name"键的字典作为动态解析字典
+## - 后续您只需更改该字典中的"name"键对应的值，即可实时变更唤醒机器人的关键词
+##
+## 关键词的匹配模式
+## - 在某个消息事件触发"trigger_keyword"函数后，将提取消息事件的文本并根据匹配模式进行匹配
+## - 只有满足匹配模式对应的条件的关键词才会触发绑定的函数，匹配模式的具体行为请参见上方的MatchMode枚举
+##
+## 关键词匹配成功后阻断对应事件的传递 (可选,默认为true):
+## - 若此项为true,则在成功匹配关键词后，被对应事件调用的"trigger_keyword"函数将返回true以尝试阻断事件的传递
+## - 若此项为false,但是关键词所触发的函数返回了true,那么被对应事件调用的"trigger_keyword"函数也将返回true以尝试阻断事件的传递
+## - 阻断的具体行为将由相关事件注册时设置的阻断模式决定
 func register_keyword(keyword,function,var_dic:Dictionary={},match_mode:int=MatchMode.BEGIN,block:bool=true):
 	if function is String:
 		function = Callable(self,function)
@@ -346,7 +446,9 @@ func _register_keyword(keyword:String,function:Callable,var_dic:Dictionary,match
 	_update_keyword_arr()
 	Console.print_success("成功注册关键词: \"%s\"，匹配模式为: %s" % [keyword,match_mode_dic[match_mode]])
 	
-	
+
+## 用于取消注册一个关键词，关键词被取消注册后将不会被用于匹配
+## 需要传入对应的关键词字符串来将其取消注册，无法取消注册不属于此插件的关键词
 func unregister_keyword(keyword):
 	if keyword is String and keyword.length() > 0:
 		_unregister_keyword(keyword)
@@ -380,7 +482,9 @@ func _update_keyword_arr():
 	_arr.sort_custom(_sort_keyword)
 	plugin_keyword_arr = _arr
 
-	
+
+## 根据传入的消息事件来提取文本并从中匹配关键词
+## 通常只需在注册消息事件时将其与事件直接绑定即可	
 func trigger_keyword(event:Event)->bool:
 	if event is MessageEvent and is_instance_valid(event):
 		var _at:bool = false
@@ -405,49 +509,73 @@ func trigger_keyword(event:Event)->bool:
 					_word = _word.substr(3)
 					if _word.length() == 0:
 						var _arg = _text
-						_trigger_keyword(_func,_kw,_word,_arg,event)
-						return _block
+						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
+						if _block:
+							return true
+						else:
+							return _result
 				else:
 					continue
 			match _mode:
 				int(MatchMode.BEGIN):
 					if _text.begins_with(_word):
 						var _arg = _text.substr(_word.length())
-						_trigger_keyword(_func,_kw,_word,_arg,event)
-						return _block
+						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
+						if _block:
+							return true
+						else:
+							return _result
 				int(MatchMode.BETWEEN):
 					var _idx = _text.find(_word)
 					if _idx != -1 and (!(_text.begins_with(_word) or _text.ends_with(_word)) or _text == _word):
 						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
-						_trigger_keyword(_func,_kw,_word,_arg,event)
-						return _block
+						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
+						if _block:
+							return true
+						else:
+							return _result
 				int(MatchMode.END):
 					if _text.ends_with(_word):
 						var _arg = _text.left(_text.length()-_word.length())
-						_trigger_keyword(_func,_kw,_word,_arg,event)
-						return _block
+						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
+						if _block:
+							return true
+						else:
+							return _result
 				int(MatchMode.INCLUDE):
 					var _idx = _text.find(_word)
 					if _idx != -1:
 						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
-						_trigger_keyword(_func,_kw,_word,_arg,event)
-						return _block
+						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
+						if _block:
+							return true
+						else:
+							return _result
 				int(MatchMode.EXCLUDE):
 					var _idx = _text.find(_word)
 					if _idx == -1:
 						var _arg = _text
-						_trigger_keyword(_func,_kw,_word,_arg,event)
-						return _block
+						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
+						if _block:
+							return true
+						else:
+							return _result
 				int(MatchMode.EQUAL):
 					if _text == _word:
 						var _arg = ""
-						_trigger_keyword(_func,_kw,_word,_arg,event)
-						return _block
+						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
+						if _block:
+							return true
+						else:
+							return _result
 				int(MatchMode.REGEX):
 					if _text.match(_word):
 						var _arg = _text
-						_trigger_keyword(_func,_kw,_word,_arg,event)
-						return _block
+						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
+						if _block:
+							return true
+						else:
+							return _result
 	else:
 		Console.print_error("无法使用传入的事件来匹配关键词，请确保其是一个消息事件！")
 	return false
@@ -456,11 +584,18 @@ func trigger_keyword(event:Event)->bool:
 func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:MessageEvent):
 	if _func.is_valid():
 		Console.print_success("成功触发关键词:\"%s\"(解析后:\"%s\")，参数为:\"%s\"！"%[_kw,_word,_arg])
-		_func.call(_kw,_word,_arg,event)
+		return _func.call(_kw,_word,_arg,event)
 	else:
 		Console.print_error("关键词\"%s\"试图触发的函数无效或不存在，请检查配置是否有误！"%[_kw])
+		return false
 
 
+## 用于初始化插件的配置文件，并将其加载到内存中，以便在后续对其内容进行操作
+## 对于数据的储存，建议使用插件数据库功能，可以提供更快的读写速度及更好的类型安全性，且可储存几乎任何类型的数据
+## 执行此函数时，将会检测是否已存在此插件对应的配置文件，否则将会基于给定的默认配置字典来新建一个配置文件
+## 需要的参数从左到右分别为:
+## 默认配置的字典(即为新建配置文件时其中将包含的内容，RainyBot将以Json格式将其保存为配置文件)
+## [可选,默认为空字典]每个配置项的介绍(字典的key为配置项的名称,对应的值为此配置项的相关介绍,两者均为字符串)
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={})->int:
 	Console.print_warning("正在加载插件配置文件.....")
 	plugin_config = default_config
@@ -509,6 +644,7 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 			return OK
 
 
+## 用于将内存中的配置保存到配置文件中，需要先初始化配置文件才能使用此函数
 func save_plugin_config()->int:
 	if !plugin_config_loaded:
 		Console.print_error("配置文件保存失败，请先初始化配置后再执行此操作")
@@ -529,6 +665,7 @@ func save_plugin_config()->int:
 		return OK
 
 
+## 用于从已加载的配置中获取指定key对应的内容，需要先初始化配置文件才能使用此函数
 func get_plugin_config(key):
 	if !plugin_config_loaded:
 		Console.print_error("配置内容获取失败，请先初始化配置后再执行此操作")
@@ -539,14 +676,17 @@ func get_plugin_config(key):
 		Console.print_error("配置内容获取失败，试图获取的key在插件数据库中不存在!")
 		return null
 		
-		
+
+## 用于从已加载的配置中检查指定key是否存在，需要先初始化配置文件才能使用此函数	
 func has_plugin_config(key)->bool:
 	if !plugin_config_loaded:
 		Console.print_error("配置内容获取失败，请先初始化配置后再执行此操作")
 		return false
 	return plugin_config.has(key)
 		
-		
+
+## 用于在已加载的配置中设定指定key的对应内容，需要先初始化配置文件才能使用此函数
+## 最后一项可选的参数用于指定是否在设定的同时将更改立刻保存到配置文件中	
 func set_plugin_config(key,value,save_file:bool=true)->int:
 	if !plugin_config_loaded:
 		Console.print_error("配置内容设定失败，请先初始化配置后再执行此操作")
@@ -561,6 +701,7 @@ func set_plugin_config(key,value,save_file:bool=true)->int:
 		return ERR_FILE_CANT_WRITE
 
 
+## 用于直接获取已加载的配置的字典，便于以字典的形式对其进行操作，需要先初始化配置文件才能使用此函数
 func get_plugin_config_metadata()->Dictionary:
 	if !plugin_config_loaded:
 		Console.print_error("配置内容获取失败，请先初始化配置后再执行此操作")
@@ -568,6 +709,8 @@ func get_plugin_config_metadata()->Dictionary:
 	return plugin_config
 
 
+## 用于直接替换已加载的配置的字典为指定的字典，便于以字典的形式对其进行操作，需要先初始化配置文件才能使用此函数
+## 最后一项参数用于指定是否在设定的同时将更改立刻保存到配置文件中	
 func set_plugin_config_metadata(dic:Dictionary,save_file:bool=true)->int:
 	if !plugin_config_loaded:
 		Console.print_error("配置内容设定失败，请先初始化配置后再执行此操作")
@@ -577,7 +720,8 @@ func set_plugin_config_metadata(dic:Dictionary,save_file:bool=true)->int:
 		save_plugin_config()
 	return OK
 	
-	
+
+## 用于直接获取已加载的数据库的字典，便于以字典的形式对其进行操作，需要先初始化数据库文件才能使用此函数
 func get_plugin_data_metadata()->Dictionary:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作")
@@ -585,6 +729,8 @@ func get_plugin_data_metadata()->Dictionary:
 	return plugin_data
 
 
+## 用于直接替换已加载的数据库的字典为指定的字典，便于以字典的形式对其进行操作，需要先初始化数据库文件才能使用此函数
+## 最后一项可选参数用于指定是否在设定的同时立即将更改保存到数据库文件中
 func set_plugin_data_metadata(dic:Dictionary,save_file:bool=true)->int:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
@@ -595,6 +741,9 @@ func set_plugin_data_metadata(dic:Dictionary,save_file:bool=true)->int:
 	return OK
 
 
+## 用于初始化插件的数据库文件，并将其加载到内存中，以便在后续对其内容进行操作
+## 对于配置的储存，建议使用插件配置功能，以便指定默认配置与配置说明，且能使用常规编辑器对其进行编辑与更改
+## 执行此函数时，将会检测是否已存在此插件对应的数据库文件，否则将会新建一个空白的数据库文件(.rdb格式)
 func init_plugin_data()->int:
 	Console.print_warning("正在加载插件数据库.....")
 	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
@@ -626,7 +775,8 @@ func init_plugin_data()->int:
 			Console.print_warning("若发生任何数据库文件更改，请重载此插件")
 			return OK
 			
-			
+
+## 用于将内存中的数据保存到数据库文件中，需要先初始化数据库文件才能使用此函数		
 func save_plugin_data()->int:
 	if !plugin_data_loaded:
 		Console.print_error("数据库文件保存失败，请先初始化数据库后再执行此操作")
@@ -645,7 +795,8 @@ func save_plugin_data()->int:
 		Console.print_success("数据库文件保存成功，路径: "+data_path)
 		return OK
 		
-		
+
+## 用于从已加载的数据库中获取指定key对应的内容，需要先初始化数据库文件才能使用此函数	
 func get_plugin_data(key):
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作!")
@@ -656,14 +807,17 @@ func get_plugin_data(key):
 		Console.print_error("数据库内容获取失败，试图获取的key在插件数据库中不存在!")
 		return null
 		
-		
+
+## 用于从已加载的数据库中检查指定key是否存在，需要先初始化数据库文件才能使用此函数			
 func has_plugin_data(key)->bool:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作!")
 		return false
 	return plugin_data.has(key)
 		
-		
+
+## 用于在已加载的数据库中设定指定key的对应内容，需要先初始化数据库文件才能使用此函数
+## 最后一项可选参数用于指定是否在设定的同时将更改立即保存到数据库文件中
 func set_plugin_data(key,value,save_file:bool=true)->int:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
@@ -674,6 +828,8 @@ func set_plugin_data(key,value,save_file:bool=true)->int:
 	return OK
 
 
+## 用于在已加载的数据库中删除指定key及其对应内容，需要先初始化数据库文件才能使用此函数
+## 最后一项可选参数用于指定是否在删除的同时将更改立即保存到数据库文件中
 func remove_plugin_data(key,save_file:bool=true)->int:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容删除失败，请先初始化数据库后再执行此操作!")
@@ -687,7 +843,9 @@ func remove_plugin_data(key,save_file:bool=true)->int:
 		Console.print_error("数据库内容删除失败，试图删除的key在插件数据库中不存在!")
 		return ERR_DATABASE_CANT_WRITE
 		
-		
+
+## 用于在已加载的数据库中清空所有内容，需要先初始化数据库文件才能使用此函数
+## 最后一项可选参数用于指定是否在清空的同时将更改立即保存到数据库文件中
 func clear_plugin_data(save_file:bool=true)->int:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容清空失败，请先初始化数据库后再执行此操作!")
@@ -698,10 +856,21 @@ func clear_plugin_data(save_file:bool=true)->int:
 	return OK
 
 
+## 调用此函数后，插件将会尝试卸载自身
+## 若此插件被其他插件依赖，则可能会卸载失败
 func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
+## 通过await调用后，将等待一个满足指定发送者id，指定群组id的指定类型的消息事件
+## 消息事件不会自动进行上下文匹配，而是需要手动调用或者在注册消息事件时将需要匹配上下文的消息事件手动绑定到"respond_context"函数即可
+## 接收到满足条件的事件后，该函数将返回该事件的引用，否则在达到指定的超时秒数后，将返回null
+## 需要的参数从左到右分别为：
+## 要等待的消息事件的类型
+## 要匹配的发送者ID(可选，若为-1则不匹配此项)
+## 要匹配的群组ID(可选，若为-1则不匹配此项)
+## 等待的超时时间(可选，默认为20秒; 若数值小于等于0, 或已存在相同的等待, 则不启用超时)
+## 消息事件匹配成功后阻断对应事件的传递 (可选,默认为true)
 func wait_context_custom(event_type:GDScript,sender_id:int=-1,group_id:int=-1,timeout:float=20.0,block:bool=true):
 	if event_type.get_base_script() != MessageEvent:
 		Console.print_error("无法开始等待上下文响应，需要等待的事件类型应该是一个消息事件!")
@@ -722,6 +891,15 @@ func wait_context_custom(event_type:GDScript,sender_id:int=-1,group_id:int=-1,ti
 	return await wait_context_id(context_id,timeout,block)
 
 
+## 通过await调用后，将等待另外一个与指定消息事件相匹配的消息事件
+## 消息事件不会自动进行上下文匹配，而是需要手动调用或者在注册消息事件时将需要进行匹配的消息事件手动绑定到"respond_context"函数即可
+## 接收到满足条件的事件后，该函数将返回该事件的引用，否则在达到指定的超时秒数后，将返回null
+## 需要的参数从左到右分别为：
+## 要匹配的消息事件的实例引用
+## 是否要匹配消息事件中的发送者ID(可选，默认为true)
+## 是否要匹配消息事件中的群组ID(可选，默认为true)
+## 等待的超时时间(可选，默认为20秒; 若数值小于等于0, 或已存在相同的等待, 则不启用超时)
+## 消息事件匹配成功后阻断对应事件的传递 (可选,默认为true)
 func wait_context(event:MessageEvent,match_sender:bool=true,match_group:bool=true,timeout:float=20.0,block:bool=true):
 	if !is_instance_valid(event):
 		Console.print_error("无法开始等待上下文响应，需要等待的事件应该是一个有效的消息事件!")
@@ -741,7 +919,13 @@ func wait_context(event:MessageEvent,match_sender:bool=true,match_group:bool=tru
 	var context_id = str(_dic)
 	return await wait_context_id(context_id,timeout,block)
 	
-	
+
+## 通过await调用后，将等待指定id的响应，并在收到响应后返回响应的内容
+## 要进行响应，需要在某处手动调用"respond_context"函数并传入相同的ID
+## 若未进行响应且在达到指定的超时秒数后，将返回null
+## 需要的参数从左到右分别为：
+## 要等待响应的自定义ID
+## 等待的超时时间(可选，默认为20秒; 若数值小于等于0, 或已存在相同的等待, 则不启用超时)
 func wait_context_id(context_id:String,timeout:float=20.0,block:bool=true):
 	if context_id.length() < 1:
 		Console.print_error("无法开始等待上下文响应，需要等待的上下文ID不能为空!")
@@ -764,6 +948,12 @@ func wait_context_id(context_id:String,timeout:float=20.0,block:bool=true):
 	return _cont.get_result()
 
 
+## 用于响应正在进行中的上下文等待
+## 若第一个参数传入内容为一个消息事件，则将用于响应与消息事件相关的上下文等待，并且第二个参数将被忽略
+## 通常只需在注册消息事件时将其与事件直接绑定后即可自动进行此类上下文响应
+##
+## 若第一个参数传入内容为一个字符串，则将用于响应指定ID的上下文等待，此时可通过第二个参数指定响应的内容
+## 第二个参数为可选参数，可以是任何类型的值；若不填则默认响应内容为布尔值true
 func respond_context(context,response=true)->bool:
 	var context_id = ""
 	if context is String and context.length() > 0:
