@@ -106,6 +106,7 @@
 Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，核心无需任何运行环境)
 
 可选：支持Vulkan渲染器的图形卡 (可通过硬件加速提升性能)
+RainyBot默认使用SwiftShader软件渲染器以提升兼容性，若您的图形卡支持Vulkan渲染器，请删除软件根目录下的vulkan-1.dll以便使用硬件加速渲染。
 
 ### 配置与使用
 
@@ -121,9 +122,9 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 ### 源码注意事项
 
 如果您希望从项目源码顺利运行/编译RainyBot，请确保遵循以下条目：
-- 请使用 Commit [[2f4d76f068](https://github.com/Xwdit/godot/commit/2f4d76f068b29783bde653406b51909b29a082a3)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。
-- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.9.2`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
-- 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.4.0`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
+- 请使用 Commit [[706dc74e01](https://github.com/godotengine/godot/commit/706dc74e01e1900af947d7a5fe854603a3df18b1)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。
+- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.11.1`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
+- 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.5.2`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
 RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已包含以上所需文件，因此无需额外进行配置。若您在配置以上文件时遇到问题，可以直接从最新的发布版本文件包中复制`adapters`文件夹以及其中的内容，并置于*Godot编辑器可执行文件同目录下*即可。
 
