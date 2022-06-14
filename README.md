@@ -107,7 +107,7 @@
 Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，核心无需任何运行环境)
 
 可选：支持Vulkan渲染器的图形卡 (可通过硬件加速提升性能)
-RainyBot默认使用SwiftShader软件渲染器以提升兼容性，若您的图形卡支持Vulkan渲染器，请删除软件根目录下的vulkan-1.dll以便使用硬件加速渲染。
+- RainyBot默认使用SwiftShader软件渲染器以提升兼容性，若您的图形卡支持Vulkan渲染器，请删除软件根目录下的vulkan-1.dll以便使用硬件来加速软件窗口渲染。
 
 ### 配置与使用
 
