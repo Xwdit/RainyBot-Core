@@ -24,8 +24,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/line_spacing = 5
 theme_override_constants/outline_size = 0
-theme_override_styles/focus = ExtResource( "1_c1dt0" )
 theme_override_styles/normal = ExtResource( "1_c1dt0" )
+theme_override_styles/focus = ExtResource( "1_c1dt0" )
 highlight_current_line = true
 draw_control_chars = true
 draw_tabs = true
@@ -45,15 +45,12 @@ indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 script = ExtResource( "1_ds5mq" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.25
 one_shot = true
 
 [connection signal="caret_changed" from="." to="." method="_on_CodeEdit_caret_changed"]
-[connection signal="request_code_completion" from="." to="." method="_on_CodeEdit_request_code_completion"]
+[connection signal="code_completion_requested" from="." to="." method="_on_CodeEdit_request_code_completion"]
 [connection signal="text_changed" from="." to="." method="_on_CodeEdit_text_changed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

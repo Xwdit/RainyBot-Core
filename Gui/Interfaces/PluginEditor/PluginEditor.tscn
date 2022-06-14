@@ -7,17 +7,11 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( "1_afc2x" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.113725, 0.133333, 0.160784, 1)
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CodeEdit" parent="." instance=ExtResource( "2_mo1oq" )]
 offset_top = 32.0
@@ -33,35 +27,29 @@ focus_previous = NodePath(".")
 anchor_right = 1.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Menu" type="HBoxContainer" parent="EditorPanel"]
 offset_left = 4.0
 offset_top = 2.0
 offset_right = 343.0
 offset_bottom = 30.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
-offset_right = 76.0
+offset_right = 72.0
 offset_bottom = 28.0
 text = "保存文件"
 flat = true
 
 [node name="SaveReloadButton" type="Button" parent="EditorPanel/Menu"]
-offset_left = 80.0
-offset_right = 172.0
+offset_left = 76.0
+offset_right = 164.0
 offset_bottom = 28.0
 text = "保存并重载"
 flat = true
 
 [node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
-offset_left = 176.0
-offset_right = 277.0
+offset_left = 168.0
+offset_right = 265.0
 offset_bottom = 28.0
 text = "打开API文档"
 flat = true
@@ -71,21 +59,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="FileName" type="Label" parent="EditorPanel/File"]
-offset_left = 483.0
+offset_left = 482.0
 offset_top = 6.0
 offset_right = 536.0
 offset_bottom = 26.0
 text = "Test.gd"
 horizontal_alignment = 1
 vertical_alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="FileStatus" type="Label" parent="EditorPanel/File"]
 offset_left = 540.0
@@ -94,9 +76,6 @@ offset_right = 541.0
 offset_bottom = 25.0
 horizontal_alignment = 1
 vertical_alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Edit" type="HBoxContainer" parent="EditorPanel"]
 anchor_left = 1.0
@@ -106,31 +85,21 @@ offset_left = -214.0
 offset_right = -12.0
 mouse_filter = 2
 alignment = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
-offset_left = 132.0
+offset_left = 172.0
 offset_top = 6.0
 offset_right = 202.0
 offset_bottom = 26.0
-rect_min_size = Vector2(70, 0)
 text = "1 : 1"
 horizontal_alignment = 2
 vertical_alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="StatusPanel" type="Control" parent="."]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -30.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CodeStatus" type="Label" parent="StatusPanel"]
 anchor_right = 1.0
@@ -139,9 +108,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "当前文件中未发现任何错误"
 horizontal_alignment = 1
 vertical_alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="caret_changed" from="CodeEdit" to="." method="_on_CodeEdit_caret_changed"]
 [connection signal="text_changed" from="CodeEdit" to="." method="_on_CodeEdit_text_changed"]

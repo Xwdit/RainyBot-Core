@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="CanvasItem" inherits="Node" version="4.0">
+<class name="CanvasItem" inherits="Node" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		Base class of anything 2D.
 	</brief_description>
@@ -67,7 +67,7 @@
 			<argument index="1" name="radius" type="float" />
 			<argument index="2" name="color" type="Color" />
 			<description>
-				Draws a colored, unfilled circle. See also [method draw_arc], [method draw_polyline] and [method draw_polygon].
+				Draws a colored, filled circle. See also [method draw_arc], [method draw_polyline] and [method draw_polygon].
 			</description>
 		</method>
 		<method name="draw_colored_polygon">
@@ -78,6 +78,17 @@
 			<argument index="3" name="texture" type="Texture2D" default="null" />
 			<description>
 				Draws a colored polygon of any amount of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
+			</description>
+		</method>
+		<method name="draw_dashed_line">
+			<return type="void" />
+			<argument index="0" name="from" type="Vector2" />
+			<argument index="1" name="to" type="Vector2" />
+			<argument index="2" name="color" type="Color" />
+			<argument index="3" name="width" type="float" default="1.0" />
+			<argument index="4" name="dash" type="float" default="2.0" />
+			<description>
+				Draws a dashed line from a 2D point to another, with a given color and width. See also [method draw_multiline] and [method draw_polyline].
 			</description>
 		</method>
 		<method name="draw_end_animation">
@@ -92,8 +103,9 @@
 			<argument index="1" name="to" type="Vector2" />
 			<argument index="2" name="color" type="Color" />
 			<argument index="3" name="width" type="float" default="1.0" />
+			<argument index="4" name="antialiased" type="bool" default="false" />
 			<description>
-				Draws a line from a 2D point to another, with a given color and width. See also [method draw_multiline] and [method draw_polyline].
+				Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. See also [method draw_multiline] and [method draw_polyline].
 			</description>
 		</method>
 		<method name="draw_mesh">
@@ -180,7 +192,7 @@
 			<argument index="2" name="width" type="float" default="1.0" />
 			<argument index="3" name="antialiased" type="bool" default="false" />
 			<description>
-				Draws interconnected line segments with a uniform [code]color[/code] and [code]width[/code]. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline] instead. See also [method draw_polygon].
+				Draws interconnected line segments with a uniform [code]color[/code] and [code]width[/code] and optional antialiasing. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline] instead. See also [method draw_polygon].
 			</description>
 		</method>
 		<method name="draw_polyline_colors">
@@ -190,7 +202,7 @@
 			<argument index="2" name="width" type="float" default="1.0" />
 			<argument index="3" name="antialiased" type="bool" default="false" />
 			<description>
-				Draws interconnected line segments with a uniform [code]width[/code] and segment-by-segment coloring. Colors assigned to line segments match by index between [code]points[/code] and [code]colors[/code]. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline_colors] instead. See also [method draw_polygon].
+				Draws interconnected line segments with a uniform [code]width[/code] and segment-by-segment coloring, and optional antialiasing. Colors assigned to line segments match by index between [code]points[/code] and [code]colors[/code]. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline_colors] instead. See also [method draw_polygon].
 			</description>
 		</method>
 		<method name="draw_primitive">
@@ -334,7 +346,7 @@
 		<method name="get_global_mouse_position" qualifiers="const">
 			<return type="Vector2" />
 			<description>
-				Returns the global position of the mouse.
+				Returns the mouse's position in the [CanvasLayer] that this [CanvasItem] is in using the coordinate system of the [CanvasLayer].
 			</description>
 		</method>
 		<method name="get_global_transform" qualifiers="const">
@@ -352,7 +364,14 @@
 		<method name="get_local_mouse_position" qualifiers="const">
 			<return type="Vector2" />
 			<description>
-				Returns the mouse position relative to this item's position.
+				Returns the mouse's position in this [CanvasItem] using the local coordinate system of this [CanvasItem].
+			</description>
+		</method>
+		<method name="get_screen_transform" qualifiers="const">
+			<return type="Transform2D" />
+			<description>
+				Returns the transform of this [CanvasItem] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
+				Equals to [method get_global_transform] if the window is embedded (see [member Viewport.gui_embed_subwindows]).
 			</description>
 		</method>
 		<method name="get_transform" qualifiers="const">
@@ -421,14 +440,14 @@
 			<return type="void" />
 			<argument index="0" name="enable" type="bool" />
 			<description>
-				If [code]enable[/code] is [code]true[/code], children will be updated with local transform data.
+				If [code]enable[/code] is [code]true[/code], this node will receive [constant NOTIFICATION_LOCAL_TRANSFORM_CHANGED] when its local transform changes.
 			</description>
 		</method>
 		<method name="set_notify_transform">
 			<return type="void" />
 			<argument index="0" name="enable" type="bool" />
 			<description>
-				If [code]enable[/code] is [code]true[/code], children will be updated with global transform data.
+				If [code]enable[/code] is [code]true[/code], this node will receive [constant NOTIFICATION_TRANSFORM_CHANGED] when its global transform changes.
 			</description>
 		</method>
 		<method name="show">
@@ -462,9 +481,6 @@
 		<member name="show_behind_parent" type="bool" setter="set_draw_behind_parent" getter="is_draw_behind_parent_enabled" default="false">
 			If [code]true[/code], the object draws behind its parent.
 		</member>
-		<member name="show_on_top" type="bool" setter="_set_on_top" getter="_is_on_top">
-			If [code]true[/code], the object draws on top of its parent.
-		</member>
 		<member name="texture_filter" type="int" setter="set_texture_filter" getter="get_texture_filter" enum="CanvasItem.TextureFilter" default="0">
 			The texture filtering mode to use on this [CanvasItem].
 		</member>
@@ -472,7 +488,7 @@
 			The texture repeating mode to use on this [CanvasItem].
 		</member>
 		<member name="top_level" type="bool" setter="set_as_top_level" getter="is_set_as_top_level" default="false">
-			If [code]true[/code], the node will not inherit its transform from parent [CanvasItem]s.
+			If [code]true[/code], this [CanvasItem] will [i]not[/i] inherit its transform from parent [CanvasItem]s. Its draw order will also be changed to make it draw on top of other [CanvasItem]s that do not have [member top_level] set to [code]true[/code]. The [CanvasItem] will effectively act as if it was placed as a child of a bare [Node].
 		</member>
 		<member name="use_parent_material" type="bool" setter="set_use_parent_material" getter="get_use_parent_material" default="false">
 			If [code]true[/code], the parent [CanvasItem]'s [member material] property is used as this one's material.
@@ -506,7 +522,10 @@
 	</signals>
 	<constants>
 		<constant name="NOTIFICATION_TRANSFORM_CHANGED" value="2000">
-			The [CanvasItem]'s transform has changed. This notification is only received if enabled by [method set_notify_transform] or [method set_notify_local_transform].
+			The [CanvasItem]'s global transform has changed. This notification is only received if enabled by [method set_notify_transform].
+		</constant>
+		<constant name="NOTIFICATION_LOCAL_TRANSFORM_CHANGED" value="35">
+			The [CanvasItem]'s local transform has changed. This notification is only received if enabled by [method set_notify_local_transform].
 		</constant>
 		<constant name="NOTIFICATION_DRAW" value="30">
 			The [CanvasItem] is requested to draw.

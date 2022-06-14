@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Tree" inherits="Control" version="4.0">
+<class name="Tree" inherits="Control" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		Control to show a tree of items.
 	</brief_description>
@@ -50,10 +50,10 @@
 		</method>
 		<method name="create_item">
 			<return type="TreeItem" />
-			<argument index="0" name="parent" type="Object" default="null" />
+			<argument index="0" name="parent" type="TreeItem" default="null" />
 			<argument index="1" name="idx" type="int" default="-1" />
 			<description>
-				Creates an item in the tree and adds it as a child of [code]parent[/code].
+				Creates an item in the tree and adds it as a child of [code]parent[/code], which can be either a valid [TreeItem] or [code]null[/code].
 				If [code]parent[/code] is [code]null[/code], the root item will be the parent, or the new item will be the root itself if the tree is empty.
 				The new item will be the [code]idx[/code]th child of parent, or it will be the last child if there are not enough siblings.
 			</description>
@@ -70,6 +70,13 @@
 				Makes the currently focused cell visible.
 				This will scroll the tree if necessary. In [constant SELECT_ROW] mode, this will not do horizontal scrolling, as all the cells in the selected row is focused logically.
 				[b]Note:[/b] Despite the name of this method, the focus cursor itself is only visible in [constant SELECT_MULTI] mode.
+			</description>
+		</method>
+		<method name="get_button_id_at_position" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="position" type="Vector2" />
+			<description>
+				Returns the button id at [code]position[/code], or -1 if no button is there.
 			</description>
 		</method>
 		<method name="get_column_at_position" qualifiers="const">
@@ -170,10 +177,11 @@
 		</method>
 		<method name="get_item_area_rect" qualifiers="const">
 			<return type="Rect2" />
-			<argument index="0" name="item" type="Object" />
+			<argument index="0" name="item" type="TreeItem" />
 			<argument index="1" name="column" type="int" default="-1" />
+			<argument index="2" name="button_index" type="int" default="-1" />
 			<description>
-				Returns the rectangle area for the specified item. If [code]column[/code] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns.
+				Returns the rectangle area for the specified [TreeItem]. If [code]column[/code] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
 			</description>
 		</method>
 		<method name="get_item_at_position" qualifiers="const">
@@ -185,9 +193,9 @@
 		</method>
 		<method name="get_next_selected">
 			<return type="TreeItem" />
-			<argument index="0" name="from" type="Object" />
+			<argument index="0" name="from" type="TreeItem" />
 			<description>
-				Returns the next selected item after the given one, or [code]null[/code] if the end is reached.
+				Returns the next selected [TreeItem] after the given one, or [code]null[/code] if the end is reached.
 				If [code]from[/code] is [code]null[/code], this returns the first selected item.
 			</description>
 		</method>
@@ -239,9 +247,10 @@
 		</method>
 		<method name="scroll_to_item">
 			<return type="void" />
-			<argument index="0" name="item" type="Object" />
+			<argument index="0" name="item" type="TreeItem" />
+			<argument index="1" name="center_on_item" type="bool" default="false" />
 			<description>
-				Causes the [Tree] to jump to the specified item.
+				Causes the [Tree] to jump to the specified [TreeItem].
 			</description>
 		</method>
 		<method name="set_column_clip_content">
@@ -315,6 +324,7 @@
 		<member name="allow_rmb_select" type="bool" setter="set_allow_rmb_select" getter="get_allow_rmb_select" default="false">
 			If [code]true[/code], a right mouse button click can select items.
 		</member>
+		<member name="clip_contents" type="bool" setter="set_clip_contents" getter="is_clipping_contents" overrides="Control" default="true" />
 		<member name="column_titles_visible" type="bool" setter="set_column_titles_visible" getter="are_column_titles_visible" default="false">
 			If [code]true[/code], column titles are visible.
 		</member>
@@ -332,7 +342,6 @@
 		<member name="hide_root" type="bool" setter="set_hide_root" getter="is_root_hidden" default="false">
 			If [code]true[/code], the tree's root is hidden.
 		</member>
-		<member name="rect_clip_content" type="bool" setter="set_clip_contents" getter="is_clipping_contents" overrides="Control" default="true" />
 		<member name="scroll_horizontal_enabled" type="bool" setter="set_h_scroll_enabled" getter="is_h_scroll_enabled" default="true">
 			If [code]true[/code], enables horizontal scrolling.
 		</member>
@@ -344,10 +353,11 @@
 		</member>
 	</members>
 	<signals>
-		<signal name="button_pressed">
+		<signal name="button_clicked">
 			<argument index="0" name="item" type="TreeItem" />
 			<argument index="1" name="column" type="int" />
 			<argument index="2" name="id" type="int" />
+			<argument index="3" name="mouse_button_index" type="int" />
 			<description>
 				Emitted when a button on the tree was pressed (see [method TreeItem.add_button]).
 			</description>
@@ -357,10 +367,23 @@
 				Emitted when a cell is selected.
 			</description>
 		</signal>
+		<signal name="check_propagated_to_item">
+			<argument index="0" name="item" type="TreeItem" />
+			<argument index="1" name="column" type="int" />
+			<description>
+				Emitted when [method TreeItem.propagate_check] is called. Connect to this signal to process the items that are affected when [method TreeItem.propagate_check] is invoked. The order that the items affected will be processed is as follows: the item that invoked the method, children of that item, and finally parents of that item.
+			</description>
+		</signal>
 		<signal name="column_title_pressed">
 			<argument index="0" name="column" type="int" />
 			<description>
 				Emitted when a column's title is pressed.
+			</description>
+		</signal>
+		<signal name="custom_item_clicked">
+			<argument index="0" name="mouse_button_index" type="int" />
+			<description>
+				Emitted when an item with [constant TreeItem.CELL_MODE_CUSTOM] is clicked with a mouse button.
 			</description>
 		</signal>
 		<signal name="custom_popup_edited">
@@ -369,16 +392,11 @@
 				Emitted when a cell with the [constant TreeItem.CELL_MODE_CUSTOM] is clicked to be edited.
 			</description>
 		</signal>
-		<signal name="empty_rmb">
+		<signal name="empty_clicked">
 			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="mouse_button_index" type="int" />
 			<description>
-				Emitted when the right mouse button is pressed in the empty space of the tree.
-			</description>
-		</signal>
-		<signal name="empty_tree_rmb_selected">
-			<argument index="0" name="position" type="Vector2" />
-			<description>
-				Emitted when the right mouse button is pressed if right mouse button selection is active and the tree is empty.
+				Emitted when a mouse button is clicked in the empty space of the tree.
 			</description>
 		</signal>
 		<signal name="item_activated">
@@ -407,15 +425,11 @@
 				Emitted when an item is edited.
 			</description>
 		</signal>
-		<signal name="item_rmb_edited">
-			<description>
-				Emitted when an item is edited using the right mouse button.
-			</description>
-		</signal>
-		<signal name="item_rmb_selected">
+		<signal name="item_mouse_selected">
 			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="mouse_button_index" type="int" />
 			<description>
-				Emitted when an item is selected with the right mouse button.
+				Emitted when an item is selected with a mouse button.
 			</description>
 		</signal>
 		<signal name="item_selected">
@@ -467,13 +481,13 @@
 		<theme_item name="children_hl_line_color" data_type="color" type="Color" default="Color(0.27, 0.27, 0.27, 1)">
 			The [Color] of the relationship lines between the selected [TreeItem] and its children.
 		</theme_item>
-		<theme_item name="custom_button_font_highlight" data_type="color" type="Color" default="Color(0.94, 0.94, 0.94, 1)">
+		<theme_item name="custom_button_font_highlight" data_type="color" type="Color" default="Color(0.95, 0.95, 0.95, 1)">
 			Text [Color] for a [constant TreeItem.CELL_MODE_CUSTOM] mode cell when it's hovered.
 		</theme_item>
 		<theme_item name="drop_position_color" data_type="color" type="Color" default="Color(1, 0.3, 0.2, 1)">
 			[Color] used to draw possible drop locations. See [enum DropModeFlags] constants for further description of drop locations.
 		</theme_item>
-		<theme_item name="font_color" data_type="color" type="Color" default="Color(0.69, 0.69, 0.69, 1)">
+		<theme_item name="font_color" data_type="color" type="Color" default="Color(0.7, 0.7, 0.7, 1)">
 			Default text [Color] of the item.
 		</theme_item>
 		<theme_item name="font_outline_color" data_type="color" type="Color" default="Color(1, 1, 1, 1)">
@@ -482,7 +496,7 @@
 		<theme_item name="font_selected_color" data_type="color" type="Color" default="Color(1, 1, 1, 1)">
 			Text [Color] used when the item is selected.
 		</theme_item>
-		<theme_item name="guide_color" data_type="color" type="Color" default="Color(0, 0, 0, 0.1)">
+		<theme_item name="guide_color" data_type="color" type="Color" default="Color(0.7, 0.7, 0.7, 0.25)">
 			[Color] of the guideline.
 		</theme_item>
 		<theme_item name="parent_hl_line_color" data_type="color" type="Color" default="Color(0.27, 0.27, 0.27, 1)">
@@ -491,7 +505,7 @@
 		<theme_item name="relationship_line_color" data_type="color" type="Color" default="Color(0.27, 0.27, 0.27, 1)">
 			The default [Color] of the relationship lines.
 		</theme_item>
-		<theme_item name="title_button_color" data_type="color" type="Color" default="Color(0.88, 0.88, 0.88, 1)">
+		<theme_item name="title_button_color" data_type="color" type="Color" default="Color(0.875, 0.875, 0.875, 1)">
 			Default text [Color] of the title button.
 		</theme_item>
 		<theme_item name="button_margin" data_type="constant" type="int" default="4">
@@ -506,10 +520,10 @@
 		<theme_item name="draw_relationship_lines" data_type="constant" type="int" default="0">
 			Draws the relationship lines if not zero, this acts as a boolean. Relationship lines are drawn at the start of child items to show hierarchy.
 		</theme_item>
-		<theme_item name="hseparation" data_type="constant" type="int" default="4">
+		<theme_item name="h_separation" data_type="constant" type="int" default="4">
 			The horizontal space between item cells. This is also used as the margin at the start of an item when folding is disabled.
 		</theme_item>
-		<theme_item name="item_margin" data_type="constant" type="int" default="12">
+		<theme_item name="item_margin" data_type="constant" type="int" default="16">
 			The horizontal margin at the start of an item. This is used when folding is enabled for the item.
 		</theme_item>
 		<theme_item name="outline_size" data_type="constant" type="int" default="0">
@@ -530,7 +544,7 @@
 		<theme_item name="scroll_speed" data_type="constant" type="int" default="12">
 			The speed of border scrolling.
 		</theme_item>
-		<theme_item name="vseparation" data_type="constant" type="int" default="4">
+		<theme_item name="v_separation" data_type="constant" type="int" default="4">
 			The vertical padding inside each item, i.e. the distance between the item's content and top/bottom border.
 		</theme_item>
 		<theme_item name="font" data_type="font" type="Font">

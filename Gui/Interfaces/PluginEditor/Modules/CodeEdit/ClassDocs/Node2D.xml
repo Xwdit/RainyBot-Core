@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Node2D" inherits="CanvasItem" version="4.0">
+<class name="Node2D" inherits="CanvasItem" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		A 2D game object, inherited by all 2D-related nodes. Has a position, rotation, scale, and Z index.
 	</brief_description>
@@ -101,6 +101,9 @@
 		</member>
 		<member name="global_scale" type="Vector2" setter="set_global_scale" getter="get_global_scale">
 			Global scale.
+		</member>
+		<member name="global_skew" type="float" setter="set_global_skew" getter="get_global_skew">
+			Global skew in radians.
 		</member>
 		<member name="global_transform" type="Transform2D" setter="set_global_transform" getter="get_global_transform">
 			Global [Transform2D].

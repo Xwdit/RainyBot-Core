@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="AcceptDialog" inherits="Window" version="4.0">
+<class name="AcceptDialog" inherits="Window" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		Base dialog for user notification.
 	</brief_description>
@@ -60,6 +60,8 @@
 	<members>
 		<member name="dialog_autowrap" type="bool" setter="set_autowrap" getter="has_autowrap" default="false">
 			Sets autowrapping for the text in the dialog.
+		</member>
+		<member name="dialog_close_on_escape" type="bool" setter="set_close_on_escape" getter="get_close_on_escape" default="true">
 		</member>
 		<member name="dialog_hide_on_ok" type="bool" setter="set_hide_on_ok" getter="get_hide_on_ok" default="true">
 			If [code]true[/code], the dialog is hidden when the OK button is pressed. You can set it to [code]false[/code] if you want to do e.g. input validation when receiving the [signal confirmed] signal, and handle hiding the dialog in your own logic.

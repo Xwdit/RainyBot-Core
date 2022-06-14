@@ -505,7 +505,7 @@ func check_error():
 func _on_Timer_timeout():
 	if last_text != text:
 		last_text = text
-		if !OS.is_debug_build():
+		if OS.has_feature("standalone"):
 			check_error()
 		if (is_in_comment(get_caret_line(),get_caret_column())==-1) and (is_in_string(get_caret_line(),get_caret_column())==-1):
 			request_code_completion()

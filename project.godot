@@ -606,6 +606,7 @@ config/name="RainyBot-Core"
 run/main_scene="res://Gui/MainGui.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="RainyBot"
+config/features=PackedStringArray("4.0")
 run/low_processor_mode=true
 boot_splash/image="res://logo.png"
 boot_splash/fullsize=false
@@ -615,7 +616,6 @@ config/icon="res://logo.png"
 config/windows_native_icon="res://logo.ico"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
-config/features=PackedStringArray("4.0")
 
 [autoload]
 
@@ -633,7 +633,6 @@ file_logging/log_path="user://logs/rainybot.log"
 
 [display]
 
-window/dpi/allow_hidpi=true
 window/subwindows/embed_subwindows=false
 
 [editor]
@@ -669,4 +668,6 @@ locale/translations=PackedStringArray("res://Gui/Lang/zh_CN.po")
 [rendering]
 
 vulkan/rendering/back_end=1
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
 batching/options/use_batching=true

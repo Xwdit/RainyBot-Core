@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="HTTPRequest" inherits="Node" version="4.0">
+<class name="HTTPRequest" inherits="Node" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		A node with the ability to send HTTP(S) requests.
 	</brief_description>
@@ -247,7 +247,7 @@
 		<member name="max_redirects" type="int" setter="set_max_redirects" getter="get_max_redirects" default="8">
 			Maximum number of allowed redirects.
 		</member>
-		<member name="timeout" type="int" setter="set_timeout" getter="get_timeout" default="0">
+		<member name="timeout" type="float" setter="set_timeout" getter="get_timeout" default="0.0">
 		</member>
 		<member name="use_threads" type="bool" setter="set_use_threads" getter="is_using_threads" default="false">
 			If [code]true[/code], multithreading is used to improve performance.

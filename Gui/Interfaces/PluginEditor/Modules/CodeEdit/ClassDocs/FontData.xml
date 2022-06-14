@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="FontData" inherits="Resource" version="4.0">
+<class name="FontData" inherits="Resource" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		Font source data and prerendered glyph cache, imported from dynamic or bitmap font.
 		Supported font formats:
-		- Dynamic font importer: TrueType (.ttf), OpenType (.otf), WOFF (.woff), Type 1 (.pfb, .pfm).
+		- Dynamic font importer: TrueType (.ttf), TrueType collection (.ttc), OpenType (.otf), OpenType collection (.otc), WOFF (.woff), WOFF2 (.woff2), Type 1 (.pfb, .pfm).
 		- Bitmap font importer: AngelCode BMFont (.fnt, .font), text and binary (version 3) format variants.
 		- Monospace image font importer: All supported image formats.
 	</brief_description>
@@ -85,6 +85,12 @@
 			<argument index="1" name="size" type="int" />
 			<description>
 				Returns font descent (number of pixels below the baseline).
+			</description>
+		</method>
+		<method name="get_face_count" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns number of faces in the TrueType / OpenType collection.
 			</description>
 		</method>
 		<method name="get_glyph_advance" qualifiers="const">
@@ -304,6 +310,23 @@
 			<argument index="0" name="script" type="String" />
 			<description>
 				Returns [code]true[/code], if font supports given script ([url=https://en.wikipedia.org/wiki/ISO_15924]ISO 15924[/url] code).
+			</description>
+		</method>
+		<method name="load_bitmap_font">
+			<return type="int" enum="Error" />
+			<argument index="0" name="path" type="String" />
+			<description>
+				Loads an AngelCode BMFont (.fnt, .font) bitmap font from file [code]path[/code].
+				[b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
+			</description>
+		</method>
+		<method name="load_dynamic_font">
+			<return type="int" enum="Error" />
+			<argument index="0" name="path" type="String" />
+			<description>
+				Loads a TrueType (.ttf), TrueType collection (.ttc), OpenType (.otf), OpenType collection (.otc), WOFF (.woff), WOFF2 (.woff2) or Type 1 (.pfb, .pfm) dynamic font from file [code]path[/code].
+				[b]Note:[/b] Use [member face_index] to select specific face from the collection file.
+				[b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 			</description>
 		</method>
 		<method name="remove_cache">
@@ -551,6 +574,12 @@
 		<member name="data" type="PackedByteArray" setter="set_data" getter="get_data" default="PackedByteArray()">
 			Contents of the dynamic font source file.
 		</member>
+		<member name="embolden" type="float" setter="set_embolden" getter="get_embolden" default="0.0">
+			If is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
+		</member>
+		<member name="face_index" type="int" setter="set_face_index" getter="get_face_index" default="0">
+			Active face index in the TrueType / OpenType collection file.
+		</member>
 		<member name="fixed_size" type="int" setter="set_fixed_size" getter="get_fixed_size" default="0">
 			Font size, used only for the bitmap fonts.
 		</member>
@@ -561,7 +590,10 @@
 			Font style flags, see [enum TextServer.FontStyle].
 		</member>
 		<member name="force_autohinter" type="bool" setter="set_force_autohinter" getter="is_force_autohinter" default="false">
-			If set to [code]true[/code], auto-hinting is supported and preffered over font built-in hinting. Used by dynamic fonts only.
+			If set to [code]true[/code], auto-hinting is supported and preferred over font built-in hinting. Used by dynamic fonts only.
+		</member>
+		<member name="generate_mipmaps" type="bool" setter="set_generate_mipmaps" getter="get_generate_mipmaps" default="false">
+			If set to [code]true[/code], generate mipmaps for the font textures.
 		</member>
 		<member name="hinting" type="int" setter="set_hinting" getter="get_hinting" enum="TextServer.Hinting" default="1">
 			Font hinting mode. Used by dynamic fonts only.
@@ -583,6 +615,13 @@
 		</member>
 		<member name="style_name" type="String" setter="set_font_style_name" getter="get_font_style_name" default="&quot;&quot;">
 			Font style name.
+		</member>
+		<member name="subpixel_positioning" type="int" setter="set_subpixel_positioning" getter="get_subpixel_positioning" enum="TextServer.SubpixelPositioning" default="1">
+			Font glyph sub-pixel positioning mode. Subpixel positioning provides shaper text and better kerning for smaller font sizes, at the cost of memory usage and font rasterization speed. Use [constant TextServer.SUBPIXEL_POSITIONING_AUTO] to automatically enable it based on the font size.
+		</member>
+		<member name="transform" type="Transform2D" setter="set_transform" getter="get_transform" default="Transform2D(1, 0, 0, 1, 0, 0)">
+			2D transform, applied to the font outlines, can be used for slanting, flipping and rotating glyphs.
+			For example, to simulate italic typeface by slanting, apply the following transform [code]Transform2D(1.0, slant, 0.0, 1.0, 0.0, 0.0)[/code].
 		</member>
 	</members>
 </class>

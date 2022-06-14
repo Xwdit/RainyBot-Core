@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationAgent3D" inherits="Node" version="4.0">
+<class name="NavigationAgent3D" inherits="Node" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
 		3D Agent used in navigation for collision avoidance.
 	</brief_description>
 	<description>
 		3D Agent that is used in navigation to reach a location while avoiding static and dynamic obstacles. The dynamic obstacles are avoided using RVO collision avoidance. The agent needs navigation data to work correctly. [NavigationAgent3D] is physics safe.
+		[b]Note:[/b] After [method set_target_location] is used it is required to use the [method get_next_location] function once every physics frame to update the internal path logic of the NavigationAgent. The returned vector position from this function should be used as the next movement position for the agent's parent Node.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -24,7 +25,7 @@
 		<method name="get_nav_path" qualifiers="const">
 			<return type="PackedVector3Array" />
 			<description>
-				Returns the path from start to finish in global coordinates.
+				Returns this agent's current path from start to finish in global coordinates. The path only updates when the target location is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [method get_next_location] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
 			</description>
 		</method>
 		<method name="get_nav_path_index" qualifiers="const">
@@ -36,12 +37,13 @@
 		<method name="get_next_location">
 			<return type="Vector3" />
 			<description>
-				Returns a [Vector3] in global coordinates, that can be moved to, making sure that there are no static objects in the way. If the agent does not have a navigation path, it will return the origin of the agent's parent.
+				Returns the next location in global coordinates that can be moved to, making sure that there are no static objects in the way. If the agent does not have a navigation path, it will return the position of the agent's parent. The use of this function once every physics frame is required to update the internal path logic of the NavigationAgent.
 			</description>
 		</method>
 		<method name="get_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
+				Returns the [RID] of this agent on the [NavigationServer3D].
 			</description>
 		</method>
 		<method name="get_target_location" qualifiers="const">
@@ -85,7 +87,10 @@
 	</methods>
 	<members>
 		<member name="agent_height_offset" type="float" setter="set_agent_height_offset" getter="get_agent_height_offset" default="0.0">
-			The agent height offset to match the navigation mesh height.
+			The NavigationAgent height offset is subtracted from the y-axis value of any vector path position for this NavigationAgent. The NavigationAgent height offset does not change or influence the navigation mesh or pathfinding query result. Additional navigation maps that use regions with navigation meshes that the developer baked with appropriate agent radius or height values are required to support different-sized agents.
+		</member>
+		<member name="avoidance_enabled" type="bool" setter="set_avoidance_enabled" getter="get_avoidance_enabled" default="false">
+			If [code]true[/code] the agent is registered for an RVO avoidance callback on the [NavigationServer3D]. When [method NavigationAgent3D.set_velocity] is used and the processing is completed a [code]safe_velocity[/code] Vector3 is received with a signal connection to [signal velocity_computed]. Avoidance processing with many registered agents has a significant performance cost and should only be enabled on agents that currently require it.
 		</member>
 		<member name="ignore_y" type="bool" setter="set_ignore_y" getter="get_ignore_y" default="true">
 			Ignores collisions on the Y axis. Must be true to move on a horizontal plane.
@@ -95,6 +100,9 @@
 		</member>
 		<member name="max_speed" type="float" setter="set_max_speed" getter="get_max_speed" default="10.0">
 			The maximum speed that an agent can move.
+		</member>
+		<member name="navigable_layers" type="int" setter="set_navigable_layers" getter="get_navigable_layers" default="1">
+			A bitfield determining what layers of navigation regions this agent will use to calculate path. Changing it runtime will clear current navigation path and generate new one, according to new layers.
 		</member>
 		<member name="neighbor_dist" type="float" setter="set_neighbor_dist" getter="get_neighbor_dist" default="50.0">
 			The distance to search for other agents.

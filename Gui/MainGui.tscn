@@ -10,17 +10,11 @@ anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( "1_cbsnb" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.113725, 0.133333, 0.160784, 1)
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Status" type="Label" parent="."]
 anchor_left = 1.0
@@ -31,9 +25,6 @@ offset_bottom = 32.0
 text = "协议后端:Mirai | 已连接 | Bot ID:1234567898"
 horizontal_alignment = 2
 vertical_alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Console" parent="." instance=ExtResource( "2_53msf" )]
 offset_top = 33.0
@@ -44,12 +35,9 @@ size_flags_vertical = 3
 offset_right = 604.0
 offset_bottom = 33.0
 script = ExtResource( "3_cgp1a" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MainMenu" type="MenuButton" parent="ControlBar"]
-offset_right = 60.0
+offset_right = 56.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "主菜单"
@@ -61,13 +49,10 @@ popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_1/text = "退出"
 popup/item_1/id = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ConsoleMenu" type="MenuButton" parent="ControlBar"]
-offset_left = 64.0
-offset_right = 124.0
+offset_left = 60.0
+offset_right = 116.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "控制台"
@@ -78,13 +63,10 @@ popup/item_0/text = "清空控制台"
 popup/item_0/id = 0
 popup/item_1/text = "打开日志文件夹"
 popup/item_1/id = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PluginMenu" type="MenuButton" parent="ControlBar"]
-offset_left = 128.0
-offset_right = 172.0
+offset_left = 120.0
+offset_right = 160.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "插件"
@@ -101,13 +83,10 @@ popup/item_2/text = "重载所有插件"
 popup/item_2/id = 2
 popup/item_3/text = "打开插件文件夹"
 popup/item_3/id = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="AdapterMenu" type="MenuButton" parent="ControlBar"]
-offset_left = 176.0
-offset_right = 252.0
+offset_left = 164.0
+offset_right = 236.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "协议后端"
@@ -123,13 +102,10 @@ popup/item_2/text = "状态信息"
 popup/item_2/id = 2
 popup/item_3/text = "打开协议后端文件夹"
 popup/item_3/id = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HelpMenu" type="MenuButton" parent="ControlBar"]
-offset_left = 256.0
-offset_right = 300.0
+offset_left = 240.0
+offset_right = 280.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "帮助"
@@ -157,6 +133,3 @@ popup/item_7/id = 7
 popup/item_8/text = "关于RainyBot"
 popup/item_8/id = 8
 popup/item_8/disabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
