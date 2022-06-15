@@ -7,8 +7,10 @@ var plugin_list_dic:Dictionary = {}
 var current_selected:int = -1
 
 
-func update_plugin_list():
+func update_plugin_list(reload_dic:bool=false):
 	var _file_dic = PluginManager.plugin_files_dic
+	if reload_dic:
+		_file_dic = PluginManager.get_plugin_files_dic()
 	var _file_state_dic = PluginManager.file_load_status
 	plugin_list_ins.clear()
 	plugin_list_dic.clear()
@@ -123,13 +125,13 @@ func _on_delete_button_button_down():
 	var file = plugin_list_dic[current_selected].file
 	set_lock_panel(true)
 	await PluginManager.delete_plugin(file)
-	update_plugin_list()
+	update_plugin_list(true)
 	set_lock_panel(false)
 
 
 func _on_refresh_button_button_down():
 	set_lock_panel(true)
-	update_plugin_list()
+	update_plugin_list(true)
 	set_lock_panel(false)
 
 
@@ -164,5 +166,5 @@ func _on_create_plugin_button_button_down():
 		set_lock_panel(true)
 		if await PluginManager.create_plugin(text) == OK:
 			$HSplitContainer/PluginListContainer/CreatePlugin/CreatePluginFile.text = ""
-			update_plugin_list()
+			update_plugin_list(true)
 		set_lock_panel(false)
