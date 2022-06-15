@@ -8,7 +8,7 @@ var current_selected:int = -1
 
 
 func update_plugin_list():
-	var _file_dic = PluginManager.get_plugin_files_dic()
+	var _file_dic = PluginManager.plugin_files_dic
 	var _file_state_dic = PluginManager.file_load_status
 	plugin_list_ins.clear()
 	plugin_list_dic.clear()
@@ -38,6 +38,9 @@ func set_lock_panel(locked):
 	$HSplitContainer/PluginListContainer/ReloadAllButton.disabled = locked
 	$HSplitContainer/PluginListContainer/UnloadAllButton.disabled = locked
 	$HSplitContainer/PluginListContainer/CreatePlugin/CreatePluginButton.disabled = locked
+	if locked:
+		$HSplitContainer/PluginInfoPanel.hide()
+		$HSplitContainer/NoSelectLabel.show()
 
 
 func _on_plugin_list_item_selected(index):
