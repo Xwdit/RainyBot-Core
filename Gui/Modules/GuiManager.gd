@@ -2,6 +2,13 @@ extends Node
 
 
 var _editor = load("res://Gui/Interfaces/PluginEditor/Modules/EditorWindow/PluginEditorWindow.tscn")
+var _manager = load("res://Gui/Interfaces/PluginManagerGui/Modules/PluginManagerGuiWindow/PluginManagerGuiWindow.tscn").instantiate()
+
+
+func _ready():
+	await get_tree().physics_frame
+	_manager.name = "PluginManagerGuiWindow"
+	add_child(_manager,true)
 
 	
 func open_plugin_editor(path:String):
@@ -21,6 +28,12 @@ func open_plugin_editor(path:String):
 	add_child(_ins,true)
 	_ins.load_script(path)
 
+
+func open_plugin_manager():
+	console_print_warning("正在启动插件管理器，请稍候.....")
+	await get_tree().physics_frame
+	_manager.popup_centered(Vector2i(1024,600))
+	
 
 func console_print_text(text):
 	get_tree().call_group("Console","add_newline_with_time",text)

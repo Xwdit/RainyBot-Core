@@ -70,7 +70,9 @@ func _on_plugin_menu_pressed(id:int):
 		PluginMenuOptions.RELOAD_PLUGIN:
 			CommandManager.parse_console_command("plugins areload")
 		PluginMenuOptions.OPEN_PLUGIN_DIR:
-			OS.shell_open(OS.get_executable_path().get_base_dir() + "/plugins/")
+			OS.shell_open(PluginManager.plugin_path)
+		PluginMenuOptions.PLUGIN_MANAGER:
+			GuiManager.open_plugin_manager()
 			
 			
 func _on_adapter_menu_pressed(id:int):

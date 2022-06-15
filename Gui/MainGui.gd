@@ -3,7 +3,7 @@ extends Control
 
 func _ready():
 	DisplayServer.window_set_title("RainyBot")
-	Console.print_success("成功加载 RainyBot-Gui | 版本:V2.0-Beta-3 | 作者:Xwdit")
+	Console.print_success("成功加载 RainyBot-Gui | 版本:V2.0-Beta-4 | 作者:Xwdit")
 	RainyBotCore.start()
 
 

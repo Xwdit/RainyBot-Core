@@ -8,6 +8,7 @@ var plugin_data_path = OS.get_executable_path().get_base_dir() + "/data/"
 var loaded_scripts:Dictionary = {}
 var file_load_status:Dictionary = {}
 var plugin_event_dic:Dictionary = {}
+var plugin_files_dic:Dictionary = {}
 
 
 var default_plugin_info = {
@@ -23,6 +24,7 @@ func _ready():
 	add_to_group("Event")
 	add_to_group("console_command_plugins")
 	var usages = [
+		"plugins manager - 打开插件管理器GUI",
 		"plugins list - 查看所有已加载的插件列表",
 		"plugins load <文件名> - 加载一个指定的插件",
 		"plugins unload <插件id> - 卸载一个指定的插件",
@@ -59,6 +61,8 @@ func _call_event(event:Event):
 
 func _call_console_command(_cmd:String,args:Array):
 	match args[0]:
+		"manager":
+			GuiManager.open_plugin_manager()
 		"list":
 			Console.print_text("-----插件列表-----")
 			for child in get_children():
@@ -98,32 +102,14 @@ func _call_console_command(_cmd:String,args:Array):
 				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"create":
 			if args.size() > 1:
-				var file_name:String = args[1]
-				if File.new().file_exists(plugin_path+file_name):
-					Console.print_error("此插件文件已存在!")
-				elif file_name.ends_with(".gd"):
-					var scr:GDScript = load("res://Core/Templates/PluginTemplate.gd")
-					if ResourceSaver.save(plugin_path+file_name,scr) == OK:
-						Console.print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
-						Console.print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
-					else:
-						Console.print_error("插件文件创建失败，请检查文件权限是否正确!")
-				else:
-					Console.print_error("插件文件名格式错误，正确格式: <文件名>.gd")
+				create_plugin(args[1])
+			else:
+				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"delete":
 			if args.size() > 1:
-				var file_name:String = args[1]
-				if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
-					var dir = Directory.new()
-					if dir.open(plugin_path)==OK && dir.remove(plugin_path+file_name)==OK:
-						var plug = get_plugin_with_filename(file_name)
-						if is_instance_valid(plug):
-							unload_plugin(plug)
-						Console.print_success("插件文件删除成功!")
-					else:
-						Console.print_error("插件文件删除失败，请检查文件权限是否正确!")
-				else:
-					Console.print_error("插件文件不存在或格式错误!")	
+				delete_plugin(args[1])
+			else:
+				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")	
 		_:
 			Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 
@@ -228,6 +214,36 @@ func unload_plugin(plugin:Plugin):
 	Console.print_success("成功卸载插件: " +get_beautify_plugin_info(_plugin_info))
 
 
+func create_plugin(file_name:String):
+	if File.new().file_exists(plugin_path+file_name):
+		Console.print_error("此插件文件已存在!")
+	elif file_name.ends_with(".gd"):
+		var scr:GDScript = load("res://Core/Templates/PluginTemplate.gd")
+		if ResourceSaver.save(plugin_path+file_name,scr) == OK:
+			Console.print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
+			Console.print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
+			return OK
+		else:
+			Console.print_error("插件文件创建失败，请检查文件权限是否正确!")
+	else:
+		Console.print_error("插件文件名格式错误，正确格式: <文件名>.gd")
+
+
+func delete_plugin(file_name:String):
+	if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
+		var dir = Directory.new()
+		if dir.open(plugin_path)==OK && dir.remove(plugin_path+file_name)==OK:
+			var plug = get_plugin_with_filename(file_name)
+			if is_instance_valid(plug):
+				await unload_plugin(plug)
+			Console.print_success("插件文件删除成功!")
+			return OK
+		else:
+			Console.print_error("插件文件删除失败，请检查文件权限是否正确!")
+	else:
+		Console.print_error("插件文件不存在或格式错误!")	
+
+
 func reload_plugin(plugin:Plugin):
 	var _plugin_info = plugin.get_plugin_info()
 	var file = plugin.get_plugin_filename()
@@ -285,6 +301,7 @@ func get_plugin_files_dic()->Dictionary:
 	Console.print_warning("开始扫描插件目录.....")
 	var _file_dic:Dictionary = {}
 	var _files:Array = _list_files_in_directory(plugin_path)
+	file_load_status.clear()
 	if _files.size() == 0:
 		Console.print_warning("插件目录下未找到任何插件...")
 		return {}
@@ -300,6 +317,7 @@ func get_plugin_files_dic()->Dictionary:
 			Console.print_error("已经存在ID为"+str(_id)+"的插件文件: "+str(_file_dic[_id].file))
 			continue
 		_file_dic[_id] = {"file":_file,"info":_plugin_info}
+	plugin_files_dic = _file_dic
 	Console.print_success("插件目录扫描完毕！")
 	return _file_dic
 	
@@ -375,5 +393,5 @@ func _list_files_in_directory(path):
 
 
 func get_beautify_plugin_info(_info:Dictionary)->String:
-	var _str = "{name} | ID:{id} | 作者:{author} | 版本:{version} | 描述:{description}".format(_info)
+	var _str = "{name} | ID:{id} | 作者:{author} | 版本:{version} | 描述:{description} | 依赖插件:{dependency}".format(_info)
 	return _str

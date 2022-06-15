@@ -29,7 +29,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/MessageAPI/Types/AtMessage.gd"
 }, {
-"base": "CoreAPI",
+"base": "BotAPI",
 "class": &"Bot",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/BotAPI/Bot.gd"
@@ -84,7 +84,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/EventAPI/BotEvent/BotReloginEvent.gd"
 }, {
-"base": "CoreAPI",
+"base": "BotAPI",
 "class": &"BotRequestResult",
 "language": &"GDScript",
 "path": "res://Adapters/Mirai/API/BotAPI/BotRequestResult.gd"

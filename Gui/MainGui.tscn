@@ -78,7 +78,6 @@ popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_1/text = "插件管理器"
 popup/item_1/id = 1
-popup/item_1/disabled = true
 popup/item_2/text = "重载所有插件"
 popup/item_2/id = 2
 popup/item_3/text = "打开插件文件夹"
