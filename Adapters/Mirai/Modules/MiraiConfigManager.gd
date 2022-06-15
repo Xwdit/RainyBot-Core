@@ -7,7 +7,7 @@ class_name MiraiConfigManager
 signal config_loaded
 
 
-var default_config = {
+const default_config = {
 	"mirai_address":"127.0.0.1",
 	"mirai_port":"8080",
 	"mirai_verify_key_enabled":false,
@@ -17,7 +17,7 @@ var default_config = {
 	"mirai_protocol":"ANDROID_PAD"
 }
 
-var config_description = {
+const config_description = {
 	"mirai_address":"在这里填写连接到Mirai框架的地址，默认为127.0.0.1",
 	"mirai_port":"在这里填写连接到Mirai框架的端口，默认为8080",
 	"mirai_verify_key_enabled":"是否启用连接时的验证密钥，默认为false",
@@ -51,7 +51,8 @@ func init_config():
 				for key in _config:
 					if (_config[key] is String && _config[key] == "") or (_config[key] == null):
 						Console.print_warning("警告: 检测到内容为空的配置项，可能会导致出现问题: "+key)
-						Console.print_warning("可以前往以下路径来验证与修改配置: "+config_path)
+						Console.print_warning("该配置项的描述为: %s" % config_description[key])
+						Console.print_warning("可以通过协议后端菜单，或前往以下路径来验证与修改配置: "+config_path)
 						Console.print_warning("配置完成后请重启RainyBot")
 				loaded_config = _config
 				Console.print_success("Mirai-Adapter配置文件加载成功！")
@@ -73,7 +74,7 @@ func init_config():
 			var json = JSON.new()
 			file.store_string(json.stringify(loaded_config,"\t"))
 			file.close()
-			Console.print_success("配置文件创建成功，请访问以下路径进行配置: "+config_path)
+			Console.print_success("配置文件创建成功，请通过协议后端菜单，或访问以下路径进行配置: "+config_path)
 			Console.print_text("配置选项说明:")
 			for key in config_description:
 				Console.print_text(key+":"+config_description[key])

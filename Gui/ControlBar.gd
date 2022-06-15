@@ -22,7 +22,7 @@ enum PluginMenuOptions {
 
 
 enum AdapterMenuOptions {
-	CONFIG_MANAGER,
+	OPEN_CONFIG_FILE,
 	RESTART_ADAPTER,
 	ADAPTER_STATUS,
 	OPEN_ADAPTER_DIR
@@ -30,15 +30,14 @@ enum AdapterMenuOptions {
 
 
 enum HelpMenuOptions {
-	ONLINE_DOC,
+	ONLINE_TUTORIAL,
 	PLUGIN_API,
 	QUESTIONS,
 	ISSUES,
-	FEATURES,
 	DOC_FEEDBACK,
 	COMMUNITY_GROUP,
-	WEBSITE,
-	ABOUT
+	COMMUNITY_WEB,
+	SOURCE_REPO
 }
 
 
@@ -52,6 +51,8 @@ func _ready():
 	
 func _on_main_menu_pressed(id:int):
 	match id:
+		MainMenuOptions.CHECK_UPDATE:
+			get_parent().check_update()
 		MainMenuOptions.EXIT:
 			CommandManager.parse_console_command("stop")
 			
@@ -67,6 +68,8 @@ func _on_console_menu_pressed(id:int):
 			
 func _on_plugin_menu_pressed(id:int):
 	match id:
+		PluginMenuOptions.PLUGIN_STORE:
+			OS.shell_open("https://godoter.cn/t/rainybot-plugins")
 		PluginMenuOptions.RELOAD_PLUGIN:
 			CommandManager.parse_console_command("plugins areload")
 		PluginMenuOptions.OPEN_PLUGIN_DIR:
@@ -77,6 +80,13 @@ func _on_plugin_menu_pressed(id:int):
 			
 func _on_adapter_menu_pressed(id:int):
 	match id:
+		AdapterMenuOptions.OPEN_CONFIG_FILE:
+			OS.shell_open(OS.get_executable_path().get_base_dir() + "/config/mirai_adapter.json")
+			Console.print_warning("已为您使用系统默认方式打开协议后端配置文件!")
+			Console.print_text("配置选项说明:")
+			for key in MiraiConfigManager.config_description:
+				Console.print_text(key+":"+MiraiConfigManager.config_description[key])
+			Console.print_warning("修改配置后请重启RainyBot")
 		AdapterMenuOptions.RESTART_ADAPTER:
 			CommandManager.parse_console_command("mirai restart")
 		AdapterMenuOptions.ADAPTER_STATUS:
@@ -87,15 +97,19 @@ func _on_adapter_menu_pressed(id:int):
 			
 func _on_help_menu_pressed(id:int):
 	match id:
+		HelpMenuOptions.ONLINE_TUTORIAL:
+			OS.shell_open("https://godoter.cn/t/rainybot-tutorials")
 		HelpMenuOptions.PLUGIN_API:
 			OS.shell_open("https://github.com/Xwdit/RainyBot-API")
+		HelpMenuOptions.QUESTIONS:
+			OS.shell_open("https://godoter.cn/t/rainybot-qa")
 		HelpMenuOptions.ISSUES:
-			OS.shell_open("https://github.com/Xwdit/RainyBot-Core/issues")
-		HelpMenuOptions.FEATURES:
 			OS.shell_open("https://github.com/Xwdit/RainyBot-Core/issues")
 		HelpMenuOptions.DOC_FEEDBACK:
 			OS.shell_open("https://github.com/Xwdit/RainyBot-Api/issues")
 		HelpMenuOptions.COMMUNITY_GROUP:
 			OS.shell_open("https://qm.qq.com/cgi-bin/qm/qr?k=1nKmcY2qdc-q2Q8BYkn1MyhHrfc3oZ58&jump_from=webapi")
-		HelpMenuOptions.WEBSITE:
-			OS.shell_open("https://rainy.love/rainybot")
+		HelpMenuOptions.COMMUNITY_WEB:
+			OS.shell_open("https://godoter.cn/t/rainybot")
+		HelpMenuOptions.SOURCE_REPO:
+			OS.shell_open("https://github.com/Xwdit/RainyBot-Core/")

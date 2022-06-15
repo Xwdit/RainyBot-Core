@@ -1,12 +1,10 @@
 class_name RainyBotCore
 
 
-const NAME = "RainyBot-Core"
-const VERSION = "V2.0-Beta-4"
-const AUTHOR = "Xwdit"
+const VERSION = "V2.0-Beta-5"
 
 
 static func start():
 	Console.print_warning("正在启动RainyBot核心进程.....")
-	Console.print_success("成功加载模块: "+NAME+" | 版本:"+VERSION+" | 作者:"+AUTHOR)
+	Console.print_success("成功加载模块: RainyBot-Core | 版本: %s | 作者: Xwdit" % VERSION)
 	BotAdapter.start()

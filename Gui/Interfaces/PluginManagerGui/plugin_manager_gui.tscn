@@ -140,6 +140,7 @@ theme_override_font_sizes/font_size = 20
 text = "描述: 这是一个示例插件，实际上并没有什么作用....."
 
 [node name="PluginManagerPreview" parent="HSplitContainer/PluginInfoPanel" instance=ExtResource( "2_hev7f" )]
+delimiter_strings = ["' '", "\" \""]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/PluginInfoPanel"]
 minimum_size = Vector2(0, 50)
