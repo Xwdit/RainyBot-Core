@@ -49,7 +49,10 @@ func _on_plugin_list_item_selected(index):
 	var file = plug["file"]
 	if plug.has("info"):
 		var info = plug["info"]
-		$HSplitContainer/PluginInfoPanel/PluginName.text = info["name"]
+		if plug.has("loaded") and plug["loaded"]:
+			$HSplitContainer/PluginInfoPanel/PluginName.text = info["name"] + " (已加载)"
+		else:
+			$HSplitContainer/PluginInfoPanel/PluginName.text = info["name"] + " (未加载)"
 		$HSplitContainer/PluginInfoPanel/PluginID.text = "插件ID: "+info["id"]
 		$HSplitContainer/PluginInfoPanel/PluginAuthor.text = "作者: "+info["author"]
 		$HSplitContainer/PluginInfoPanel/PluginVersion.text = "版本号: "+info["version"]
@@ -95,6 +98,7 @@ func _on_reload_button_button_down():
 		var file = plugin_list_dic[current_selected].file
 		set_lock_panel(true)
 		await PluginManager.load_plugin(file)
+		update_plugin_list()
 		set_lock_panel(false)
 
 
@@ -133,12 +137,14 @@ func _on_folder_button_button_down():
 func _on_reload_all_button_button_down():
 	set_lock_panel(true)
 	await PluginManager.reload_plugins()
+	update_plugin_list()
 	set_lock_panel(false)
 
 
 func _on_unload_all_button_button_down():
 	set_lock_panel(true)
 	await PluginManager.unload_plugins()
+	update_plugin_list()
 	set_lock_panel(false)
 
 
