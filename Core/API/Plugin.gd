@@ -158,13 +158,22 @@ func _plugin_timer_timeout():
 ## 最后一项可选参数为此插件的依赖插件列表(数组)，需要以所依赖的插件的ID作为列表中的元素，如:["example","example_1"]
 ## 设置了插件依赖后，可以保证所依赖的插件一定在此插件之前被加载
 func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String,p_dependency=[]):
-	plugin_info.id = p_id
+	plugin_info.id = p_id.to_lower()
 	plugin_info.name = p_name
 	plugin_info.author = p_author
 	plugin_info.version = p_version
 	plugin_info.description = p_description
 	if p_dependency is String:
-		p_dependency = [p_dependency]
+		p_dependency = [p_dependency.to_lower()]
+	elif p_dependency is Array:
+		for i in range(p_dependency.size()):
+			if p_dependency[i] is String:
+				p_dependency[i]=p_dependency[i].to_lower()
+			else:
+				p_dependency.clear()
+				break
+	else:
+		p_dependency = []
 	plugin_info.dependency = p_dependency
 
 

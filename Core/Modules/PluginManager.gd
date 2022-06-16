@@ -183,7 +183,7 @@ func load_plugin(file:String,files_dic=null,source:String=""):
 			var plugin_res = load_plugin_script(plugin_path + file)
 			var plugin_ins:Plugin = plugin_res.new()
 			var _plugin_info = plugin_ins.get_plugin_info()
-			plugin_ins.name = _plugin_info["id"]
+			plugin_ins.name = _plugin_info["id"].to_lower()
 			plugin_ins.plugin_path = plugin_path + file
 			plugin_ins.plugin_file = file
 			plugin_ins.add_to_group("Plugin")
