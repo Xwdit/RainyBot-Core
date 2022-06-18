@@ -5,13 +5,15 @@ const INIT_PATH = [
 	"/plugins/",
 	"/config/",
 	"/data/",
-	"/logs/"
+	"/data/cache/",
+	"/logs/",
 ]
 
 var adapter_path:String = OS.get_executable_path().get_base_dir()+"/adapters/"
 var plugin_path:String = OS.get_executable_path().get_base_dir()+"/plugins/"
 var config_path:String = OS.get_executable_path().get_base_dir()+"/config/"
 var data_path:String = OS.get_executable_path().get_base_dir()+"/data/"
+var cache_path:String = OS.get_executable_path().get_base_dir()+"/data/cache/"
 var log_path:String = OS.get_executable_path().get_base_dir()+"/logs/"
 
 
@@ -19,6 +21,7 @@ func _init():
 	var icon = Image.new()
 	icon.load("res://libs/resources/logo.png")
 	DisplayServer.set_icon(icon)
+	randomize()
 	_init_dir()
 
 
@@ -45,8 +48,17 @@ func _notification(what):
 		Console.print_success("RainyBot核心进程已被安全退出!")
 		await get_tree().create_timer(0.5).timeout
 		Console.save_log(true)
+		clear_cache()
 		get_tree().quit()
 
 
 func _call_console_command(_cmd:String,_args:Array):
 	notification(NOTIFICATION_WM_CLOSE_REQUEST)
+
+
+func clear_cache():
+	var dir = Directory.new()
+	if dir.dir_exists(cache_path):
+		dir.open(cache_path)
+		for _file in dir.get_files():
+			dir.remove(cache_path+_file)

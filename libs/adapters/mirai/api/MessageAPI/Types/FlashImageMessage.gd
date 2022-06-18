@@ -13,6 +13,19 @@ var data_dic:Dictionary = {
 }
 
 
+static func init(image:Image)->FlashImageMessage:
+	var f_path:String = GlobalManager.cache_path + "image_cache_%s.png" % randi()
+	var err:int = image.save_png(f_path)
+	if err == OK:
+		Console.print_success("成功将图像实例缓存至文件: %s"% f_path)
+	else:
+		Console.print_error("无法将图像实例缓存至文件 %s，请检查路径或权限是否有误!"% f_path)
+	var ins:FlashImageMessage = FlashImageMessage.new()
+	var dic:Dictionary = ins.data_dic
+	dic.path = f_path
+	return ins
+
+
 static func init_id(image_id:String)->FlashImageMessage:
 	var ins:FlashImageMessage = FlashImageMessage.new()
 	var dic:Dictionary = ins.data_dic
