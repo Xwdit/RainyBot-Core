@@ -893,7 +893,7 @@ func update_viewport(viewport:SubViewport)->void:
 		Console.print_error("指定的SubViewport无效，因此无法对其进行更新！")
 	
 	
-func get_viewport_image(viewport:SubViewport, update:bool=false)->Image:
+func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:
 	if is_instance_valid(viewport):
 		if update:
 			await update_viewport(viewport)
