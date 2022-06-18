@@ -880,6 +880,7 @@ func create_viewport(size:Vector2i)->SubViewport:
 	vp.size = size
 	vp.size_2d_override = size
 	add_child(vp)
+	Console.print_success("成功创建SubViewport实例并附加为插件的子节点")
 	return vp
 	
 	
