@@ -891,13 +891,13 @@ func load_scene(path:String,parent:Node=null)->Node:
 		var ins:Node = _scene.instantiate()
 		if is_instance_valid(parent):
 			parent.add_child(ins)
-			Console.print_success("成功加载场景文件并附加到指定的父节点：%s")
+			Console.print_success("成功加载场景文件并附加到指定的父节点：%s"% path)
 		else:
 			add_child(ins)
-			Console.print_success("成功加载场景文件并附加为插件的子节点：%s")
+			Console.print_success("成功加载场景文件并附加为插件的子节点：%s"% path)
 		return ins
 	else:
-		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确！")
+		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确！"% path)
 		return null
 	
 
