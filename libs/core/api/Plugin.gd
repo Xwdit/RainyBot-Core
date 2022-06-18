@@ -882,7 +882,25 @@ func create_viewport(size:Vector2i)->SubViewport:
 	add_child(vp)
 	Console.print_success("成功创建SubViewport实例并附加为插件的子节点")
 	return vp
+
+
+func update_viewport(viewport:SubViewport)->void:
+	if is_instance_valid(viewport):
+		viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+		await get_tree().process_frame
+		Console.print_success("成功更新指定SubViewport中渲染的内容！")
+	else:
+		Console.print_error("指定的SubViewport无效，因此无法对其进行更新！")
 	
+	
+func get_viewport_image(viewport:SubViewport)->Image:
+	if is_instance_valid(viewport):
+		Console.print_success("成功基于指定SubViewport中渲染的内容生成图像！")
+		return viewport.get_texture().get_image()
+	else:
+		Console.print_success("指定的SubViewport无效，因此无法根据其渲染的内容生成图像！")
+		return null
+
 	
 func load_scene(path:String,parent:Node=null)->Node:
 	Console.print_warning("正在尝试加载场景文件：%s"% path)
