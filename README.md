@@ -141,7 +141,7 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 ### 源码注意事项
 
 如果您希望从项目源码顺利运行/编译RainyBot，请确保遵循以下条目：
-- 请使用 Commit [[706dc74e01](https://github.com/godotengine/godot/commit/706dc74e01e1900af947d7a5fe854603a3df18b1)] 或以上版本的 [Godot Engine 4.0](https://github.com/godotengine/godot) 来打开本项目。
+- 请使用 Godot-4.0.alpha10 或以上版本的 [Godot Engine](https://github.com/godotengine/godot) 来打开本项目。
 - 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.11.1`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
 - 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.5.2`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
@@ -177,13 +177,14 @@ _若需查看更详细的已分类API文档与插件示例，请访问 [RainyBot
 - [x] 上下文交互功能的大幅改进与简化
 - [x] 完善Http请求功能，支持更多类型的请求与响应
 - [x] 实现插件编辑器的自动补全与错误检查
+- [x] 添加版本检测功能
+- [x] 添加在线插件社区
+- [x] 初步支持插件加载场景来实现可视化图片生成/GUI制作
 - [ ] 实现节点化的权限系统
 - [ ] 支持通过聊天消息来使用命令系统
 - [ ] 为更多内置功能实现GUI化
-- [ ] 添加版本检测与更新功能
-- [ ] 添加在线插件市场功能
 - [ ] 支持多机器人账号同时运行
-- [ ] 简化对内部图形相关API的调用，支持可视化制图排版
+- [ ] 简化对内部图形相关API的调用
 
 对于更详细的功能计划，已知问题或功能建议，请访问储存库的 [Issues](https://github.com/Xwdit/RainyBot-Core/issues) 页面
 
