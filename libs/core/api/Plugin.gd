@@ -874,6 +874,32 @@ func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
+func create_viewport(size:Vector2i)->SubViewport:
+	var vp:SubViewport = SubViewport.new()
+	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
+	vp.size = size
+	vp.size_2d_override = size
+	add_child(vp)
+	return vp
+	
+	
+func load_scene(path:String,parent:Node=null)->Node:
+	Console.print_warning("正在尝试加载场景文件：%s"% path)
+	var _scene:PackedScene = ResourceLoader.load(path,"",ResourceLoader.CACHE_MODE_REPLACE)
+	if is_instance_valid(_scene) and _scene.can_instantiate():
+		var ins:Node = _scene.instantiate()
+		if is_instance_valid(parent):
+			parent.add_child(ins)
+			Console.print_success("成功加载场景文件并附加到指定的父节点：%s")
+		else:
+			add_child(ins)
+			Console.print_success("成功加载场景文件并附加为插件的子节点：%s")
+		return ins
+	else:
+		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确！")
+		return null
+	
+
 ## 通过await调用后，将等待一个满足指定发送者id，指定群组id的指定类型的消息事件
 ## 消息事件不会自动进行上下文匹配，而是需要手动调用或者在注册消息事件时将需要匹配上下文的消息事件手动绑定到"respond_context"函数即可
 ## 接收到满足条件的事件后，该函数将返回该事件的引用，否则在达到指定的超时秒数后，将返回null
