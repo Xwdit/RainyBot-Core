@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://libs/gui/interfaces/console/modules/ConsoleOutput/ConsoleOutput.gd" id="1_yyqsj"]
+[ext_resource type="Script" path="res://libs/gui/interfaces/console/modules/console_output/console_output.gd" id="1_yyqsj"]
 
 
 [node name="ConsoleOutput" type="RichTextLabel" groups=["Console"]]

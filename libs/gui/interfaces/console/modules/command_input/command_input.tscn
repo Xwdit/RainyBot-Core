@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://libs/gui/interfaces/console/modules/CommandInput/CommandInput.gd" id="1_s3b1w"]
+[ext_resource type="Script" path="res://libs/gui/interfaces/console/modules/command_input/command_input.gd" id="1_s3b1w"]
 
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0ng3"]

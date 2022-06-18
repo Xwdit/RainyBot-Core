@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/ConsoleOutput/ConsoleOutput.tscn" id="1_yhib5"]
-[ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/CommandInput/CommandInput.tscn" id="2_i0io6"]
+[ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/console_output/console_output.tscn" id="1_yhib5"]
+[ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/command_input/command_input.tscn" id="2_i0io6"]
 
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
