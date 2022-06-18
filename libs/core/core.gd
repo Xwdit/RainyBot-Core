@@ -1,7 +1,7 @@
 class_name RainyBotCore
 
 
-const VERSION = "V2.0-Beta-6"
+const VERSION = "V2.0-Beta-7"
 
 
 static func start():
