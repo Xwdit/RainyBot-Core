@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/ConsoleOutput/ConsoleOutput.tscn" id="1_yhib5"]
+[ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/CommandInput/CommandInput.tscn" id="2_i0io6"]
+
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
+bg_color = Color(0.101961, 0.113725, 0.137255, 0)
+border_width_top = 2
+border_color = Color(0.235294, 0.776471, 0.8, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jndw"]
+content_margin_left = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_top = 2
+border_color = Color(0.235294, 0.776471, 0.8, 1)
+border_blend = true
+
+[node name="Console" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource( "StyleBoxFlat_qi3ek" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 10.0
+offset_right = -8.0
+offset_bottom = -8.0
+split_offset = 220
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource( "1_yhib5" )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1008.0
+offset_bottom = 505.0
+
+[node name="CommandInput" parent="VSplitContainer" instance=ExtResource( "2_i0io6" )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 517.0
+offset_right = 1008.0
+offset_bottom = 582.0
+rect_min_size = Vector2(0, 60)
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+theme_override_styles/normal = SubResource( "StyleBoxFlat_5jndw" )
+expand_to_text_length = false

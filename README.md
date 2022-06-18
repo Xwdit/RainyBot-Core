@@ -3,26 +3,26 @@
 <br />
 <div align="center">
   <a href="https://github.com/Xwdit/RainyBot-Core/">
-    <img src=".github/images/logo.png" alt="Logo" width="100" height="100">
+	<img src=".github/images/logo.png" alt="Logo" width="100" height="100">
   </a>
 
   <h3 align="center">RainyBot</h3>
 
   <p align="center">
-    新手友好，简单易上手的跨平台聊天机器人开发框架
-    <br />
-    <a href="https://github.com/Xwdit/RainyBot-Core/releases"><strong>立即下载</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/Xwdit/RainyBot-API">API文档</a>
-     ·
-    <a href="https://godoter.cn/t/rainybot">官方社区</a>
-     ·
-    <a href="https://godoter.cn/t/rainybot-plugins">插件市场</a>
-     ·
-    <a href="https://godoter.cn/t/rainybot-tutorials">教程分享</a>
-    ·
-    <a href="https://godoter.cn/t/rainybot-qa">问与答</a>
+	新手友好，简单易上手的跨平台聊天机器人开发框架
+	<br />
+	<a href="https://github.com/Xwdit/RainyBot-Core/releases"><strong>立即下载</strong></a>
+	<br />
+	<br />
+	<a href="https://github.com/Xwdit/RainyBot-API">API文档</a>
+	 ·
+	<a href="https://godoter.cn/t/rainybot">官方社区</a>
+	 ·
+	<a href="https://godoter.cn/t/rainybot-plugins">插件市场</a>
+	 ·
+	<a href="https://godoter.cn/t/rainybot-tutorials">教程分享</a>
+	·
+	<a href="https://godoter.cn/t/rainybot-qa">问与答</a>
 
   </p>
 </div>
@@ -33,28 +33,28 @@
 <details>
   <summary>本页目录</summary>
   <ol>
-    <li>
-      <a href="#关于本项目">关于本项目</a>
-      <ul>
-        <li><a href="#基于的项目">基于的项目</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#开始使用">开始使用</a>
-      <ul>
-        <li><a href="#运行需求">运行需求</a></li>
-        <li><a href="#配置与使用">配置与使用</a></li>
-        <li><a href="#版本更新">版本更新</a></li>
-        <li><a href="#故障排除">故障排除</a></li>
-        <li><a href="#源码注意事项">源码注意事项</a></li>
-      </ul>
-    </li>
-    <li><a href="#插件示例">插件示例</a></li>
-    <li><a href="#主要功能开发路线图">开发路线图</a></li>
-    <li><a href="#贡献指南">贡献指南</a></li>
-    <li><a href="#项目许可">项目许可</a></li>
-    <li><a href="#联系信息">联系方式</a></li>
-    <li><a href="#更多信息">更多信息</a></li>
+	<li>
+	  <a href="#关于本项目">关于本项目</a>
+	  <ul>
+		<li><a href="#基于的项目">基于的项目</a></li>
+	  </ul>
+	</li>
+	<li>
+	  <a href="#开始使用">开始使用</a>
+	  <ul>
+		<li><a href="#运行需求">运行需求</a></li>
+		<li><a href="#配置与使用">配置与使用</a></li>
+		<li><a href="#版本更新">版本更新</a></li>
+		<li><a href="#故障排除">故障排除</a></li>
+		<li><a href="#源码注意事项">源码注意事项</a></li>
+	  </ul>
+	</li>
+	<li><a href="#插件示例">插件示例</a></li>
+	<li><a href="#主要功能开发路线图">开发路线图</a></li>
+	<li><a href="#贡献指南">贡献指南</a></li>
+	<li><a href="#项目许可">项目许可</a></li>
+	<li><a href="#联系信息">联系方式</a></li>
+	<li><a href="#更多信息">更多信息</a></li>
   </ol>
 </details>
 

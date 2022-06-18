@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="StyleBox" uid="uid://btogefokonry7" path="res://libs/gui/interfaces/plugin_editor/modules/code_edit/code_edit.tres" id="1_4g2h3"]
+[ext_resource type="Script" path="res://libs/gui/interfaces/plugin_manager_gui/modules/code_preview/code_preview.gd" id="2_lu2wa"]
+
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_tyyab"]
+number_color = Color(0.513726, 0.941176, 0.752941, 1)
+symbol_color = Color(0.537255, 0.701961, 0.772549, 1)
+function_color = Color(0.0980392, 0.639216, 0.921569, 1)
+member_variable_color = Color(0.478431, 0.698039, 0.756863, 1)
+keyword_colors = {
+"Plugin": Color(0.2, 0.9, 0.83, 1),
+"extends": Color(0.768627, 0.317647, 0.298039, 1),
+"func": Color(0.807843, 0.301961, 0.32549, 1),
+"if": Color(0.847059, 0.505882, 0.784314, 1),
+"var": Color(0.745098, 0.278431, 0.262745, 1)
+}
+color_regions = {
+"#": Color(0.380392, 0.380392, 0.380392, 1)
+}
+
+[node name="PluginManagerPreview" type="CodeEdit"]
+offset_top = 214.0
+offset_right = 692.0
+offset_bottom = 520.0
+size_flags_vertical = 3
+theme_override_constants/line_spacing = 5
+theme_override_constants/outline_size = 0
+theme_override_styles/normal = ExtResource( "1_4g2h3" )
+theme_override_styles/focus = ExtResource( "1_4g2h3" )
+editable = false
+highlight_current_line = true
+draw_control_chars = true
+draw_tabs = true
+syntax_highlighter = SubResource( "CodeHighlighter_tyyab" )
+scroll_smooth = true
+minimap_draw = true
+caret_blink = true
+symbol_lookup_on_click = true
+line_folding = true
+gutters_draw_bookmarks = true
+gutters_draw_line_numbers = true
+gutters_draw_fold_gutter = true
+delimiter_strings = ["\" \"", "' '"]
+indent_size = 8
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+script = ExtResource( "2_lu2wa" )
+
+[node name="@@24958" type="HScrollBar" parent="."]
+visible = false
+offset_top = 298.0
+offset_right = 684.0
+offset_bottom = 306.0
+max_value = 0.0
+
+[node name="@@24959" type="VScrollBar" parent="."]
+visible = false
+offset_left = 684.0
+offset_top = 2.0
+offset_right = 692.0
+offset_bottom = 301.0
+max_value = 0.0
+
+[node name="@@24960" type="Timer" parent="."]
+wait_time = 0.65
+
+[node name="@@24961" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="@@24962" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
