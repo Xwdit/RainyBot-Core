@@ -8,6 +8,12 @@ const INIT_PATH = [
 	"/logs/"
 ]
 
+var adapter_path:String = OS.get_executable_path().get_base_dir()+"/adapters/"
+var plugin_path:String = OS.get_executable_path().get_base_dir()+"/plugins/"
+var config_path:String = OS.get_executable_path().get_base_dir()+"/config/"
+var data_path:String = OS.get_executable_path().get_base_dir()+"/data/"
+var log_path:String = OS.get_executable_path().get_base_dir()+"/logs/"
+
 
 func _init():
 	var icon = Image.new()

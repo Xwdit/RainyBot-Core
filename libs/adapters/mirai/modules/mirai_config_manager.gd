@@ -29,7 +29,7 @@ const config_description = {
 
 var loaded_config = default_config
 
-var config_path = OS.get_executable_path().get_base_dir() + "/config/" + "mirai_adapter.json"
+var config_path = GlobalManager.config_path+"mirai_adapter.json"
 
 
 func init_config():

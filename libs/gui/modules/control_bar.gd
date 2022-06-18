@@ -63,7 +63,7 @@ func _on_console_menu_pressed(id:int):
 			get_tree().call_group("Console","clear")
 			Console.print_success("已成功清空控制台的所有内容！")
 		ConsoleMenuOptions.OPEN_LOG_DIR:
-			OS.shell_open(OS.get_executable_path().get_base_dir() + "/logs/")
+			OS.shell_open(GlobalManager.log_path)
 			
 			
 func _on_plugin_menu_pressed(id:int):
@@ -81,7 +81,7 @@ func _on_plugin_menu_pressed(id:int):
 func _on_adapter_menu_pressed(id:int):
 	match id:
 		AdapterMenuOptions.OPEN_CONFIG_FILE:
-			OS.shell_open(OS.get_executable_path().get_base_dir() + "/config/mirai_adapter.json")
+			OS.shell_open(GlobalManager.config_path + "mirai_adapter.json")
 			Console.print_warning("已为您使用系统默认方式打开协议后端配置文件!")
 			Console.print_text("配置选项说明:")
 			for key in MiraiConfigManager.config_description:
@@ -92,7 +92,7 @@ func _on_adapter_menu_pressed(id:int):
 		AdapterMenuOptions.ADAPTER_STATUS:
 			CommandManager.parse_console_command("mirai status")
 		AdapterMenuOptions.OPEN_ADAPTER_DIR:
-			OS.shell_open(OS.get_executable_path().get_base_dir() + "/adapters/mirai")
+			OS.shell_open(GlobalManager.adapter_path+"mirai")
 			
 			
 func _on_help_menu_pressed(id:int):

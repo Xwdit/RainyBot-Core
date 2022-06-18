@@ -4,7 +4,7 @@ extends Node
 class_name MiraiLoader
 
 
-var mirai_path = OS.get_executable_path().get_base_dir()+"/adapters/mirai/"
+var mirai_path = GlobalManager.adapter_path + "mirai/"
 var mirai_http_path = mirai_path + "config/net.mamoe.mirai-api-http/"
 var mirai_login_path = mirai_path + "config/Console/"
 var mirai_http_file = mirai_http_path + "setting.yml"

@@ -1,9 +1,9 @@
 extends Node
 
 
-var plugin_path = OS.get_executable_path().get_base_dir() + "/plugins/"
-var plugin_config_path = OS.get_executable_path().get_base_dir() + "/config/" 
-var plugin_data_path = OS.get_executable_path().get_base_dir() + "/data/"
+var plugin_path = GlobalManager.plugin_path
+var plugin_config_path = GlobalManager.config_path 
+var plugin_data_path = GlobalManager.data_path
 
 var loaded_scripts:Dictionary = {}
 var file_load_status:Dictionary = {}
