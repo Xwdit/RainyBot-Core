@@ -1,7 +1,7 @@
-[gd_resource type="Font" load_steps=2 format=3]
+[gd_resource type="Font" load_steps=2 format=3 uid="uid://c5xxf1vl46ona"]
 
-[ext_resource type="FontData" path="res://libs/gui/resources/font/main_font.otf" id="1_igb1w"]
-
+[ext_resource type="FontData" uid="uid://bcaend563s3qn" path="res://libs/gui/resources/font/main_font.ttf" id="1_mnj4y"]
 
 [resource]
-data/0 = ExtResource( "1_igb1w" )
+spacing_top = 5
+data/0 = ExtResource( "1_mnj4y" )

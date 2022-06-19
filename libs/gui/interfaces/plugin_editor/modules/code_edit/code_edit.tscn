@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://6x8cc0fngicq"]
 
-[ext_resource type="StyleBox" path="res://libs/gui/interfaces/plugin_editor/modules/code_edit/code_edit.tres" id="1_c1dt0"]
+[ext_resource type="StyleBox" uid="uid://btogefokonry7" path="res://libs/gui/interfaces/plugin_editor/modules/code_edit/code_edit.tres" id="1_c1dt0"]
 [ext_resource type="Script" path="res://libs/gui/interfaces/plugin_editor/modules/code_edit/code_edit.gd" id="1_ds5mq"]
-
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_nyeeb"]
 number_color = Color(0.513726, 0.941176, 0.752941, 1)
@@ -41,7 +40,6 @@ gutters_draw_line_numbers = true
 gutters_draw_fold_gutter = true
 code_completion_enabled = true
 code_completion_prefixes = [" ", "."]
-indent_size = 8
 indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true

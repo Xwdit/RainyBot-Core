@@ -6,4 +6,4 @@ func _on_plugin_manager_gui_window_close_requested():
 
 
 func _on_plugin_manager_gui_window_about_to_popup():
-	$PluginManagerGui.update_plugin_list()
+	$PluginManagerGui.update_plugin_list(true)

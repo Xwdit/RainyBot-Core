@@ -1,0 +1,8 @@
+[gd_resource type="Font" load_steps=2 format=3 uid="uid://dc2n125nfhi84"]
+
+[ext_resource type="FontData" uid="uid://bcaend563s3qn" path="res://libs/gui/resources/font/main_font.ttf" id="1_kedqm"]
+
+[resource]
+spacing_top = -3
+spacing_bottom = -2
+data/0 = ExtResource( "1_kedqm" )

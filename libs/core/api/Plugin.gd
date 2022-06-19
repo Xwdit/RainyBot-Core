@@ -1073,7 +1073,10 @@ func set_viewport_size(viewport:SubViewport,size:Vector2i,stretch_size:Vector2i=
 		
 func set_viewport_transparent(viewport:SubViewport,transparent:bool)->void:
 	if is_instance_valid(viewport):
+		var _size:Vector2i = viewport.size
 		viewport.transparent_bg = transparent
+		viewport.size = Vector2i.ZERO
+		viewport.size = _size
 		if transparent:
 			Console.print_success("成功为指定的SubViewport启用背景透明!")
 		else:
@@ -1086,8 +1089,11 @@ func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:
 	if is_instance_valid(viewport):
 		if update:
 			await update_viewport(viewport)
+		var img:Image = viewport.get_texture().get_image()
+		if viewport.size_2d_override_stretch:
+			img.resize(viewport.size_2d_override.x,viewport.size_2d_override.y)
 		Console.print_success("成功基于指定SubViewport中渲染的内容生成图像!")
-		return viewport.get_texture().get_image()
+		return img
 	else:
 		Console.print_success("指定的SubViewport无效，因此无法根据其渲染的内容生成图像!")
 		return null

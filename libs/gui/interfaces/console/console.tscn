@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://hrtt5klpd3fp"]
 
 [ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/console_output/console_output.tscn" id="1_yhib5"]
-[ext_resource type="PackedScene" uid="uid://e6g7kp8hcs81" path="res://libs/gui/interfaces/console/modules/command_input/command_input.tscn" id="2_i0io6"]
+[ext_resource type="PackedScene" uid="uid://des1ncbtor5uh" path="res://libs/gui/interfaces/console/modules/command_input/command_input.tscn" id="2_i0io6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
 bg_color = Color(0.101961, 0.113725, 0.137255, 0)

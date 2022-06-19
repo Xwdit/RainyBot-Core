@@ -1,8 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://c5jsjshx2x220"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/plugin_manager_gui/plugin_manager_gui.gd" id="1_y8fcn"]
 [ext_resource type="PackedScene" path="res://libs/gui/interfaces/plugin_manager_gui/modules/code_preview/code_preview.tscn" id="2_hev7f"]
-
+[ext_resource type="Font" uid="uid://dc2n125nfhi84" path="res://libs/gui/resources/font/lower_font.tres" id="2_kkbno"]
 
 [node name="PluginManagerGui" type="Control"]
 anchor_right = 1.0
@@ -68,6 +68,7 @@ offset_right = 224.0
 offset_bottom = 50.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_fonts/font = ExtResource( "2_kkbno" )
 placeholder_text = "插件文件名(如abc.gd)"
 
 [node name="CreatePluginButton" type="Button" parent="HSplitContainer/PluginListContainer/CreatePlugin"]
@@ -179,9 +180,9 @@ text = "删除文件"
 
 [node name="NoSelectLabel" type="Label" parent="HSplitContainer"]
 offset_left = 312.0
-offset_top = 278.0
+offset_top = 274.0
 offset_right = 1004.0
-offset_bottom = 302.0
+offset_bottom = 305.0
 theme_override_font_sizes/font_size = 20
 text = "还未选择任何文件，请选择一个文件来对其进行操作"
 horizontal_alignment = 1
