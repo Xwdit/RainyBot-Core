@@ -874,14 +874,21 @@ func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
-func create_viewport(size:Vector2i)->SubViewport:
-	var vp:SubViewport = SubViewport.new()
-	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
-	vp.size = size
-	vp.size_2d_override = size
-	add_child(vp)
-	Console.print_success("成功创建SubViewport实例并附加为插件的子节点!")
-	return vp
+func create_viewport(size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO)->SubViewport:
+	var viewport:SubViewport = SubViewport.new()
+	viewport.transparent_bg = true
+	viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	viewport.size = size
+	if stretch_size != Vector2i.ZERO:
+		viewport.size_2d_override_stretch = true
+		viewport.size_2d_override = stretch_size
+		Console.print_success("成功创建SubViewport实例并附加为插件的子节点! 大小为%s, 拉伸大小为%s"% [size,stretch_size])
+	else:
+		viewport.size_2d_override_stretch = false
+		viewport.size_2d_override = size
+		Console.print_success("成功创建SubViewport实例并附加为插件的子节点! 大小为%s"% size)
+	add_child(viewport)
+	return viewport
 
 
 func update_viewport(viewport:SubViewport)->void:
@@ -921,7 +928,7 @@ func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:
 	
 func load_scene(path:String,parent:Node=null)->Node:
 	Console.print_warning("正在尝试加载场景文件: %s"% path)
-	var _scene:PackedScene = ResourceLoader.load(path,"",ResourceLoader.CACHE_MODE_REPLACE)
+	var _scene:PackedScene = ResourceLoader.load(path,"",ResourceLoader.CACHE_MODE_IGNORE)
 	if is_instance_valid(_scene) and _scene.can_instantiate():
 		var ins:Node = _scene.instantiate()
 		if is_instance_valid(parent):
