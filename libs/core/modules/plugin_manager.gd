@@ -4,6 +4,7 @@ extends Node
 var plugin_path = GlobalManager.plugin_path
 var plugin_config_path = GlobalManager.config_path 
 var plugin_data_path = GlobalManager.data_path
+var plugin_cache_path = GlobalManager.cache_path
 
 var loaded_scripts:Dictionary = {}
 var file_load_status:Dictionary = {}

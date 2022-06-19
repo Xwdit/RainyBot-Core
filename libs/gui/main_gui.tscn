@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b0kmegunidh5l"]
 
 [ext_resource type="Script" path="res://libs/gui/main_gui.gd" id="1_g1tev"]
-[ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/console.tscn" id="2_xrvn5"]
+[ext_resource type="PackedScene" uid="uid://bo26pfyp0asw4" path="res://libs/gui/interfaces/console/console.tscn" id="2_xrvn5"]
 [ext_resource type="Script" path="res://libs/gui/modules/control_bar.gd" id="3_j8q6e"]
 
 [node name="MainGui" type="Control"]
@@ -28,8 +28,12 @@ vertical_alignment = 1
 
 [node name="Console" parent="." instance=ExtResource( "2_xrvn5" )]
 offset_top = 33.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
 
 [node name="ControlBar" type="HBoxContainer" parent="."]
 offset_right = 604.0
@@ -43,11 +47,13 @@ size_flags_vertical = 3
 text = "主菜单"
 alignment = 0
 expand_icon = true
-item_count = 2
+item_count = 3
 popup/item_0/text = "检查更新"
 popup/item_0/id = 0
-popup/item_1/text = "退出"
+popup/item_1/text = "打开内部日志目录"
 popup/item_1/id = 1
+popup/item_2/text = "退出"
+popup/item_2/id = 2
 
 [node name="ConsoleMenu" type="MenuButton" parent="ControlBar"]
 offset_left = 60.0
@@ -60,7 +66,7 @@ expand_icon = true
 item_count = 2
 popup/item_0/text = "清空控制台"
 popup/item_0/id = 0
-popup/item_1/text = "打开日志文件夹"
+popup/item_1/text = "打开控制台日志目录"
 popup/item_1/id = 1
 
 [node name="PluginMenu" type="MenuButton" parent="ControlBar"]

@@ -5,6 +5,10 @@ var mirai_client:=MiraiClient.new()
 var mirai_loader:=MiraiLoader.new()
 var mirai_config_manager:=MiraiConfigManager.new()
 
+var group_message_count:int = 0
+var private_message_count:int = 0
+var sent_message_count:int = 0
+
 
 func start():
 	Console.print_warning("正在加载模块: Mirai-Adapter | 版本: %s | 作者: Xwdit" % RainyBotCore.VERSION)
@@ -54,7 +58,9 @@ func get_bot_id()->int:
 	return mirai_config_manager.get_bot_id()
 	
 	
-func send_bot_request(_command,_sub_command=null,_content={},_timeout:float=20.0)->Dictionary:
+func send_bot_request(_command:String,_sub_command=null,_content={},_timeout:float=20.0)->Dictionary:
+	if _command.begins_with("send") and _command.ends_with("Message"):
+		sent_message_count += 1
 	return await mirai_client.send_bot_request(_command,_sub_command,_content,_timeout)
 			
 			
@@ -117,14 +123,19 @@ func parse_event(result_dic:Dictionary):
 	match event_name:
 		"FriendMessage":
 			ins = FriendMessageEvent.init_meta(event_dic)
+			private_message_count += 1
 		"GroupMessage":
 			ins = GroupMessageEvent.init_meta(event_dic)
+			group_message_count += 1
 		"TempMessage":
 			ins = TempMessageEvent.init_meta(event_dic)
+			private_message_count += 1
 		"StrangerMessage":
 			ins = StrangerMessageEvent.init_meta(event_dic)
+			private_message_count += 1
 		"OtherClientMessage":
 			ins = OtherClientMessageEvent.init_meta(event_dic)
+			private_message_count += 1
 		"NudgeEvent":
 			ins = NudgeEvent.init_meta(event_dic)
 		"BotOnlineEvent":
@@ -199,4 +210,5 @@ func parse_event(result_dic:Dictionary):
 			ins = OtherClientOfflineEvent.init_meta(event_dic)
 		_:
 			return
+		
 	get_tree().call_group("Event","_call_event",ins)

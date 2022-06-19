@@ -57,6 +57,7 @@ var plugin_info:Dictionary = {
 
 var plugin_config:Dictionary = {}
 var plugin_data:Dictionary = {}
+var plugin_cache:Dictionary = {}
 var plugin_event_dic:Dictionary = {}
 var plugin_context_dic:Dictionary = {}
 var plugin_keyword_dic:Dictionary = {}
@@ -66,6 +67,7 @@ var plugin_timer:Timer = null
 var plugin_time_passed:int = 0
 var plugin_config_loaded = false
 var plugin_data_loaded = false
+var plugin_cache_loaded = false
 
 
 func _init():
@@ -94,6 +96,8 @@ func _exit_tree():
 		save_plugin_config()
 	if plugin_data_loaded:
 		save_plugin_data()
+	if plugin_cache_loaded:
+		save_plugin_cache()
 
 
 ## 在插件中覆盖此虚函数，以便定义将在此插件的文件被读取时执行的操作
@@ -196,12 +200,22 @@ func get_plugin_filepath()->String:
 ## 用于获取RainyBot的插件文件夹的路径，将返回插件文件夹的绝对路径 (如 D://RainyBot/plugins/)
 func get_plugin_path()->String:
 	return PluginManager.plugin_path
+	
+	
+## 用于获取RainyBot的缓存文件夹的路径，将返回缓存文件夹的绝对路径 (如 D://RainyBot/cache)
+func get_cache_path()->String:
+	return PluginManager.plugin_cache_path
 
 
 ## 用于获取插件的已运行时间，默认情况下为插件成功加载以来经过的秒数
 func get_plugin_runtime()->int:
 	return plugin_time_passed
 	
+
+## 用于获取RainyBot全局的已运行时间，默认情况下为RainyBot成功加载以来经过的秒数
+func get_global_runtime()->int:
+	return GlobalManager.global_run_time
+
 
 ## 用于获取其他插件的实例引用，可用于插件之间的联动与数据互通等
 ## 需要传入其他插件的ID作为参数来获取其实例，若未找到插件则返回null
@@ -685,7 +699,7 @@ func get_plugin_config(key):
 	if plugin_config.has(key):
 		return plugin_config[key]
 	else:
-		Console.print_error("配置内容获取失败，试图获取的key在插件数据库中不存在!")
+		Console.print_error("配置内容获取失败，试图获取的key在插件配置中不存在!")
 		return null
 		
 
@@ -750,6 +764,26 @@ func set_plugin_data_metadata(dic:Dictionary,save_file:bool=true)->int:
 	plugin_data = dic
 	if save_file:
 		save_plugin_data()
+	return OK
+
+
+## 用于直接获取已加载的缓存数据库的字典，便于以字典的形式对其进行操作，需要先初始化缓存数据库文件才能使用此函数
+func get_plugin_cache_metadata()->Dictionary:
+	if !plugin_cache_loaded:
+		Console.print_error("缓存数据库内容获取失败，请先初始化缓存数据库后再执行此操作")
+		return {}
+	return plugin_cache
+
+
+## 用于直接替换已加载的缓存数据库的字典为指定的字典，便于以字典的形式对其进行操作，需要先初始化缓存数据库文件才能使用此函数
+## 最后一项可选参数用于指定是否在设定的同时立即将更改保存到缓存数据库文件中
+func set_plugin_cache_metadata(dic:Dictionary,save_file:bool=true)->int:
+	if !plugin_cache_loaded:
+		Console.print_error("缓存数据库内容设定失败，请先初始化缓存数据库后再执行此操作")
+		return ERR_DATABASE_CANT_WRITE
+	plugin_cache = dic
+	if save_file:
+		save_plugin_cache()
 	return OK
 
 
@@ -865,6 +899,118 @@ func clear_plugin_data(save_file:bool=true)->int:
 	plugin_data.clear()
 	if save_file:
 		save_plugin_data()
+	return OK
+
+
+func init_plugin_cache()->int:
+	Console.print_warning("正在加载插件缓存数据库.....")
+	var data_path = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
+	var file = File.new()
+	if file.file_exists(data_path):
+		var _err = file.open(data_path,File.READ)
+		var _data = file.get_var(true)
+		file.close()
+		if _data is Dictionary:
+			plugin_cache = _data
+			plugin_cache_loaded = true
+			Console.print_success("插件缓存数据库加载成功")
+			return OK
+		else:
+			Console.print_error("插件缓存数据库读取失败，请删除后重新生成! 路径:"+data_path)
+			return ERR_DATABASE_CANT_READ
+	else:
+		Console.print_warning("没有已存在的缓存数据库文件，正在生成新的缓存数据库文件...")
+		var _err = file.open(data_path,File.WRITE)
+		if _err != OK:
+			Console.print_error("缓存数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
+			file.close()
+			return _err
+		else:
+			file.store_var(plugin_cache,true)
+			file.close()
+			plugin_cache_loaded = true
+			Console.print_success("缓存数据库文件创建成功，路径: "+data_path)
+			Console.print_warning("若发生任何缓存数据库文件更改，请重载此插件")
+			return OK
+			
+
+## 用于将内存中的缓存数据保存到数据库文件中，需要先初始化缓存数据库文件才能使用此函数		
+func save_plugin_cache()->int:
+	if !plugin_cache_loaded:
+		Console.print_error("缓存数据库文件保存失败，请先初始化缓存数据库后再执行此操作")
+		return ERR_DATABASE_CANT_WRITE
+	Console.print_warning("正在保存插件缓存数据库.....")
+	var data_path = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
+	var file = File.new()
+	var _err = file.open(data_path,File.WRITE)
+	if _err != OK:
+		Console.print_error("缓存数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
+		file.close()
+		return _err
+	else:
+		file.store_var(plugin_cache,true)
+		file.close()
+		Console.print_success("缓存数据库文件保存成功，路径: "+data_path)
+		return OK
+		
+
+## 用于从已加载的缓存数据库中获取指定key对应的内容，需要先初始化缓存数据库文件才能使用此函数	
+func get_plugin_cache(key):
+	if !plugin_cache_loaded:
+		Console.print_error("缓存数据库内容获取失败，请先初始化缓存数据库后再执行此操作!")
+		return null
+	if plugin_cache.has(key):
+		return plugin_cache[key]
+	else:
+		Console.print_error("缓存数据库内容获取失败，试图获取的key在插件缓存数据库中不存在!")
+		return null
+		
+
+## 用于从已加载的缓存数据库中检查指定key是否存在，需要先初始化缓存数据库文件才能使用此函数			
+func has_plugin_cache(key)->bool:
+	if !plugin_cache_loaded:
+		Console.print_error("缓存数据库内容获取失败，请先初始化数据库后再执行此操作!")
+		return false
+	return plugin_cache.has(key)
+		
+
+## 用于在已加载的缓存数据库中设定指定key的对应内容，需要先初始化缓存数据库文件才能使用此函数
+## 最后一项可选参数用于指定是否在设定的同时将更改立即保存到缓存数据库文件中
+func set_plugin_cache(key,value,save_file:bool=true)->int:
+	if !plugin_cache_loaded:
+		Console.print_error("缓存数据库内容设定失败，请先初始化缓存数据库后再执行此操作!")
+		return ERR_DATABASE_CANT_WRITE
+	plugin_cache[key]=value
+	if save_file:
+		save_plugin_cache()
+	return OK
+
+
+## 用于在已加载的缓存数据库中删除指定key及其对应内容，需要先初始化缓存数据库文件才能使用此函数
+## 最后一项可选参数用于指定是否在删除的同时将更改立即保存到缓存数据库文件中
+func remove_plugin_cache(key,save_file:bool=true)->int:
+	if !plugin_cache_loaded:
+		Console.print_error("缓存数据库内容删除失败，请先初始化缓存数据库后再执行此操作!")
+		return ERR_DATABASE_CANT_WRITE
+	if plugin_cache.has(key):
+		plugin_cache.erase(key)
+		if save_file:
+			save_plugin_cache()
+		return OK
+	else:
+		Console.print_error("缓存数据库内容删除失败，试图删除的key在插件缓存数据库中不存在!")
+		return ERR_DATABASE_CANT_WRITE
+		
+
+## 用于在已加载的缓存数据库中清空所有内容，需要先初始化缓存数据库文件才能使用此函数
+## 最后一项可选参数用于指定是否在清空的同时将更改立即保存到缓存数据库文件中
+func clear_plugin_cache(save_file:bool=true)->int:
+	if !plugin_cache_loaded:
+		Console.print_error("缓存数据库内容清空失败，请先初始化缓存数据库后再执行此操作!")
+		return ERR_DATABASE_CANT_WRITE
+	plugin_cache.clear()
+	if save_file:
+		save_plugin_cache()
 	return OK
 
 

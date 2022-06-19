@@ -5,7 +5,7 @@ const INIT_PATH = [
 	"/plugins/",
 	"/config/",
 	"/data/",
-	"/data/cache/",
+	"/cache/",
 	"/logs/",
 ]
 
@@ -13,8 +13,11 @@ var adapter_path:String = OS.get_executable_path().get_base_dir()+"/adapters/"
 var plugin_path:String = OS.get_executable_path().get_base_dir()+"/plugins/"
 var config_path:String = OS.get_executable_path().get_base_dir()+"/config/"
 var data_path:String = OS.get_executable_path().get_base_dir()+"/data/"
-var cache_path:String = OS.get_executable_path().get_base_dir()+"/data/cache/"
+var cache_path:String = OS.get_executable_path().get_base_dir()+"/cache/"
 var log_path:String = OS.get_executable_path().get_base_dir()+"/logs/"
+
+var global_timer:Timer = Timer.new()
+var global_run_time:int = 0
 
 
 func _init():
@@ -29,6 +32,9 @@ func _ready():
 	get_tree().set_auto_accept_quit(false)
 	add_to_group("console_command_stop")
 	CommandManager.register_console_command("stop",false,["stop - 卸载所有插件并安全退出RainyBot进程"],"RainyBot-Core",false)
+	global_timer.connect("timeout",_on_global_timer_timeout)
+	add_child(global_timer)
+	global_timer.start(1.0)
 
 
 func _init_dir():
@@ -54,6 +60,10 @@ func _notification(what):
 
 func _call_console_command(_cmd:String,_args:Array):
 	notification(NOTIFICATION_WM_CLOSE_REQUEST)
+
+
+func _on_global_timer_timeout():
+	global_run_time += 1
 
 
 func clear_cache():
