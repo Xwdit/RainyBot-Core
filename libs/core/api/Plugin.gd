@@ -1030,7 +1030,7 @@ func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
-func create_viewport(size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO,transparent:bool=true)->SubViewport:
+func create_viewport(size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO,transparent:bool=false)->SubViewport:
 	var viewport:SubViewport = SubViewport.new()
 	viewport.transparent_bg = transparent
 	viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
