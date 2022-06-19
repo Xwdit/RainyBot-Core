@@ -480,8 +480,11 @@ func parse_code_text():
 
 
 func check_error():
-	for _l in error_lines:
-		set_line_background_color(_l,Color(Color.WHITE,0.0))
+	for _l in range(get_line_count()):
+		if get_line_background_color(_l) != Color(0, 0, 0, 0):
+			set_line_background_color(_l,Color(0, 0, 0, 0))
+		else:
+			continue
 	error_lines.clear()
 	var _f = File.new()
 	_f.open("user://logs/rainybot.log",File.READ)
