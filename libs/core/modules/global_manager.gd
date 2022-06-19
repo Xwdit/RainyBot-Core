@@ -19,6 +19,8 @@ var log_path:String = OS.get_executable_path().get_base_dir()+"/logs/"
 var global_timer:Timer = Timer.new()
 var global_run_time:int = 0
 
+var restarting:bool = false
+
 
 func _init():
 	var icon = Image.new()
@@ -55,6 +57,8 @@ func _notification(what):
 		await get_tree().create_timer(0.5).timeout
 		Console.save_log(true)
 		clear_cache()
+		if restarting:
+			OS.create_instance([])
 		get_tree().quit()
 
 
@@ -72,3 +76,9 @@ func clear_cache():
 		dir.open(cache_path)
 		for _file in dir.get_files():
 			dir.remove(cache_path+_file)
+
+
+func restart():
+	restarting = true
+	Console.print_warning("正在重新启动RainyBot.....")
+	notification(NOTIFICATION_WM_CLOSE_REQUEST)

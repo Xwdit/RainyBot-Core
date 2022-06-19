@@ -50,13 +50,15 @@ size_flags_vertical = 3
 text = "主菜单"
 alignment = 0
 expand_icon = true
-item_count = 3
+item_count = 4
 popup/item_0/text = "检查更新"
 popup/item_0/id = 0
 popup/item_1/text = "打开内部日志目录"
 popup/item_1/id = 1
-popup/item_2/text = "退出"
+popup/item_2/text = "重新启动"
 popup/item_2/id = 2
+popup/item_3/text = "退出"
+popup/item_3/id = 3
 
 [node name="ConsoleMenu" type="MenuButton" parent="ControlBar"]
 offset_left = 60.0

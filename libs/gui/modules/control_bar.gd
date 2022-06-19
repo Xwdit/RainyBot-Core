@@ -4,6 +4,7 @@ extends HBoxContainer
 enum MainMenuOptions {
 	CHECK_UPDATE,
 	OPEN_INTERNAL_LOG_DIR,
+	RESTART,
 	EXIT
 }
 
@@ -56,6 +57,8 @@ func _on_main_menu_pressed(id:int):
 			get_parent().check_update()
 		MainMenuOptions.OPEN_INTERNAL_LOG_DIR:
 			OS.shell_open(OS.get_user_data_dir()+"/logs/")
+		MainMenuOptions.RESTART:
+			GlobalManager.restart()
 		MainMenuOptions.EXIT:
 			CommandManager.parse_console_command("stop")
 			
