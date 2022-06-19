@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://e6g7kp8hcs81"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/console/modules/command_input/command_input.gd" id="1_s3b1w"]
-
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0ng3"]
 content_margin_left = 2.0
@@ -15,16 +14,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_colors/font_selected_color = Color(0, 0, 0, 0)
 theme_override_colors/font_color = Color(0.878431, 0.878431, 0.878431, 1)
+theme_override_colors/font_selected_color = Color(0, 0, 0, 0)
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource( "StyleBoxFlat_h0ng3" )
 placeholder_text = "在此输入命令，回车键确认，输入help查看帮助"
 expand_to_text_length = true
 caret_blink = true
 script = ExtResource( "1_s3b1w" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="text_submitted" from="." to="." method="_on_CommandInput_text_submitted"]

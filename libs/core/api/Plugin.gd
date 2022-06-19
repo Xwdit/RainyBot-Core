@@ -200,11 +200,6 @@ func get_plugin_filepath()->String:
 ## 用于获取RainyBot的插件文件夹的路径，将返回插件文件夹的绝对路径 (如 D://RainyBot/plugins/)
 func get_plugin_path()->String:
 	return PluginManager.plugin_path
-	
-	
-## 用于获取RainyBot的缓存文件夹的路径，将返回缓存文件夹的绝对路径 (如 D://RainyBot/cache)
-func get_cache_path()->String:
-	return PluginManager.plugin_cache_path
 
 
 ## 用于获取插件的已运行时间，默认情况下为插件成功加载以来经过的秒数
@@ -246,6 +241,16 @@ func get_config_filepath()->String:
 	return PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	
 
+## 用于获取RainyBot的缓存文件夹的路径，将返回缓存文件夹的绝对路径 (如 D://RainyBot/cache)
+func get_cache_path()->String:
+	return PluginManager.plugin_cache_path
+	
+	
+## 用于获取该插件对应的缓存数据库文件的路径，即插件对应的.rca格式文件的绝对路径
+func get_cache_filepath()->String:
+	return PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
+
+
 ## 用于检查插件对应的配置文件内容是否已被加载
 func is_config_loaded()->bool:
 	return plugin_config_loaded
@@ -254,6 +259,11 @@ func is_config_loaded()->bool:
 ## 用于检查插件对应的数据库文件内容是否已被加载
 func is_data_loaded()->bool:
 	return plugin_data_loaded
+
+
+## 用于检查插件对应的缓存数据库文件内容是否已被加载
+func is_cache_loaded()->bool:
+	return plugin_cache_loaded
 
 
 ## 用于注册一个或多个事件并将其绑定到一个或多个函数，事件发生时将触发绑定的函数并传入事件实例
