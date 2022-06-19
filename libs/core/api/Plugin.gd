@@ -893,6 +893,21 @@ func update_viewport(viewport:SubViewport)->void:
 		Console.print_error("指定的SubViewport无效，因此无法对其进行更新！")
 	
 	
+func set_viewport_size(viewport:SubViewport,size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO)->void:
+	if is_instance_valid(viewport):
+		viewport.size = size
+		if stretch_size != Vector2i.ZERO:
+			viewport.size_2d_override_stretch = true
+			viewport.size_2d_override = stretch_size
+			Console.print_success("成功将指定SubViewport的大小更改为%s, 拉伸大小更改为%s！"% [size,stretch_size])
+		else:
+			viewport.size_2d_override_stretch = false
+			viewport.size_2d_override = size
+			Console.print_success("成功将指定SubViewport的大小更改为%s！"% size)
+	else:
+		Console.print_error("指定的SubViewport无效，因此无法更改其大小！")
+	
+	
 func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:
 	if is_instance_valid(viewport):
 		if update:
