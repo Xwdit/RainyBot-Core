@@ -832,7 +832,7 @@ func has_plugin_data(key)->bool:
 ## 最后一项可选参数用于指定是否在设定的同时将更改立即保存到数据库文件中
 func set_plugin_data(key,value,save_file:bool=true)->int:
 	if !plugin_data_loaded:
-		Console.print_error("数据库内容设定失败，请先初始化数据库后再执行此操作")
+		Console.print_error("数据库内容设定失败，请先初始化数据库后再执行此操作!")
 		return ERR_DATABASE_CANT_WRITE
 	plugin_data[key]=value
 	if save_file:
@@ -880,7 +880,7 @@ func create_viewport(size:Vector2i)->SubViewport:
 	vp.size = size
 	vp.size_2d_override = size
 	add_child(vp)
-	Console.print_success("成功创建SubViewport实例并附加为插件的子节点")
+	Console.print_success("成功创建SubViewport实例并附加为插件的子节点!")
 	return vp
 
 
@@ -888,9 +888,9 @@ func update_viewport(viewport:SubViewport)->void:
 	if is_instance_valid(viewport):
 		viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 		await get_tree().process_frame
-		Console.print_success("成功更新指定SubViewport中渲染的内容！")
+		Console.print_success("成功更新指定SubViewport中渲染的内容!")
 	else:
-		Console.print_error("指定的SubViewport无效，因此无法对其进行更新！")
+		Console.print_error("指定的SubViewport无效，因此无法对其进行更新!")
 	
 	
 func set_viewport_size(viewport:SubViewport,size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO)->void:
@@ -899,40 +899,40 @@ func set_viewport_size(viewport:SubViewport,size:Vector2i,stretch_size:Vector2i=
 		if stretch_size != Vector2i.ZERO:
 			viewport.size_2d_override_stretch = true
 			viewport.size_2d_override = stretch_size
-			Console.print_success("成功将指定SubViewport的大小更改为%s, 拉伸大小更改为%s！"% [size,stretch_size])
+			Console.print_success("成功将指定SubViewport的大小更改为%s, 拉伸大小更改为%s"% [size,stretch_size])
 		else:
 			viewport.size_2d_override_stretch = false
 			viewport.size_2d_override = size
-			Console.print_success("成功将指定SubViewport的大小更改为%s！"% size)
+			Console.print_success("成功将指定SubViewport的大小更改为%s"% size)
 	else:
-		Console.print_error("指定的SubViewport无效，因此无法更改其大小！")
+		Console.print_error("指定的SubViewport无效，因此无法更改其大小!")
 	
 	
 func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:
 	if is_instance_valid(viewport):
 		if update:
 			await update_viewport(viewport)
-		Console.print_success("成功基于指定SubViewport中渲染的内容生成图像！")
+		Console.print_success("成功基于指定SubViewport中渲染的内容生成图像!")
 		return viewport.get_texture().get_image()
 	else:
-		Console.print_success("指定的SubViewport无效，因此无法根据其渲染的内容生成图像！")
+		Console.print_success("指定的SubViewport无效，因此无法根据其渲染的内容生成图像!")
 		return null
 
 	
 func load_scene(path:String,parent:Node=null)->Node:
-	Console.print_warning("正在尝试加载场景文件：%s"% path)
+	Console.print_warning("正在尝试加载场景文件: %s"% path)
 	var _scene:PackedScene = ResourceLoader.load(path,"",ResourceLoader.CACHE_MODE_REPLACE)
 	if is_instance_valid(_scene) and _scene.can_instantiate():
 		var ins:Node = _scene.instantiate()
 		if is_instance_valid(parent):
 			parent.add_child(ins)
-			Console.print_success("成功加载场景文件并附加到指定的父节点：%s"% path)
+			Console.print_success("成功加载场景文件并附加到指定的父节点: %s"% path)
 		else:
 			add_child(ins)
-			Console.print_success("成功加载场景文件并附加为插件的子节点：%s"% path)
+			Console.print_success("成功加载场景文件并附加为插件的子节点: %s"% path)
 		return ins
 	else:
-		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确！"% path)
+		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确!"% path)
 		return null
 	
 
