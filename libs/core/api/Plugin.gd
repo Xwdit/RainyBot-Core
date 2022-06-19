@@ -1030,19 +1030,19 @@ func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
-func create_viewport(size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO)->SubViewport:
+func create_viewport(size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO,transparent:bool=true)->SubViewport:
 	var viewport:SubViewport = SubViewport.new()
-	viewport.transparent_bg = true
+	viewport.transparent_bg = transparent
 	viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 	viewport.size = size
 	if stretch_size != Vector2i.ZERO:
 		viewport.size_2d_override_stretch = true
 		viewport.size_2d_override = stretch_size
-		Console.print_success("成功创建SubViewport实例并附加为插件的子节点! 大小为%s, 拉伸大小为%s"% [size,stretch_size])
+		Console.print_success("成功创建SubViewport实例并附加为插件的子节点! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [size,stretch_size,"启用" if transparent else "禁用"])
 	else:
 		viewport.size_2d_override_stretch = false
 		viewport.size_2d_override = size
-		Console.print_success("成功创建SubViewport实例并附加为插件的子节点! 大小为%s"% size)
+		Console.print_success("成功创建SubViewport实例并附加为插件的子节点! 大小为:%s, 背景透明状态为:%s"% [size,"启用" if transparent else "禁用"])
 	add_child(viewport)
 	return viewport
 
@@ -1069,6 +1069,17 @@ func set_viewport_size(viewport:SubViewport,size:Vector2i,stretch_size:Vector2i=
 			Console.print_success("成功将指定SubViewport的大小更改为%s"% size)
 	else:
 		Console.print_error("指定的SubViewport无效，因此无法更改其大小!")
+		
+		
+func set_viewport_transparent(viewport:SubViewport,transparent:bool)->void:
+	if is_instance_valid(viewport):
+		viewport.transparent_bg = transparent
+		if transparent:
+			Console.print_success("成功为指定的SubViewport启用背景透明!")
+		else:
+			Console.print_success("成功为指定的SubViewport禁用背景透明!")
+	else:
+		Console.print_error("指定的SubViewport无效，因此无法更改其背景透明状态!")
 	
 	
 func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:

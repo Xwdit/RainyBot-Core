@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://hrtt5klpd3fp"]
 
 [ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/console_output/console_output.tscn" id="1_yhib5"]
-[ext_resource type="PackedScene" path="res://libs/gui/interfaces/console/modules/command_input/command_input.tscn" id="2_i0io6"]
-
+[ext_resource type="PackedScene" uid="uid://e6g7kp8hcs81" path="res://libs/gui/interfaces/console/modules/command_input/command_input.tscn" id="2_i0io6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
 bg_color = Color(0.101961, 0.113725, 0.137255, 0)
@@ -21,9 +20,6 @@ border_blend = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_styles/panel = SubResource( "StyleBoxFlat_qi3ek" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 anchor_right = 1.0
@@ -33,9 +29,6 @@ offset_top = 10.0
 offset_right = -8.0
 offset_bottom = -8.0
 split_offset = 220
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource( "1_yhib5" )]
 anchor_right = 0.0
@@ -49,7 +42,6 @@ anchor_bottom = 0.0
 offset_top = 517.0
 offset_right = 1008.0
 offset_bottom = 582.0
-rect_min_size = Vector2(0, 60)
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
