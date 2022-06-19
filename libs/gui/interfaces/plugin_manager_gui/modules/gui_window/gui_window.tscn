@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dlcfxgckslcfp"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/plugin_manager_gui/modules/gui_window/gui_window.gd" id="1_w1lp4"]
-[ext_resource type="PackedScene" path="res://libs/gui/interfaces/plugin_manager_gui/plugin_manager_gui.tscn" id="2_2bgr5"]
+[ext_resource type="PackedScene" uid="uid://c5jsjshx2x220" path="res://libs/gui/interfaces/plugin_manager_gui/plugin_manager_gui.tscn" id="2_2bgr5"]
 
 [node name="PluginManagerGuiWindow" type="Window"]
 title = "RainyBot插件管理器"

@@ -19,7 +19,7 @@ color = Color(0.113725, 0.133333, 0.160784, 1)
 [node name="Status" type="Label" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -457.0
+offset_left = -675.0
 offset_right = -8.0
 offset_bottom = 32.0
 grow_horizontal = 0

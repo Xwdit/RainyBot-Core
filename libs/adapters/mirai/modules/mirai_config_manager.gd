@@ -45,7 +45,10 @@ func init_config():
 			if _config.has_all(default_config.keys()):
 				if _config["mirai_qq_password"] == "$DEFAULT12345":
 					Console.print_error("检测到您还未修改默认配置，请进行修改!")
-					Console.print_error("可以前往以下路径来验证与修改配置: "+config_path)
+					Console.print_error("可以通过协议后端菜单，或前往以下路径来验证与修改配置: "+config_path)
+					Console.print_text("配置选项说明:")
+					for key in config_description:
+						Console.print_text(key+":"+config_description[key])
 					Console.print_warning("配置完成后请重启RainyBot")
 					return
 				for key in _config:
