@@ -109,3 +109,4 @@ func check_error():
 				last_errors.append("脚本运行时错误: "+_text)
 				Console.print_error("检测到脚本运行时错误: "+_text)
 		last_log_text = curr_text
+		get_tree().call_group("Plugin","_on_error")
