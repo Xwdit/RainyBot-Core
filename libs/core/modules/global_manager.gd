@@ -21,6 +21,9 @@ var global_run_time:int = 0
 
 var restarting:bool = false
 
+var last_log_text:String = ""
+var last_errors:PackedStringArray = []
+
 
 func _init():
 	var icon = Image.new()
@@ -34,9 +37,14 @@ func _ready():
 	get_tree().set_auto_accept_quit(false)
 	add_to_group("console_command_stop")
 	CommandManager.register_console_command("stop",false,["stop - 卸载所有插件并安全退出RainyBot进程"],"RainyBot-Core",false)
+	
 	global_timer.connect("timeout",_on_global_timer_timeout)
 	add_child(global_timer)
 	global_timer.start(1.0)
+
+
+func _process(delta):
+	check_error()
 
 
 func _init_dir():
@@ -82,3 +90,22 @@ func restart():
 	restarting = true
 	Console.print_warning("正在重新启动RainyBot.....")
 	notification(NOTIFICATION_WM_CLOSE_REQUEST)
+
+
+func check_error():
+	var _f = File.new()
+	_f.open("user://logs/rainybot.log",File.READ)
+	var curr_text = _f.get_as_text()
+	_f.close()
+	if last_log_text == "":
+		last_log_text = curr_text
+	elif last_log_text != curr_text:
+		last_errors.resize(0)
+		var _err = curr_text.replacen(last_log_text,"").split("\n")
+		for _l in _err:
+			if _l.findn("built-in")!=-1:
+				var _sl = _l.split(" - ")
+				var _text = "第%s行 - %s"%[abs(_sl[0].to_int()),_sl[1]]
+				last_errors.append("脚本运行时错误: "+_text)
+				Console.print_error("检测到脚本运行时错误: "+_text)
+		last_log_text = curr_text

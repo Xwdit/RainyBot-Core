@@ -266,6 +266,10 @@ func is_cache_loaded()->bool:
 	return plugin_cache_loaded
 
 
+func get_last_errors()->PackedStringArray:
+	return GlobalManager.last_errors
+
+
 ## 用于注册一个或多个事件并将其绑定到一个或多个函数，事件发生时将触发绑定的函数并传入事件实例
 ## 需要的参数从左到右分别为:
 ## 事件的类型:

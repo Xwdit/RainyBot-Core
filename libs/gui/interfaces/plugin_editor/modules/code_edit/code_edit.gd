@@ -494,10 +494,12 @@ func check_error():
 	_scr.source_code = text
 	if _scr.reload() != OK:
 		_f.open("user://logs/rainybot.log",File.READ)
-		var _err = _f.get_as_text().replacen(curr_text,"").split("\n")
+		var _text = _f.get_as_text()
 		_f.close()
+		GlobalManager.last_log_text = _text
+		var _err = _text.replacen(curr_text,"").split("\n")
 		for _l in _err:
-			if _l.findn("built-in:")!=-1:
+			if _l.findn("built-in")!=-1:
 				var _sl = _l.split(" - ")
 				var _num = clampi(abs(_sl[0].to_int())-1,0,get_line_count()-1)
 				var _error = _sl[1]
