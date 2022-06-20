@@ -1,8 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://beoswm81km06x"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/plugin_editor/plugin_editor.gd" id="1_afc2x"]
-[ext_resource type="PackedScene" path="res://libs/gui/interfaces/plugin_editor/modules/code_edit/code_edit.tscn" id="2_mo1oq"]
-
+[ext_resource type="PackedScene" uid="uid://6x8cc0fngicq" path="res://libs/gui/interfaces/plugin_editor/modules/code_edit/code_edit.tscn" id="2_mo1oq"]
 
 [node name="PluginEditor" type="Control"]
 anchor_right = 1.0
@@ -37,21 +36,21 @@ offset_bottom = 30.0
 
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
 offset_right = 72.0
-offset_bottom = 28.0
+offset_bottom = 30.0
 text = "保存文件"
 flat = true
 
 [node name="SaveReloadButton" type="Button" parent="EditorPanel/Menu"]
 offset_left = 76.0
 offset_right = 164.0
-offset_bottom = 28.0
+offset_bottom = 30.0
 text = "保存并重载"
 flat = true
 
 [node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
 offset_left = 168.0
-offset_right = 265.0
-offset_bottom = 28.0
+offset_right = 267.0
+offset_bottom = 30.0
 text = "打开API文档"
 flat = true
 
@@ -62,19 +61,19 @@ mouse_filter = 2
 alignment = 1
 
 [node name="FileName" type="Label" parent="EditorPanel/File"]
-offset_left = 482.0
-offset_top = 6.0
-offset_right = 536.0
-offset_bottom = 26.0
+offset_left = 478.0
+offset_top = 3.0
+offset_right = 540.0
+offset_bottom = 30.0
 text = "Test.gd"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FileStatus" type="Label" parent="EditorPanel/File"]
-offset_left = 540.0
-offset_top = 8.0
-offset_right = 541.0
-offset_bottom = 25.0
+offset_left = 544.0
+offset_top = 3.0
+offset_right = 545.0
+offset_bottom = 30.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -88,10 +87,10 @@ mouse_filter = 2
 alignment = 2
 
 [node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
-offset_left = 172.0
-offset_top = 6.0
+offset_left = 158.0
+offset_top = 3.0
 offset_right = 202.0
-offset_bottom = 26.0
+offset_bottom = 30.0
 text = "1 : 1"
 horizontal_alignment = 2
 vertical_alignment = 1

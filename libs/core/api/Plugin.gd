@@ -1041,6 +1041,9 @@ func unload_plugin():
 
 
 func create_viewport(size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO,transparent:bool=false)->SubViewport:
+	if (size.x < 0 or size.y < 0) or (stretch_size.x < 0 or stretch_size.y < 0):
+		Console.print_error("无法创建SubViewport实例，因为传入的大小或拉伸大小不能小于(0,0)!")
+		return
 	var viewport:SubViewport = SubViewport.new()
 	viewport.transparent_bg = transparent
 	viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
@@ -1068,6 +1071,9 @@ func update_viewport(viewport:SubViewport)->void:
 	
 func set_viewport_size(viewport:SubViewport,size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO)->void:
 	if is_instance_valid(viewport):
+		if (size.x < 0 or size.y < 0) or (stretch_size.x < 0 or stretch_size.y < 0):
+			Console.print_error("无法更改指定SubViewport的大小，因为传入的大小或拉伸大小不能小于(0,0)!")
+			return
 		viewport.size = size
 		if stretch_size != Vector2i.ZERO:
 			viewport.size_2d_override_stretch = true
@@ -1100,12 +1106,21 @@ func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:
 		if update:
 			await update_viewport(viewport)
 		var img:Image = viewport.get_texture().get_image()
-		if viewport.size_2d_override_stretch:
-			img.resize(viewport.size_2d_override.x,viewport.size_2d_override.y)
-		Console.print_success("成功基于指定SubViewport中渲染的内容生成图像!")
-		return img
+		if is_instance_valid(img):
+			if viewport.size_2d_override_stretch:
+				img.resize(viewport.size_2d_override.x,viewport.size_2d_override.y)
+				Console.print_success("成功基于指定SubViewport中渲染的内容生成图像! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [viewport.size,viewport.size_2d_override,"启用" if viewport.transparent_bg else "禁用"])
+			else:
+				Console.print_success("成功基于指定SubViewport中渲染的内容生成图像! 大小为:%s, 背景透明状态为:%s"% [viewport.size,"启用" if viewport.transparent_bg else "禁用"])
+			return img
+		else:
+			if viewport.size_2d_override_stretch:
+				Console.print_error("无法根据指定的SubViewport中渲染的内容生成图像，请检查其子场景与各项配置是否正确! (大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s)"% [viewport.size,viewport.size_2d_override,"启用" if viewport.transparent_bg else "禁用"])
+			else:
+				Console.print_error("无法根据指定的SubViewport中渲染的内容生成图像，请检查其子场景与各项配置是否正确! (大小为:%s, 背景透明状态为:%s)"% [viewport.size,"启用" if viewport.transparent_bg else "禁用"])
+			return null
 	else:
-		Console.print_success("指定的SubViewport无效，因此无法根据其渲染的内容生成图像!")
+		Console.print_error("指定的SubViewport无效，因此无法根据其渲染的内容生成图像!")
 		return null
 
 	
