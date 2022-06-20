@@ -66,7 +66,7 @@ class HttpRequestInstance:
 	var result:HttpRequestResult = HttpRequestResult.new()
 
 	func _ready():
-		connect("request_completed",Callable(self,"_http_request_completed"))
+		connect("request_completed",_http_request_completed)
 
 	func _http_request_completed(_result, _response_code, _headers, _body):
 		result.request_url = request_url

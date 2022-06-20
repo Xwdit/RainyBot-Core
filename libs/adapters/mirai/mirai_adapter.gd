@@ -19,7 +19,7 @@ func start():
 		"mirai command <命令> - 向Mirai框架发送命令并显示回调(不支持额外参数)",
 	]
 	CommandManager.register_console_command("mirai",true,usages,"Mirai-Adapter",false)
-	mirai_config_manager.connect("config_loaded",Callable(self,"_mirai_config_loaded"))
+	mirai_config_manager.connect("config_loaded",_mirai_config_loaded)
 	mirai_config_manager.name = "MiraiConfigManager"
 	mirai_client.name = "MiraiClient"
 	mirai_loader.name = "MiraiLoader"

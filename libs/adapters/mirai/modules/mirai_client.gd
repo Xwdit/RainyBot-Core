@@ -12,10 +12,10 @@ var mirai_connected = false
 
 
 func _ready():
-	_client.connect("connection_closed", Callable(self, "_closed"))
-	_client.connect("connection_error", Callable(self, "_closed"))
-	_client.connect("connection_established", Callable(self, "_connected"))
-	_client.connect("data_received", Callable(self, "_on_data"))
+	_client.connect("connection_closed", _closed)
+	_client.connect("connection_error", _closed)
+	_client.connect("connection_established", _connected)
+	_client.connect("data_received", _on_data)
 
 
 func connect_to_mirai(ws_url):
