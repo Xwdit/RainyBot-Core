@@ -89,11 +89,7 @@ func _on_global_timer_timeout():
 
 
 func clear_cache():
-	var dir = Directory.new()
-	if dir.dir_exists(cache_path):
-		dir.open(cache_path)
-		for _file in dir.get_files():
-			dir.remove(cache_path+_file)
+	clear_dir_files(cache_path,false)
 
 
 func restart():
@@ -139,7 +135,7 @@ func reimport():
 	restart()
 
 
-func clear_dir_files(dir_path):
+func clear_dir_files(dir_path,remove_dir:bool=true):
 	var dir = Directory.new()
 	if dir.dir_exists(dir_path):
 		dir.open(dir_path)
@@ -147,7 +143,8 @@ func clear_dir_files(dir_path):
 			dir.remove(dir_path+_file)
 		for _dir in dir.get_directories():
 			clear_dir_files(dir_path+_dir+"/")
-		dir.remove(dir_path)
+		if remove_dir:
+			dir.remove(dir_path)
 
 
 func _add_import_helper():
