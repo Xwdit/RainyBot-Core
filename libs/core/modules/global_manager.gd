@@ -61,7 +61,7 @@ func _init_dir():
 		var path = OS.get_executable_path().get_base_dir() + p
 		if !dir.dir_exists(path):
 			dir.make_dir(path)
-		if p == "/cache/" or p == "/logs/":
+		if p != "/plugins/":
 			if !file.file_exists(path+".gdignore"):
 				file.open(path+".gdignore",File.WRITE)
 				file.close()
