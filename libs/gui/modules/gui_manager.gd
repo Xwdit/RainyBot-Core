@@ -4,6 +4,8 @@ extends Node
 var _editor = load("res://libs/gui/interfaces/plugin_editor/modules/editor_window/plugin_editor_window.tscn")
 var _manager = load("res://libs/gui/interfaces/plugin_manager_gui/modules/gui_window/gui_window.tscn").instantiate()
 
+var scene_editor_pid:int = -1
+
 
 func _ready():
 	await get_tree().physics_frame
@@ -33,6 +35,15 @@ func open_plugin_manager():
 	console_print_warning("正在启动插件管理器，请稍候.....")
 	await get_tree().physics_frame
 	_manager.popup_centered(Vector2i(1024,600))
+	_manager.grab_focus()
+	
+	
+func open_scene_editor():
+	if scene_editor_pid != -1 and OS.is_process_running(scene_editor_pid):
+		console_print_error("场景编辑器当前正在运行中，请不要同时启动多个场景编辑器进程!")
+	else:
+		console_print_warning("正在启动场景编辑器，请稍候..... | 版本: Godot-%s"% Engine.get_version_info().string)
+		scene_editor_pid = OS.create_instance(["--editor"])
 	
 
 func console_print_text(text):

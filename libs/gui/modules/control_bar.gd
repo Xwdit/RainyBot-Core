@@ -58,8 +58,7 @@ func _on_main_menu_pressed(id:int):
 		MainMenuOptions.CHECK_UPDATE:
 			get_parent().check_update()
 		MainMenuOptions.SCENE_EDITOR:
-			Console.print_warning("正在启动场景编辑器，请稍候..... | 版本: Godot-%s"% Engine.get_version_info().string)
-			OS.create_instance(["--editor"])
+			GuiManager.open_scene_editor()
 		MainMenuOptions.OPEN_INTERNAL_LOG_DIR:
 			OS.shell_open(OS.get_user_data_dir()+"/logs/")
 		MainMenuOptions.RESTART:
