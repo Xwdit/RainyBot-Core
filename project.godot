@@ -639,6 +639,10 @@ window/subwindows/embed_subwindows=false
 
 export/convert_text_resources_to_binary=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/import_helper/plugin.cfg")
+
 [gui]
 
 theme/custom_font="res://libs/gui/resources/font/main_font.tres"

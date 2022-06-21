@@ -31,6 +31,7 @@ func _ready():
 		"plugins unload <插件id> - 卸载一个指定的插件",
 		"plugins reload <插件id> - 重新加载一个指定的插件",
 		"plugins areload - 重新加载所有插件",
+		"plugins reimport - 重新导入所有资源并重新启动",
 		"plugins create <文件名> - 新建一个插件",
 		"plugins edit <文件名> - 编辑一个插件",
 		"plugins delete <文件名> - 删除一个插件"
@@ -95,6 +96,8 @@ func _call_console_command(_cmd:String,args:Array):
 				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"areload":
 			reload_plugins()
+		"reimport":
+			GlobalManager.reimport()
 		"edit":
 			if args.size() > 1:
 				var file_name:String = args[1]

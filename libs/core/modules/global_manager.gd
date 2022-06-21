@@ -36,7 +36,9 @@ func _init():
 func _ready():
 	get_tree().set_auto_accept_quit(false)
 	add_to_group("console_command_stop")
+	add_to_group("console_command_restart")
 	CommandManager.register_console_command("stop",false,["stop - 卸载所有插件并安全退出RainyBot进程"],"RainyBot-Core",false)
+	CommandManager.register_console_command("restart",false,["restart - 卸载所有插件并重新启动RainyBot进程"],"RainyBot-Core",false)
 	
 	global_timer.connect("timeout",_on_global_timer_timeout)
 	add_child(global_timer)
@@ -71,7 +73,10 @@ func _notification(what):
 
 
 func _call_console_command(_cmd:String,_args:Array):
-	notification(NOTIFICATION_WM_CLOSE_REQUEST)
+	if _cmd == "stop":
+		notification(NOTIFICATION_WM_CLOSE_REQUEST)
+	elif _cmd == "restart":
+		restart()
 
 
 func _on_global_timer_timeout():
@@ -110,3 +115,18 @@ func check_error():
 				Console.print_error("检测到脚本运行时错误: "+_text)
 		last_log_text = curr_text
 		get_tree().call_group("Plugin","_on_error")
+
+
+func reimport():
+	Console.print_warning("正在准备重新导入资源.....")
+	await get_tree().create_timer(0.5).timeout
+	await PluginManager.unload_plugins()
+	BotAdapter.mirai_client.disconnect_to_mirai()
+	await get_tree().create_timer(0.5).timeout
+	Console.print_warning("正在重新导入资源，在此过程中RainyBot将会停止响应，请耐心等待.....")
+	await get_tree().create_timer(0.5).timeout
+	OS.execute(OS.get_executable_path(),["--editor","--headless","--clear-import"])
+	OS.execute(OS.get_executable_path(),["--editor","--headless","--wait-import"])
+	Console.print_success("资源重新导入完毕！正在准备重新启动RainyBot...")
+	await get_tree().create_timer(0.5).timeout
+	restart()

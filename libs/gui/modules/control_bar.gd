@@ -19,7 +19,8 @@ enum PluginMenuOptions {
 	PLUGIN_STORE,
 	PLUGIN_MANAGER,
 	RELOAD_PLUGIN,
-	OPEN_PLUGIN_DIR
+	REIMPORT_RES,
+	OPEN_PLUGIN_DIR,
 }
 
 
@@ -82,6 +83,8 @@ func _on_plugin_menu_pressed(id:int):
 			OS.shell_open(PluginManager.plugin_path)
 		PluginMenuOptions.PLUGIN_MANAGER:
 			GuiManager.open_plugin_manager()
+		PluginMenuOptions.REIMPORT_RES:
+			GlobalManager.reimport()
 			
 			
 func _on_adapter_menu_pressed(id:int):
