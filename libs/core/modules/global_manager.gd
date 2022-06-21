@@ -9,12 +9,17 @@ const INIT_PATH = [
 	"/logs/",
 ]
 
-var adapter_path:String = OS.get_executable_path().get_base_dir()+"/adapters/"
-var plugin_path:String = OS.get_executable_path().get_base_dir()+"/plugins/"
-var config_path:String = OS.get_executable_path().get_base_dir()+"/config/"
-var data_path:String = OS.get_executable_path().get_base_dir()+"/data/"
-var cache_path:String = OS.get_executable_path().get_base_dir()+"/cache/"
-var log_path:String = OS.get_executable_path().get_base_dir()+"/logs/"
+var root_path:String = OS.get_executable_path().get_base_dir()+"/"
+var adapter_path:String = root_path+"adapters/"
+var plugin_path:String = root_path+"plugins/"
+var config_path:String = root_path+"config/"
+var data_path:String = root_path+"data/"
+var cache_path:String = root_path+"cache/"
+var log_path:String = root_path+"logs/"
+
+var project_file_path:String = root_path+"project.godot"
+var import_helper_path:String = "res://libs/resources/addons/import_helper/"
+var import_helper_target_path:String = root_path+"addons/import_helper/"
 
 var global_timer:Timer = Timer.new()
 var global_run_time:int = 0
@@ -122,11 +127,47 @@ func reimport():
 	await get_tree().create_timer(0.5).timeout
 	await PluginManager.unload_plugins()
 	BotAdapter.mirai_client.disconnect_to_mirai()
+	_add_import_helper()
 	await get_tree().create_timer(0.5).timeout
 	Console.print_warning("正在重新导入资源，在此过程中RainyBot将会停止响应，请耐心等待.....")
 	await get_tree().create_timer(0.5).timeout
 	OS.execute(OS.get_executable_path(),["--editor","--headless","--clear-import"])
 	OS.execute(OS.get_executable_path(),["--editor","--headless","--wait-import"])
+	_remove_import_helper()
 	Console.print_success("资源重新导入完毕！正在准备重新启动RainyBot...")
 	await get_tree().create_timer(0.5).timeout
 	restart()
+
+
+func clear_dir_files(dir_path):
+	var dir = Directory.new()
+	if dir.dir_exists(dir_path):
+		dir.open(dir_path)
+		for _file in dir.get_files():
+			dir.remove(dir_path+_file)
+		for _dir in dir.get_directories():
+			clear_dir_files(dir_path+_dir+"/")
+		dir.remove(dir_path)
+
+
+func _add_import_helper():
+	var c_file = ConfigFile.new()
+	var dir = Directory.new()
+	var err:int = c_file.load(project_file_path)
+	var arr:Array = ["res://addons/import_helper/plugin.cfg"]
+	if !dir.dir_exists(import_helper_target_path):
+		dir.make_dir_recursive(import_helper_target_path)
+	dir.open(import_helper_path)
+	for f in dir.get_files():
+		dir.copy(import_helper_path+f,import_helper_target_path+f)
+	c_file.set_value("editor_plugins","enabled",PackedStringArray(arr))
+	c_file.save(project_file_path)
+	
+	
+func _remove_import_helper():
+	clear_dir_files(root_path+"addons/")
+	var c_file = ConfigFile.new()
+	var err:int = c_file.load(project_file_path)
+	if c_file.has_section("editor_plugins"):
+		c_file.erase_section("editor_plugins")
+	c_file.save(project_file_path)

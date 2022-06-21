@@ -46,6 +46,12 @@ pause
 """
 
 
+func _exit_tree():
+	var dir = Directory.new()
+	dir.open(mirai_path)
+	dir.remove(mirai_path+"start.cmd")
+
+
 func check_java_version():
 	var output = []
 	var _exit_code = OS.execute("java", ["--version"], output)
@@ -113,10 +119,6 @@ func load_mirai():
 			if OS.shell_open(mirai_path+"start.cmd") != OK:
 				Console.print_error("无法启动Mirai,请检查以下目录中文件是否丢失或损坏:"+mirai_path)
 				return ERR_CANT_OPEN
-			var dir = Directory.new()
-			await get_tree().create_timer(1).timeout
-			dir.open(mirai_path)
-			dir.remove(mirai_path+"start.cmd")
 			return OK
 		else:
 			Console.print_error("无法初始化Mirai启动脚本，请检查以下目录文件权限是否正确:"+mirai_path)
