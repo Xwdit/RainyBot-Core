@@ -1137,7 +1137,7 @@ func load_scene(path:String,parent:Node=null)->Node:
 			Console.print_success("成功加载场景文件并附加为插件的子节点: %s"% path)
 		return ins
 	else:
-		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确!"% path)
+		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确，或尝试在插件菜单中重新导入资源!"% path)
 		return null
 	
 
