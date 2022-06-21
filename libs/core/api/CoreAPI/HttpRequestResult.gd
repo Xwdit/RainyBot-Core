@@ -33,7 +33,7 @@ func get_request_data_dic()->Dictionary:
 		_data = _json.get_data()
 		Console.print_success("成功将Http请求数据获取为字典: "+str(_data))
 	else:
-		Console.print_error("无法将Http请求数据获取为字典!")
+		Console.print_error("无法将Http请求数据获取为字典，请检查其格式是否正确!")
 	return _data
 	
 
@@ -71,10 +71,77 @@ func get_as_dic()->Dictionary:
 		_result = _json.get_data()
 		Console.print_success("成功将Http请求结果获取为字典: "+str(_result))
 	else:
-		Console.print_error("无法将Http请求结果获取为字典!")
+		Console.print_error("无法将Http请求结果获取为字典，请检查其格式是否正确!")
 	return _result
 
 
 ## 直接返回此请求的结果的元二进制数据数组
 func get_as_byte()->PackedByteArray:
 	return body
+	
+	
+func get_as_png_image()->Image:
+	var img:Image = Image.new()
+	var err = img.load_png_from_buffer(body)
+	if err == OK:
+		Console.print_success("成功将Http请求结果获取为png格式的图像实例!")
+		return img
+	else:
+		Console.print_error("无法将Http请求结果获取为png格式的图像实例，请检查其格式是否正确!")
+		return null
+	
+	
+func get_as_jpg_image()->Image:
+	var img:Image = Image.new()
+	var err = img.load_jpg_from_buffer(body)
+	if err == OK:
+		Console.print_success("成功将Http请求结果获取为jpg格式的图像实例!")
+		return img
+	else:
+		Console.print_error("无法将Http请求结果获取为jpg格式的图像实例，请检查其格式是否正确!")
+		return null
+	
+	
+func get_as_bmp_image()->Image:
+	var img:Image = Image.new()
+	var err = img.load_bmp_from_buffer(body)
+	if err == OK:
+		Console.print_success("成功将Http请求结果获取为bmp格式的图像实例!")
+		return img
+	else:
+		Console.print_error("无法将Http请求结果获取为bmp格式的图像实例，请检查其格式是否正确!")
+		return null
+	
+	
+func get_as_tga_image()->Image:
+	var img:Image = Image.new()
+	var err = img.load_tga_from_buffer(body)
+	if err == OK:
+		Console.print_success("成功将Http请求结果获取为tga格式的图像实例!")
+		return img
+	else:
+		Console.print_error("无法将Http请求结果获取为tga格式的图像实例，请检查其格式是否正确!")
+		return null
+
+
+func get_as_webp_image()->Image:
+	var img:Image = Image.new()
+	var err = img.load_webp_from_buffer(body)
+	if err == OK:
+		Console.print_success("成功将Http请求结果获取为webp格式的图像实例!")
+		return img
+	else:
+		Console.print_error("无法将Http请求结果获取为webp格式的图像实例，请检查其格式是否正确!")
+		return null
+
+
+func save_to_file(path:String)->int:
+	var file:File = File.new()
+	var err = file.open(path,File.WRITE)
+	if err == OK:
+		file.store_buffer(body)
+		file.close()
+		Console.print_success("成功将Http请求结果储存到以下路径的文件: "+path)
+	else:
+		Console.print_error("无法将Http请求结果储存到以下路径，请检查路径拼写及文件权限是否有误: "+path)
+	return err
