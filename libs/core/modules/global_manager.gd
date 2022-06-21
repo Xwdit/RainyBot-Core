@@ -56,10 +56,15 @@ func _process(delta):
 
 func _init_dir():
 	var dir = Directory.new()
+	var file = File.new()
 	for p in INIT_PATH:
 		var path = OS.get_executable_path().get_base_dir() + p
 		if !dir.dir_exists(path):
 			dir.make_dir(path)
+		if p == "/cache/" or p == "/logs/":
+			if !file.file_exists(path+".gdignore"):
+				file.open(path+".gdignore",File.WRITE)
+				file.close()
 			
 			
 func _notification(what):
@@ -91,6 +96,10 @@ func _on_global_timer_timeout():
 func clear_cache():
 	Console.print_warning("正在清理缓存目录，请稍候.....")
 	clear_dir_files(cache_path,false)
+	var file = File.new()
+	if !file.file_exists(cache_path+".gdignore"):
+		file.open(cache_path+".gdignore",File.WRITE)
+		file.close()
 	Console.print_success("缓存目录清理完毕!")
 
 
