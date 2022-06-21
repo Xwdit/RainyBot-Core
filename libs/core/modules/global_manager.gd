@@ -89,7 +89,9 @@ func _on_global_timer_timeout():
 
 
 func clear_cache():
+	Console.print_warning("正在清理缓存目录，请稍候.....")
 	clear_dir_files(cache_path,false)
+	Console.print_success("缓存目录清理完毕!")
 
 
 func restart():
@@ -123,6 +125,7 @@ func reimport():
 	await get_tree().create_timer(0.5).timeout
 	await PluginManager.unload_plugins()
 	BotAdapter.mirai_client.disconnect_to_mirai()
+	clear_cache()
 	_add_import_helper()
 	await get_tree().create_timer(0.5).timeout
 	Console.print_warning("正在重新导入资源，在此过程中RainyBot将会停止响应，请耐心等待.....")
