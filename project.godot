@@ -671,7 +671,6 @@ locale/translations=PackedStringArray("res://libs/gui/resources/lang/zh_CN.po")
 
 [rendering]
 
-vulkan/rendering/back_end=1
 2d/snap/snap_2d_transforms_to_pixel=true
 2d/snap/snap_2d_vertices_to_pixel=true
 batching/options/use_batching=true
