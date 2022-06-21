@@ -669,11 +669,6 @@ toggle_comment={
 
 locale/translations=PackedStringArray("res://libs/gui/resources/lang/zh_CN.po")
 
-[physics]
-
-2d/run_on_separate_thread=true
-3d/run_on_separate_thread=true
-
 [rendering]
 
 2d/snap/snap_2d_transforms_to_pixel=true
