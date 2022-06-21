@@ -128,7 +128,7 @@ Java 版本 >= 11 (此需求来源于RainyBot默认集成的Mirai协议后端，
 
 ### 版本更新
 
-在更新到新版本的RainyBot时，若更新日志中无特殊说明，则只需删除`RainyBot根目录/adapters/mirai/`下除`bots`文件夹以外的所有内容，并直接覆盖旧版本文件即可。
+在更新到新版本的RainyBot时，若更新日志中无特殊说明，则只需删除`RainyBot根目录/adapters/mirai/`下除`bots`文件夹以外的所有内容，删除RainyBot根目录下的`.pck(如果有)`及`.exe`文件，删除Rainybot根目录下的`project.godot(如果有)`/`project.binary(如果有)`文件以及`libs(如果有)`和`.godot(如果有)`文件夹，随后下载完整发行包并用其中所有内容直接覆盖旧版本文件即可。
 
 ### 故障排除
 
