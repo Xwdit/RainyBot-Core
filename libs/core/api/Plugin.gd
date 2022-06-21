@@ -1124,9 +1124,13 @@ func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:
 		return null
 
 	
-func load_scene(path:String,parent:Node=null)->Node:
+func load_scene(path:String,parent:Node=null,threaded:bool=false)->Node:
 	Console.print_warning("正在尝试加载场景文件: %s"% path)
-	var _scene:PackedScene = ResourceLoader.load(path,"",ResourceLoader.CACHE_MODE_IGNORE)
+	var _scene:PackedScene
+	if threaded:
+		_scene = await GlobalManager.load_threaded(path)
+	else:	
+		_scene = ResourceLoader.load(path,"",ResourceLoader.CACHE_MODE_IGNORE)
 	if is_instance_valid(_scene) and _scene.can_instantiate():
 		var ins:Node = _scene.instantiate()
 		if is_instance_valid(parent):

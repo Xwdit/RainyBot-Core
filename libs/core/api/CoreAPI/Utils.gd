@@ -35,3 +35,8 @@ static func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
 static func send_http_post_request(url:String,request_data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	var result = await HttpRequestManager.send_http_post_request(url,request_data,headers,timeout)
 	return result
+
+
+static func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->Resource:
+	var res:Resource = await GlobalManager.load_threaded(path,type_hint,use_sub_threads)
+	return res

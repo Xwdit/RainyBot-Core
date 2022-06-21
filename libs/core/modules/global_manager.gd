@@ -29,6 +29,8 @@ var restarting:bool = false
 var last_log_text:String = ""
 var last_errors:PackedStringArray = []
 
+var loading_resources:Dictionary = {}
+
 
 func _init():
 	var icon = Image.new()
@@ -52,6 +54,7 @@ func _ready():
 
 func _process(delta):
 	check_error()
+	_check_load_status()
 
 
 func _init_dir():
@@ -91,6 +94,14 @@ func _call_console_command(_cmd:String,_args:Array):
 
 func _on_global_timer_timeout():
 	global_run_time += 1
+
+
+func _check_load_status():
+	for path in loading_resources:
+		if ResourceLoader.load_threaded_get_status(path) != ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+			var helper:ResourceLoadHelper = loading_resources[path]
+			loading_resources.erase(path)
+			helper.emit_signal("finished")
 
 
 func clear_cache():
@@ -159,6 +170,25 @@ func clear_dir_files(dir_path,remove_dir:bool=true):
 			dir.remove(dir_path)
 
 
+func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->Resource:
+	Console.print_warning("正在请求异步加载以下路径的资源: "+path)
+	var err = ResourceLoader.load_threaded_request(path,type_hint,use_sub_threads)
+	if err == OK:
+		var helper = ResourceLoadHelper.new()
+		loading_resources[path]=helper
+		Console.print_warning("资源异步加载请求成功，开始等待以下路径的资源加载完成: "+path)
+		await helper.finished
+		if ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_LOADED:
+			Console.print_success("成功异步加载以下路径的资源: "+path)
+			return ResourceLoader.load_threaded_get(path)
+		else:
+			Console.print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
+			return null
+	else:
+		Console.print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
+		return null
+
+
 func _add_import_helper():
 	var c_file = ConfigFile.new()
 	var dir = Directory.new()
@@ -180,3 +210,8 @@ func _remove_import_helper():
 	if c_file.has_section("editor_plugins"):
 		c_file.erase_section("editor_plugins")
 	c_file.save(project_file_path)
+
+
+class ResourceLoadHelper:
+	extends RefCounted
+	signal finished
