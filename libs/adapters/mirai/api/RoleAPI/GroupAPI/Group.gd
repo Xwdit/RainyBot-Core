@@ -63,7 +63,7 @@ func get_member_list()->GroupMemberList:
 		"target":get_id()
 	}
 	var _result:Dictionary = await BotAdapter.send_bot_request("memberList",null,_req_dic)
-	var _arr:Array = _result["data"]
+	var _arr:Array = _result.get("data",[])
 	var _ins:GroupMemberList = GroupMemberList.init_meta(_arr)
 	return _ins
 

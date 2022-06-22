@@ -58,7 +58,9 @@ func get_bot_id()->int:
 	return mirai_config_manager.get_bot_id()
 	
 	
-func send_bot_request(_command:String,_sub_command=null,_content={},_timeout:float=20.0)->Dictionary:
+func send_bot_request(_command:String,_sub_command=null,_content={},_timeout:float=-INF)->Dictionary:
+	if _timeout <= -INF and mirai_config_manager.get_request_timeout() > 0.0:
+		_timeout=mirai_config_manager.get_request_timeout()
 	if _command.begins_with("send") and _command.ends_with("Message"):
 		sent_message_count += 1
 	return await mirai_client.send_bot_request(_command,_sub_command,_content,_timeout)

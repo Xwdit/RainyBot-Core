@@ -17,7 +17,8 @@ var data_dic:Dictionary = {
 
 static func init_meta(dic:Dictionary)->CacheMessage:
 	var ins:CacheMessage = CacheMessage.new()
-	ins.data_dic = dic
+	if !dic.is_empty():
+		ins.data_dic = dic
 	return ins
 
 

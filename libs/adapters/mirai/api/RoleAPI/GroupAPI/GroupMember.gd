@@ -37,7 +37,8 @@ static func init(g_id:int,m_id:int)->GroupMember:
 
 static func init_meta(dic:Dictionary)->GroupMember:
 	var ins:GroupMember = GroupMember.new()
-	ins.data_dic = dic
+	if !dic.is_empty():
+		ins.data_dic = dic
 	return ins
 
 

@@ -17,12 +17,13 @@ enum StatusCode{
 	NO_PERMISSION = 10, ##没有权限
 	BOT_MUTED = 20, ##机器人被禁言
 	MESSAGE_TOO_LONG = 30, ##消息长度超限
-	WRONG_USAGE = 400 ##命令用法有误
+	WRONG_USAGE = 400, ##命令用法有误
+	FAILED = 500 ##请求失败或超时
 }
 
 
 var data_dic:Dictionary = {
-	"code":int(StatusCode.SUCCESS),
+	"code":int(StatusCode.FAILED),
 	"msg":"",
 	"messageId":-1
 }
@@ -31,7 +32,8 @@ var data_dic:Dictionary = {
 ## 通过机器人协议后端的元数据数组构造一个BotRequestResult类的实例，仅当你知道自己在做什么时才使用
 static func init_meta(dic:Dictionary)->BotRequestResult:
 	var ins:BotRequestResult = BotRequestResult.new()
-	ins.data_dic = dic
+	if !dic.is_empty():
+		ins.data_dic = dic
 	return ins
 
 

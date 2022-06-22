@@ -15,7 +15,7 @@ const default_config = {
 	"mirai_qq":"",
 	"mirai_qq_password":"$DEFAULT12345",
 	"mirai_protocol":"ANDROID_PAD",
-	"mirai_request_timeout":20
+	"mirai_request_timeout":20.0
 }
 
 const config_description = {
@@ -123,3 +123,7 @@ func get_ws_address(config_dic:Dictionary):
 	
 func get_bot_id()->int:
 	return loaded_config.mirai_qq.to_int()
+	
+	
+func get_request_timeout()->float:
+	return float(loaded_config.mirai_request_timeout)

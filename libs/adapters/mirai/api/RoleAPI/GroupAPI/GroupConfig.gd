@@ -16,7 +16,8 @@ var data_dic:Dictionary = {
 
 static func init_meta(dic:Dictionary)->GroupConfig:
 	var ins:GroupConfig = GroupConfig.new()
-	ins.data_dic = dic
+	if !dic.is_empty():
+		ins.data_dic = dic
 	return ins
 
 

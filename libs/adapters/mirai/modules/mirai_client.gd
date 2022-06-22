@@ -87,7 +87,7 @@ func _process(_delta):
 	_client.poll()
 
 
-func send_bot_request(command,sub_command=null,content={},timeout:float=20.0)->Dictionary:
+func send_bot_request(command,sub_command,content,timeout:float)->Dictionary:
 	if !is_bot_connected():
 		Console.print_error("未连接到Mirai框架，指令请求发送失败: "+str(command)+" "+str(sub_command)+" "+str(content))
 		return {}
@@ -103,6 +103,7 @@ func send_bot_request(command,sub_command=null,content={},timeout:float=20.0)->D
 	var json = JSON.new()
 	_client.get_peer(1).put_packet(json.stringify(request).to_utf8_buffer())
 	if timeout > 0.0:
+		Console.print_warning("本次请求的超时时间为: %s秒"% timeout)
 		_tick_command_timeout(cmd,timeout)
 	await cmd.request_finished
 	processing_command.erase(sync_id)

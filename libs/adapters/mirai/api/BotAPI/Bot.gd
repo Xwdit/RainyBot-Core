@@ -33,7 +33,7 @@ static func get_avatar_url()->String:
 ## 获取当前机器人账号的好友列表，需要与await关键词配合使用
 static func get_friend_list()->MemberList:
 	var _result:Dictionary = await BotAdapter.send_bot_request("friendList",null,null)
-	var _arr:Array = _result["data"]
+	var _arr:Array = _result.get("data",[])
 	var _ins:MemberList = MemberList.init_meta(_arr)
 	return _ins
 	
@@ -41,7 +41,7 @@ static func get_friend_list()->MemberList:
 ## 获取当前机器人账号的群组列表，需要与await关键词配合使用
 static func get_group_list()->GroupList:
 	var _result:Dictionary = await BotAdapter.send_bot_request("groupList",null,null)
-	var _arr:Array = _result["data"]
+	var _arr:Array = _result.get("data",[])
 	var _ins:GroupList = GroupList.init_meta(_arr)
 	return _ins
 
@@ -59,5 +59,5 @@ static func get_cache_message(msg_id:int)->CacheMessage:
 		"id":msg_id
 	}
 	var _result_dic:Dictionary = await BotAdapter.send_bot_request("messageFromId",null,_req_dic)
-	var ins = CacheMessage.init_meta(_result_dic["data"])
+	var ins = CacheMessage.init_meta(_result_dic.get("data",{}))
 	return ins

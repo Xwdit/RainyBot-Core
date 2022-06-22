@@ -12,18 +12,19 @@ enum Sex {
 
 
 var data_dic:Dictionary = {
-	"nickname":"nickname",
-	"email":"email",
-	"age":18,
-	"level":1,
-	"sign":"mirai",
+	"nickname":"",
+	"email":"",
+	"age":-1,
+	"level":-1,
+	"sign":"",
 	"sex":"UNKNOWN"
 }
 
 
 static func init_meta(dic:Dictionary)->MemberProfile:
 	var ins:MemberProfile = MemberProfile.new()
-	ins.data_dic = dic
+	if !dic.is_empty():
+		ins.data_dic = dic
 	return ins
 	
 	
