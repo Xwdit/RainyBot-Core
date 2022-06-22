@@ -21,6 +21,17 @@ var data_dic:Dictionary = {
 }
 
 
+static func init_user(user_id:int,timeout:float=-INF)->MemberProfile:
+	var ins:MemberProfile = MemberProfile.new()
+	var _req_dic = {
+		"target":user_id,
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("userProfile",null,_req_dic,timeout)
+	if !_result.is_empty():
+		ins.data_dic = _result
+	return ins
+
+
 static func init_meta(dic:Dictionary)->MemberProfile:
 	var ins:MemberProfile = MemberProfile.new()
 	if !dic.is_empty():
