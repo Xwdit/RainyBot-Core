@@ -189,6 +189,13 @@ func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->
 		return null
 
 
+func running_from_editor()->bool:
+	for arg in OS.get_cmdline_args():
+		if arg == "--from-editor":
+			return true
+	return false
+
+
 func _add_import_helper():
 	var c_file = ConfigFile.new()
 	var dir = Directory.new()
