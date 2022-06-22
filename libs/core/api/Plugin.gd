@@ -654,18 +654,44 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 		var _config = json.get_data()
 		file.close()
 		if _config is Dictionary:
-			if _config.has_all(default_config.keys()):
-				for key in _config:
-					if (_config[key] is String && _config[key] == "") or (_config[key] == null):
-						Console.print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+str(key))
-						Console.print_warning("可以前往以下路径来验证与修改配置: "+config_path)
-				plugin_config = _config
-				plugin_config_loaded = true
-				Console.print_success("插件配置加载成功")
-				return OK
-			else:
-				Console.print_error("配置文件条目出现缺失，请删除配置文件后重新生成! 路径:"+config_path)
-				return ERR_FILE_MISSING_DEPENDENCIES
+			var missing_keys:Array = []
+			var extra_keys:Array = []
+			for k in default_config:
+				if !_config.has(k):
+					_config[k] = default_config[k]
+					missing_keys.append(k)
+			for k in _config:
+				if !default_config.has(k):
+					_config.erase(k)
+					extra_keys.append(k)
+			if !missing_keys.is_empty() or !extra_keys.is_empty():
+				Console.print_warning("检测到需要更新的配置项，正在尝试对配置文件进行更新.....")
+				_err = file.open(config_path,File.WRITE)
+				if _err == OK:
+					file.store_string(json.stringify(_config,"\t"))
+					file.close()
+					if !missing_keys.is_empty():
+						Console.print_success("成功在配置文件中新增了以下的配置项: "+str(missing_keys))
+						if !config_description.is_empty():
+							Console.print_text("新增配置选项说明:")
+							for key in missing_keys:
+								Console.print_text(key+":"+config_description[key])
+					if !extra_keys.is_empty():
+						Console.print_success("成功从配置文件中移除了以下的配置项: "+str(extra_keys))
+					Console.print_warning("若有需要，您可以访问以下路径进行配置: "+config_path)
+				else:
+					file.close()
+					Console.print_error("配置文件更新失败，请检查文件权限是否配置正确! 路径:"+config_path)
+					Console.print_warning("若需重试，请重新加载此插件!")
+					return _err
+			for key in _config:
+				if (_config[key] is String && _config[key] == "") or (_config[key] == null):
+					Console.print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+str(key))
+					Console.print_warning("可以前往以下路径来验证与修改配置: "+config_path)
+			plugin_config = _config
+			plugin_config_loaded = true
+			Console.print_success("插件配置加载成功")
+			return OK
 		else:
 			Console.print_error("配置文件读取失败，请删除配置文件后重新生成! 路径:"+config_path)
 			return ERR_FILE_CANT_READ
