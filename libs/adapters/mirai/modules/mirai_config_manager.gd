@@ -68,7 +68,7 @@ func init_config():
 								Console.print_text(key+":"+config_description[key])
 					if !extra_keys.is_empty():
 						Console.print_success("成功从配置文件中移除了以下的配置项: "+str(extra_keys))
-					Console.print_warning("若有需要，您可以通过协议后端菜单，或访问以下路径进行配置: "+config_path)
+					Console.print_warning("如有需要，您可以通过协议后端菜单，或访问以下路径进行配置: "+config_path)
 				else:
 					file.close()
 					Console.print_error("配置文件更新失败，请检查文件权限是否配置正确! 路径:"+config_path)
