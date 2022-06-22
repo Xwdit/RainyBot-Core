@@ -26,7 +26,7 @@ const config_description = {
 	"mirai_qq":"要连接到的机器人的QQ号码",
 	"mirai_qq_password":"要连接到的机器人的QQ密码",
 	"mirai_protocol":"要使用的设备协议，默认为ANDROID_PAD，可修改为ANDROID_PHONE/ANDROID_WATCH",
-	"mirai_request_timeout":"等待单条Mirai指令请求回应的最大超时时间，默认为20秒"
+	"mirai_request_timeout":"等待单条Mirai指令请求回应的最大超时时间，默认为20秒，设置为小于或等于0的值将禁用超时"
 }
 
 var loaded_config = default_config
