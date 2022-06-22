@@ -52,7 +52,7 @@ func get_platform()->String:
 
 ## 向其它客户端发送单条Message类实例的消息,第二个参数为需要引用回复的消息id(可选)
 ## 配合await关键字可返回一个BotRequestResult类的实例，便于判断执行状态
-func send_message(msg,quote_msgid:int=-1)->BotRequestResult:
+func send_message(msg,quote_msgid:int=-1,timeout:float=-INF)->BotRequestResult:
 	var _chain = []
 	if msg is String:
 		_chain.append(BotCodeMessage.init(msg).get_metadata())
@@ -67,19 +67,19 @@ func send_message(msg,quote_msgid:int=-1)->BotRequestResult:
 		"messageChain":_chain,
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
 
 ## 向其它客户端发送一个戳一戳消息
 ## 配合await关键字可返回一个BotRequestResult类的实例，便于判断执行状态
-func send_nudge()->BotRequestResult:
+func send_nudge(timeout:float=-INF)->BotRequestResult:
 	var _req_dic = {
 		"target":get_id(),
 		"subject":get_id(),
 		"kind":"Friend"
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

@@ -75,10 +75,10 @@ func is_status(code:int)->bool:
 
 
 ## 撤回请求结果中消息ID对应的消息
-func recall()->BotRequestResult:
+func recall(timeout:float=-INF)->BotRequestResult:
 	var _req_dic = {
 		"target":get_message_id()
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("recall",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("recall",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

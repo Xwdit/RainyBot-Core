@@ -89,18 +89,18 @@ func get_avatar_url()->String:
 	
 
 ## 获取个体成员实例相关资料的MemberProfile实例，需要配合await关键字使用
-func get_profile()->MemberProfile:
+func get_profile(timeout:float=-INF)->MemberProfile:
 	var _req_dic = {
 		"target":get_id(),
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("friendProfile",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("friendProfile",null,_req_dic,timeout)
 	var _ins:MemberProfile = MemberProfile.init_meta(_result)
 	return _ins
 
 
 ## 向个体成员实例发送单条继承于Message类的消息的实例，同时可指定一个需要引用回复的消息ID
 ## 配合await关键字可返回一个BotRequestResult类的实例，便于判断执行状态
-func send_message(msg,quote_msgid:int=-1)->BotRequestResult:
+func send_message(msg,quote_msgid:int=-1,timeout:float=-INF)->BotRequestResult:
 	var _chain = []
 	if msg is String:
 		_chain.append(BotCodeMessage.init(msg).get_metadata())
@@ -115,30 +115,30 @@ func send_message(msg,quote_msgid:int=-1)->BotRequestResult:
 		"messageChain":_chain,
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
 
 ## 向个体成员实例发送一个戳一戳消息
 ## 配合await关键字可返回一个BotRequestResult类的实例，便于判断执行状态
-func send_nudge()->BotRequestResult:
+func send_nudge(timeout:float=-INF)->BotRequestResult:
 	var _req_dic = {
 		"target":get_id(),
 		"subject":get_id(),
 		"kind":"Friend" if member_role == Role.FRIEND else "Stranger"
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
 
 ## 解除与个体成员实例的好友/单向好友关系
 ## 配合await关键字可返回一个BotRequestResult类的实例，便于判断执行状态
-func delete_friend()->BotRequestResult:
+func delete_friend(timeout:float=-INF)->BotRequestResult:
 	var _req_dic = {
 		"target":get_id()
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("deleteFriend",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("deleteFriend",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

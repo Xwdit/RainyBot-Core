@@ -186,20 +186,20 @@ func has_message_type(type)->bool:
 	return false
 
 
-func set_essence()->BotRequestResult:
+func set_essence(timeout:float=-INF)->BotRequestResult:
 	var _req_dic = {
 		"target":get_message_id()
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("setEssence",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("setEssence",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
 
-func recall()->BotRequestResult:
+func recall(timeout:float=-INF)->BotRequestResult:
 	var _req_dic = {
 		"target":get_message_id()
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("recall",null,_req_dic)
+	var _result:Dictionary = await BotAdapter.send_bot_request("recall",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
