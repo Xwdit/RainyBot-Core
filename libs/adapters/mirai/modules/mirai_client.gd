@@ -65,22 +65,24 @@ func _connected(_proto = ""):
 
 func _on_data():
 	var json = JSON.new()
-	json.parse(_client.get_peer(1).get_packet().get_string_from_utf8())
-	var data = json.get_data()
-	if data.has("syncId"):
-		if processing_command.has(data["syncId"].to_int()):
-			_parse_command_result(data)
-	if data["data"].has("type"):
-		BotAdapter.parse_event(data)
-	if data["data"].has("session"):
-		if !first_connected:
-			Console.print_success("成功连接至Mirai框架!开始加载插件.....")
-			PluginManager.reload_plugins()
-			first_connected = true
-		else:
-			Console.print_success("成功恢复与Mirai框架的连接!")
-		mirai_connected = true
-		get_tree().call_group("Plugin","_on_connect")
+	var err = json.parse(_client.get_peer(1).get_packet().get_string_from_utf8())
+	if err == OK:
+		var data:Dictionary = json.get_data()
+		if data.has("syncId"):
+			if processing_command.has(data["syncId"].to_int()):
+				_parse_command_result(data)
+		if data.has("data"):
+			if data["data"].has("type"):
+				BotAdapter.parse_event(data)
+			if data["data"].has("session"):
+				if !first_connected:
+					Console.print_success("成功连接至Mirai框架!开始加载插件.....")
+					PluginManager.reload_plugins()
+					first_connected = true
+				else:
+					Console.print_success("成功恢复与Mirai框架的连接!")
+				mirai_connected = true
+				get_tree().call_group("Plugin","_on_connect")
 
 
 func _process(_delta):

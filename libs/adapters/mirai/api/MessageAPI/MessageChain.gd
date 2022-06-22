@@ -98,6 +98,8 @@ func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
 	var arr:Array = []
 	for _dic in data_array:
 		var _msg = BotAdapter.parse_message_dic(_dic)
+		if !is_instance_valid(_msg):
+			continue
 		var _has:bool = false
 		if types is Array:
 			if types.size() > 0:
@@ -125,6 +127,8 @@ func get_message_text(types=[],exclude:bool=false)->String:
 	var text:String = ""
 	for _dic in data_array:
 		var _msg = BotAdapter.parse_message_dic(_dic)
+		if !is_instance_valid(_msg):
+			continue
 		var _has:bool = false
 		if types is Array:
 			if types.size() > 0:
@@ -166,6 +170,8 @@ func has_message_type(type)->bool:
 	if type is GDScript and is_instance_valid(type):
 		for _dic in data_array:
 			var _msg = BotAdapter.parse_message_dic(_dic)
+			if !is_instance_valid(_msg):
+				continue
 			if _msg.get_script() == type:
 				return true		
 		return false
@@ -175,6 +181,8 @@ func has_message_type(type)->bool:
 				var _has = false
 				for _dic in data_array:
 					var _msg = BotAdapter.parse_message_dic(_dic)
+					if !is_instance_valid(_msg):
+						continue
 					if _msg.get_script() == type:
 						_has = true
 						break

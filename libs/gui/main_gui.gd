@@ -32,7 +32,7 @@ func check_update()->bool:
 					var version:String = dic["tag_name"]
 					if RainyBotCore.VERSION.to_lower() != version.to_lower():
 						Console.print_warning("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s"%[version.to_lower(),RainyBotCore.VERSION.to_lower()])
-						Console.print_warning("您可以访问以下网址来获取最新版本: https://github.com/Xwdit/RainyBot-Core/releases")
+						Console.print_warning("您可以访问以下网址来了解与获取最新版本: https://github.com/Xwdit/RainyBot-Core/releases")
 						return false
 					Console.print_success("版本检查完毕，您的RainyBot已为最新版本！")
 					return true
