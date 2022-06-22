@@ -26,6 +26,10 @@ static func get_private_message_count()->int:
 	return BotAdapter.private_message_count
 
 
+static func get_avatar_url()->String:
+	return "https://q1.qlogo.cn/g?b=qq&nk=%s&s=640"% get_id()
+
+
 ## 获取当前机器人账号的好友列表，需要与await关键词配合使用
 static func get_friend_list()->MemberList:
 	var _result:Dictionary = await BotAdapter.send_bot_request("friendList",null,null)

@@ -64,7 +64,11 @@ func get_special_title()->String:
 func get_permission()->int:
 	return BotAdapter.parse_permission_text(data_dic.permission)
 	
-	
+
+func get_avatar_url()->String:
+	return "https://q1.qlogo.cn/g?b=qq&nk=%s&s=640"% get_id()
+
+
 func is_permission(perm:int)->bool:
 	return perm == get_permission()
 	
@@ -83,6 +87,16 @@ func get_mute_time_remaining()->int:
 
 func get_group()->Group:
 	return Group.init_meta(data_dic.group)
+
+
+func get_profile()->MemberProfile:
+	var _req_dic = {
+		"target":data_dic.group,
+		"memberId":get_id()
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("memberProfile",null,_req_dic)
+	var _ins:MemberProfile = MemberProfile.init_meta(_result)
+	return _ins
 
 
 func change_name(new_name:String)->BotRequestResult:

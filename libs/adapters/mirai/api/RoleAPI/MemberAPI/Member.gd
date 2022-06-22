@@ -83,6 +83,10 @@ func get_name()->String:
 func get_remark()->String:
 	return data_dic.remark
 	
+	
+func get_avatar_url()->String:
+	return "https://q1.qlogo.cn/g?b=qq&nk=%s&s=640"% get_id()
+	
 
 ## 获取个体成员实例相关资料的MemberProfile实例，需要配合await关键字使用
 func get_profile()->MemberProfile:

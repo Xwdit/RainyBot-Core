@@ -44,6 +44,10 @@ func get_bot_permission()->int:
 	return BotAdapter.parse_permission_text(data_dic.permission)
 
 
+func get_avatar_url()->String:
+	return "https://p.qlogo.cn/gh/%s/%s/0"% get_id()
+
+
 func get_member(member_id:int)->GroupMember:
 	var _req_dic = {
 		"target":get_id(),
