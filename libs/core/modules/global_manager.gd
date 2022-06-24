@@ -17,6 +17,7 @@ var data_path:String = root_path+"data/"
 var cache_path:String = root_path+"cache/"
 var log_path:String = root_path+"logs/"
 
+var godot_dir_path:String = root_path + ".godot/"
 var project_file_path:String = root_path+"project.godot"
 var import_helper_path:String = "res://libs/resources/addons/import_helper/"
 var import_helper_target_path:String = root_path+"addons/import_helper/"
@@ -60,6 +61,7 @@ func _process(delta):
 func _init_dir():
 	var dir = Directory.new()
 	var file = File.new()
+	dir.include_hidden = true
 	for p in INIT_PATH:
 		var path = OS.get_executable_path().get_base_dir() + p
 		if !dir.dir_exists(path):
@@ -150,8 +152,9 @@ func reimport():
 	await get_tree().create_timer(0.5).timeout
 	Console.print_warning("正在重新导入资源，在此过程中RainyBot将会停止响应，请耐心等待.....")
 	await get_tree().create_timer(0.5).timeout
-	OS.execute(OS.get_executable_path(),["--path",root_path,"--editor","--headless","--clear-import"])
-	OS.execute(OS.get_executable_path(),["--path",root_path,"--editor","--headless","--wait-import"])
+	clear_dir_files(godot_dir_path)
+	await get_tree().create_timer(0.5).timeout
+	OS.execute(OS.get_executable_path(),["--editor","--headless","--wait-import"])
 	_remove_import_helper()
 	Console.print_success("资源重新导入完毕！正在准备重新启动RainyBot...")
 	await get_tree().create_timer(0.5).timeout
@@ -160,6 +163,7 @@ func reimport():
 
 func clear_dir_files(dir_path,remove_dir:bool=true):
 	var dir = Directory.new()
+	dir.include_hidden = true
 	if dir.dir_exists(dir_path):
 		dir.open(dir_path)
 		for _file in dir.get_files():
@@ -199,6 +203,7 @@ func running_from_editor()->bool:
 func _add_import_helper():
 	var c_file = ConfigFile.new()
 	var dir = Directory.new()
+	dir.include_hidden = true
 	var err:int = c_file.load(project_file_path)
 	var arr:Array = ["res://addons/import_helper/plugin.cfg"]
 	if !dir.dir_exists(import_helper_target_path):
