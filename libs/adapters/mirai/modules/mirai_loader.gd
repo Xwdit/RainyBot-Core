@@ -55,7 +55,15 @@ java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader
 func _exit_tree():
 	var dir = Directory.new()
 	dir.open(mirai_path)
-	dir.remove(mirai_path+"start.cmd")
+	if OS.get_name() == "Windows":
+		if dir.file_exists(mirai_path+"start.cmd"):
+			dir.remove(mirai_path+"start.cmd")
+	elif OS.get_name() == "macOS":
+		if dir.file_exists(mirai_path+"start.command"):
+			dir.remove(mirai_path+"start.command")
+	else:
+		if dir.file_exists(mirai_path+"start.sh"):
+			dir.remove(mirai_path+"start.sh")
 
 
 func check_java_version():
