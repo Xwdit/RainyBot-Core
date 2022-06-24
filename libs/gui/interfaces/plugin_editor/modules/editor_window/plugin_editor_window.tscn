@@ -1,9 +1,8 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://rhud8d6ky61g"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/plugin_editor/modules/editor_window/plugin_editor_window.gd" id="1_i830a"]
-[ext_resource type="PackedScene" path="res://libs/gui/interfaces/plugin_editor/plugin_editor.tscn" id="2_1cb4y"]
+[ext_resource type="PackedScene" uid="uid://beoswm81km06x" path="res://libs/gui/interfaces/plugin_editor/plugin_editor.tscn" id="2_1cb4y"]
 [ext_resource type="PackedScene" path="res://libs/gui/interfaces/plugin_editor/modules/editor_window/modules/exit_confirm/exit_confirm_window.tscn" id="3_scsvk"]
-
 
 [node name="PluginEditorWindow" type="Window"]
 title = "RainyBot插件编辑器 (测试版)"

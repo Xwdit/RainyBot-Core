@@ -48,7 +48,7 @@ pause
 var mirai_start_cmd_unix = """
 #!/usr/bin/env sh
 cd {mirai_path}
-java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader %*
+java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader
 """
 
 
@@ -105,13 +105,21 @@ func init_mirai_cmd():
 	
 	dir.open(mirai_path)
 	
-	if dir.file_exists(mirai_path+"start.cmd"):
-		dir.remove(mirai_path+"start.cmd")
-	file.open(mirai_path+"start.cmd",File.WRITE)
 	var _str:String
 	if OS.get_name() == "Windows":
+		if dir.file_exists(mirai_path+"start.cmd"):
+			dir.remove(mirai_path+"start.cmd")
+		file.open(mirai_path+"start.cmd",File.WRITE)
 		_str = mirai_start_cmd.format({"mirai_path":mirai_path})
-	elif OS.get_name() == "macOS" or OS.get_name() == "Linux":
+	elif OS.get_name() == "macOS":
+		if dir.file_exists(mirai_path+"start.command"):
+			dir.remove(mirai_path+"start.command")
+		file.open(mirai_path+"start.command",File.WRITE)
+		_str = mirai_start_cmd_unix.format({"mirai_path":mirai_path})
+	else:
+		if dir.file_exists(mirai_path+"start.sh"):
+			dir.remove(mirai_path+"start.sh")
+		file.open(mirai_path+"start.sh",File.WRITE)
 		_str = mirai_start_cmd_unix.format({"mirai_path":mirai_path})
 	file.store_string(_str)
 	file.close()
@@ -122,17 +130,21 @@ func load_mirai():
 	if check_java_version():
 		Console.print_success("Java环境检测通过，正在启动Mirai进程...")
 		init_mirai_cmd()
-		Console.print_success("Mirai启动脚本初始化完毕!")
-		if File.new().file_exists(mirai_path+"start.cmd"):
+		var file = File.new()
+		if file.file_exists(mirai_path+"start.cmd") or file.file_exists(mirai_path+"start.sh"):
+			Console.print_success("Mirai启动脚本初始化完毕!")
 			init_mirai_config()
 			Console.print_success("Mirai配置文件生成完毕!")
 			if OS.get_name() == "Windows":
 				if OS.shell_open(mirai_path+"start.cmd") != OK:
 					Console.print_error("无法启动Mirai,请检查以下目录中文件是否丢失或损坏:"+mirai_path)
 					return ERR_CANT_OPEN
+			if OS.get_name() == "macOS":
+				OS.execute("chmod",["+x",mirai_path+"start.command"])
+				OS.execute("open",[mirai_path+"start.command"])
 			else:
-				OS.execute("chmod",["+x",mirai_path+"start.cmd"])
-				OS.execute(mirai_path+"start.cmd",[])
+				OS.execute("chmod",["+x",mirai_path+"start.sh"])
+				OS.create_process(mirai_path+"start.sh",[],true)
 			return OK
 		else:
 			Console.print_error("无法初始化Mirai启动脚本，请检查以下目录文件权限是否正确:"+mirai_path)

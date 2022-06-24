@@ -60,7 +60,7 @@ func _on_main_menu_pressed(id:int):
 		MainMenuOptions.SCENE_EDITOR:
 			GuiManager.open_scene_editor()
 		MainMenuOptions.OPEN_INTERNAL_LOG_DIR:
-			if OS.get_name() == "Windows":
+			if OS.get_name() != "macOS":
 				OS.shell_open(OS.get_user_data_dir()+"/logs/")
 			else:
 				OS.execute("open",[OS.get_user_data_dir()+"/logs/"])
@@ -76,7 +76,7 @@ func _on_console_menu_pressed(id:int):
 			get_tree().call_group("Console","clear")
 			Console.print_success("已成功清空控制台的所有内容！")
 		ConsoleMenuOptions.OPEN_LOG_DIR:
-			if OS.get_name() == "Windows":
+			if OS.get_name() != "macOS":
 				OS.shell_open(GlobalManager.log_path)
 			else:
 				OS.execute("open",[GlobalManager.log_path])
@@ -89,7 +89,7 @@ func _on_plugin_menu_pressed(id:int):
 		PluginMenuOptions.RELOAD_PLUGIN:
 			CommandManager.parse_console_command("plugins areload")
 		PluginMenuOptions.OPEN_PLUGIN_DIR:
-			if OS.get_name() == "Windows":
+			if OS.get_name() != "macOS":
 				OS.shell_open(PluginManager.plugin_path)
 			else:
 				OS.execute("open",[PluginManager.plugin_path])
@@ -102,7 +102,7 @@ func _on_plugin_menu_pressed(id:int):
 func _on_adapter_menu_pressed(id:int):
 	match id:
 		AdapterMenuOptions.OPEN_CONFIG_FILE:
-			if OS.get_name() == "Windows":
+			if OS.get_name() != "macOS":
 				OS.shell_open(GlobalManager.config_path + "mirai_adapter.json")
 			else:
 				OS.execute("open",[GlobalManager.config_path + "mirai_adapter.json"])
@@ -116,7 +116,7 @@ func _on_adapter_menu_pressed(id:int):
 		AdapterMenuOptions.ADAPTER_STATUS:
 			CommandManager.parse_console_command("mirai status")
 		AdapterMenuOptions.OPEN_ADAPTER_DIR:
-			if OS.get_name() == "Windows":
+			if OS.get_name() != "macOS":
 				OS.shell_open(GlobalManager.adapter_path+"mirai")
 			else:
 				OS.execute("open",[GlobalManager.adapter_path+"mirai"])
