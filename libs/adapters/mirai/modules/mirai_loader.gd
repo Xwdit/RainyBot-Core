@@ -45,6 +45,12 @@ java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader 
 pause
 """
 
+var mirai_start_cmd_unix = """
+#!/usr/bin/env sh
+cd {mirai_path}
+java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader %*
+"""
+
 
 func _exit_tree():
 	var dir = Directory.new()
@@ -102,7 +108,11 @@ func init_mirai_cmd():
 	if dir.file_exists(mirai_path+"start.cmd"):
 		dir.remove(mirai_path+"start.cmd")
 	file.open(mirai_path+"start.cmd",File.WRITE)
-	var _str = mirai_start_cmd.format({"mirai_path":mirai_path})
+	var _str:String
+	if OS.get_name() == "Windows":
+		_str = mirai_start_cmd.format({"mirai_path":mirai_path})
+	elif OS.get_name() == "macOS" or OS.get_name() == "Linux":
+		_str = mirai_start_cmd_unix.format({"mirai_path":mirai_path})
 	file.store_string(_str)
 	file.close()
 
@@ -116,9 +126,13 @@ func load_mirai():
 		if File.new().file_exists(mirai_path+"start.cmd"):
 			init_mirai_config()
 			Console.print_success("Mirai配置文件生成完毕!")
-			if OS.shell_open(mirai_path+"start.cmd") != OK:
-				Console.print_error("无法启动Mirai,请检查以下目录中文件是否丢失或损坏:"+mirai_path)
-				return ERR_CANT_OPEN
+			if OS.get_name() == "Windows":
+				if OS.shell_open(mirai_path+"start.cmd") != OK:
+					Console.print_error("无法启动Mirai,请检查以下目录中文件是否丢失或损坏:"+mirai_path)
+					return ERR_CANT_OPEN
+			else:
+				OS.execute("chmod",["+x",mirai_path+"start.cmd"])
+				OS.execute(mirai_path+"start.cmd",[])
 			return OK
 		else:
 			Console.print_error("无法初始化Mirai启动脚本，请检查以下目录文件权限是否正确:"+mirai_path)

@@ -150,8 +150,8 @@ func reimport():
 	await get_tree().create_timer(0.5).timeout
 	Console.print_warning("正在重新导入资源，在此过程中RainyBot将会停止响应，请耐心等待.....")
 	await get_tree().create_timer(0.5).timeout
-	OS.execute(OS.get_executable_path(),["--editor","--headless","--clear-import"])
-	OS.execute(OS.get_executable_path(),["--editor","--headless","--wait-import"])
+	OS.execute(OS.get_executable_path(),["--path",root_path,"--editor","--headless","--clear-import"])
+	OS.execute(OS.get_executable_path(),["--path",root_path,"--editor","--headless","--wait-import"])
 	_remove_import_helper()
 	Console.print_success("资源重新导入完毕！正在准备重新启动RainyBot...")
 	await get_tree().create_timer(0.5).timeout
