@@ -131,7 +131,7 @@ func load_mirai():
 		Console.print_success("Java环境检测通过，正在启动Mirai进程...")
 		init_mirai_cmd()
 		var file = File.new()
-		if file.file_exists(mirai_path+"start.cmd") or file.file_exists(mirai_path+"start.sh"):
+		if file.file_exists(mirai_path+"start.cmd") or file.file_exists(mirai_path+"start.command") or file.file_exists(mirai_path+"start.sh"):
 			Console.print_success("Mirai启动脚本初始化完毕!")
 			init_mirai_config()
 			Console.print_success("Mirai配置文件生成完毕!")
