@@ -1066,91 +1066,7 @@ func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
-func create_viewport(size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO,transparent:bool=false)->SubViewport:
-	if (size.x < 0 or size.y < 0) or (stretch_size.x < 0 or stretch_size.y < 0):
-		Console.print_error("无法创建SubViewport实例，因为传入的大小或拉伸大小不能小于(0,0)!")
-		return
-	var viewport:SubViewport = SubViewport.new()
-	viewport.transparent_bg = transparent
-	viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
-	viewport.size = size
-	if stretch_size != Vector2i.ZERO:
-		viewport.size_2d_override_stretch = true
-		viewport.size_2d_override = stretch_size
-		Console.print_success("成功创建SubViewport实例并附加为插件的子节点! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [size,stretch_size,"启用" if transparent else "禁用"])
-	else:
-		viewport.size_2d_override_stretch = false
-		viewport.size_2d_override = size
-		Console.print_success("成功创建SubViewport实例并附加为插件的子节点! 大小为:%s, 背景透明状态为:%s"% [size,"启用" if transparent else "禁用"])
-	add_child(viewport)
-	return viewport
-
-
-func update_viewport(viewport:SubViewport)->void:
-	if is_instance_valid(viewport):
-		viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
-		await get_tree().process_frame
-		Console.print_success("成功更新指定SubViewport中渲染的内容!")
-	else:
-		Console.print_error("指定的SubViewport无效，因此无法对其进行更新!")
-	
-	
-func set_viewport_size(viewport:SubViewport,size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO)->void:
-	if is_instance_valid(viewport):
-		if (size.x < 0 or size.y < 0) or (stretch_size.x < 0 or stretch_size.y < 0):
-			Console.print_error("无法更改指定SubViewport的大小，因为传入的大小或拉伸大小不能小于(0,0)!")
-			return
-		viewport.size = size
-		if stretch_size != Vector2i.ZERO:
-			viewport.size_2d_override_stretch = true
-			viewport.size_2d_override = stretch_size
-			Console.print_success("成功将指定SubViewport的大小更改为%s, 拉伸大小更改为%s"% [size,stretch_size])
-		else:
-			viewport.size_2d_override_stretch = false
-			viewport.size_2d_override = size
-			Console.print_success("成功将指定SubViewport的大小更改为%s"% size)
-	else:
-		Console.print_error("指定的SubViewport无效，因此无法更改其大小!")
-		
-		
-func set_viewport_transparent(viewport:SubViewport,transparent:bool)->void:
-	if is_instance_valid(viewport):
-		var _size:Vector2i = viewport.size
-		viewport.transparent_bg = transparent
-		viewport.size = Vector2i.ZERO
-		viewport.size = _size
-		if transparent:
-			Console.print_success("成功为指定的SubViewport启用背景透明!")
-		else:
-			Console.print_success("成功为指定的SubViewport禁用背景透明!")
-	else:
-		Console.print_error("指定的SubViewport无效，因此无法更改其背景透明状态!")
-	
-	
-func get_viewport_image(viewport:SubViewport,update:bool=false)->Image:
-	if is_instance_valid(viewport):
-		if update:
-			await update_viewport(viewport)
-		var img:Image = viewport.get_texture().get_image()
-		if is_instance_valid(img):
-			if viewport.size_2d_override_stretch:
-				img.resize(viewport.size_2d_override.x,viewport.size_2d_override.y)
-				Console.print_success("成功基于指定SubViewport中渲染的内容生成图像! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [viewport.size,viewport.size_2d_override,"启用" if viewport.transparent_bg else "禁用"])
-			else:
-				Console.print_success("成功基于指定SubViewport中渲染的内容生成图像! 大小为:%s, 背景透明状态为:%s"% [viewport.size,"启用" if viewport.transparent_bg else "禁用"])
-			return img
-		else:
-			if viewport.size_2d_override_stretch:
-				Console.print_error("无法根据指定的SubViewport中渲染的内容生成图像，请检查其子场景与各项配置是否正确! (大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s)"% [viewport.size,viewport.size_2d_override,"启用" if viewport.transparent_bg else "禁用"])
-			else:
-				Console.print_error("无法根据指定的SubViewport中渲染的内容生成图像，请检查其子场景与各项配置是否正确! (大小为:%s, 背景透明状态为:%s)"% [viewport.size,"启用" if viewport.transparent_bg else "禁用"])
-			return null
-	else:
-		Console.print_error("指定的SubViewport无效，因此无法根据其渲染的内容生成图像!")
-		return null
-
-	
-func load_scene(path:String,parent:Node=null,threaded:bool=false)->Node:
+func load_scene(path:String,for_capture:bool=false,threaded:bool=false)->Node:
 	Console.print_warning("正在尝试加载场景文件: %s"% path)
 	var _scene:PackedScene
 	if threaded:
@@ -1158,16 +1074,58 @@ func load_scene(path:String,parent:Node=null,threaded:bool=false)->Node:
 	else:	
 		_scene = ResourceLoader.load(path,"",ResourceLoader.CACHE_MODE_IGNORE)
 	if is_instance_valid(_scene) and _scene.can_instantiate():
-		var ins:Node = _scene.instantiate()
-		if is_instance_valid(parent):
-			parent.add_child(ins)
-			Console.print_success("成功加载场景文件并附加到指定的父节点: %s"% path)
+		var _ins:Node = _scene.instantiate()
+		if for_capture:
+			var _v_port:SubViewport = SubViewport.new()
+			_v_port.render_target_update_mode = SubViewport.UPDATE_DISABLED
+			add_child(_v_port)
+			_v_port.add_child(_ins)
+			_ins.connect("tree_exited",_v_port.queue_free)
+			Console.print_success("成功加载场景文件，并准备好对其内容进行图像获取: %s"% path)
 		else:
-			add_child(ins)
-			Console.print_success("成功加载场景文件并附加为插件的子节点: %s"% path)
-		return ins
+			add_child(_ins)
+			Console.print_success("成功加载场景文件，并添加为插件的子级以便于后续使用: %s"% path)
+		return _ins
 	else:
 		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确，或尝试在插件菜单中重新导入资源!"% path)
+		return null
+
+
+func get_scene_image(scene:Node,size:Vector2i,stretch_size:Vector2i=Vector2i.ZERO,transparent:bool=false)->Image:
+	if !is_instance_valid(scene):
+		Console.print_error("指定的场景无效，因此无法根据其中的内容生成图像!")
+		return null
+	var _v_port = scene.get_parent()
+	if !is_instance_valid(_v_port) or !(_v_port is SubViewport):
+		Console.print_error("无法基于指定的场景生成图像，请确保此场景是通过load_scene()函数加载的，且加载时在函数中启用了for_capture参数!")
+		return null
+	if (size.x < 0 or size.y < 0) or (stretch_size.x < 0 or stretch_size.y < 0):
+		Console.print_error("无法基于指定的场景生成图像，因为传入的大小或拉伸大小不能小于(0,0)!")
+		return null
+	_v_port.transparent_bg = transparent
+	_v_port.size = Vector2i.ZERO
+	_v_port.size = size
+	if stretch_size != Vector2i.ZERO:
+		_v_port.size_2d_override_stretch = true
+		_v_port.size_2d_override = stretch_size
+	else:
+		_v_port.size_2d_override_stretch = false
+		_v_port.size_2d_override = size
+	_v_port.render_target_update_mode = SubViewport.UPDATE_ONCE
+	await get_tree().process_frame
+	var img:Image = _v_port.get_texture().get_image()
+	if is_instance_valid(img):
+		if _v_port.size_2d_override_stretch:
+			img.resize(_v_port.size_2d_override.x,_v_port.size_2d_override.y)
+			Console.print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [_v_port.size,_v_port.size_2d_override,"启用" if _v_port.transparent_bg else "禁用"])
+		else:
+			Console.print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 背景透明状态为:%s"% [_v_port.size,"启用" if _v_port.transparent_bg else "禁用"])
+		return img
+	else:
+		if _v_port.size_2d_override_stretch:
+			Console.print_error("无法根据指定场景中的内容生成图像，请检查传入的各项参数是否正确! (大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s)"% [_v_port.size,_v_port.size_2d_override,"启用" if _v_port.transparent_bg else "禁用"])
+		else:
+			Console.print_error("无法根据指定场景中的内容生成图像，请检查传入的各项参数是否正确! (大小为:%s, 背景透明状态为:%s)"% [_v_port.size,"启用" if _v_port.transparent_bg else "禁用"])
 		return null
 	
 
