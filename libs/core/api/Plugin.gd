@@ -1066,13 +1066,9 @@ func unload_plugin():
 	PluginManager.unload_plugin(self)
 
 
-func load_scene(path:String,for_capture:bool=false,threaded:bool=false)->Node:
+func load_scene(path:String,for_capture:bool=false)->Node:
 	Console.print_warning("正在尝试加载场景文件: %s"% path)
-	var _scene:PackedScene
-	if threaded:
-		_scene = await GlobalManager.load_threaded(path)
-	else:	
-		_scene = ResourceLoader.load(path,"",ResourceLoader.CACHE_MODE_IGNORE)
+	var _scene:PackedScene = await GlobalManager.load_threaded(path)
 	if is_instance_valid(_scene) and _scene.can_instantiate():
 		var _ins:Node = _scene.instantiate()
 		if for_capture:

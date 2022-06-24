@@ -175,22 +175,26 @@ func clear_dir_files(dir_path,remove_dir:bool=true):
 
 
 func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->Resource:
-	Console.print_warning("正在请求异步加载以下路径的资源: "+path)
-	var err = ResourceLoader.load_threaded_request(path,type_hint,use_sub_threads)
-	if err == OK:
-		var helper = ResourceLoadHelper.new()
-		loading_resources[path]=helper
-		Console.print_warning("资源异步加载请求成功，开始等待以下路径的资源加载完成: "+path)
-		await helper.finished
-		if ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_LOADED:
-			Console.print_success("成功异步加载以下路径的资源: "+path)
-			return ResourceLoader.load_threaded_get(path)
+	if ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_LOADED:
+		Console.print_success("此资源此前已被加载，正在返回已加载的资源: "+path)
+		return ResourceLoader.load_threaded_get(path)
+	else:
+		Console.print_warning("正在请求异步加载以下路径的资源: "+path)
+		var err = ResourceLoader.load_threaded_request(path,type_hint,use_sub_threads)
+		if err == OK:
+			var helper = ResourceLoadHelper.new()
+			loading_resources[path]=helper
+			Console.print_warning("资源异步加载请求成功，开始等待以下路径的资源加载完成: "+path)
+			await helper.finished
+			if ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_LOADED:
+				Console.print_success("成功异步加载以下路径的资源: "+path)
+				return ResourceLoader.load_threaded_get(path)
+			else:
+				Console.print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
+				return null
 		else:
 			Console.print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
 			return null
-	else:
-		Console.print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
-		return null
 
 
 func running_from_editor()->bool:
