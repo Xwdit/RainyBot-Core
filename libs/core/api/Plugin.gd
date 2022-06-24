@@ -1080,7 +1080,7 @@ func load_scene(path:String,for_capture:bool=false)->Node:
 			Console.print_success("成功加载场景文件，并准备好对其内容进行图像获取: %s"% path)
 		else:
 			add_child(_ins)
-			Console.print_success("成功加载场景文件，并添加为插件的子级以便于后续使用: %s"% path)
+			Console.print_success("成功加载场景文件，并将其添加为插件的子级以便于后续使用: %s"% path)
 		return _ins
 	else:
 		Console.print_error("无法加载场景文件 %s，请检查路径及文件是否正确，或尝试在插件菜单中重新导入资源!"% path)
