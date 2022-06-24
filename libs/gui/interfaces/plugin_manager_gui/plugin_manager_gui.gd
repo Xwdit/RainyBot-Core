@@ -136,7 +136,10 @@ func _on_refresh_button_button_down():
 
 
 func _on_folder_button_button_down():
-	OS.shell_open(PluginManager.plugin_path)
+	if OS.get_name() != "macOS":
+		OS.shell_open(PluginManager.plugin_path)
+	else:
+		OS.execute("open",[PluginManager.plugin_path])
 
 
 func _on_reload_all_button_button_down():
