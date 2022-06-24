@@ -54,8 +54,8 @@ func _ready():
 
 
 func _process(delta):
-	check_error()
 	_check_load_status()
+	check_error()
 
 
 func _init_dir():
