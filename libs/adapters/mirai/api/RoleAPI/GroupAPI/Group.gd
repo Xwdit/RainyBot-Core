@@ -5,10 +5,10 @@ class_name Group
 
 
 var data_dic:Dictionary = {
-		"id":-1,
-		"name":"",
-		"permission":"MEMBER"
-		}
+	"id":-1,
+	"name":"",
+	"permission":"MEMBER"
+}
 
 
 static func init(group_id:int)->Group:
@@ -20,7 +20,8 @@ static func init(group_id:int)->Group:
 
 static func init_meta(dic:Dictionary)->Group:
 	var ins:Group = Group.new()
-	ins.data_dic = dic
+	if !dic.is_empty():
+		ins.data_dic = dic
 	return ins
 
 
@@ -138,6 +139,42 @@ func send_nudge(member_id:int,timeout:float=-INF)->BotRequestResult:
 	}
 	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins
+
+
+func publish_announce(announce:GroupAnnounce,timeout:float=-INF):
+	if !is_instance_valid(announce):
+		Console.print_error("要发送的群公告实例无效，因此无法进行发送!")
+		return
+	if announce.get_content() == "":
+		Console.print_error("要发送的群公告实例内容不能为空，因此无法进行发送!")
+		return
+	var _req_dic = announce.get_metadata().duplicate()
+	_req_dic["target"]=get_id()
+	var _result:Dictionary = await BotAdapter.send_bot_request("anno_publish",null,_req_dic,timeout)
+	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins
+
+
+func delete_announce(announce_id:int,timeout:float=-INF)->BotRequestResult:
+	var _req_dic = {
+		"id":get_id(),
+		"fid":announce_id
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("anno_delete",null,_req_dic,timeout)
+	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins
+	
+	
+func get_announce_list(page_num:int=0,per_page_size:int=10,timeout:float=-INF)->GroupAnnounceInfoList:
+	var _req_dic = {
+		"id":get_id(),
+		"offset":page_num,
+		"size":per_page_size
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("anno_delete",null,_req_dic,timeout)
+	var _arr:Array = _result.get("data",[])
+	var _ins:GroupAnnounceInfoList = GroupAnnounceInfoList.init_meta(_arr)
 	return _ins
 
 
