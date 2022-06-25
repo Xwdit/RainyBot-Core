@@ -36,7 +36,7 @@ func set_face_id(face_id:int):
 
 	
 func get_face_name()->String:
-	return data_dic.display
+	return data_dic.name
 	
 	
 func set_face_name(face_name:String):

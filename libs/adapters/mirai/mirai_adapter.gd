@@ -89,6 +89,8 @@ func parse_message_dic(dic:Dictionary)->Message:
 			return AtAllMessage.init_meta(dic)
 		"Face":
 			return FaceMessage.init_meta(dic)
+		"MarketFace":
+			return MarketFaceMessage.init_meta(dic)
 		"Plain":
 			return TextMessage.init_meta(dic)
 		"Image":
