@@ -142,7 +142,7 @@ func send_nudge(member_id:int,timeout:float=-INF)->BotRequestResult:
 	return _ins
 
 
-func publish_announce(announce:GroupAnnounce,timeout:float=-INF):
+func publish_announce(announce:GroupAnnounce,timeout:float=-INF)->GroupAnnounceInfoList:
 	if !is_instance_valid(announce):
 		Console.print_error("要发送的群公告实例无效，因此无法进行发送!")
 		return
@@ -152,7 +152,8 @@ func publish_announce(announce:GroupAnnounce,timeout:float=-INF):
 	var _req_dic = announce.get_metadata().duplicate()
 	_req_dic["target"]=get_id()
 	var _result:Dictionary = await BotAdapter.send_bot_request("anno_publish",null,_req_dic,timeout)
-	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	var _arr:Array = _result.get("data",[])
+	var _ins:GroupAnnounceInfoList = GroupAnnounceInfoList.init_meta(_arr)
 	return _ins
 
 
