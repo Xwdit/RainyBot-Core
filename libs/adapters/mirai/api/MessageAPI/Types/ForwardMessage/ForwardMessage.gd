@@ -35,6 +35,6 @@ func get_node_list()->ForwardMessageNodeList:
 	return ForwardMessageNodeList.init_meta(data_dic.nodeList)
 	
 	
-func set_node_list(node_list:ForwardMessageNodeList):
+func set_node_list(node_list:ForwardMessageNodeList)->void:
 	data_dic.nodeList = node_list.get_metadata()
 	

@@ -32,7 +32,7 @@ static func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
 
 ## 通过await调用时，将发送一个Http Post请求到指定的URL，并在收到结果或超时后返回一个HttpRequestResult
 ## 需要的参数从左到右分别为 请求URL,请求内容，请求headers(可选，默认为空数组)，超时时间(可选，默认为20秒)
-static func send_http_post_request(url:String,request_data:String="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
+static func send_http_post_request(url:String,request_data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	var result:HttpRequestResult = await HttpRequestManager.send_http_post_request(url,request_data,headers,timeout)
 	return result
 

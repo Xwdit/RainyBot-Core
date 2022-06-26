@@ -4,13 +4,13 @@ extends Node
 class_name MiraiLoader
 
 
-var mirai_path = GlobalManager.adapter_path + "mirai/"
-var mirai_http_path = mirai_path + "config/net.mamoe.mirai-api-http/"
-var mirai_login_path = mirai_path + "config/Console/"
-var mirai_http_file = mirai_http_path + "setting.yml"
-var mirai_login_file = mirai_login_path + "AutoLogin.yml"
+var mirai_path:String = GlobalManager.adapter_path + "mirai/"
+var mirai_http_path:String = mirai_path + "config/net.mamoe.mirai-api-http/"
+var mirai_login_path:String = mirai_path + "config/Console/"
+var mirai_http_file:String = mirai_http_path + "setting.yml"
+var mirai_login_file:String = mirai_login_path + "AutoLogin.yml"
 
-var mirai_http_config = """
+var mirai_http_config:String = """
 adapters: 
   - ws
 debug: false
@@ -25,7 +25,7 @@ adapterSettings:
 	reservedSyncId: -1
 """
 
-var mirai_login_config = """
+var mirai_login_config:String = """
 accounts:
   -  
 	account: {mirai_qq}
@@ -37,7 +37,7 @@ accounts:
 	  device: device.json
 """
 
-var mirai_start_cmd = """
+var mirai_start_cmd:String = """
 @echo off
 title Mirai Console
 cd {mirai_path}
@@ -45,15 +45,15 @@ java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader 
 pause
 """
 
-var mirai_start_cmd_unix = """
+var mirai_start_cmd_unix:String = """
 #!/usr/bin/env sh
 cd {mirai_path}
 java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader
 """
 
 
-func _exit_tree():
-	var dir = Directory.new()
+func _exit_tree()->void:
+	var dir:Directory = Directory.new()
 	dir.open(mirai_path)
 	if OS.get_name() == "Windows":
 		if dir.file_exists(mirai_path+"start.cmd"):
@@ -66,12 +66,12 @@ func _exit_tree():
 			dir.remove(mirai_path+"start.sh")
 
 
-func check_java_version():
-	var output = []
-	var _exit_code = OS.execute("java", ["--version"], output)
+func check_java_version()->bool:
+	var output:Array[String] = []
+	OS.execute("java", ["--version"], output)
 	if output.size() > 0:
 		var ver_str:String = output[0]
-		var ver_arr:Array = ver_str.split("\n")
+		var ver_arr:PackedStringArray = ver_str.split("\n")
 		ver_str = ver_arr[0]
 		ver_arr = ver_str.split(" ")
 		ver_str = ver_arr[1]
@@ -80,9 +80,9 @@ func check_java_version():
 	return false
 
 
-func init_mirai_config():
-	var dir = Directory.new()
-	var file = File.new()
+func init_mirai_config()->void:
+	var dir:Directory = Directory.new()
+	var file:File = File.new()
 	
 	dir.open(mirai_path)
 	
@@ -92,7 +92,7 @@ func init_mirai_config():
 		if dir.file_exists(mirai_http_file):
 			dir.remove(mirai_http_file)
 	file.open(mirai_http_file,File.WRITE)
-	var _str = mirai_http_config.format(BotAdapter.mirai_config_manager.loaded_config).replace("	","    ")
+	var _str:String = mirai_http_config.format(BotAdapter.mirai_config_manager.loaded_config).replace("	","    ")
 	file.store_string(_str)
 	file.close()
 	
@@ -107,9 +107,9 @@ func init_mirai_config():
 	file.close()
 
 
-func init_mirai_cmd():
-	var dir = Directory.new()
-	var file = File.new()
+func init_mirai_cmd()->void:
+	var dir:Directory = Directory.new()
+	var file:File = File.new()
 	
 	dir.open(mirai_path)
 	
@@ -133,12 +133,12 @@ func init_mirai_cmd():
 	file.close()
 
 
-func load_mirai():
+func load_mirai()->int:
 	Console.print_warning("正在检查Java运行时版本")
 	if check_java_version():
 		Console.print_success("Java环境检测通过，正在启动Mirai进程...")
 		init_mirai_cmd()
-		var file = File.new()
+		var file:File = File.new()
 		if file.file_exists(mirai_path+"start.cmd") or file.file_exists(mirai_path+"start.command") or file.file_exists(mirai_path+"start.sh"):
 			Console.print_success("Mirai启动脚本初始化完毕!")
 			init_mirai_config()

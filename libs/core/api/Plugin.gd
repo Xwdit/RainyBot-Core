@@ -722,7 +722,7 @@ func save_plugin_config()->int:
 
 
 ## 用于从已加载的配置中获取指定key对应的内容，需要先初始化配置文件才能使用此函数
-func get_plugin_config(key):
+func get_plugin_config(key)->Variant:
 	if !plugin_config_loaded:
 		Console.print_error("配置内容获取失败，请先初始化配置后再执行此操作")
 		return null
@@ -873,7 +873,7 @@ func save_plugin_data()->int:
 		
 
 ## 用于从已加载的数据库中获取指定key对应的内容，需要先初始化数据库文件才能使用此函数	
-func get_plugin_data(key):
+func get_plugin_data(key)->Variant:
 	if !plugin_data_loaded:
 		Console.print_error("数据库内容获取失败，请先初始化数据库后再执行此操作!")
 		return null
@@ -985,7 +985,7 @@ func save_plugin_cache()->int:
 		
 
 ## 用于从已加载的缓存数据库中获取指定key对应的内容，需要先初始化缓存数据库文件才能使用此函数	
-func get_plugin_cache(key):
+func get_plugin_cache(key)->Variant:
 	if !plugin_cache_loaded:
 		Console.print_error("缓存数据库内容获取失败，请先初始化缓存数据库后再执行此操作!")
 		return null
@@ -1173,7 +1173,7 @@ func wait_context(event:MessageEvent,match_sender:bool=true,match_group:bool=tru
 ## 需要的参数从左到右分别为：
 ## 要等待响应的自定义ID
 ## 等待的超时时间(可选，默认为20秒; 若数值小于等于0, 或已存在相同的等待, 则不启用超时)
-func wait_context_id(context_id:String,timeout:float=20.0,block:bool=true):
+func wait_context_id(context_id:String,timeout:float=20.0,block:bool=true)->Variant:
 	if context_id.length() < 1:
 		Console.print_error("无法开始等待上下文响应，需要等待的上下文ID不能为空!")
 		return null
@@ -1254,5 +1254,5 @@ class PluginContextHelper:
 	var block:bool = false
 	var result = null
 	
-	func get_result():
+	func get_result()->Variant:
 		return result

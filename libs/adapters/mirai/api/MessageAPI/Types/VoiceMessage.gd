@@ -52,7 +52,7 @@ func get_voice_id()->String:
 	return data_dic.voiceId
 	
 	
-func set_voice_id(voice_id:String):
+func set_voice_id(voice_id:String)->void:
 	data_dic.voiceId = voice_id
 	
 	
@@ -60,7 +60,7 @@ func get_voice_url()->String:
 	return data_dic.url
 	
 	
-func set_voice_url(voice_url:String):
+func set_voice_url(voice_url:String)->void:
 	data_dic.url = voice_url
 	
 	
@@ -68,7 +68,7 @@ func get_voice_path()->String:
 	return data_dic.path
 	
 	
-func set_voice_path(voice_path:String):
+func set_voice_path(voice_path:String)->void:
 	data_dic.path = voice_path
 	
 	
@@ -76,7 +76,7 @@ func get_voice_base64()->String:
 	return data_dic.base64
 	
 	
-func set_voice_base64(voice_base64:String):
+func set_voice_base64(voice_base64:String)->void:
 	data_dic.base64 = voice_base64
 	
 	

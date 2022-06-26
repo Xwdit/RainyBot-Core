@@ -28,7 +28,7 @@ func get_code_text()->String:
 	return _text.replacen("[mirai:","[bot:")
 	
 	
-func set_code_text(text:String):
+func set_code_text(text:String)->void:
 	data_dic.code = text.replacen("[bot:","[mirai:")
 
 

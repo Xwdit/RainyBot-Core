@@ -1,7 +1,7 @@
 extends Control
 
 
-func _ready():
+func _ready()->void:
 	DisplayServer.window_set_title("RainyBot")
 	Console.print_success("成功加载 RainyBot-Gui | 版本: %s | 作者: Xwdit" % RainyBotCore.VERSION)
 	if !await check_update():
@@ -10,7 +10,7 @@ func _ready():
 	RainyBotCore.start()
 
 
-func _process(_delta):
+func _process(_delta:float)->void:
 	$Status.text = "协议后端:Mirai | %s | Bot ID:%s" % ["已连接" if BotAdapter.is_bot_connected() else "未连接", str(BotAdapter.get_bot_id()) if BotAdapter.get_bot_id()!=0 else "未配置"]
 	var times_dic:Dictionary = Time.get_time_dict_from_unix_time(GlobalManager.global_run_time)
 	var time:String = "{hour}小时{minute}分钟".format(times_dic)
@@ -19,9 +19,9 @@ func _process(_delta):
 
 func check_update()->bool:
 	Console.print_warning("正在检查您的RainyBot是否为最新版本，请稍候...")
-	var err = $HTTPRequest.request("https://api.github.com/repos/Xwdit/RainyBot-Core/releases/latest")
+	var err:int = $HTTPRequest.request("https://api.github.com/repos/Xwdit/RainyBot-Core/releases/latest")
 	if err==OK:
-		var result = await $HTTPRequest.request_completed
+		var result:Array = await $HTTPRequest.request_completed
 		if result[0] == HTTPRequest.RESULT_SUCCESS:
 			var body:PackedByteArray = result[3]
 			var json:JSON = JSON.new()

@@ -1,19 +1,19 @@
 extends Node
 
 
-var mirai_client:=MiraiClient.new()
-var mirai_loader:=MiraiLoader.new()
-var mirai_config_manager:=MiraiConfigManager.new()
+var mirai_client:MiraiClient = MiraiClient.new()
+var mirai_loader:MiraiLoader = MiraiLoader.new()
+var mirai_config_manager:MiraiConfigManager = MiraiConfigManager.new()
 
 var group_message_count:int = 0
 var private_message_count:int = 0
 var sent_message_count:int = 0
 
 
-func start():
+func start()->void:
 	Console.print_warning("正在加载模块: Mirai-Adapter | 版本: %s | 作者: Xwdit" % RainyBotCore.VERSION)
 	add_to_group("console_command_mirai")
-	var usages = [
+	var usages:Array = [
 		"mirai status - 获取与Mirai框架的连接状态",
 		"mirai restart - 在Mirai主进程被关闭后重新启动Mirai框架",
 		"mirai command <命令> - 向Mirai框架发送命令并显示回调(不支持额外参数)",
@@ -29,11 +29,11 @@ func start():
 	mirai_config_manager.init_config()
 
 
-func _mirai_config_loaded():
+func _mirai_config_loaded()->void:
 	mirai_client.connect_to_mirai(get_ws_url())
 
 
-func _call_console_command(_cmd:String,args:Array):
+func _call_console_command(_cmd:String,args:Array)->void:
 	match args[0]:
 		"status":
 			Console.print_text("当前协议后端连接状态: "+("已连接" if is_bot_connected() else "未连接"))
@@ -42,7 +42,7 @@ func _call_console_command(_cmd:String,args:Array):
 			mirai_loader.load_mirai()
 		"command":
 			if args.size() > 1:
-				var result = await send_bot_request(args[1])
+				var result:Dictionary = await send_bot_request(args[1])
 				Console.print_text("收到回调: "+str(result))
 
 
@@ -58,7 +58,7 @@ func get_bot_id()->int:
 	return mirai_config_manager.get_bot_id()
 	
 	
-func send_bot_request(_command:String,_sub_command=null,_content={},_timeout:float=-INF)->Dictionary:
+func send_bot_request(_command:String,_sub_command:String="",_content:Dictionary={},_timeout:float=-INF)->Dictionary:
 	if _timeout <= -INF and mirai_config_manager.get_request_timeout() > 0.0:
 		_timeout=mirai_config_manager.get_request_timeout()
 	if _command.begins_with("send") and _command.ends_with("Message"):
@@ -120,9 +120,9 @@ func parse_message_dic(dic:Dictionary)->Message:
 	return null
 
 
-func parse_event(result_dic:Dictionary):
+func parse_event(result_dic:Dictionary)->void:
 	var ins:Event
-	var event_dic = result_dic["data"]
+	var event_dic:Dictionary = result_dic["data"]
 	var event_name:String = event_dic["type"]
 	match event_name:
 		"FriendMessage":

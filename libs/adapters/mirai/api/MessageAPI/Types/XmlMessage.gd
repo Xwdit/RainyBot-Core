@@ -27,7 +27,7 @@ func get_xml_text()->String:
 	return data_dic.xml
 	
 	
-func set_xml_text(text:String):
+func set_xml_text(text:String)->void:
 	data_dic.xml = text
 
 

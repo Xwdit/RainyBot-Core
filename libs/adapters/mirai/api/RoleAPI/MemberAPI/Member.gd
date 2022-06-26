@@ -22,7 +22,7 @@ var data_dic:Dictionary = {
 	"remark":""
 }
 
-var member_role:= Role.FRIEND
+var member_role:int = Role.FRIEND
 
 
 ## 手动构造一个Member类的实例，用于主动进行与个体成员的交互时使用
@@ -49,7 +49,7 @@ func get_metadata()->Dictionary:
 
 
 ## 使用指定字典覆盖实例中的元数据字典，仅当你知道自己在做什么时才使用
-func set_metadata(dic:Dictionary):
+func set_metadata(dic:Dictionary)->void:
 	data_dic = dic
 
 
@@ -60,7 +60,7 @@ func get_role()->int:
 	
 
 ## 设置个体成员实例的类型
-func set_role(role:int):
+func set_role(role:int)->void:
 	member_role = role
 
 
@@ -90,10 +90,10 @@ func get_avatar_url()->String:
 
 ## 获取个体成员实例相关资料的MemberProfile实例，需要配合await关键字使用
 func get_profile(timeout:float=-INF)->MemberProfile:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":get_id(),
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("friendProfile",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("friendProfile","",_req_dic,timeout)
 	var _ins:MemberProfile = MemberProfile.init_meta(_result)
 	return _ins
 
@@ -101,7 +101,7 @@ func get_profile(timeout:float=-INF)->MemberProfile:
 ## 向个体成员实例发送单条继承于Message类的消息的实例，同时可指定一个需要引用回复的消息ID
 ## 配合await关键字可返回一个BotRequestResult类的实例，便于判断执行状态
 func send_message(msg,quote_msgid:int=-1,timeout:float=-INF)->BotRequestResult:
-	var _chain = []
+	var _chain:Array = []
 	if msg is String:
 		_chain.append(BotCodeMessage.init(msg).get_metadata())
 	elif msg is Message:
@@ -110,12 +110,12 @@ func send_message(msg,quote_msgid:int=-1,timeout:float=-INF)->BotRequestResult:
 		_chain = msg.get_metadata()
 	elif msg is Array:
 		_chain = MessageChain.init(msg).get_metadata()
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":get_id(),
 		"messageChain":_chain,
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -123,12 +123,12 @@ func send_message(msg,quote_msgid:int=-1,timeout:float=-INF)->BotRequestResult:
 ## 向个体成员实例发送一个戳一戳消息
 ## 配合await关键字可返回一个BotRequestResult类的实例，便于判断执行状态
 func send_nudge(timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":get_id(),
 		"subject":get_id(),
 		"kind":"Friend" if member_role == Role.FRIEND else "Stranger"
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
@@ -136,9 +136,9 @@ func send_nudge(timeout:float=-INF)->BotRequestResult:
 ## 解除与个体成员实例的好友/单向好友关系
 ## 配合await关键字可返回一个BotRequestResult类的实例，便于判断执行状态
 func delete_friend(timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":get_id()
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("deleteFriend",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("deleteFriend","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

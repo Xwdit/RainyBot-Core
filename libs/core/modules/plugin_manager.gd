@@ -1,10 +1,10 @@
 extends Node
 
 
-var plugin_path = GlobalManager.plugin_path
-var plugin_config_path = GlobalManager.config_path 
-var plugin_data_path = GlobalManager.data_path
-var plugin_cache_path = GlobalManager.cache_path
+var plugin_path:String = GlobalManager.plugin_path
+var plugin_config_path:String = GlobalManager.config_path 
+var plugin_data_path:String = GlobalManager.data_path
+var plugin_cache_path:String = GlobalManager.cache_path
 
 var loaded_scripts:Dictionary = {}
 var file_load_status:Dictionary = {}
@@ -12,7 +12,7 @@ var plugin_event_dic:Dictionary = {}
 var plugin_files_dic:Dictionary = {}
 
 
-var default_plugin_info = {
+var default_plugin_info:Dictionary = {
 	"id":"",
 	"name":"",
 	"author":"",
@@ -21,10 +21,10 @@ var default_plugin_info = {
 }
 
 
-func _ready():
+func _ready()->void:
 	add_to_group("Event")
 	add_to_group("console_command_plugins")
-	var usages = [
+	var usages:Array = [
 		"plugins manager - 打开插件管理器GUI",
 		"plugins list - 查看所有已加载的插件列表",
 		"plugins load <文件名> - 加载一个指定的插件",
@@ -39,7 +39,7 @@ func _ready():
 	CommandManager.register_console_command("plugins",true,usages,"RainyBot-Core",false)
 
 
-func _call_event(event:Event):
+func _call_event(event:Event)->void:
 	if plugin_event_dic.has(event.get_script()):
 		var arr:Array = plugin_event_dic[event.get_script()]
 		for c in arr.duplicate():
@@ -61,7 +61,7 @@ func _call_event(event:Event):
 				return
 
 
-func _call_console_command(_cmd:String,args:Array):
+func _call_console_command(_cmd:String,args:Array)->void:
 	match args[0]:
 		"manager":
 			GuiManager.open_plugin_manager()
@@ -77,7 +77,7 @@ func _call_console_command(_cmd:String,args:Array):
 				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"unload":
 			if args.size() > 1:
-				var plugin = get_node_or_null(args[1])
+				var plugin:Plugin = get_node_or_null(args[1])
 				if is_instance_valid(plugin):
 					unload_plugin(plugin)
 				else:
@@ -87,7 +87,7 @@ func _call_console_command(_cmd:String,args:Array):
 					
 		"reload":
 			if args.size() > 1:
-				var plugin = get_node_or_null(args[1])
+				var plugin:Plugin = get_node_or_null(args[1])
 				if is_instance_valid(plugin):
 					reload_plugin(plugin)
 				else:
@@ -119,10 +119,10 @@ func _call_console_command(_cmd:String,args:Array):
 
 
 func load_plugin_script(path:String)->GDScript:
-	var _file = File.new()
-	var _err = _file.open(path,File.READ)
+	var _file:File = File.new()
+	var _err:int = _file.open(path,File.READ)
 	if _err == OK:
-		var _str = _file.get_as_text()
+		var _str:String = _file.get_as_text()
 		_file.close()
 		var _script:GDScript
 		if !loaded_scripts.has(path):
@@ -139,20 +139,20 @@ func load_plugin_script(path:String)->GDScript:
 		return		
 
 
-func load_plugin(file:String,files_dic=null,source:String=""):
+func load_plugin(file:String,files_dic:Dictionary={},source:String="")->void:
 	file_load_status[file] = false
 	Console.print_warning("正在尝试加载插件文件: " + file)
 	var _f_dic:Dictionary
-	if files_dic is Dictionary:
+	if !files_dic.is_empty():
 		_f_dic = files_dic
 	else:
 		_f_dic = get_plugin_files_dic()
 	for _id in _f_dic:
-		var _f = _f_dic[_id]
+		var _f:Dictionary = _f_dic[_id]
 		if _f.file == file:
-			var _info = _f.info
-			var _dependency = _info.dependency
-			var _inst_dic = get_plugin_instance_dic()
+			var _info:Dictionary = _f.info
+			var _dependency:Array = _info.dependency
+			var _inst_dic:Dictionary = get_plugin_instance_dic()
 			if _inst_dic.has(_info.id.to_lower()):
 				Console.print_error("无法加载插件文件: " + file)
 				Console.print_error("已经存在相同ID的插件被加载: "+str(_id))
@@ -184,9 +184,9 @@ func load_plugin(file:String,files_dic=null,source:String=""):
 						Console.print_error("无法加载插件文件: " + file)
 						Console.print_error("未找到此插件所需的依赖插件: "+_dep)
 						return
-			var plugin_res = load_plugin_script(plugin_path + file)
+			var plugin_res:GDScript = load_plugin_script(plugin_path + file)
 			var plugin_ins:Plugin = plugin_res.new()
-			var _plugin_info = plugin_ins.get_plugin_info()
+			var _plugin_info:Dictionary = plugin_ins.get_plugin_info()
 			plugin_ins.name = _plugin_info["id"].to_lower()
 			plugin_ins.plugin_path = plugin_path + file
 			plugin_ins.plugin_file = file
@@ -199,11 +199,11 @@ func load_plugin(file:String,files_dic=null,source:String=""):
 	Console.print_error("此插件文件不存在，或无法被加载！")
 
 
-func unload_plugin(plugin:Plugin):
-	var _plugin_info = plugin.get_plugin_info()
-	var _file = plugin.get_plugin_filename()
+func unload_plugin(plugin:Plugin)->void:
+	var _plugin_info:Dictionary = plugin.get_plugin_info()
+	var _file:String = plugin.get_plugin_filename()
 	Console.print_warning("正在卸载插件: "+get_beautify_plugin_info(_plugin_info))
-	var _dep_arr = []
+	var _dep_arr:Array = []
 	for child in get_children():
 		if  child.get_plugin_info().dependency.has(_plugin_info.id):
 			_dep_arr.append(child.get_plugin_info().id)
@@ -218,9 +218,10 @@ func unload_plugin(plugin:Plugin):
 	Console.print_success("成功卸载插件: " +get_beautify_plugin_info(_plugin_info))
 
 
-func create_plugin(file_name:String):
+func create_plugin(file_name:String)->int:
 	if File.new().file_exists(plugin_path+file_name):
 		Console.print_error("此插件文件已存在!")
+		return ERR_ALREADY_EXISTS
 	elif file_name.ends_with(".gd"):
 		var scr:GDScript = load("res://libs/core/templates/plugin_template.gd")
 		if ResourceSaver.save(plugin_path+file_name,scr) == OK:
@@ -229,30 +230,34 @@ func create_plugin(file_name:String):
 			return OK
 		else:
 			Console.print_error("插件文件创建失败，请检查文件权限是否正确!")
+			return ERR_CANT_CREATE
 	else:
 		Console.print_error("插件文件名格式错误，正确格式: <文件名>.gd")
+		return ERR_FILE_BAD_PATH
 
 
-func delete_plugin(file_name:String):
+func delete_plugin(file_name:String)->int:
 	if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
-		var dir = Directory.new()
+		var dir:Directory = Directory.new()
 		if dir.open(plugin_path)==OK && dir.remove(plugin_path+file_name)==OK:
-			var plug = get_plugin_with_filename(file_name)
+			var plug:Plugin = get_plugin_with_filename(file_name)
 			if is_instance_valid(plug):
 				await unload_plugin(plug)
 			Console.print_success("插件文件删除成功!")
 			return OK
 		else:
 			Console.print_error("插件文件删除失败，请检查文件权限是否正确!")
+			return ERR_CANT_OPEN
 	else:
-		Console.print_error("插件文件不存在或格式错误!")	
+		Console.print_error("插件文件不存在或格式错误!")
+		return ERR_DOES_NOT_EXIST	
 
 
-func reload_plugin(plugin:Plugin):
-	var _plugin_info = plugin.get_plugin_info()
-	var file = plugin.get_plugin_filename()
+func reload_plugin(plugin:Plugin)->void:
+	var _plugin_info:Dictionary = plugin.get_plugin_info()
+	var file:String = plugin.get_plugin_filename()
 	Console.print_warning("正在重载插件: " + get_beautify_plugin_info(_plugin_info))
-	var _dep_arr = []
+	var _dep_arr:Array = []
 	for child in get_children():
 		if  child.get_plugin_info().dependency.has(_plugin_info.id):
 			_dep_arr.append(child.get_plugin_info().id)
@@ -265,7 +270,7 @@ func reload_plugin(plugin:Plugin):
 
 
 func get_plugin_file_info(file:String)->Dictionary:
-	var plugin_res = load_plugin_script(plugin_path + file)
+	var plugin_res:GDScript = load_plugin_script(plugin_path + file)
 	for child in get_children():
 		if child.get_script() == plugin_res:
 			return child.get_plugin_info()
@@ -277,10 +282,10 @@ func get_plugin_file_info(file:String)->Dictionary:
 		return {}
 	var plugin_ins:Plugin = plugin_res.new()
 	if is_instance_valid(plugin_ins):
-		var _plugin_info = plugin_ins.get_plugin_info()
+		var _plugin_info:Dictionary = plugin_ins.get_plugin_info()
 		plugin_ins.queue_free()
 		if _plugin_info.has_all(default_plugin_info.keys()):
-			var err_arr = []
+			var err_arr:Array = []
 			for key in _plugin_info:
 				if (_plugin_info[key] is String) and (_plugin_info[key] == ""):
 					err_arr.append(key)
@@ -310,11 +315,11 @@ func get_plugin_files_dic()->Dictionary:
 		Console.print_warning("插件目录下未找到任何插件...")
 		return {}
 	for _file in _files:
-		var _plugin_info = get_plugin_file_info(_file)
+		var _plugin_info:Dictionary = get_plugin_file_info(_file)
 		if _plugin_info.is_empty():
 			file_load_status[_file] = false
 			continue
-		var _id = _plugin_info.id.to_lower()
+		var _id:String = _plugin_info.id.to_lower()
 		if _file_dic.has(_id):
 			file_load_status[_file] = false
 			Console.print_error("无法读取插件文件: " + _file)
@@ -327,14 +332,14 @@ func get_plugin_files_dic()->Dictionary:
 	
 	
 func get_plugin_instance_dic()->Dictionary:
-	var _plugin_dic = {}
+	var _plugin_dic:Dictionary = {}
 	for child in get_children():
 		_plugin_dic[str(child.name).to_lower()]=child
 	return _plugin_dic
 		
 
-func load_plugins():
-	var _files_dic = get_plugin_files_dic()
+func load_plugins()->void:
+	var _files_dic:Dictionary = get_plugin_files_dic()
 	for _id in _files_dic:
 		if file_load_status.has(_files_dic[_id].file):
 			continue
@@ -345,15 +350,15 @@ func load_plugins():
 	get_tree().call_group("Plugin","_on_ready")
 
 
-func unload_plugins():
+func unload_plugins()->void:
 	file_load_status.clear()
-	var _childs = get_children()
+	var _childs:Array = get_children()
 	_childs.reverse()
 	for _child in _childs:
 		await unload_plugin(_child)
 		
 		
-func reload_plugins():
+func reload_plugins()->void:
 	Console.print_warning("正在重载所有插件.....插件目录: "+plugin_path)
 	await unload_plugins()
 	await load_plugins()
@@ -361,23 +366,23 @@ func reload_plugins():
 	Console.print_success("输入指令help可查看当前可用的指令列表!")
 
 
-func get_plugin_instance(plugin_id):
+func get_plugin_instance(plugin_id:String)->Plugin:
 	return get_node_or_null(plugin_id)
 
 
 func get_plugin_with_filename(f_name:String)->Plugin:
-	var arr = PluginManager.get_children()
+	var arr:Array = get_children()
 	for child in arr:
 		var plug:Plugin = child
-		var file = plug.plugin_file
+		var file:String = plug.plugin_file
 		if file.to_lower() == f_name.to_lower():
 			return plug
 	return null
 
 
-func _list_files_in_directory(path):
-	var files = []
-	var dir = Directory.new()
+func _list_files_in_directory(path:String)->Array:
+	var files:Array = []
+	var dir:Directory = Directory.new()
 	if !dir.dir_exists(path):
 		dir.make_dir(path)
 		Console.print_warning("插件目录不存在，已创建新的插件目录!")
@@ -385,7 +390,7 @@ func _list_files_in_directory(path):
 	dir.list_dir_begin()
 
 	while true:
-		var file = dir.get_next()
+		var file:String = dir.get_next()
 		if file == "":
 			break
 		elif not file.begins_with(".") and file.get_extension() == "gd":
@@ -397,5 +402,5 @@ func _list_files_in_directory(path):
 
 
 func get_beautify_plugin_info(_info:Dictionary)->String:
-	var _str = "{name} | ID:{id} | 作者:{author} | 版本:{version} | 描述:{description} | 依赖插件:{dependency}".format(_info)
+	var _str:String = "{name} | ID:{id} | 作者:{author} | 版本:{version} | 描述:{description} | 依赖插件:{dependency}".format(_info)
 	return _str

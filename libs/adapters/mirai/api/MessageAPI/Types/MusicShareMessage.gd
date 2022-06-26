@@ -39,7 +39,7 @@ func get_share_kind()->String:
 	return data_dic.kind
 	
 	
-func set_share_kind(text:String):
+func set_share_kind(text:String)->void:
 	data_dic.kind = text
 	
 	
@@ -47,7 +47,7 @@ func get_share_title()->String:
 	return data_dic.title
 	
 	
-func set_share_title(text:String):
+func set_share_title(text:String)->void:
 	data_dic.title = text
 	
 	
@@ -55,7 +55,7 @@ func get_share_summary()->String:
 	return data_dic.summary
 	
 	
-func set_share_summary(text:String):
+func set_share_summary(text:String)->void:
 	data_dic.summary = text
 	
 	
@@ -63,7 +63,7 @@ func get_share_jump_url()->String:
 	return data_dic.jumpUrl
 	
 	
-func set_share_jump_url(text:String):
+func set_share_jump_url(text:String)->void:
 	data_dic.jumpUrl = text
 	
 	
@@ -71,7 +71,7 @@ func get_share_picture_url()->String:
 	return data_dic.pictureUrl
 	
 	
-func set_share_picture_url(text:String):
+func set_share_picture_url(text:String)->void:
 	data_dic.pictureUrl = text
 	
 	
@@ -79,7 +79,7 @@ func get_share_music_url()->String:
 	return data_dic.musicUrl
 	
 	
-func set_share_music_url(text:String):
+func set_share_music_url(text:String)->void:
 	data_dic.musicUrl = text
 	
 	
@@ -87,7 +87,7 @@ func get_share_brief()->String:
 	return data_dic.brief
 	
 	
-func set_share_brief(text:String):
+func set_share_brief(text:String)->void:
 	data_dic.brief = text
 
 

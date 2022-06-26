@@ -1,12 +1,12 @@
 extends LineEdit
 
 
-var n_history = -1
-var arr_history = []
-var current_text = ""
+var n_history:int = -1
+var arr_history:Array = []
+var current_text:String = ""
 
 
-func _input(_event):
+func _input(_event:InputEvent)->void:
 	if Input.is_action_just_pressed("ui_up"):
 		if arr_history.size() > 0:
 			if n_history == -1:
@@ -30,7 +30,7 @@ func _input(_event):
 			caret_column = text.length()
 
 
-func _on_CommandInput_text_submitted(new_text):
+func _on_CommandInput_text_submitted(new_text:String)->void:
 	text = ""
 	if new_text.replace(" ","") == "":
 		return

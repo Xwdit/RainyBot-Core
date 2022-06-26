@@ -1,21 +1,21 @@
 extends CodeEdit
 
 
-const CLASS_COLOR = Color(0.25,1,0.75)
-const API_COLOR = Color(0.2,0.9,0.8)
-const KEYWORD_COLOR = Color(1,0.44,0.52)
-const CONTROL_KEYWORD_COLOR = Color(1,0.55,0.8)
-const SYMBOL_COLOR = Color(0.66,0.78,1.0)
-const FUNCTION_COLOR = Color(0.34,0.69,1.0)
-const MEMBER_VAR_COLOR = Color(0.73,0.87,1.0)
-const NUMBER_COLOR = Color(0.62,1.0,0.87)
-const STRING_COLOR = Color(1,0.92,0.62)
-const COMMENT_COLOR = Color(0.8,0.81,0.82,0.5)
-const NODE_PATH_COLOR = Color(0.38,0.75,0.34)
-const ANNOTATION_COLOR = Color(1,0.69,0.44)
+const CLASS_COLOR:Color = Color(0.25,1,0.75)
+const API_COLOR:Color = Color(0.2,0.9,0.8)
+const KEYWORD_COLOR:Color = Color(1,0.44,0.52)
+const CONTROL_KEYWORD_COLOR:Color = Color(1,0.55,0.8)
+const SYMBOL_COLOR:Color = Color(0.66,0.78,1.0)
+const FUNCTION_COLOR:Color = Color(0.34,0.69,1.0)
+const MEMBER_VAR_COLOR:Color = Color(0.73,0.87,1.0)
+const NUMBER_COLOR:Color = Color(0.62,1.0,0.87)
+const STRING_COLOR:Color = Color(1,0.92,0.62)
+const COMMENT_COLOR:Color = Color(0.8,0.81,0.82,0.5)
+const NODE_PATH_COLOR:Color = Color(0.38,0.75,0.34)
+const ANNOTATION_COLOR:Color = Color(1,0.69,0.44)
 
 
-var keyword_colors := {
+var keyword_colors:Dictionary = {
 	"if":CONTROL_KEYWORD_COLOR,
 	"elif":CONTROL_KEYWORD_COLOR,
 	"else":CONTROL_KEYWORD_COLOR,
@@ -61,7 +61,7 @@ var keyword_colors := {
 	"false":KEYWORD_COLOR,
 }
 
-var type_dic = {
+var type_dic:Dictionary = {
 	TYPE_NIL:"null",
 	TYPE_BOOL:"bool",
 	TYPE_INT:"int",
@@ -99,29 +99,22 @@ var type_dic = {
 	TYPE_PACKED_COLOR_ARRAY:"PackedColorArray"
 }
 
-var color_regions = {
+var color_regions:Dictionary = {
 	"#":COMMENT_COLOR,
 	"\" \"":STRING_COLOR,
 	"$ .":NODE_PATH_COLOR,
 	"@":ANNOTATION_COLOR
 }
 
-var core_api_path = "res://libs/core/api/"
-var adapter_api_path = "res://libs/adapters/mirai/api/"
-var class_doc_path = "res://libs/gui/resources/class_docs/"
+var core_api_path:String = "res://libs/core/api/"
+var adapter_api_path:String = "res://libs/adapters/mirai/api/"
+var class_doc_path:String = "res://libs/gui/resources/class_docs/"
+
+var api_dic:Dictionary = {}
+var class_dic:Dictionary = {}
 
 
-var api_dic = {}
-var class_dic = {}
-var kw_keys = []
-var api_keys = []
-var class_keys = []
-
-var error_lines = {}
-var last_text = ""
-
-
-func _ready():
+func _ready()->void:
 	set_caret_line(0)
 	set_caret_column(0)
 	build_highlight_dics()
@@ -138,30 +131,30 @@ func load_script(path:String)->int:
 		return ERR_CANT_OPEN
 
 
-func build_highlight_dics():
-	api_dic["BotAdapter"]= build_script_dic(BotAdapter.get_script())
+func build_highlight_dics()->void:
+	api_dic["BotAdapter"] = build_script_dic(BotAdapter.get_script())
 	add_comment_delimiter("#","",true)
 	build_class_dics(class_doc_path)
 	build_api_dics(core_api_path)
 	build_api_dics(adapter_api_path)
 	
 
-func build_class_dics(path:String):
-	var dir = Directory.new()
+func build_class_dics(path:String)->void:
+	var dir:Directory = Directory.new()
 	dir.open(path)
-	var files = dir.get_files()
+	var files:PackedStringArray = dir.get_files()
 	for f in files:
-		var _c = f.replacen(".xml","")
+		var _c:String = f.replacen(".xml","")
 		if !class_dic.has(_c):
 			class_dic[_c]={"m":{},"p":{},"c":{},"s":{}}
-		var _xml = XMLParser.new()
+		var _xml:XMLParser = XMLParser.new()
 		_xml.open(path+f)
-		var _m = ""
-		var _p = ""
-		var _co = ""
+		var _m:String = ""
+		var _p:String = ""
+		var _co:String = ""
 		while _xml.read() == OK:
 			if _xml.get_node_type() == _xml.NODE_ELEMENT:
-				var _name = _xml.get_named_attribute_value_safe("name")
+				var _name:String = _xml.get_named_attribute_value_safe("name")
 				match _xml.get_node_name():
 					"method":
 						_m = _name
@@ -195,9 +188,9 @@ func build_class_dics(path:String):
 					_co = ""
 					
 
-func build_api_dics(path:String):
-	var dir = Directory.new()
-	var error = dir.open(path)
+func build_api_dics(path:String)->void:
+	var dir:Directory = Directory.new()
+	var error:int = dir.open(path)
 	if error!=OK:
 		print(error_string(error))
 		return
@@ -205,7 +198,7 @@ func build_api_dics(path:String):
 	dir.list_dir_begin()
 
 	while true:
-		var file = dir.get_next()
+		var file:String = dir.get_next()
 		if file == "":
 			break
 		if dir.current_is_dir():
@@ -219,15 +212,15 @@ func build_api_dics(path:String):
 
 func build_script_dic(script:GDScript)->Dictionary:
 	var _scr:GDScript = script
-	var _dic = {}
+	var _dic:Dictionary = {}
 	_dic["c"] = {}
 	_dic["e"] = {}
 	_dic["m"] = {}
 	_dic["p"] = {}
-	var _m_list = _scr.get_script_method_list()
-	var _e_list = _scr.get_script_constant_map()
-	var _p_list = _scr.get_script_property_list()
-	var _c_list = []
+	var _m_list:Array = _scr.get_script_method_list()
+	var _e_list:Dictionary = _scr.get_script_constant_map()
+	var _p_list:Array = _scr.get_script_property_list()
+	var _c_list:Array = []
 	for m in _m_list:
 		if m["return"]["class_name"] != "":
 			_dic["m"][m["name"]] = m["return"]["class_name"]
@@ -248,8 +241,8 @@ func build_script_dic(script:GDScript)->Dictionary:
 	return _dic
 
 
-func init_syntax_highlight():
-	var _dic = keyword_colors.duplicate()
+func init_syntax_highlight()->void:
+	var _dic:Dictionary = keyword_colors.duplicate()
 	keyword_colors["BotAdapter"]=API_COLOR
 	for c_name in class_dic:
 		if _dic.has(c_name):
@@ -259,7 +252,7 @@ func init_syntax_highlight():
 		if _dic.has(a_name):
 			continue
 		_dic[a_name] = API_COLOR
-	var chl = CodeHighlighter.new()
+	var chl:CodeHighlighter = CodeHighlighter.new()
 	chl.number_color = NUMBER_COLOR
 	chl.symbol_color = SYMBOL_COLOR
 	chl.function_color = FUNCTION_COLOR

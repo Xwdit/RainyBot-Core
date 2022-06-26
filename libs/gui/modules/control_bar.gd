@@ -45,7 +45,7 @@ enum HelpMenuOptions {
 }
 
 
-func _ready():
+func _ready()->void:
 	$MainMenu.get_popup().connect("id_pressed",_on_main_menu_pressed)
 	$ConsoleMenu.get_popup().connect("id_pressed",_on_console_menu_pressed)
 	$PluginMenu.get_popup().connect("id_pressed",_on_plugin_menu_pressed)
@@ -53,7 +53,7 @@ func _ready():
 	$HelpMenu.get_popup().connect("id_pressed",_on_help_menu_pressed)
 	
 	
-func _on_main_menu_pressed(id:int):
+func _on_main_menu_pressed(id:int)->void:
 	match id:
 		MainMenuOptions.CHECK_UPDATE:
 			get_parent().check_update()
@@ -70,7 +70,7 @@ func _on_main_menu_pressed(id:int):
 			CommandManager.parse_console_command("stop")
 			
 			
-func _on_console_menu_pressed(id:int):
+func _on_console_menu_pressed(id:int)->void:
 	match id:
 		ConsoleMenuOptions.CLEAR_CONSOLE:
 			get_tree().call_group("Console","clear")
@@ -82,7 +82,7 @@ func _on_console_menu_pressed(id:int):
 				OS.execute("open",[GlobalManager.log_path])
 			
 			
-func _on_plugin_menu_pressed(id:int):
+func _on_plugin_menu_pressed(id:int)->void:
 	match id:
 		PluginMenuOptions.PLUGIN_STORE:
 			OS.shell_open("https://godoter.cn/t/rainybot-plugins")
@@ -99,7 +99,7 @@ func _on_plugin_menu_pressed(id:int):
 			GlobalManager.reimport()
 			
 			
-func _on_adapter_menu_pressed(id:int):
+func _on_adapter_menu_pressed(id:int)->void:
 	match id:
 		AdapterMenuOptions.OPEN_CONFIG_FILE:
 			if OS.get_name() != "macOS":
@@ -122,7 +122,7 @@ func _on_adapter_menu_pressed(id:int):
 				OS.execute("open",[GlobalManager.adapter_path+"mirai"])
 			
 			
-func _on_help_menu_pressed(id:int):
+func _on_help_menu_pressed(id:int)->void:
 	match id:
 		HelpMenuOptions.ONLINE_TUTORIAL:
 			OS.shell_open("https://godoter.cn/t/rainybot-tutorials")

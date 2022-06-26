@@ -34,7 +34,7 @@ func get_metadata()->Dictionary:
 	return data_dic
 
 
-func set_metadata(dic:Dictionary):
+func set_metadata(dic:Dictionary)->void:
 	data_dic = dic
 
 
@@ -42,7 +42,7 @@ func get_sender_id()->int:
 	return data_dic.senderId
 	
 	
-func set_sender_id(id:int):
+func set_sender_id(id:int)->void:
 	data_dic.senderId = id
 	
 
@@ -50,7 +50,7 @@ func get_time()->int:
 	return data_dic.time
 	
 	
-func set_time(time:int):
+func set_time(time:int)->void:
 	data_dic.time = time
 	
 	
@@ -58,7 +58,7 @@ func get_sender_name()->String:
 	return data_dic.senderName
 	
 	
-func set_sender_name(name:int):
+func set_sender_name(name:int)->void:
 	data_dic.senderName = name
 	
 	
@@ -66,7 +66,7 @@ func get_message_chain()->MessageChain:
 	return MessageChain.init_meta(data_dic.messageChain)
 	
 	
-func set_message_chain(msg_chain:MessageChain):
+func set_message_chain(msg_chain:MessageChain)->void:
 	data_dic.messageChain = msg_chain.get_metadata()
 
 
@@ -74,5 +74,5 @@ func get_message_id()->int:
 	return data_dic.messageId
 	
 	
-func set_message_id(id:int):
+func set_message_id(id:int)->void:
 	data_dic.messageId = id

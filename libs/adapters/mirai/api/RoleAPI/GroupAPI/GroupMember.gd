@@ -46,7 +46,7 @@ func get_metadata()->Dictionary:
 	return data_dic
 
 
-func set_metadata(dic:Dictionary):
+func set_metadata(dic:Dictionary)->void:
 	data_dic = dic
 
 
@@ -91,17 +91,17 @@ func get_group()->Group:
 
 
 func get_profile(timeout:float=-INF)->MemberProfile:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":data_dic.group,
 		"memberId":get_id()
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("memberProfile",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("memberProfile","",_req_dic,timeout)
 	var _ins:MemberProfile = MemberProfile.init_meta(_result)
 	return _ins
 
 
 func change_name(new_name:String,timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":data_dic.group.id,
 		"memberId":get_id(),
 		"info":{"name":new_name}
@@ -112,7 +112,7 @@ func change_name(new_name:String,timeout:float=-INF)->BotRequestResult:
 	
 
 func change_special_title(new_title:String,timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":data_dic.group.id,
 		"memberId":get_id(),
 		"info":{"specialTitle":new_title}
@@ -123,7 +123,7 @@ func change_special_title(new_title:String,timeout:float=-INF)->BotRequestResult
 	
 	
 func toggle_admin(enabled:bool,timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":data_dic.group.id,
 		"memberId":get_id(),
 		"assign":enabled
@@ -134,39 +134,39 @@ func toggle_admin(enabled:bool,timeout:float=-INF)->BotRequestResult:
 
 
 func kick(message:String="",timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":data_dic.group.id,
 		"memberId":get_id(),
 		"msg":message
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("kick",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("kick","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
 
 func mute(time:int=1800,timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":data_dic.group.id,
 		"memberId":get_id(),
 		"time":time
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("mute",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("mute","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 	
 	
 func unmute(timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":data_dic.group.id,
 		"memberId":get_id(),
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("unmute",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("unmute","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 	
 	
 func send_message(msg,quote_msgid:int=-1,timeout:float=-INF)->BotRequestResult:
-	var _chain = []
+	var _chain:Array = []
 	if msg is String:
 		_chain.append(BotCodeMessage.init(msg).get_metadata())
 	elif msg is Message:
@@ -175,23 +175,23 @@ func send_message(msg,quote_msgid:int=-1,timeout:float=-INF)->BotRequestResult:
 		_chain = msg.get_metadata()
 	elif msg is Array:
 		_chain = MessageChain.init(msg).get_metadata()
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"qq":get_id(),
 		"group":data_dic.group.id,
 		"messageChain":_chain,
 		"quote":quote_msgid if quote_msgid != -1 else null
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendTempMessage",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendTempMessage","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins	
 
 
 func send_nudge(timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":get_id(),
 		"subject":get_id(),
 		"kind":"Stranger"
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendNudge","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

@@ -23,10 +23,10 @@ var data_dic:Dictionary = {
 
 static func init_user(user_id:int,timeout:float=-INF)->MemberProfile:
 	var ins:MemberProfile = MemberProfile.new()
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":user_id,
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("userProfile",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("userProfile","",_req_dic,timeout)
 	if !_result.is_empty():
 		ins.data_dic = _result
 	return ins
@@ -43,7 +43,7 @@ func get_metadata()->Dictionary:
 	return data_dic
 
 
-func set_metadata(dic:Dictionary):
+func set_metadata(dic:Dictionary)->void:
 	data_dic = dic
 
 

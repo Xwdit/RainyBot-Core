@@ -31,7 +31,7 @@ func get_face_id()->int:
 	return data_dic.faceId
 
 
-func set_face_id(face_id:int):
+func set_face_id(face_id:int)->void:
 	data_dic.faceId = face_id
 
 	
@@ -39,7 +39,7 @@ func get_face_name()->String:
 	return data_dic.name
 	
 	
-func set_face_name(face_name:String):
+func set_face_name(face_name:String)->void:
 	data_dic.name = face_name
 
 

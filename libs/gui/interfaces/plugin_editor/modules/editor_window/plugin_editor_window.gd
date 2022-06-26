@@ -1,7 +1,7 @@
 extends Window
 
 
-func _on_EditorWindow_close_requested():
+func _on_EditorWindow_close_requested()->void:
 	exit()
 
 
@@ -9,7 +9,7 @@ func get_plugin_editor()->PluginEditor:
 	return get_node("PluginEditor")
 
 
-func load_script(path:String):
+func load_script(path:String)->void:
 	if visible:
 		Console.print_error("当前已存在编辑中的插件文件，请关闭编辑器后重试!")
 		return
@@ -23,7 +23,7 @@ func load_script(path:String):
 	get_plugin_editor().get_code_edit().scroll_horizontal = 0
 	
 
-func exit():
+func exit()->void:
 	if get_plugin_editor().unsaved:
 		$ExitConfirmWindow.popup_centered(Vector2(430,130))
 	else:
@@ -31,6 +31,6 @@ func exit():
 		queue_free()
 
 
-func _on_ExitConfirmWindow_confirm_pressed():
+func _on_ExitConfirmWindow_confirm_pressed()->void:
 	Console.print_success("插件编辑器已被成功关闭! | 文件:"+get_plugin_editor().loaded_name)
 	queue_free()

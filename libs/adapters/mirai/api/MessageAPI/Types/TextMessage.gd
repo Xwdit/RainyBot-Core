@@ -27,7 +27,7 @@ func get_message_text()->String:
 	return data_dic.text
 	
 	
-func set_message_text(text:String):
+func set_message_text(text:String)->void:
 	data_dic.text = text
 
 

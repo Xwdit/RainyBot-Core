@@ -4,23 +4,23 @@ extends Node
 class_name MiraiClient
 
 
-var _client = WebSocketClient.new()
+var _client:WebSocketClient = WebSocketClient.new()
 var processing_command:Dictionary = {}
-var found_mirai = false
-var first_connected = false
-var mirai_connected = false
+var found_mirai:bool = false
+var first_connected:bool = false
+var mirai_connected:bool = false
 
 
-func _ready():
+func _ready()->void:
 	_client.connect("connection_closed", _closed)
 	_client.connect("connection_error", _closed)
 	_client.connect("connection_established", _connected)
 	_client.connect("data_received", _on_data)
 
 
-func connect_to_mirai(ws_url):
+func connect_to_mirai(ws_url:String)->void:
 	Console.print_warning("正在尝试连接到Mirai框架中，请稍候... | 连接地址: "+ws_url)
-	var err = _client.connect_to_url(ws_url)
+	var err:int = _client.connect_to_url(ws_url)
 	if err != OK:
 		Console.print_error("无法连接到Mirai框架，请检查配置是否有误")
 		Console.print_warning("将于10秒后尝试重新连接...")
@@ -33,12 +33,12 @@ func connect_to_mirai(ws_url):
 			_closed()
 
 
-func disconnect_to_mirai():
+func disconnect_to_mirai()->void:
 	if is_bot_connected():
 		_client.get_peer(1).close()
 
 
-func _closed(_was_clean = false):
+func _closed(_was_clean:bool=false)->void:
 	if mirai_connected:
 		mirai_connected = false
 		get_tree().call_group("Plugin","_on_disconnect")
@@ -57,15 +57,15 @@ func _closed(_was_clean = false):
 			connect_to_mirai(BotAdapter.get_ws_url())
 
 
-func _connected(_proto = ""):
+func _connected(_proto:String="")->void:
 	found_mirai = true
 	Console.print_success("成功与Mirai框架进行通信，正在等待响应...")
 	_client.get_peer(1).set_write_mode(WebSocketPeer.WRITE_MODE_TEXT)
 
 
-func _on_data():
-	var json = JSON.new()
-	var err = json.parse(_client.get_peer(1).get_packet().get_string_from_utf8())
+func _on_data()->void:
+	var json:JSON = JSON.new()
+	var err:int = json.parse(_client.get_peer(1).get_packet().get_string_from_utf8())
 	if err == OK:
 		var data:Dictionary = json.get_data()
 		if data.has("syncId"):
@@ -85,24 +85,24 @@ func _on_data():
 				get_tree().call_group("Plugin","_on_connect")
 
 
-func _process(_delta):
+func _process(_delta:float)->void:
 	_client.poll()
 
 
-func send_bot_request(command,sub_command,content,timeout:float)->Dictionary:
+func send_bot_request(command:String,sub_command:String,content:Dictionary,timeout:float)->Dictionary:
 	if !is_bot_connected():
 		Console.print_error("未连接到Mirai框架，指令请求发送失败: "+str(command)+" "+str(sub_command)+" "+str(content))
 		return {}
-	var sync_id = randi()
+	var sync_id:int = randi()
 	while processing_command.has(sync_id):
 		sync_id = randi()
-	var request = {"syncId":sync_id,"command":command,"subCommand":sub_command,"content":content}
+	var request:Dictionary = {"syncId":sync_id,"command":command,"subCommand":sub_command,"content":content}
 	Console.print_warning("正在发送指令请求到Mirai框架："+ str(request))
-	var cmd = MiraiRequestInstance.new()
+	var cmd:MiraiRequestInstance = MiraiRequestInstance.new()
 	cmd.sync_id = sync_id
 	cmd.request = request
 	processing_command[sync_id] = cmd
-	var json = JSON.new()
+	var json:JSON = JSON.new()
 	_client.get_peer(1).put_packet(json.stringify(request).to_utf8_buffer())
 	if timeout > 0.0:
 		Console.print_warning("本次请求的超时时间为: %s秒"% timeout)
@@ -116,8 +116,8 @@ func is_bot_connected()->bool:
 	return _client.get_peer(1).is_connected_to_host()
 
 
-func _parse_command_result(result:Dictionary):
-	var sync_id = result["syncId"].to_int()
+func _parse_command_result(result:Dictionary)->void:
+	var sync_id:int = result["syncId"].to_int()
 	if processing_command.has(sync_id):
 		var cmd:MiraiRequestInstance = processing_command[sync_id]
 		cmd.result = result["data"]
@@ -125,7 +125,7 @@ func _parse_command_result(result:Dictionary):
 		cmd.emit_signal("request_finished")
 
 
-func _tick_command_timeout(cmd_ins:MiraiRequestInstance,_timeout:float):
+func _tick_command_timeout(cmd_ins:MiraiRequestInstance,_timeout:float)->void:
 	await get_tree().create_timer(_timeout).timeout
 	if is_instance_valid(cmd_ins) && cmd_ins.result == {}:
 		Console.print_error("指令请求超时，无法获取到返回结果: "+str(cmd_ins.request))
@@ -136,9 +136,9 @@ class MiraiRequestInstance:
 	extends RefCounted
 	
 	signal request_finished
-	var request = {}
-	var result = {}
-	var sync_id = -1
+	var request:Dictionary = {}
+	var result:Dictionary = {}
+	var sync_id:int = -1
 
 	func get_result()->Dictionary:
 		return result

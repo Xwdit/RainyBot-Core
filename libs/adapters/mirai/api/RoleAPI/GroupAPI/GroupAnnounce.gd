@@ -34,7 +34,7 @@ func get_metadata()->Dictionary:
 	return data_dic
 
 
-func set_metadata(dic:Dictionary):
+func set_metadata(dic:Dictionary)->void:
 	data_dic = dic
 
 

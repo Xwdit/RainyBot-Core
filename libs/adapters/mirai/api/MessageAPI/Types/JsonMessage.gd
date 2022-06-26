@@ -27,7 +27,7 @@ func get_json_text()->String:
 	return data_dic.json
 	
 	
-func set_json_text(text:String):
+func set_json_text(text:String)->void:
 	data_dic.json = text
 
 

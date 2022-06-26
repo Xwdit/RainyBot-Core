@@ -43,7 +43,7 @@ func get_group_id()->int:
 	
 	
 func reply(msg,quote:bool=false,at:bool=false,timeout:float=-INF)->BotRequestResult:
-	var _chain = []
+	var _chain:Array = []
 	if msg is String:
 		_chain.append(BotCodeMessage.init(msg).get_metadata())
 	elif msg is Message:
@@ -53,15 +53,15 @@ func reply(msg,quote:bool=false,at:bool=false,timeout:float=-INF)->BotRequestRes
 	elif msg is Array:
 		_chain = MessageChain.init(msg).get_metadata()
 	if at:
-		var _arr = [AtMessage.init(data_dic.sender.id).get_metadata(),TextMessage.init(" ").get_metadata()]
+		var _arr:Array = [AtMessage.init(data_dic.sender.id).get_metadata(),TextMessage.init(" ").get_metadata()]
 		_arr.append_array(_chain)
 		_chain = _arr
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":data_dic.sender.group.id,
 		"messageChain":_chain,
 		"quote":get_message_chain().get_message_id() if quote else null
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendGroupMessage",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendGroupMessage","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 

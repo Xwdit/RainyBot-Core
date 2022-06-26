@@ -57,7 +57,7 @@ func get_poke_type()->int:
 	return type_dic_reverse[data_dic.name]
 	
 	
-func set_poke_type(type:int):
+func set_poke_type(type:int)->void:
 	data_dic.name = type_dic[type]
 	
 	

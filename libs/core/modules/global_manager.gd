@@ -131,10 +131,10 @@ func check_error()->void:
 		last_log_text = curr_text
 	elif last_log_text != curr_text:
 		last_errors.resize(0)
-		var _err:Array = curr_text.replacen(last_log_text,"").split("\n")
+		var _err:PackedStringArray = curr_text.replacen(last_log_text,"").split("\n")
 		for _l in _err:
 			if _l.findn("built-in")!=-1:
-				var _sl:Array = _l.split(" - ")
+				var _sl:PackedStringArray = _l.split(" - ")
 				var _text:String = "第%s行 - %s"%[abs(_sl[0].to_int()),_sl[1]]
 				last_errors.append("脚本运行时错误: "+_text)
 				Console.print_error("检测到脚本运行时错误: "+_text)

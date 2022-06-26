@@ -43,7 +43,7 @@ func get_group_id()->int:
 
 	
 func reply(msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
-	var _chain = []
+	var _chain:Array = []
 	if msg is String:
 		_chain.append(BotCodeMessage.init(msg).get_metadata())
 	elif msg is Message:
@@ -52,12 +52,12 @@ func reply(msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestRe
 		_chain = msg.get_metadata()
 	elif msg is Array:
 		_chain = MessageChain.init(msg).get_metadata()
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"qq":data_dic.sender.id,
 		"group":data_dic.sender.group.id,
 		"messageChain":_chain,
 		"quote":get_message_chain().get_message_id() if quote else null
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("sendTempMessage",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendTempMessage","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins

@@ -28,7 +28,7 @@ func get_target_id()->int:
 	return data_dic.target
 
 
-func set_target_id(target_id:int):
+func set_target_id(target_id:int)->void:
 	data_dic.target = target_id
 
 	

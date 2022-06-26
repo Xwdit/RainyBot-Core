@@ -26,7 +26,7 @@ func get_metadata()->Dictionary:
 	return data_dic
 
 
-func set_metadata(dic:Dictionary):
+func set_metadata(dic:Dictionary)->void:
 	data_dic = dic
 
 
@@ -34,7 +34,7 @@ func get_message_chain()->MessageChain:
 	return MessageChain.init_meta(data_dic.messageChain)
 	
 
-func get_sender():
+func get_sender()->RoleAPI:
 	match data_dic.type:
 		"FriendMessage":
 			return Member.init_meta(data_dic.sender)

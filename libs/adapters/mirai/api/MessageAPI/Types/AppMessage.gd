@@ -27,7 +27,7 @@ func get_app_text()->String:
 	return data_dic.content
 	
 	
-func set_app_text(text:String):
+func set_app_text(text:String)->void:
 	data_dic.content = text
 
 

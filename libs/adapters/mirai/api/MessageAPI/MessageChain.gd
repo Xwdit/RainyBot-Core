@@ -5,24 +5,24 @@ class_name MessageChain
 
 
 var data_array:Array = []
-var iter_current = 0
+var iter_current:int = 0
 
 
-func _iter_should_continue():
+func _iter_should_continue()->bool:
 	return (iter_current < data_array.size())
 
 
-func _iter_init(_arg):
+func _iter_init(_arg)->bool:
 	iter_current = 0
 	return _iter_should_continue()
 
 
-func _iter_next(_arg):
+func _iter_next(_arg)->bool:
 	iter_current += 1
 	return _iter_should_continue()
 
 
-func _iter_get(_arg):
+func _iter_get(_arg)->Message:
 	return get_message(iter_current)
 
 
@@ -61,7 +61,7 @@ func get_metadata()->Array:
 	return data_array
 
 
-func set_metadata(arr:Array):
+func set_metadata(arr:Array)->void:
 	data_array = arr
 
 
@@ -97,7 +97,7 @@ func get_message(index:int)->Message:
 func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
 	var arr:Array = []
 	for _dic in data_array:
-		var _msg = BotAdapter.parse_message_dic(_dic)
+		var _msg:Message = BotAdapter.parse_message_dic(_dic)
 		if !is_instance_valid(_msg):
 			continue
 		var _has:bool = false
@@ -126,7 +126,7 @@ func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
 func get_message_text(types=[],exclude:bool=false)->String:
 	var text:String = ""
 	for _dic in data_array:
-		var _msg = BotAdapter.parse_message_dic(_dic)
+		var _msg:Message = BotAdapter.parse_message_dic(_dic)
 		if !is_instance_valid(_msg):
 			continue
 		var _has:bool = false
@@ -169,7 +169,7 @@ func get_message_timestamp()->int:
 func has_message_type(type)->bool:
 	if type is GDScript and is_instance_valid(type):
 		for _dic in data_array:
-			var _msg = BotAdapter.parse_message_dic(_dic)
+			var _msg:Message = BotAdapter.parse_message_dic(_dic)
 			if !is_instance_valid(_msg):
 				continue
 			if _msg.get_script() == type:
@@ -178,9 +178,9 @@ func has_message_type(type)->bool:
 	elif type is Array and type.size()>0:
 		for _t in type:
 			if _t is GDScript and is_instance_valid(_t):
-				var _has = false
+				var _has:bool = false
 				for _dic in data_array:
-					var _msg = BotAdapter.parse_message_dic(_dic)
+					var _msg:Message = BotAdapter.parse_message_dic(_dic)
 					if !is_instance_valid(_msg):
 						continue
 					if _msg.get_script() == type:
@@ -195,19 +195,19 @@ func has_message_type(type)->bool:
 
 
 func set_essence(timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":get_message_id()
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("setEssence",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("setEssence","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 
 
 func recall(timeout:float=-INF)->BotRequestResult:
-	var _req_dic = {
+	var _req_dic:Dictionary = {
 		"target":get_message_id()
 	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("recall",null,_req_dic,timeout)
+	var _result:Dictionary = await BotAdapter.send_bot_request("recall","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
 

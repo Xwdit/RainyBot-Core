@@ -9,15 +9,15 @@ func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
 	if timeout > 0:
 		node.timeout = timeout
 	add_child(node)
-	var error = node.request(url)
+	var error:int = node.request(url)
 	if error != OK:
 		node.queue_free()
 		Console.print_error("当发送Http Get请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
-		var _r = HttpRequestResult.new()
+		var _r:HttpRequestResult = HttpRequestResult.new()
 		_r.request_url = url
 		return _r
 	await node.request_finished
-	var result = node.get_result()
+	var result:HttpRequestResult = node.get_result()
 	node.queue_free()
 	return result
 	
@@ -25,7 +25,7 @@ func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
 func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	Console.print_warning("正在尝试发送Http Post请求到: "+url)
 	if (data is Dictionary) or (data is Array):
-		var _json = JSON.new()
+		var _json:JSON = JSON.new()
 		data = _json.stringify(data)
 		if !headers.has("Content-Type: application/json"):
 			headers.append("Content-Type: application/json")
@@ -40,17 +40,17 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 	if timeout > 0:
 		node.timeout = timeout
 	add_child(node)
-	var error = node.request(url,headers,true,HTTPClient.METHOD_POST,data)
+	var error:int = node.request(url,headers,true,HTTPClient.METHOD_POST,data)
 	if error != OK:
 		node.queue_free()
 		Console.print_error("在发送Http Post请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
-		var _r = HttpRequestResult.new()
+		var _r:HttpRequestResult = HttpRequestResult.new()
 		_r.request_url = url
 		_r.request_data = data
 		_r.request_headers = headers
 		return _r
 	await node.request_finished
-	var result = node.get_result()
+	var result:HttpRequestResult = node.get_result()
 	node.queue_free()
 	return result
 
@@ -65,10 +65,10 @@ class HttpRequestInstance:
 	var request_headers:PackedStringArray = []
 	var result:HttpRequestResult = HttpRequestResult.new()
 
-	func _ready():
+	func _ready()->void:
 		connect("request_completed",_http_request_completed)
 
-	func _http_request_completed(_result, _response_code, _headers, _body):
+	func _http_request_completed(_result:int, _response_code:int, _headers:PackedStringArray, _body:PackedByteArray)->void:
 		result.request_url = request_url
 		result.request_data = request_data
 		result.request_headers = request_headers
