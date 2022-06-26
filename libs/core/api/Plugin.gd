@@ -609,7 +609,8 @@ func trigger_keyword(event:Event)->bool:
 func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:MessageEvent)->bool:
 	if _func.is_valid():
 		Console.print_success("成功触发关键词:\"%s\"(解析后:\"%s\")，参数为:\"%s\"！"%[_kw,_word,_arg])
-		return _func.call(_kw,_word,_arg,event)
+		var _result = _func.call(_kw,_word,_arg,event) 
+		return _result if (_result is bool) else false
 	else:
 		Console.print_error("关键词\"%s\"试图触发的函数无效或不存在，请检查配置是否有误！"%[_kw])
 		return false

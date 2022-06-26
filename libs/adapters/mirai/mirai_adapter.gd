@@ -214,5 +214,5 @@ func parse_event(result_dic:Dictionary)->void:
 			ins = OtherClientOfflineEvent.init_meta(event_dic)
 		_:
 			return
-		
-	get_tree().call_group("Event","_call_event",ins)
+			
+	PluginManager.call_event(ins)

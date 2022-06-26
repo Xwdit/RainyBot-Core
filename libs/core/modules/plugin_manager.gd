@@ -22,7 +22,6 @@ var default_plugin_info:Dictionary = {
 
 
 func _ready()->void:
-	add_to_group("Event")
 	add_to_group("console_command_plugins")
 	var usages:Array = [
 		"plugins manager - 打开插件管理器GUI",
@@ -39,7 +38,7 @@ func _ready()->void:
 	CommandManager.register_console_command("plugins",true,usages,"RainyBot-Core",false)
 
 
-func _call_event(event:Event)->void:
+func call_event(event:Event)->void:
 	if plugin_event_dic.has(event.get_script()):
 		var arr:Array = plugin_event_dic[event.get_script()]
 		for c in arr.duplicate():
