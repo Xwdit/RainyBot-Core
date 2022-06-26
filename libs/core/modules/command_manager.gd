@@ -1,17 +1,17 @@
 extends Node
 
 
-var console_commands_dic = {}
+var console_commands_dic:Dictionary = {}
 
 
-func _ready():
+func _ready()->void:
 	add_to_group("console_command_help")
 	register_console_command("help",false,["help - 查看命令列表","help <命令> - 查看某个命令的帮助"],"RainyBot-Core",false)
 
 
-func _call_console_command(_cmd:String,args:Array):
+func _call_console_command(_cmd:String,args:Array)->void:
 	if args.size() > 0:
-		var cmd = args[0]
+		var cmd:String = args[0]
 		Console.print_text("-----命令列表(%s)-----"%[cmd])
 		print_console_command_usages(cmd)
 		Console.print_text("-----命令列表(%s)-----"%[cmd])
@@ -35,7 +35,7 @@ func register_console_command(command:String,need_arguments:bool,usages:Array,so
 	return OK
 	
 	
-func unregister_console_command(command)->int:
+func unregister_console_command(command:String)->int:
 	if console_commands_dic.erase(command):
 		return OK
 	else:
@@ -43,18 +43,18 @@ func unregister_console_command(command)->int:
 		return ERR_DOES_NOT_EXIST
 
 
-func parse_console_command(c_text:String):
+func parse_console_command(c_text:String)->void:
 	if c_text.begins_with("/"):
 		c_text= c_text.substr(1)
-	var c_arr = c_text.split(" ")
-	var cmd = c_arr[0].to_lower()
+	var c_arr:Array = c_text.split(" ")
+	var cmd:String = c_arr[0].to_lower()
 	if !console_commands_dic.has(cmd):
 		Console.print_warning("命令 " + cmd + " 不存在！请输入help查看帮助!")
 		return
 	if !BotAdapter.is_bot_connected() && console_commands_dic[cmd]["need_connect"]:
 		Console.print_error("未成功连接至机器人后端，因此无法执行此指令，请尝试重启RainyBot!")
 		return
-	var args = []
+	var args:Array = []
 	if c_arr.size() > 1 :
 		for i in range(1,c_arr.size()):
 			args.append(c_arr[i])
@@ -65,7 +65,7 @@ func parse_console_command(c_text:String):
 	get_tree().call_group("console_command_"+cmd,"_call_console_command",cmd,args)
 	
 	
-func print_console_command_usages(command):
+func print_console_command_usages(command:String)->void:
 	if console_commands_dic.has(command):
 		var usages_arr:Array = console_commands_dic[command]["usages"]
 		if usages_arr.size() > 0:

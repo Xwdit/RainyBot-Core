@@ -510,7 +510,7 @@ func check_error():
 func _on_Timer_timeout():
 	if last_text != text:
 		last_text = text
-		if !GlobalManager.running_from_editor():
+		if !GlobalManager.is_running_from_editor():
 			check_error()
 		if (is_in_comment(get_caret_line(),get_caret_column())==-1) and (is_in_string(get_caret_line(),get_caret_column())==-1):
 			request_code_completion()

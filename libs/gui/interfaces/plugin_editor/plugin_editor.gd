@@ -91,7 +91,7 @@ func _on_CodeEdit_update_finished():
 		for _l in _err_dic:
 			_ln.append(_l+1)
 		$StatusPanel/CodeStatus.text = "在以下行检测到错误，请移动到对应行查看详情: "+str(_ln)
-	elif GlobalManager.running_from_editor():
+	elif GlobalManager.is_running_from_editor():
 		$StatusPanel/CodeStatus.text = "错误检查在通过Godot编辑器运行时不可用"
 	else:
 		$StatusPanel/CodeStatus.text = "当前文件中未发现任何错误"

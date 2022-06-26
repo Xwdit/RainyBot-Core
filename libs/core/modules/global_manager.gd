@@ -1,7 +1,7 @@
 extends Node
 
 
-const INIT_PATH = [
+const INIT_PATH:Array = [
 	"/plugins/",
 	"/config/",
 	"/data/",
@@ -33,15 +33,15 @@ var last_errors:PackedStringArray = []
 var loading_resources:Dictionary = {}
 
 
-func _init():
-	var icon = Image.new()
+func _init()->void:
+	var icon:Image = Image.new()
 	icon.load("res://libs/resources/logo.png")
 	DisplayServer.set_icon(icon)
 	randomize()
 	_init_dir()
 
 
-func _ready():
+func _ready()->void:
 	get_tree().set_auto_accept_quit(false)
 	add_to_group("console_command_stop")
 	add_to_group("console_command_restart")
@@ -53,17 +53,17 @@ func _ready():
 	global_timer.start(1.0)
 
 
-func _process(delta):
+func _process(_delta:float)->void:
 	_check_load_status()
 	check_error()
 
 
-func _init_dir():
-	var dir = Directory.new()
-	var file = File.new()
+func _init_dir()->void:
+	var dir:Directory = Directory.new()
+	var file:File = File.new()
 	dir.include_hidden = true
 	for p in INIT_PATH:
-		var path = OS.get_executable_path().get_base_dir() + p
+		var path:String = OS.get_executable_path().get_base_dir() + p
 		if !dir.dir_exists(path):
 			dir.make_dir(path)
 		if p != "/plugins/":
@@ -72,7 +72,7 @@ func _init_dir():
 				file.close()
 			
 			
-func _notification(what):
+func _notification(what:int)->void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		Console.print_warning("正在安全退出RainyBot核心进程.....")
 		await PluginManager.unload_plugins()
@@ -87,18 +87,18 @@ func _notification(what):
 		get_tree().quit()
 
 
-func _call_console_command(_cmd:String,_args:Array):
+func _call_console_command(_cmd:String,_args:Array)->void:
 	if _cmd == "stop":
 		notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	elif _cmd == "restart":
 		restart()
 
 
-func _on_global_timer_timeout():
+func _on_global_timer_timeout()->void:
 	global_run_time += 1
 
 
-func _check_load_status():
+func _check_load_status()->void:
 	for path in loading_resources:
 		if ResourceLoader.load_threaded_get_status(path) != ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 			var helper:ResourceLoadHelper = loading_resources[path]
@@ -106,43 +106,43 @@ func _check_load_status():
 			helper.emit_signal("finished")
 
 
-func clear_cache():
+func clear_cache()->void:
 	Console.print_warning("正在清理缓存目录，请稍候.....")
 	clear_dir_files(cache_path,false)
-	var file = File.new()
+	var file:File = File.new()
 	if !file.file_exists(cache_path+".gdignore"):
 		file.open(cache_path+".gdignore",File.WRITE)
 		file.close()
 	Console.print_success("缓存目录清理完毕!")
 
 
-func restart():
+func restart()->void:
 	restarting = true
 	Console.print_warning("正在重新启动RainyBot.....")
 	notification(NOTIFICATION_WM_CLOSE_REQUEST)
 
 
-func check_error():
-	var _f = File.new()
+func check_error()->void:
+	var _f:File = File.new()
 	_f.open("user://logs/rainybot.log",File.READ)
-	var curr_text = _f.get_as_text()
+	var curr_text:String = _f.get_as_text()
 	_f.close()
 	if last_log_text == "":
 		last_log_text = curr_text
 	elif last_log_text != curr_text:
 		last_errors.resize(0)
-		var _err = curr_text.replacen(last_log_text,"").split("\n")
+		var _err:Array = curr_text.replacen(last_log_text,"").split("\n")
 		for _l in _err:
 			if _l.findn("built-in")!=-1:
-				var _sl = _l.split(" - ")
-				var _text = "第%s行 - %s"%[abs(_sl[0].to_int()),_sl[1]]
+				var _sl:Array = _l.split(" - ")
+				var _text:String = "第%s行 - %s"%[abs(_sl[0].to_int()),_sl[1]]
 				last_errors.append("脚本运行时错误: "+_text)
 				Console.print_error("检测到脚本运行时错误: "+_text)
 		last_log_text = curr_text
 		get_tree().call_group("Plugin","_on_error")
 
 
-func reimport():
+func reimport()->void:
 	Console.print_warning("正在准备重新导入资源.....")
 	await get_tree().create_timer(0.5).timeout
 	await PluginManager.unload_plugins()
@@ -161,8 +161,8 @@ func reimport():
 	restart()
 
 
-func clear_dir_files(dir_path,remove_dir:bool=true):
-	var dir = Directory.new()
+func clear_dir_files(dir_path:String,remove_dir:bool=true)->void:
+	var dir:Directory = Directory.new()
 	dir.include_hidden = true
 	if dir.dir_exists(dir_path):
 		dir.open(dir_path)
@@ -180,9 +180,9 @@ func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->
 		return ResourceLoader.load_threaded_get(path)
 	else:
 		Console.print_warning("正在请求异步加载以下路径的资源: "+path)
-		var err = ResourceLoader.load_threaded_request(path,type_hint,use_sub_threads)
+		var err:int = ResourceLoader.load_threaded_request(path,type_hint,use_sub_threads)
 		if err == OK:
-			var helper = ResourceLoadHelper.new()
+			var helper:ResourceLoadHelper = ResourceLoadHelper.new()
 			loading_resources[path]=helper
 			Console.print_warning("资源异步加载请求成功，开始等待以下路径的资源加载完成: "+path)
 			await helper.finished
@@ -197,16 +197,16 @@ func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->
 			return null
 
 
-func running_from_editor()->bool:
+func is_running_from_editor()->bool:
 	for arg in OS.get_cmdline_args():
 		if arg == "--from-editor":
 			return true
 	return false
 
 
-func _add_import_helper():
-	var c_file = ConfigFile.new()
-	var dir = Directory.new()
+func _add_import_helper()->void:
+	var c_file:ConfigFile = ConfigFile.new()
+	var dir:Directory = Directory.new()
 	dir.include_hidden = true
 	var err:int = c_file.load(project_file_path)
 	var arr:Array = ["res://addons/import_helper/plugin.cfg"]
@@ -219,9 +219,9 @@ func _add_import_helper():
 	c_file.save(project_file_path)
 	
 	
-func _remove_import_helper():
+func _remove_import_helper()->void:
 	clear_dir_files(root_path+"addons/")
-	var c_file = ConfigFile.new()
+	var c_file:ConfigFile = ConfigFile.new()
 	var err:int = c_file.load(project_file_path)
 	if c_file.has_section("editor_plugins"):
 		c_file.erase_section("editor_plugins")

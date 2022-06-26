@@ -65,16 +65,16 @@ var plugin_keyword_arr:Array = []
 var plugin_console_command_dic:Dictionary = {}
 var plugin_timer:Timer = null
 var plugin_time_passed:int = 0
-var plugin_config_loaded = false
-var plugin_data_loaded = false
-var plugin_cache_loaded = false
+var plugin_config_loaded:bool = false
+var plugin_data_loaded:bool = false
+var plugin_cache_loaded:bool = false
 
 
-func _init():
+func _init()->void:
 	_on_init()
 	
 
-func _ready():
+func _ready()->void:
 	plugin_timer = Timer.new()
 	plugin_timer.one_shot = false
 	plugin_timer.wait_time = 1
@@ -84,7 +84,7 @@ func _ready():
 	_on_load()
 	
 	
-func _exit_tree():
+func _exit_tree()->void:
 	_on_unload()
 	for ev in plugin_event_dic.duplicate():
 		unregister_event(ev)
@@ -104,61 +104,61 @@ func _exit_tree():
 ## 必须在此处使用set_plugin_info函数来设置插件信息，插件才能被正常加载
 ## 例如：set_plugin_info("example","示例插件","author","1.0","这是插件的介绍")
 ## 可以在此处初始化和使用一些基本变量，但不建议执行其它代码，可能会导致出现未知问题
-func _on_init():
+func _on_init()->void:
 	pass
 
 
 ## 在插件中覆盖此虚函数，以便定义RainyBot在与协议后端建立连接后插件将执行的操作
 ## 可以在此处进行一些与连接状态相关的操作，例如恢复连接后发送通知等
-func _on_connect():
+func _on_connect()->void:
 	pass
 
 
 ## 在插件中覆盖此虚函数，以便定义插件在被加载完毕后执行的操作
 ## 可以在此处进行各类事件/关键词/命令的注册，以及配置/数据文件的初始化等
-func _on_load():
+func _on_load()->void:
 	pass
 
 
 ## 在插件中覆盖此虚函数，以便定义插件在所有其他插件加载完毕后执行的操作
 ## 可以在此处进行一些与其他插件交互相关的操作，例如获取某插件的实例等
 ## 注意：如果此插件硬性依赖某插件，推荐在插件信息中注册所依赖的插件，以确保其在此插件之前被正确加载
-func _on_ready():
+func _on_ready()->void:
 	pass
 
 
 ## 在插件中覆盖此虚函数，以便定义插件运行中的每一秒将执行的操作
 ## 可在此处进行一些计时，或时间判定相关的操作，例如整点报时等
-func _on_process():
+func _on_process()->void:
 	pass
 
 
 ## 在插件中覆盖此虚函数，以便定义在RainyBot检测到运行时错误后将执行的操作
 ## 您可以使用[method get_last_errors]函数来获取错误的详细内容
-func _on_error():
+func _on_error()->void:
 	pass
 
 
 ## 在插件中覆盖此虚函数，以便定义RainyBot在与协议后端断开建立连接后插件将执行的操作
 ## 可以在此处进行一些与连接状态相关的操作，例如断开连接后暂停某些任务的运行等
-func _on_disconnect():
+func _on_disconnect()->void:
 	pass
 
 
 ## 在插件中覆盖此虚函数，以便定义插件在即将被卸载时执行的操作
 ## 可在此处执行一些自定义保存或清理相关的操作，例如储存自定义的文件或清除缓存等
 ## 无需在此处取消注册事件/关键词/命令，或者对内置的配置/数据功能进行保存，插件卸载时将会自动进行处理
-func _on_unload():
+func _on_unload()->void:
 	pass
 
 
-func _call_console_command(cmd:String,args:Array):
+func _call_console_command(cmd:String,args:Array)->void:
 	if plugin_console_command_dic.has(cmd):
 		var function:Callable = plugin_console_command_dic[cmd]
 		function.call(cmd,args)
 
 
-func _plugin_timer_timeout():
+func _plugin_timer_timeout()->void:
 	plugin_time_passed += 1
 	_on_process()
 
@@ -167,7 +167,7 @@ func _plugin_timer_timeout():
 ## 需要的参数从左到右分别为插件ID(不可与其它已加载插件重复),插件名,插件作者,插件版本,插件描述,插件依赖(可选)
 ## 最后一项可选参数为此插件的依赖插件列表(数组)，需要以所依赖的插件的ID作为列表中的元素，如:["example","example_1"]
 ## 设置了插件依赖后，可以保证所依赖的插件一定在此插件之前被加载
-func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String,p_dependency=[]):
+func set_plugin_info(p_id:String,p_name:String,p_author:String,p_version:String,p_description:String,p_dependency=[])->void:
 	plugin_info.id = p_id.to_lower()
 	plugin_info.name = p_name
 	plugin_info.author = p_author
@@ -221,7 +221,7 @@ func get_global_runtime()->int:
 ## 用于获取其他插件的实例引用，可用于插件之间的联动与数据互通等
 ## 需要传入其他插件的ID作为参数来获取其实例，若未找到插件则返回null
 func get_plugin_instance(plugin_id:String)->Plugin:
-	var ins = PluginManager.get_plugin_instance(plugin_id)
+	var ins:Plugin = PluginManager.get_plugin_instance(plugin_id)
 	if ins == null:
 		Console.print_error("无法获取ID为%s的插件实例，可能是ID有误或插件未被加载；请检查依赖关系是否设置正确！" % [plugin_id])
 	return ins
@@ -293,13 +293,13 @@ func get_last_errors()->PackedStringArray:
 ## 事件的阻断模式(可选,默认为BlockMode.ALL):
 ## - 事件绑定的函数若返回true，将阻断事件被传递到后续函数或插件中 (异步函数无效)
 ## - 阻断的具体行为将由阻断模式决定, 每种阻断模式的具体效果请参见上方的BlockMode枚举
-func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL):
+func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL)->void:
 	if function is String:
 		function = [Callable(self,function)]
 	elif function is Callable:
 		function = [function]
 	if function is Array and function.size() > 0:
-		var _arr = []
+		var _arr:Array = []
 		for _func in function:
 			if _func is String:
 				_func = Callable(self,_func)
@@ -307,7 +307,7 @@ func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL):
 				Console.print_error("事件注册出错: 指定的函数无效或不存在！")
 				return
 			_arr.append(_func)
-		var _callable = {"priority":priority,"function":_arr,"block_mode":block_mode}
+		var _callable:Dictionary = {"priority":priority,"function":_arr,"block_mode":block_mode}
 		if event is GDScript and is_instance_valid(event):
 			_register_event(event,_callable,priority)
 		elif event is Array and event.size() > 0:
@@ -322,7 +322,7 @@ func register_event(event,function,priority:int=0,block_mode:int=BlockMode.ALL):
 		Console.print_error("事件注册出错: 指定的函数无效或不存在！")
 
 
-func _register_event(event:GDScript,data_dic:Dictionary,priority:int):
+func _register_event(event:GDScript,data_dic:Dictionary,priority:int)->void:
 	if plugin_event_dic.has(event):
 		Console.print_error("事件注册出错: 无法重复注册事件%s，此插件已注册过此事件！" % [event.resource_path.get_file().replacen(".gd","")])
 		return
@@ -332,7 +332,7 @@ func _register_event(event:GDScript,data_dic:Dictionary,priority:int):
 	else:
 		PluginManager.plugin_event_dic[event] = arr
 	if arr.size() != 0:
-		var _idx = 0
+		var _idx:int = 0
 		for _i in range(arr.size()):
 			var _pri:int = arr[_i]["priority"]
 			if priority >= _pri:
@@ -349,7 +349,7 @@ func _register_event(event:GDScript,data_dic:Dictionary,priority:int):
 
 ## 用于取消注册一个或多个事件，取消注册后插件将不再对此事件做出响应
 ## 此处可传入单个事件类型名，或一个包含了任意数量事件类型名的数组以批量取消注册事件
-func unregister_event(event):
+func unregister_event(event)->void:
 	if event is GDScript and is_instance_valid(event):
 		_unregister_event(event)
 	elif event is Array and event.size() > 0:
@@ -362,7 +362,7 @@ func unregister_event(event):
 		Console.print_error("事件取消注册出错: 指定内容不是一个事件类型！")
 
 
-func _unregister_event(event:GDScript):
+func _unregister_event(event:GDScript)->void:
 	if PluginManager.plugin_event_dic.has(event):
 		var arr:Array = PluginManager.plugin_event_dic[event]
 		if plugin_event_dic.has(event):
@@ -387,7 +387,7 @@ func _unregister_event(event:GDScript):
 ## [可选,默认为false]命令是否强制要求传入参数(若为true则在执行命令时必须传入参数，否则判定为用法错误)
 ## [可选,默认为空数组]命令的用法介绍(将在使用help指令或命令用法错误时显示。数组中的每项需为字符串，代表着一个子命令的用法)
 ## [可选,默认为false]命令是否需要在连接到协议后端后才能使用(若为true则在未连接协议后端时无法在控制台调用此命令)
-func register_console_command(command,function,need_arguments:bool=false,usages:Array=[],need_connect:bool=false):
+func register_console_command(command,function,need_arguments:bool=false,usages:Array=[],need_connect:bool=false)->void:
 	if function is String:
 		function = Callable(self,function)
 	if command is String and command.length() > 0:
@@ -402,7 +402,7 @@ func register_console_command(command,function,need_arguments:bool=false,usages:
 		Console.print_error("无法注册命令，因为传入的命令格式不合法！")
 
 
-func _register_console_command(command:String,function:Callable,need_arguments:bool,usages:Array,need_connect:bool):
+func _register_console_command(command:String,function:Callable,need_arguments:bool,usages:Array,need_connect:bool)->void:
 	if plugin_console_command_dic.has(command):
 		Console.print_error("无法注册以下命令，因为此命令已在此插件被注册: " + command)
 		return
@@ -417,7 +417,7 @@ func _register_console_command(command:String,function:Callable,need_arguments:b
 
 ## 用于取消注册一个控制台命令，命令被取消注册后将无法在控制台被执行，且不会在帮助菜单中显示
 ## 需要传入对应的命令名来将其取消注册，无法取消注册不属于此插件的命令
-func unregister_console_command(command):
+func unregister_console_command(command)->void:
 	if command is String and command.length() > 0:
 		_unregister_console_command(command)
 	elif command is Array and command.size() > 0:
@@ -430,7 +430,7 @@ func unregister_console_command(command):
 		Console.print_error("无法取消注册命令，因为传入的命令格式不合法！")
 
 
-func _unregister_console_command(command:String):
+func _unregister_console_command(command:String)->void:
 	if !plugin_console_command_dic.has(command):
 		Console.print_error("无法取消注册以下命令，因为此命令不属于此插件: " + command)
 		return
@@ -466,7 +466,7 @@ func _unregister_console_command(command:String):
 ## - 若此项为true,则在成功匹配关键词后，被对应事件调用的"trigger_keyword"函数将返回true以尝试阻断事件的传递
 ## - 若此项为false,但是关键词所触发的函数返回了true,那么被对应事件调用的"trigger_keyword"函数也将返回true以尝试阻断事件的传递
 ## - 阻断的具体行为将由相关事件注册时设置的阻断模式决定
-func register_keyword(keyword,function,var_dic:Dictionary={},match_mode:int=MatchMode.BEGIN,block:bool=true):
+func register_keyword(keyword,function,var_dic:Dictionary={},match_mode:int=MatchMode.BEGIN,block:bool=true)->void:
 	if function is String:
 		function = Callable(self,function)
 	if keyword is String and keyword.length() > 0:
@@ -481,7 +481,7 @@ func register_keyword(keyword,function,var_dic:Dictionary={},match_mode:int=Matc
 		Console.print_error("无法注册关键词，因为传入的关键词格式不合法！")
 	
 	
-func _register_keyword(keyword:String,function:Callable,var_dic:Dictionary,match_mode:int,block:bool):
+func _register_keyword(keyword:String,function:Callable,var_dic:Dictionary,match_mode:int,block:bool)->void:
 	if plugin_keyword_dic.has(keyword):
 		Console.print_error("无法注册以下关键词，因为此关键词已在此插件被注册: " + keyword)
 		return
@@ -495,7 +495,7 @@ func _register_keyword(keyword:String,function:Callable,var_dic:Dictionary,match
 
 ## 用于取消注册一个关键词，关键词被取消注册后将不会被用于匹配
 ## 需要传入对应的关键词字符串来将其取消注册，无法取消注册不属于此插件的关键词
-func unregister_keyword(keyword):
+func unregister_keyword(keyword)->void:
 	if keyword is String and keyword.length() > 0:
 		_unregister_keyword(keyword)
 	elif keyword is Array and keyword.size() > 0:
@@ -508,7 +508,7 @@ func unregister_keyword(keyword):
 		Console.print_error("无法取消注册关键词，因为传入的关键词格式不合法！")
 	
 	
-func _unregister_keyword(keyword:String):
+func _unregister_keyword(keyword:String)->void:
 	if !plugin_keyword_dic.has(keyword):
 		Console.print_error("无法取消注册以下关键词，因为此关键词未在此插件被注册: " + keyword)
 		return
@@ -523,7 +523,7 @@ func _sort_keyword(_a:String,_b:String)->bool:
 	return false
 
 
-func _update_keyword_arr():
+func _update_keyword_arr()->void:
 	var _arr:Array = plugin_keyword_dic.keys()
 	_arr.sort_custom(_sort_keyword)
 	plugin_keyword_arr = _arr
@@ -549,85 +549,64 @@ func trigger_keyword(event:Event)->bool:
 			var _var_dic:Dictionary = plugin_keyword_dic[_kw]["var_dic"]
 			var _mode:int = plugin_keyword_dic[_kw]["match_mode"]
 			var _block:bool = plugin_keyword_dic[_kw]["block"]
+			var _matched:bool = false
 			var _word:String = _kw.format(_var_dic)
+			var _arg:String
 			if _word.begins_with("{@}"):
 				if _at:
 					_word = _word.substr(3)
 					if _word.length() == 0:
-						var _arg = _text
-						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
-						if _block:
-							return true
-						else:
-							return _result
+						_arg = _text
+						_matched = true
 				else:
 					continue
-			match _mode:
-				int(MatchMode.BEGIN):
-					if _text.begins_with(_word):
-						var _arg = _text.substr(_word.length())
-						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
-						if _block:
-							return true
-						else:
-							return _result
-				int(MatchMode.BETWEEN):
-					var _idx = _text.find(_word)
-					if _idx != -1 and (!(_text.begins_with(_word) or _text.ends_with(_word)) or _text == _word):
-						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
-						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
-						if _block:
-							return true
-						else:
-							return _result
-				int(MatchMode.END):
-					if _text.ends_with(_word):
-						var _arg = _text.left(_text.length()-_word.length())
-						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
-						if _block:
-							return true
-						else:
-							return _result
-				int(MatchMode.INCLUDE):
-					var _idx = _text.find(_word)
-					if _idx != -1:
-						var _arg = _text.left(_idx)+_text.substr(_idx+_word.length())
-						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
-						if _block:
-							return true
-						else:
-							return _result
-				int(MatchMode.EXCLUDE):
-					var _idx = _text.find(_word)
-					if _idx == -1:
-						var _arg = _text
-						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
-						if _block:
-							return true
-						else:
-							return _result
-				int(MatchMode.EQUAL):
-					if _text == _word:
-						var _arg = ""
-						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
-						if _block:
-							return true
-						else:
-							return _result
-				int(MatchMode.REGEX):
-					if _text.match(_word):
-						var _arg = _text
-						var _result = _trigger_keyword(_func,_kw,_word,_arg,event)
-						if _block:
-							return true
-						else:
-							return _result
+			if !_matched:
+				match _mode:
+					int(MatchMode.BEGIN):
+						if _text.begins_with(_word):
+							_arg = _text.substr(_word.length())
+							_matched = true
+					int(MatchMode.BETWEEN):
+						var _idx:int = _text.find(_word)
+						if _idx != -1 and (!(_text.begins_with(_word) or _text.ends_with(_word)) or _text == _word):
+							_arg = _text.left(_idx)+_text.substr(_idx+_word.length())
+							_matched = true
+					int(MatchMode.END):
+						if _text.ends_with(_word):
+							_arg = _text.left(_text.length()-_word.length())
+							_matched = true
+					int(MatchMode.INCLUDE):
+						var _idx:int = _text.find(_word)
+						if _idx != -1:
+							_arg = _text.left(_idx)+_text.substr(_idx+_word.length())
+							_matched = true
+					int(MatchMode.EXCLUDE):
+						var _idx:int = _text.find(_word)
+						if _idx == -1:
+							_arg = _text
+							_matched = true
+					int(MatchMode.EQUAL):
+						if _text == _word:
+							_arg = ""
+							_matched = true
+					int(MatchMode.REGEX):
+						if _text.match(_word):
+							_arg = _text
+							_matched = true
+					_:
+						continue
+			if _matched:
+				var _result:bool = _trigger_keyword(_func,_kw,_word,_arg,event)
+				if _block:
+					return true
+				else:
+					return _result
 	else:
 		Console.print_error("无法使用传入的事件来匹配关键词，请确保其是一个消息事件！")
 	return false
 
 
-func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:MessageEvent):
+func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:MessageEvent)->bool:
 	if _func.is_valid():
 		Console.print_success("成功触发关键词:\"%s\"(解析后:\"%s\")，参数为:\"%s\"！"%[_kw,_word,_arg])
 		return _func.call(_kw,_word,_arg,event)
@@ -644,16 +623,21 @@ func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:M
 ## [可选,默认为空字典]每个配置项的介绍(字典的key为配置项的名称,对应的值为此配置项的相关介绍,两者均为字符串)
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={})->int:
 	Console.print_warning("正在加载插件配置文件.....")
+	if default_config.is_empty():
+		Console.print_error("默认配置字典不能为空，插件配置初始化失败！")
+		return ERR_INVALID_DATA
 	plugin_config = default_config
-	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
-	var file = File.new()
+	var config_path:String = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
+	var file:File = File.new()
 	if file.file_exists(config_path):
-		var _err = file.open(config_path,File.READ)
-		var json = JSON.new()
-		json.parse(file.get_as_text())
-		var _config = json.get_data()
+		var _config:Dictionary
+		var json:JSON = JSON.new()
+		var _file_err:int = file.open(config_path,File.READ)
+		var _json_err:int = json.parse(file.get_as_text())
 		file.close()
-		if _config is Dictionary:
+		if _json_err == OK:
+			_config = json.get_data()
+		if !_config.is_empty():
 			var missing_keys:Array = []
 			var extra_keys:Array = []
 			for k in default_config:
@@ -666,8 +650,8 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 					extra_keys.append(k)
 			if !missing_keys.is_empty() or !extra_keys.is_empty():
 				Console.print_warning("检测到需要更新的配置项，正在尝试对配置文件进行更新.....")
-				_err = file.open(config_path,File.WRITE)
-				if _err == OK:
+				_file_err = file.open(config_path,File.WRITE)
+				if _file_err == OK:
 					file.store_string(json.stringify(_config,"\t"))
 					file.close()
 					if !missing_keys.is_empty():
@@ -683,7 +667,7 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 					file.close()
 					Console.print_error("配置文件更新失败，请检查文件权限是否配置正确! 路径:"+config_path)
 					Console.print_warning("若需重试，请重新加载此插件!")
-					return _err
+					return _file_err
 			for key in _config:
 				if (_config[key] is String && _config[key] == "") or (_config[key] == null):
 					Console.print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+str(key))
@@ -697,13 +681,13 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 			return ERR_FILE_CANT_READ
 	else:
 		Console.print_warning("没有已存在的配置文件，正在生成新的配置文件...")
-		var _err = file.open(config_path,File.WRITE)
+		var _err:int = file.open(config_path,File.WRITE)
 		if _err != OK:
-			Console.print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
 			file.close()
+			Console.print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
 			return _err
 		else:
-			var json = JSON.new()
+			var json:JSON = JSON.new()
 			file.store_string(json.stringify(plugin_config,"\t"))
 			file.close()
 			Console.print_success("配置文件创建成功，可以访问以下路径进行配置: "+config_path)
@@ -722,15 +706,15 @@ func save_plugin_config()->int:
 		Console.print_error("配置文件保存失败，请先初始化配置后再执行此操作")
 		return ERR_FILE_CANT_WRITE
 	Console.print_warning("正在保存配置文件...")
-	var config_path = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
-	var file = File.new()
-	var _err = file.open(config_path,File.WRITE)
+	var config_path:String = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
+	var file:File = File.new()
+	var _err:int = file.open(config_path,File.WRITE)
 	if _err != OK:
 		Console.print_error("配置文件保存失败，请检查文件权限是否配置正确! 路径:"+config_path)
 		file.close()
 		return _err
 	else:
-		var json = JSON.new()
+		var json:JSON = JSON.new()
 		file.store_string(json.stringify(plugin_config,"\t"))
 		file.close()
 		Console.print_success("配置文件保存成功，路径: "+config_path)
@@ -838,10 +822,10 @@ func set_plugin_cache_metadata(dic:Dictionary,save_file:bool=true)->int:
 ## 执行此函数时，将会检测是否已存在此插件对应的数据库文件，否则将会新建一个空白的数据库文件(.rdb格式)
 func init_plugin_data()->int:
 	Console.print_warning("正在加载插件数据库.....")
-	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
-	var file = File.new()
+	var data_path:String = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
+	var file:File = File.new()
 	if file.file_exists(data_path):
-		var _err = file.open(data_path,File.READ)
+		var _err:int = file.open(data_path,File.READ)
 		var _data = file.get_var(true)
 		file.close()
 		if _data is Dictionary:
@@ -854,7 +838,7 @@ func init_plugin_data()->int:
 			return ERR_DATABASE_CANT_READ
 	else:
 		Console.print_warning("没有已存在的数据库文件，正在生成新的数据库文件...")
-		var _err = file.open(data_path,File.WRITE)
+		var _err:int = file.open(data_path,File.WRITE)
 		if _err != OK:
 			Console.print_error("数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
 			file.close()
@@ -874,9 +858,9 @@ func save_plugin_data()->int:
 		Console.print_error("数据库文件保存失败，请先初始化数据库后再执行此操作")
 		return ERR_DATABASE_CANT_WRITE
 	Console.print_warning("正在保存插件数据库.....")
-	var data_path = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
-	var file = File.new()
-	var _err = file.open(data_path,File.WRITE)
+	var data_path:String = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
+	var file:File = File.new()
+	var _err:int = file.open(data_path,File.WRITE)
 	if _err != OK:
 		Console.print_error("数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
 		file.close()
@@ -950,10 +934,10 @@ func clear_plugin_data(save_file:bool=true)->int:
 
 func init_plugin_cache()->int:
 	Console.print_warning("正在加载插件缓存数据库.....")
-	var data_path = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
-	var file = File.new()
+	var data_path:String = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
+	var file:File = File.new()
 	if file.file_exists(data_path):
-		var _err = file.open(data_path,File.READ)
+		var _err:int = file.open(data_path,File.READ)
 		var _data = file.get_var(true)
 		file.close()
 		if _data is Dictionary:
@@ -966,7 +950,7 @@ func init_plugin_cache()->int:
 			return ERR_DATABASE_CANT_READ
 	else:
 		Console.print_warning("没有已存在的缓存数据库文件，正在生成新的缓存数据库文件...")
-		var _err = file.open(data_path,File.WRITE)
+		var _err:int = file.open(data_path,File.WRITE)
 		if _err != OK:
 			Console.print_error("缓存数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
 			file.close()
@@ -986,9 +970,9 @@ func save_plugin_cache()->int:
 		Console.print_error("缓存数据库文件保存失败，请先初始化缓存数据库后再执行此操作")
 		return ERR_DATABASE_CANT_WRITE
 	Console.print_warning("正在保存插件缓存数据库.....")
-	var data_path = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
-	var file = File.new()
-	var _err = file.open(data_path,File.WRITE)
+	var data_path:String = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
+	var file:File = File.new()
+	var _err:int = file.open(data_path,File.WRITE)
 	if _err != OK:
 		Console.print_error("缓存数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
 		file.close()
@@ -1062,7 +1046,7 @@ func clear_plugin_cache(save_file:bool=true)->int:
 
 ## 调用此函数后，插件将会尝试卸载自身
 ## 若此插件被其他插件依赖，则可能会卸载失败
-func unload_plugin():
+func unload_plugin()->void:
 	PluginManager.unload_plugin(self)
 
 
@@ -1091,7 +1075,7 @@ func get_scene_image(scene:Node,size:Vector2i,stretch_size:Vector2i=Vector2i.ZER
 	if !is_instance_valid(scene):
 		Console.print_error("指定的场景无效，因此无法根据其中的内容生成图像!")
 		return null
-	var _v_port = scene.get_parent()
+	var _v_port:SubViewport = scene.get_parent()
 	if !is_instance_valid(_v_port) or !(_v_port is SubViewport):
 		Console.print_error("无法基于指定的场景生成图像，请确保此场景是通过load_scene()函数加载的，且加载时在函数中启用了for_capture参数!")
 		return null
@@ -1134,7 +1118,7 @@ func get_scene_image(scene:Node,size:Vector2i,stretch_size:Vector2i=Vector2i.ZER
 ## 要匹配的群组ID(可选，若为-1则不匹配此项)
 ## 等待的超时时间(可选，默认为20秒; 若数值小于等于0, 或已存在相同的等待, 则不启用超时)
 ## 消息事件匹配成功后阻断对应事件的传递 (可选,默认为true)
-func wait_context_custom(event_type:GDScript,sender_id:int=-1,group_id:int=-1,timeout:float=20.0,block:bool=true):
+func wait_context_custom(event_type:GDScript,sender_id:int=-1,group_id:int=-1,timeout:float=20.0,block:bool=true)->MessageEvent:
 	if event_type.get_base_script() != MessageEvent:
 		Console.print_error("无法开始等待上下文响应，需要等待的事件类型应该是一个消息事件!")
 		return null
@@ -1144,13 +1128,13 @@ func wait_context_custom(event_type:GDScript,sender_id:int=-1,group_id:int=-1,ti
 	if !((event_type == GroupMessageEvent) or (event_type == TempMessageEvent)) and sender_id == -1:
 		Console.print_error("无法开始等待上下文响应，此消息事件类型必须指定一个发送者ID!")
 		return null
-	var _dic = {}
+	var _dic:Dictionary = {}
 	_dic["event"] = event_type.resource_path.get_file().replacen(".gd","")
 	if sender_id != -1:
 		_dic["sender_id"] = sender_id
 	if ((event_type == GroupMessageEvent) or (event_type == TempMessageEvent)) and group_id != -1:
 		_dic["group_id"] = group_id
-	var context_id = str(_dic)
+	var context_id:String = str(_dic)
 	return await wait_context_id(context_id,timeout,block)
 
 
@@ -1163,7 +1147,7 @@ func wait_context_custom(event_type:GDScript,sender_id:int=-1,group_id:int=-1,ti
 ## 是否要匹配消息事件中的群组ID(可选，默认为true)
 ## 等待的超时时间(可选，默认为20秒; 若数值小于等于0, 或已存在相同的等待, 则不启用超时)
 ## 消息事件匹配成功后阻断对应事件的传递 (可选,默认为true)
-func wait_context(event:MessageEvent,match_sender:bool=true,match_group:bool=true,timeout:float=20.0,block:bool=true):
+func wait_context(event:MessageEvent,match_sender:bool=true,match_group:bool=true,timeout:float=20.0,block:bool=true)->MessageEvent:
 	if !is_instance_valid(event):
 		Console.print_error("无法开始等待上下文响应，需要等待的事件应该是一个有效的消息事件!")
 		return null
@@ -1173,13 +1157,13 @@ func wait_context(event:MessageEvent,match_sender:bool=true,match_group:bool=tru
 	if !((event is GroupMessageEvent) or (event is TempMessageEvent)) and !match_sender:
 		Console.print_error("无法开始等待上下文响应，此类消息事件必须对发送者ID进行匹配!")
 		return null
-	var _dic = {}
+	var _dic:Dictionary = {}
 	_dic["event"] = event.get_script().resource_path.get_file().replacen(".gd","")
 	if match_sender:
 		_dic["sender_id"] = event.get_sender_id()
 	if ((event is GroupMessageEvent) or (event is TempMessageEvent)) and match_group:
 		_dic["group_id"] = event.get_group_id()
-	var context_id = str(_dic)
+	var context_id:String = str(_dic)
 	return await wait_context_id(context_id,timeout,block)
 	
 
@@ -1218,22 +1202,22 @@ func wait_context_id(context_id:String,timeout:float=20.0,block:bool=true):
 ## 若第一个参数传入内容为一个字符串，则将用于响应指定ID的上下文等待，此时可通过第二个参数指定响应的内容
 ## 第二个参数为可选参数，可以是任何类型的值；若不填则默认响应内容为布尔值true
 func respond_context(context,response=true)->bool:
-	var context_id = ""
+	var context_id:String = ""
 	if context is String and context.length() > 0:
 		context_id = context
 	elif context is MessageEvent and is_instance_valid(context):
-		var _event = context.get_script().resource_path.get_file().replacen(".gd","")
-		var _sender = context.get_sender_id()
-		var _dic_sender = {}
-		var _dic_group = {}
-		var _dic_all = {}
+		var _event:String = context.get_script().resource_path.get_file().replacen(".gd","")
+		var _sender:int = context.get_sender_id()
+		var _dic_sender:Dictionary = {}
+		var _dic_group:Dictionary = {}
+		var _dic_all:Dictionary = {}
 		_dic_sender["event"] = _event
 		_dic_group["event"] = _event
 		_dic_all["event"] = _event
 		_dic_all["sender_id"] = _sender
 		_dic_sender["sender_id"] = _sender
 		if (context is GroupMessageEvent) or (context is TempMessageEvent):
-			var _group = context.get_group_id()
+			var _group:int = context.get_group_id()
 			_dic_all["group_id"] = _group
 			_dic_group["group_id"] = _group
 		if plugin_context_dic.has(str(_dic_all)):
@@ -1256,7 +1240,7 @@ func respond_context(context,response=true)->bool:
 	return false
 		
 
-func _tick_context_timeout(cont_ins:PluginContextHelper,_timeout:float):
+func _tick_context_timeout(cont_ins:PluginContextHelper,_timeout:float)->void:
 	await get_tree().create_timer(_timeout).timeout
 	if is_instance_valid(cont_ins) && cont_ins.result == null:
 		Console.print_warning("等待上下文响应超时，无法获取到返回结果: "+str(cont_ins.id))

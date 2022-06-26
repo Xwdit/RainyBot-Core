@@ -26,8 +26,8 @@ func get_request_data()->String:
 
 ## 将此请求的请求数据解析为字典并返回
 func get_request_data_dic()->Dictionary:
-	var _json = JSON.new()
-	var _error = _json.parse(request_data)
+	var _json:JSON = JSON.new()
+	var _error:int = _json.parse(request_data)
 	var _data:Dictionary = {}
 	if _error == OK:
 		_data = _json.get_data()
@@ -64,8 +64,8 @@ func get_as_text()->String:
 
 ## 尝试将此请求的结果解析为字典并返回
 func get_as_dic()->Dictionary:
-	var _json = JSON.new()
-	var _error = _json.parse(body.get_string_from_utf8())
+	var _json:JSON = JSON.new()
+	var _error:int = _json.parse(body.get_string_from_utf8())
 	var _result:Dictionary = {}
 	if _error == OK:
 		_result = _json.get_data()
@@ -82,7 +82,7 @@ func get_as_byte()->PackedByteArray:
 	
 func get_as_png_image()->Image:
 	var img:Image = Image.new()
-	var err = img.load_png_from_buffer(body)
+	var err:int = img.load_png_from_buffer(body)
 	if err == OK:
 		Console.print_success("成功将Http请求结果获取为png格式的图像实例!")
 		return img
@@ -93,7 +93,7 @@ func get_as_png_image()->Image:
 	
 func get_as_jpg_image()->Image:
 	var img:Image = Image.new()
-	var err = img.load_jpg_from_buffer(body)
+	var err:int = img.load_jpg_from_buffer(body)
 	if err == OK:
 		Console.print_success("成功将Http请求结果获取为jpg格式的图像实例!")
 		return img
@@ -104,7 +104,7 @@ func get_as_jpg_image()->Image:
 	
 func get_as_bmp_image()->Image:
 	var img:Image = Image.new()
-	var err = img.load_bmp_from_buffer(body)
+	var err:int = img.load_bmp_from_buffer(body)
 	if err == OK:
 		Console.print_success("成功将Http请求结果获取为bmp格式的图像实例!")
 		return img
@@ -115,7 +115,7 @@ func get_as_bmp_image()->Image:
 	
 func get_as_tga_image()->Image:
 	var img:Image = Image.new()
-	var err = img.load_tga_from_buffer(body)
+	var err:int = img.load_tga_from_buffer(body)
 	if err == OK:
 		Console.print_success("成功将Http请求结果获取为tga格式的图像实例!")
 		return img
@@ -126,7 +126,7 @@ func get_as_tga_image()->Image:
 
 func get_as_webp_image()->Image:
 	var img:Image = Image.new()
-	var err = img.load_webp_from_buffer(body)
+	var err:int = img.load_webp_from_buffer(body)
 	if err == OK:
 		Console.print_success("成功将Http请求结果获取为webp格式的图像实例!")
 		return img
@@ -137,7 +137,7 @@ func get_as_webp_image()->Image:
 
 func save_to_file(path:String)->int:
 	var file:File = File.new()
-	var err = file.open(path,File.WRITE)
+	var err:int = file.open(path,File.WRITE)
 	if err == OK:
 		file.store_buffer(body)
 		file.close()
