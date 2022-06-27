@@ -78,7 +78,19 @@ func get_as_dic()->Dictionary:
 ## 直接返回此请求的结果的元二进制数据数组
 func get_as_byte()->PackedByteArray:
 	return body
-	
+
+
+func get_as_image()->Image:
+	var img:Image = Image.new()
+	var formats:Array[String] = ["jpg","png","bmp","webp","tga"]
+	for ext in formats:
+		var err:int = img.call("load_%s_from_buffer"% ext,body)
+		if err == OK:
+			Console.print_success("成功将Http请求结果获取为%s格式的图像实例!"% ext)
+			return img
+	Console.print_error("无法将Http请求结果获取为图像实例，请求结果可能是不支持的图像格式 (支持的格式为: %s)，或无法被解析为图像!"% formats)
+	return null
+
 	
 func get_as_png_image()->Image:
 	var img:Image = Image.new()
