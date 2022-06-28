@@ -40,12 +40,13 @@ func add_success(_text)->void:
 
 func add_to_log(_text)->void:
 	var _s_text:String = str(_text)
-	file.store_line(_s_text)
-	file.flush()
+	if file.is_open():
+		file.store_line(_s_text)
+		file.flush()
 	
 	
 func save_log(_close:bool = false)->void:
-	if _close:
+	if _close and file.is_open():
 		file.close()
 	var _dir:Directory = Directory.new()
 	_dir.open(GlobalManager.log_path)

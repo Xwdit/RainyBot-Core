@@ -135,7 +135,7 @@ func color_table_to_indexes(colors: Array) -> PackedByteArray:
 	return result
 
 
-func add_frame(image: Image, delay_time: float, quantizator: Script) -> int:
+func add_frame(image: Image, delay_time:int, quantizator: Script) -> int:
 	# check if image is of good format
 	if image.get_format() != Image.FORMAT_RGBA8:
 		return Error.BAD_IMAGE_FORMAT
@@ -187,7 +187,7 @@ func add_frame(image: Image, delay_time: float, quantizator: Script) -> int:
 
 
 # adds frame with last color informations
-func add_frame_with_lci(image: Image, delay_time: float) -> int:
+func add_frame_with_lci(image: Image, delay_time:int) -> int:
 	# check if image is of good format
 	if image.get_format() != Image.FORMAT_RGBA8:
 		return Error.BAD_IMAGE_FORMAT
@@ -215,7 +215,7 @@ func add_frame_with_lci(image: Image, delay_time: float) -> int:
 	return Error.OK
 
 
-func add_graphic_constrol_ext(_delay_time: float, tci: int = -1) -> void:
+func add_graphic_constrol_ext(_delay_time:int, tci: int = -1) -> void:
 	var extension_introducer: int = 0x21
 	var graphic_control_label: int = 0xf9
 

@@ -8,14 +8,15 @@ const GIFExporter = preload("res://libs/core/modules/gif_exporter/exporter.gd")
 const MedianCutQuantization = preload("res://libs/core/modules/gif_exporter/quantization/median_cut.gd")
 
 
-var exporter:GIFExporter
 var size:Vector2
-var frames:Array[Image]
+var frames:Array[Dictionary]
 
 
 static func init(size:Vector2)->GifImage:
+	if size.x < 0 or size.y < 0:
+		Console.print_error("无法创建GifImage图像实例，因为传入的大小不能小于0!")
+		return null
 	var ins:GifImage = GifImage.new()
-	ins.exporter = GIFExporter.new(size.x,size.y)
 	ins.size = size
 	return ins
 	
@@ -27,23 +28,19 @@ func add_frame(image:Image,delay_time:float)->int:
 	if delay_time <= 0:
 		Console.print_error("指定的图像帧延迟时间需要大于0，因此无法将其添加到Gif帧!")
 		return ERR_INVALID_PARAMETER
-	var _img:Image = image.duplicate(true)
-	_img.convert(Image.FORMAT_RGBA8)
-	var _err:int = exporter.add_frame(_img,delay_time,MedianCutQuantization)
-	if _err == OK:
-		frames.append(_img)
-		emit_changed()
-		return OK
-	else:
+	if image.is_empty():
 		Console.print_error("无法将指定图像添加到Gif帧，请检查图像内容是否为空!")
 		return ERR_INVALID_DATA
-	
+	frames.append({"image":image,"delay_time":delay_time})
+	emit_changed()
+	return OK
+
 
 func save(path:String)->int:
 	var file:File = File.new()
 	var _err:int = file.open(path, File.WRITE)
 	if _err == OK:
-		file.store_buffer(exporter.export_file_data())
+		file.store_buffer(await get_data())
 		file.close()
 	else:
 		Console.print_error("无法将指定图像储存到文件 %s，请检查文件路径或权限是否正确!"% path)
@@ -51,14 +48,29 @@ func save(path:String)->int:
 
 
 func get_data()->PackedByteArray:
-	return exporter.export_file_data()
+	var _thread:Thread = Thread.new()
+	_thread.start(_export_data)
+	while _thread.is_alive():
+		await GlobalManager.get_tree().process_frame
+	return await _thread.wait_to_finish()
+
+
+func _export_data(_args)->PackedByteArray:
+	var _exporter:GIFExporter = GIFExporter.new(size.x,size.y)
+	for _img_dic in frames:
+		await GlobalManager.get_tree().process_frame
+		var _img:Image = _img_dic.image
+		var _delay:int = int(round(_img_dic.delay_time*100))
+		_img.convert(Image.FORMAT_RGBA8)
+		_exporter.add_frame(_img,_delay,MedianCutQuantization)
+	return _exporter.export_file_data()
 
 
 func get_size()->Vector2:
 	return size
 
 
-func get_frames()->Array[Image]:
+func get_frames()->Array[Dictionary]:
 	return frames
 
 
