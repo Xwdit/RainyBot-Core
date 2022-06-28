@@ -204,7 +204,7 @@ func get_plugin_filepath()->String:
 
 
 ## 用于获取RainyBot的插件文件夹的路径，将返回插件文件夹的绝对路径 (如 D://RainyBot/plugins/)
-func get_plugin_path()->String:
+static func get_plugin_path()->String:
 	return PluginManager.plugin_path
 
 
@@ -214,13 +214,13 @@ func get_plugin_runtime()->int:
 	
 
 ## 用于获取RainyBot全局的已运行时间，默认情况下为RainyBot成功加载以来经过的秒数
-func get_global_runtime()->int:
+static func get_global_runtime()->int:
 	return GlobalManager.global_run_time
 
 
 ## 用于获取其他插件的实例引用，可用于插件之间的联动与数据互通等
 ## 需要传入其他插件的ID作为参数来获取其实例，若未找到插件则返回null
-func get_plugin_instance(plugin_id:String)->Plugin:
+static func get_plugin_instance(plugin_id:String)->Plugin:
 	var ins:Plugin = PluginManager.get_plugin_instance(plugin_id)
 	if ins == null:
 		Console.print_error("无法获取ID为%s的插件实例，可能是ID有误或插件未被加载；请检查依赖关系是否设置正确！" % [plugin_id])
@@ -228,7 +228,7 @@ func get_plugin_instance(plugin_id:String)->Plugin:
 
 
 ## 用于获取RainyBot的数据文件夹的路径，将返回数据文件夹的绝对路径 (如 D://RainyBot/data/)
-func get_data_path()->String:
+static func get_data_path()->String:
 	return PluginManager.plugin_data_path
 	
 
@@ -238,7 +238,7 @@ func get_data_filepath()->String:
 	
 
 ## 用于获取RainyBot的配置文件夹的路径，将返回配置文件夹的绝对路径 (如 D://RainyBot/config/)	
-func get_config_path()->String:
+static func get_config_path()->String:
 	return PluginManager.plugin_config_path
 	
 
@@ -248,7 +248,7 @@ func get_config_filepath()->String:
 	
 
 ## 用于获取RainyBot的缓存文件夹的路径，将返回缓存文件夹的绝对路径 (如 D://RainyBot/cache)
-func get_cache_path()->String:
+static func get_cache_path()->String:
 	return PluginManager.plugin_cache_path
 	
 	
@@ -272,7 +272,7 @@ func is_cache_loaded()->bool:
 	return plugin_cache_loaded
 
 
-func get_last_errors()->PackedStringArray:
+static func get_last_errors()->PackedStringArray:
 	return GlobalManager.last_errors
 
 
