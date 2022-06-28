@@ -51,11 +51,16 @@ func save(path:String)->int:
 func get_data()->PackedByteArray:
 	Console.print_warning("正在生成Gif图像数据，请稍候.....")
 	var _thread:Thread = Thread.new()
-	_thread.start(_export_data)
-	while _thread.is_alive():
-		await GlobalManager.get_tree().process_frame
-	Console.print_success("Gif图像数据生成完毕，正在返回生成的数据.....")
-	return await _thread.wait_to_finish()
+	var _err:int = _thread.start(_export_data)
+	if _err == OK:
+		while _thread.is_alive():
+			await GlobalManager.get_tree().process_frame
+		var _data:PackedByteArray = await _thread.wait_to_finish()
+		Console.print_success("Gif图像数据生成完毕，正在返回生成的数据.....")
+		return _data
+	else:
+		Console.print_error("无法创建用于生成Gif图像数据的线程，请再试一次!")
+		return PackedByteArray()
 
 
 func _export_data(_args)->PackedByteArray:
