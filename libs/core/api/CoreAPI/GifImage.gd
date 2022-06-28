@@ -42,16 +42,19 @@ func save(path:String)->int:
 	if _err == OK:
 		file.store_buffer(await get_data())
 		file.close()
+		Console.print_success("成功将Gif图像数据储存至文件 %s"% path)
 	else:
-		Console.print_error("无法将指定图像储存到文件 %s，请检查文件路径或权限是否正确!"% path)
+		Console.print_error("无法将指定Gif图像数据储存到文件 %s，请检查文件路径或权限是否正确!"% path)
 	return _err
 
 
 func get_data()->PackedByteArray:
+	Console.print_warning("正在生成Gif图像数据，请稍候.....")
 	var _thread:Thread = Thread.new()
 	_thread.start(_export_data)
 	while _thread.is_alive():
 		await GlobalManager.get_tree().process_frame
+	Console.print_success("Gif图像数据生成完毕，正在返回生成的数据.....")
 	return await _thread.wait_to_finish()
 
 
