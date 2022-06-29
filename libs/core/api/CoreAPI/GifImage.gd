@@ -63,7 +63,7 @@ func get_data()->PackedByteArray:
 		return PackedByteArray()
 
 
-func _export_data(_args)->PackedByteArray:
+func _export_data()->PackedByteArray:
 	var _exporter:GIFExporter = GIFExporter.new(size.x,size.y)
 	for _img_dic in frames:
 		await GlobalManager.get_tree().process_frame
