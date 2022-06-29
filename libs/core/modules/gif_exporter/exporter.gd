@@ -1,19 +1,29 @@
 extends RefCounted
 
-enum Error { OK = 0, EMPTY_IMAGE = 1, BAD_IMAGE_FORMAT = 2 }
 
-var little_endian = preload("./little_endian.gd").new()
-var lzw = preload("./gif-lzw/lzw.gd").new()
-var converter = preload("./converter.gd")
+enum Error{
+	OK = 0,
+	EMPTY_IMAGE = 1,
+	BAD_IMAGE_FORMAT = 2
+}
 
-var last_color_table := []
-var last_transparency_index := -1
+
+const LittleEndian:GDScript = preload("./little_endian.gd")
+const GifLZW:GDScript = preload("./gif-lzw/lzw.gd")
+const Converter:GDScript = preload("./converter.gd")
+
+
+var little_endian:LittleEndian = LittleEndian.new()
+var lzw:GifLZW = GifLZW.new()
+
+var last_color_table:Array = []
+var last_transparency_index:int = -1
 
 # File data and Header
-var data := PackedByteArray([])
+var data:PackedByteArray = PackedByteArray([])
 
 
-func _init(_width: int, _height: int)->void:
+func _init(_width:int,_height:int)->void:
 	add_header()
 	add_logical_screen_descriptor(_width, _height)
 	add_application_ext("NETSCAPE", "2.0", [1, 0, 0])
@@ -47,7 +57,6 @@ func add_logical_screen_descriptor(width: int, height: int) -> void:
 func add_application_ext(app_iden: String, app_auth_code: String, _data: Array) -> void:
 	var extension_introducer := 0x21
 	var extension_label := 0xff
-
 	var block_size := 11
 
 	data.append(extension_introducer)
@@ -71,12 +80,11 @@ func add_comment_ext(string: String) -> void:
 
 # finds the image color table. Stops if the size gets larger than 256.
 func find_color_table(image: Image) -> Dictionary:
-#	image.lock()
 	var result: Dictionary = {}
 	var image_data: PackedByteArray = image.get_data()
 
 	for i in range(0, image_data.size(), 4):
-		var color: Array = [
+		var color:Array[int] = [
 			int(image_data[i]),
 			int(image_data[i + 1]),
 			int(image_data[i + 2]),
@@ -87,7 +95,6 @@ func find_color_table(image: Image) -> Dictionary:
 		if result.size() > 256:
 			break
 
-#	image.unlock()
 	return result
 
 
@@ -99,12 +106,11 @@ func find_transparency_color_index(color_table: Dictionary) -> int:
 
 
 func colors_to_codes(img: Image, col_palette: Dictionary, transp_color_index: int) -> PackedByteArray:
-#	img.lock()
 	var image_data: PackedByteArray = img.get_data()
 	var result: PackedByteArray = PackedByteArray([])
 
 	for i in range(0, image_data.size(), 4):
-		var color: Array = [image_data[i], image_data[i + 1], image_data[i + 2], image_data[i + 3]]
+		var color:Array[int] = [image_data[i], image_data[i + 1], image_data[i + 2], image_data[i + 3]]
 
 		if color in col_palette:
 			if color[3] == 0 and transp_color_index != -1:
@@ -115,7 +121,6 @@ func colors_to_codes(img: Image, col_palette: Dictionary, transp_color_index: in
 			result.append(0)
 			push_warning("colors_to_codes: color not found! [%d, %d, %d, %d]" % color)
 
-#	img.unlock()
 	return result
 
 
@@ -196,7 +201,7 @@ func add_frame_with_lci(image: Image, delay_time:int) -> int:
 	if image.is_empty():
 		return Error.EMPTY_IMAGE
 
-	var image_converted_to_codes: PackedByteArray = converter.new().get_similar_indexed_datas(
+	var image_converted_to_codes:PackedByteArray = Converter.new().get_similar_indexed_datas(
 		image, last_color_table
 	)
 

@@ -1,7 +1,11 @@
 extends RefCounted
 
-var converter = preload("../converter.gd").new()
-var transparency := false
+
+const Converter:GDScript = preload("../converter.gd")
+
+
+var converter:Converter = Converter.new()
+var transparency:bool = false
 
 
 func longest_axis(colors: Array) -> int:

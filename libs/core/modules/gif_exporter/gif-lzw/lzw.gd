@@ -1,21 +1,22 @@
 extends RefCounted
 
-var lsbbitpacker = preload("./lsbbitpacker.gd")
-var lsbbitunpacker = preload("./lsbbitunpacker.gd")
+
+const LSBLZWBitPacker:GDScript = preload("./lsbbitpacker.gd")
+const LSBLZWBitUnpacker:GDScript = preload("./lsbbitunpacker.gd")
 
 
 class CodeEntry:
-	var sequence: PackedByteArray
-	var raw_array: Array
+	var sequence:PackedByteArray
+	var raw_array:PackedByteArray
 
-	func _init(_sequence):
+	func _init(_sequence:PackedByteArray)->void:
 		raw_array = _sequence
 		sequence = _sequence
 
-	func add(other):
+	func add(other:CodeEntry)->CodeEntry:
 		return CodeEntry.new(self.raw_array + other.raw_array)
 
-	func to_string():
+	func to_string()->String:
 		var result: String = ""
 		for element in self.sequence:
 			result += str(element) + ", "
@@ -27,19 +28,19 @@ class CodeTable:
 	var counter: int = 0
 	var lookup: Dictionary = {}
 
-	func add(entry) -> int:
+	func add(entry:CodeEntry) -> int:
 		self.entries[self.counter] = entry
 		self.lookup[entry.raw_array] = self.counter
 		counter += 1
 		return counter
 
-	func find(entry) -> int:
+	func find(entry:CodeEntry) -> int:
 		return self.lookup.get(entry.raw_array, -1)
 
-	func has(entry) -> bool:
+	func has(entry:CodeEntry) -> bool:
 		return self.find(entry) != -1
 
-	func get_idx(index) -> CodeEntry:
+	func get_idx(index:int) -> CodeEntry:
 		return self.entries.get(index, null)
 
 	func to_string() -> String:
@@ -89,7 +90,7 @@ func compress_lzw(image: PackedByteArray, colors: PackedByteArray) -> Array:
 	var clear_code_index: int = pow(2, get_bits_number_for(last_color_index))
 	var index_stream: PackedByteArray = image
 	var current_code_size: int = get_bits_number_for(clear_code_index)
-	var binary_code_stream = lsbbitpacker.LSBLZWBitPacker.new()
+	var binary_code_stream:LSBLZWBitPacker = LSBLZWBitPacker.new()
 
 	# initialize with Clear Code
 	binary_code_stream.write_bits(clear_code_index, current_code_size)
@@ -151,7 +152,7 @@ func compress_lzw(image: PackedByteArray, colors: PackedByteArray) -> Array:
 func decompress_lzw(code_stream_data: PackedByteArray, min_code_size: int, colors: PackedByteArray) -> PackedByteArray:
 	var code_table: CodeTable = initialize_color_code_table(colors)
 	var index_stream: PackedByteArray = PackedByteArray([])
-	var binary_code_stream = lsbbitunpacker.LSBLZWBitUnpacker.new(code_stream_data)
+	var binary_code_stream:LSBLZWBitUnpacker = LSBLZWBitUnpacker.new(code_stream_data)
 	var current_code_size: int = min_code_size + 1
 	var clear_code_index: int = pow(2, min_code_size)
 
