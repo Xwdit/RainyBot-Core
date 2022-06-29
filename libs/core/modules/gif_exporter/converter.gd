@@ -36,7 +36,6 @@ func _convert(image: Image, colors: Array) -> PackedByteArray:
 	var lut:Image = Image.new()
 	lut.create(256, 1, false, Image.FORMAT_RGB8)
 	lut.fill(Color8(int(colors[0][0]), int(colors[0][1]), int(colors[0][2])))
-#	lut.lock()
 	for i in colors.size():
 		lut.set_pixel(i, 0, Color8(int(colors[i][0]), int(colors[i][1]), int(colors[i][2])))
 	var lut_tex:ImageTexture = ImageTexture.new()

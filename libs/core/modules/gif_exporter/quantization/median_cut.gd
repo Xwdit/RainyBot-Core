@@ -77,7 +77,6 @@ func average_colors(buckets: Array) -> Dictionary:
 
 
 func pixels_to_colors(image: Image) -> Array:
-#	image.lock()
 	var result := []
 	var data: PackedByteArray = image.get_data()
 
@@ -86,7 +85,6 @@ func pixels_to_colors(image: Image) -> Array:
 			transparency = true
 			continue
 		result.append([data[i], data[i + 1], data[i + 2]])
-#	image.unlock()
 	return result
 
 
