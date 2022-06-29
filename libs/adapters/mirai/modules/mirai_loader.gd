@@ -147,7 +147,7 @@ func load_mirai()->int:
 				if OS.shell_open(mirai_path+"start.cmd") != OK:
 					Console.print_error("无法启动Mirai,请检查以下目录中文件是否丢失或损坏:"+mirai_path)
 					return ERR_CANT_OPEN
-			if OS.get_name() == "macOS":
+			elif OS.get_name() == "macOS":
 				OS.execute("chmod",["+x",mirai_path+"start.command"])
 				OS.execute("open",[mirai_path+"start.command"])
 			else:
