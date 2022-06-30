@@ -1086,25 +1086,19 @@ func get_scene_image(scene:Node,size:Vector2i,stretch_size:Vector2i=Vector2i.ZER
 	_v_port.transparent_bg = transparent
 	_v_port.size = Vector2i.ZERO
 	_v_port.size = size
-	if stretch_size != Vector2i.ZERO:
-		_v_port.size_2d_override_stretch = true
-		_v_port.size_2d_override = stretch_size
-	else:
-		_v_port.size_2d_override_stretch = false
-		_v_port.size_2d_override = size
 	_v_port.render_target_update_mode = SubViewport.UPDATE_ONCE
 	await get_tree().process_frame
 	var img:Image = _v_port.get_texture().get_image()
 	if is_instance_valid(img):
-		if _v_port.size_2d_override_stretch:
-			img.resize(_v_port.size_2d_override.x,_v_port.size_2d_override.y)
-			Console.print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [_v_port.size,_v_port.size_2d_override,"启用" if _v_port.transparent_bg else "禁用"])
+		if stretch_size != Vector2i.ZERO:
+			img.resize(stretch_size.x,stretch_size.y,Image.INTERPOLATE_LANCZOS)
+			Console.print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [_v_port.size,stretch_size,"启用" if _v_port.transparent_bg else "禁用"])
 		else:
 			Console.print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 背景透明状态为:%s"% [_v_port.size,"启用" if _v_port.transparent_bg else "禁用"])
 		return img
 	else:
-		if _v_port.size_2d_override_stretch:
-			Console.print_error("无法根据指定场景中的内容生成图像，请检查传入的各项参数是否正确! (大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s)"% [_v_port.size,_v_port.size_2d_override,"启用" if _v_port.transparent_bg else "禁用"])
+		if stretch_size != Vector2i.ZERO:
+			Console.print_error("无法根据指定场景中的内容生成图像，请检查传入的各项参数是否正确! (大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s)"% [_v_port.size,stretch_size,"启用" if _v_port.transparent_bg else "禁用"])
 		else:
 			Console.print_error("无法根据指定场景中的内容生成图像，请检查传入的各项参数是否正确! (大小为:%s, 背景透明状态为:%s)"% [_v_port.size,"启用" if _v_port.transparent_bg else "禁用"])
 		return null
