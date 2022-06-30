@@ -55,7 +55,7 @@ func get_data()->PackedByteArray:
 	if _err == OK:
 		while _thread.is_alive():
 			await GlobalManager.get_tree().process_frame
-		var _data:PackedByteArray = await _thread.wait_to_finish()
+		var _data:PackedByteArray = _thread.wait_to_finish()
 		Console.print_success("Gif图像数据生成完毕，正在返回生成的数据.....")
 		return _data
 	else:
@@ -66,7 +66,6 @@ func get_data()->PackedByteArray:
 func _export_data()->PackedByteArray:
 	var _exporter:GIFExporter = GIFExporter.new(size.x,size.y)
 	for _img_dic in frames:
-		await GlobalManager.get_tree().process_frame
 		var _img:Image = _img_dic.image
 		var _delay:int = int(round(_img_dic.delay_time*100))
 		_img.convert(Image.FORMAT_RGBA8)
