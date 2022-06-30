@@ -1,7 +1,10 @@
-extends Resource
+extends CoreAPI
 
 
 class_name GifImage
+
+
+signal changed()
 
 
 const GIFExporter = preload("res://libs/core/modules/gif_exporter/exporter.gd")
@@ -35,7 +38,7 @@ func add_frame(image:Image,delay_time:float)->int:
 		return ERR_INVALID_DATA
 	frames.append({"image":image,"delay_time":delay_time})
 	data.resize(0)
-	emit_changed()
+	emit_signal("changed")
 	return OK
 
 
@@ -54,7 +57,7 @@ func insert_frame(idx:int,image:Image,delay_time:float)->int:
 		data.resize(0)
 		if idx == 0:
 			frame_generate_time = -1
-		emit_changed()
+		emit_signal("changed")
 		return OK
 	else:
 		Console.print_error("指定的位置无效，因此无法将其插入到Gif帧!")
@@ -67,7 +70,7 @@ func remove_frame(idx:int)->int:
 		data.resize(0)
 		if idx == 0:
 			frame_generate_time = -1
-		emit_changed()
+		emit_signal("changed")
 		return OK
 	else:
 		Console.print_error("指定的位置无效，因此无法从Gif帧中将其移除!")
@@ -101,7 +104,7 @@ func set_frame_image(idx:int,image:Image)->int:
 			frames[idx].image = image
 			if idx == 0:
 				frame_generate_time = -1
-			emit_changed()
+			emit_signal("changed")
 		return OK
 	else:
 		Console.print_error("指定的位置无效，因此无法将指定的图像设置到Gif帧!")
@@ -118,7 +121,7 @@ func set_frame_delay_time(idx:int,delay_time:float)->int:
 			frames[idx].delay_time = delay_time
 			if idx == 0:
 				frame_generate_time = -1
-			emit_changed()
+			emit_signal("changed")
 		return OK
 	else:
 		Console.print_error("指定的位置无效，因此无法将指定的延迟时间设置到Gif帧!")
@@ -129,7 +132,7 @@ func clear_frames()->void:
 	frames.clear()
 	frame_generate_time = -1
 	data.resize(0)
-	emit_changed()
+	emit_signal("changed")
 
 
 func get_frames_count()->int:
@@ -144,7 +147,7 @@ func set_size(new_size:Vector2)->int:
 		size = new_size
 		frame_generate_time = -1
 		data.resize(0)
-		emit_changed()
+		emit_signal("changed")
 	return OK
 
 
@@ -184,13 +187,17 @@ func get_data()->PackedByteArray:
 	if !data.is_empty():
 		return data
 	Console.print_warning("正在生成Gif图像数据，请稍候.....")
+	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
 	var _err:int = _thread.start(_export_data,frames)
 	if _err == OK:
 		while _thread.is_alive():
 			await GlobalManager.get_tree().process_frame
 		data = _thread.wait_to_finish()
-		Console.print_success("Gif图像数据生成完毕，正在返回生成的数据.....")
+		var _end_time:int = Time.get_ticks_msec()
+		var _passed_time:int = _end_time-_start_time
+		frame_generate_time = int(round(float(_passed_time)/float(frames.size())))
+		Console.print_success("Gif图像数据生成完毕，正在返回生成的数据.....(总用时: %s秒)"% (float(_passed_time)/1000.0))
 		return data
 	else:
 		Console.print_error("无法创建用于生成Gif图像数据的线程，请再试一次!")

@@ -9,7 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_g1tev")
+script = ExtResource( "1_g1tev" )
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -28,7 +28,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 metadata/_edit_layout_mode = 1
 
-[node name="Console" parent="." instance=ExtResource("2_xrvn5")]
+[node name="Console" parent="." instance=ExtResource( "2_xrvn5" )]
 offset_top = 33.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -41,7 +41,7 @@ metadata/_edit_use_custom_anchors = true
 offset_left = 4.0
 offset_right = 604.0
 offset_bottom = 33.0
-script = ExtResource("3_j8q6e")
+script = ExtResource( "3_j8q6e" )
 
 [node name="MainMenu" type="MenuButton" parent="ControlBar"]
 offset_right = 56.0
