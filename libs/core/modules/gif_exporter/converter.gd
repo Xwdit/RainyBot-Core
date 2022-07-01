@@ -44,7 +44,6 @@ func _convert(image: Image, colors: Array) -> PackedByteArray:
 	RenderingServer.canvas_item_set_material(ci_rid, mat_rid)
 
 	RenderingServer.viewport_set_update_mode(vp, RenderingServer.VIEWPORT_UPDATE_ONCE)
-	RenderingServer.force_draw(false)
 	image = RenderingServer.texture_2d_get(RenderingServer.viewport_get_texture(vp))
 
 	RenderingServer.free_rid(vp)

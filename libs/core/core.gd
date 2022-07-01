@@ -1,7 +1,7 @@
 class_name RainyBotCore
 
 
-const VERSION:String = "V2.0-RC-8"
+const VERSION:String = "V2.0-RC-8-Patch-1"
 
 
 static func start()->void:
