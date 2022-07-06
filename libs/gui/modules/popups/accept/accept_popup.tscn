@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4l46738j8ibq"]
+
+[ext_resource type="Script" path="res://libs/gui/modules/popups/accept/accept_popup.gd" id="1_hrki7"]
+
+[node name="AcceptPopup" type="AcceptDialog"]
+size = Vector2i(300, 100)
+transient = false
+exclusive = false
+min_size = Vector2i(300, 100)
+script = ExtResource("1_hrki7")
+
+[connection signal="cancelled" from="." to="." method="_on_accept_popup_cancelled"]
+[connection signal="confirmed" from="." to="." method="_on_accept_popup_confirmed"]
+[connection signal="visibility_changed" from="." to="." method="_on_accept_popup_visibility_changed"]

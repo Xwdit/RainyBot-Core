@@ -9,11 +9,11 @@ title = "RainyBot插件编辑器 (测试版)"
 size = Vector2i(1280, 720)
 visible = false
 min_size = Vector2i(640, 360)
-script = ExtResource( "1_i830a" )
+script = ExtResource("1_i830a")
 
-[node name="PluginEditor" parent="." instance=ExtResource( "2_1cb4y" )]
+[node name="PluginEditor" parent="." instance=ExtResource("2_1cb4y")]
 
-[node name="ExitConfirmWindow" parent="." instance=ExtResource( "3_scsvk" )]
+[node name="ExitConfirmWindow" parent="." instance=ExtResource("3_scsvk")]
 title = "未保存的文件..."
 
 [connection signal="close_requested" from="." to="." method="_on_EditorWindow_close_requested"]

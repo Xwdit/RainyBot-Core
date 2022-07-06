@@ -7,7 +7,7 @@
 [node name="PluginManagerGui" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( "1_y8fcn" )
+script = ExtResource("1_y8fcn")
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -26,69 +26,64 @@ offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
+split_offset = 200
 metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 
 [node name="PluginListContainer" type="VBoxContainer" parent="HSplitContainer"]
-offset_right = 300.0
+offset_right = 320.0
 offset_bottom = 580.0
 theme_override_constants/separation = 8
 
 [node name="RefreshButton" type="Button" parent="HSplitContainer/PluginListContainer"]
-minimum_size = Vector2(0, 50)
-offset_right = 300.0
-offset_bottom = 50.0
+offset_right = 320.0
+offset_bottom = 30.0
 text = "刷新插件列表"
 
 [node name="FolderButton" type="Button" parent="HSplitContainer/PluginListContainer"]
-minimum_size = Vector2(0, 50)
-offset_top = 58.0
-offset_right = 300.0
-offset_bottom = 108.0
+offset_top = 38.0
+offset_right = 320.0
+offset_bottom = 68.0
 text = "打开插件文件夹"
 
 [node name="PluginList" type="ItemList" parent="HSplitContainer/PluginListContainer"]
-minimum_size = Vector2(300, 0)
-offset_top = 116.0
-offset_right = 300.0
-offset_bottom = 406.0
+offset_top = 76.0
+offset_right = 320.0
+offset_bottom = 466.0
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/_edit_layout_mode = 1
 
 [node name="CreatePlugin" type="HBoxContainer" parent="HSplitContainer/PluginListContainer"]
-minimum_size = Vector2(0, 50)
-offset_top = 414.0
-offset_right = 300.0
-offset_bottom = 464.0
+offset_top = 474.0
+offset_right = 320.0
+offset_bottom = 504.0
 
 [node name="CreatePluginFile" type="LineEdit" parent="HSplitContainer/PluginListContainer/CreatePlugin"]
-offset_right = 224.0
-offset_bottom = 50.0
+offset_right = 244.0
+offset_bottom = 30.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource( "2_kkbno" )
+theme_override_fonts/font = ExtResource("2_kkbno")
 placeholder_text = "插件文件名(如abc.gd)"
 
 [node name="CreatePluginButton" type="Button" parent="HSplitContainer/PluginListContainer/CreatePlugin"]
-offset_left = 228.0
-offset_right = 300.0
-offset_bottom = 50.0
+offset_left = 248.0
+offset_right = 320.0
+offset_bottom = 30.0
 disabled = true
 text = "新建插件"
 
 [node name="ReloadAllButton" type="Button" parent="HSplitContainer/PluginListContainer"]
-minimum_size = Vector2(0, 50)
-offset_top = 472.0
-offset_right = 300.0
-offset_bottom = 522.0
+offset_top = 512.0
+offset_right = 320.0
+offset_bottom = 542.0
 text = "重载所有插件"
 
 [node name="UnloadAllButton" type="Button" parent="HSplitContainer/PluginListContainer"]
-minimum_size = Vector2(0, 50)
-offset_top = 530.0
-offset_right = 300.0
+offset_top = 550.0
+offset_right = 320.0
 offset_bottom = 580.0
 text = "卸载所有插件
 "
@@ -141,10 +136,9 @@ offset_bottom = 204.0
 theme_override_font_sizes/font_size = 20
 text = "描述: 这是一个示例插件，实际上并没有什么作用....."
 
-[node name="PluginManagerPreview" parent="HSplitContainer/PluginInfoPanel" instance=ExtResource( "2_hev7f" )]
+[node name="PluginManagerPreview" parent="HSplitContainer/PluginInfoPanel" instance=ExtResource("2_hev7f")]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/PluginInfoPanel"]
-minimum_size = Vector2(0, 50)
 offset_top = 530.0
 offset_right = 692.0
 offset_bottom = 580.0
@@ -178,7 +172,7 @@ size_flags_horizontal = 3
 text = "删除文件"
 
 [node name="NoSelectLabel" type="Label" parent="HSplitContainer"]
-offset_left = 312.0
+offset_left = 332.0
 offset_top = 274.0
 offset_right = 1004.0
 offset_bottom = 305.0
