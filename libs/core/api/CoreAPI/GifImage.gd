@@ -189,7 +189,7 @@ func get_data()->PackedByteArray:
 	Console.print_warning("正在生成Gif图像数据，请稍候.....")
 	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
-	var _err:int = _thread.start(_export_data,frames)
+	var _err:int = _thread.start(_export_data.bind(frames))
 	if _err == OK:
 		while _thread.is_alive():
 			await GlobalManager.get_tree().process_frame
@@ -220,7 +220,7 @@ func _test_generate_speed()->int:
 	var _test_frames:Array = [frames[0]]
 	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
-	var _err:int = _thread.start(_export_data,_test_frames)
+	var _err:int = _thread.start(_export_data.bind(_test_frames))
 	if _err == OK:
 		while _thread.is_alive():
 			await GlobalManager.get_tree().process_frame
