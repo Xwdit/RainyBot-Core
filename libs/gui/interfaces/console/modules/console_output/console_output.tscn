@@ -1,11 +1,12 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://c815lq5unh7gj"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/console/modules/console_output/console_output.gd" id="1_yyqsj"]
-
 
 [node name="ConsoleOutput" type="RichTextLabel" groups=["Console"]]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -13,14 +14,10 @@ focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath(".")
 focus_previous = NodePath(".")
 focus_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 theme_override_colors/selection_color = Color(0.701961, 0.701961, 0.701961, 1)
 theme_override_constants/line_separation = 5
 theme_override_font_sizes/normal_font_size = 15
+threaded = true
 scroll_following = true
 selection_enabled = true
-script = ExtResource( "1_yyqsj" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1_yyqsj")

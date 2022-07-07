@@ -1,13 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://dcvop6lmmgc25"]
+[gd_scene load_steps=2 format=3 uid="uid://la117u82151y"]
 
-[ext_resource type="Script" path="res://libs/gui/modules/popups/confirm/confirm_popup.gd" id="1_5g5x2"]
+[ext_resource type="Script" path="res://libs/gui/modules/popups/confirm_popup/confirm_popup.gd" id="1_11ji8"]
 
 [node name="ConfirmPopup" type="ConfirmationDialog"]
 size = Vector2i(300, 100)
 transient = false
 exclusive = false
 min_size = Vector2i(300, 100)
-script = ExtResource("1_5g5x2")
+script = ExtResource("1_11ji8")
 
 [connection signal="cancelled" from="." to="." method="_on_confirm_popup_cancelled"]
 [connection signal="confirmed" from="." to="." method="_on_confirm_popup_confirmed"]

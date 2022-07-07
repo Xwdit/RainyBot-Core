@@ -4,7 +4,15 @@ extends Control
 @onready var plugin_list_ins:ItemList = $HSplitContainer/PluginListContainer/PluginList
 
 var plugin_list_dic:Dictionary = {}
+var current_events:Array = []
+var current_keywords:Array = []
+var current_console_commands:Array = []
 var current_selected:int = -1
+
+
+func _ready():
+	$HSplitContainer/TabContainer.set_tab_title(0,"插件信息")
+	$HSplitContainer/TabContainer.set_tab_title(1,"插件注册列表")
 
 
 func update_plugin_list(reload_dic:bool=false)->void:
@@ -30,8 +38,7 @@ func update_plugin_list(reload_dic:bool=false)->void:
 			plugin_list_dic[idx]={"file":_file,"loaded":false}
 	if plugin_list_dic.is_empty():
 		plugin_list_ins.add_item("插件目录下未找到任何插件文件...")
-	$HSplitContainer/PluginInfoPanel.hide()
-	$HSplitContainer/NoSelectLabel.show()
+	set_panel_visible(false)
 
 
 func set_lock_panel(locked:bool)->void:
@@ -41,8 +48,12 @@ func set_lock_panel(locked:bool)->void:
 	$HSplitContainer/PluginListContainer/UnloadAllButton.disabled = locked
 	$HSplitContainer/PluginListContainer/CreatePlugin/CreatePluginButton.disabled = locked
 	if locked:
-		$HSplitContainer/PluginInfoPanel.hide()
-		$HSplitContainer/NoSelectLabel.show()
+		set_panel_visible(false)
+
+
+func set_panel_visible(p_visible:bool)->void:
+	$HSplitContainer/NoSelectLabel.visible = !p_visible
+	$HSplitContainer/TabContainer.visible = p_visible
 
 
 func _on_plugin_list_item_selected(index:int)->void:
@@ -50,36 +61,75 @@ func _on_plugin_list_item_selected(index:int)->void:
 		current_selected = -1
 		return
 	current_selected = index
-	var plug:Dictionary = plugin_list_dic[index]
+	_update_info_panel()
+	_update_register_panel()
+	set_panel_visible(true)
+
+
+func _update_info_panel()->void:
+	var plug:Dictionary = plugin_list_dic[current_selected]
 	var file:String = plug["file"]
 	if plug.has("info"):
 		var info:Dictionary = plug["info"]
 		if plug.has("loaded") and plug["loaded"]:
-			$HSplitContainer/PluginInfoPanel/PluginName.text = info["name"] + " (已加载)"
+			$HSplitContainer/TabContainer/PluginInfoPanel/PluginName.text = info["name"] + " (已加载)"
 		else:
-			$HSplitContainer/PluginInfoPanel/PluginName.text = info["name"] + " (未加载)"
-		$HSplitContainer/PluginInfoPanel/PluginID.text = "插件ID: "+info["id"]
-		$HSplitContainer/PluginInfoPanel/PluginAuthor.text = "作者: "+info["author"]
-		$HSplitContainer/PluginInfoPanel/PluginVersion.text = "版本号: "+info["version"]
+			$HSplitContainer/TabContainer/PluginInfoPanel/PluginName.text = info["name"] + " (未加载)"
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginID.text = "插件ID: "+info["id"]
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginAuthor.text = "作者: "+info["author"]
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginVersion.text = "版本号: "+info["version"]
 		if info["dependency"] != []:
-			$HSplitContainer/PluginInfoPanel/PluginDependency.text = "依赖的插件: "+str(info["dependency"])
+			$HSplitContainer/TabContainer/PluginInfoPanel/PluginDependency.text = "依赖的插件: "+str(info["dependency"])
 		else:
-			$HSplitContainer/PluginInfoPanel/PluginDependency.text = "依赖的插件: 无"
-		$HSplitContainer/PluginInfoPanel/PluginDescription.text = "描述: "+info["description"]
+			$HSplitContainer/TabContainer/PluginInfoPanel/PluginDependency.text = "依赖的插件: 无"
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginDescription.text = "描述: "+info["description"]
 	else:
-		$HSplitContainer/PluginInfoPanel/PluginName.text = file + " (读取错误或信息缺失)"
-		$HSplitContainer/PluginInfoPanel/PluginID.text = "插件ID: 未知"
-		$HSplitContainer/PluginInfoPanel/PluginAuthor.text = "作者: 未知"
-		$HSplitContainer/PluginInfoPanel/PluginVersion.text = "版本号: 未知"
-		$HSplitContainer/PluginInfoPanel/PluginDependency.text = "依赖的插件: 未知"
-		$HSplitContainer/PluginInfoPanel/PluginDescription.text = "描述: 未知"
+		
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginName.text = file + " (读取错误或信息缺失)"
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginID.text = "插件ID: 未知"
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginAuthor.text = "作者: 未知"
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginVersion.text = "版本号: 未知"
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginDependency.text = "依赖的插件: 未知"
+		$HSplitContainer/TabContainer/PluginInfoPanel/PluginDescription.text = "描述: 未知"
 	if plug.has("loaded") and plug["loaded"]:
-		$HSplitContainer/PluginInfoPanel/HBoxContainer/UnloadButton.show()
+		$HSplitContainer/TabContainer/PluginInfoPanel/HBoxContainer/UnloadButton.show()
 	else:
-		$HSplitContainer/PluginInfoPanel/HBoxContainer/UnloadButton.hide()
-	$HSplitContainer/PluginInfoPanel/PluginManagerPreview.load_script(file)
-	$HSplitContainer/NoSelectLabel.hide()
-	$HSplitContainer/PluginInfoPanel.show()
+		$HSplitContainer/TabContainer/PluginInfoPanel/HBoxContainer/UnloadButton.hide()
+	$HSplitContainer/TabContainer/PluginInfoPanel/PluginManagerPreview.load_script(file)
+
+
+func _update_register_panel()->void:
+	var plug:Dictionary = plugin_list_dic[current_selected]
+	current_events.clear()
+	current_keywords.clear()
+	current_console_commands.clear()
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text = "请选择任意项目来查看其详情..."
+	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/EventList/ItemList.clear()
+	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/KeywordList/ItemList.clear()
+	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/CommandList/ItemList.clear()
+	if plug.has("info"):
+		var info:Dictionary = plug["info"]
+		var id:String = info["id"]
+		var ins:Plugin = PluginManager.get_node_or_null(id)
+		if is_instance_valid(ins):
+			$HSplitContainer/TabContainer.set_tab_hidden(1,false)
+			var events:Dictionary = ins.plugin_event_dic
+			var keywords:Dictionary = ins.plugin_keyword_dic
+			var commands:Dictionary = ins.plugin_console_command_dic
+			for ev in events:
+				var ev_name:String = ev.resource_path.get_file().replacen(".gd","")
+				$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/EventList/ItemList.add_item(ev_name)
+				current_events.append(events[ev])
+			for kw in keywords:
+				$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/KeywordList/ItemList.add_item(kw)
+				current_keywords.append(keywords[kw])
+			for cmd in commands:
+				$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/CommandList/ItemList.add_item(cmd)
+				current_console_commands.append(commands[cmd])
+		else:
+			$HSplitContainer/TabContainer.set_tab_hidden(1,true)
+	else:
+		$HSplitContainer/TabContainer.set_tab_hidden(1,true)
 
 
 func _on_edit_button_button_down()->void:
@@ -205,3 +255,55 @@ func _on_create_plugin_button_button_down()->void:
 		else:
 			GuiManager.popup_notification("插件%s创建失败，请查看控制台来了解更多信息"% text)
 		set_lock_panel(false)
+
+
+func _on_event_list_item_selected(index):
+	await get_tree().process_frame
+	var datas:Dictionary = current_events[index]
+	var priority:int = datas["priority"]
+	var funcs:Array = datas["function"]
+	var block_mode:int = datas["block_mode"]
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text = "事件优先级: %s"% priority
+	var func_names:Array = []
+	for f in funcs:
+		func_names.append(str(f.get_method()))
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n绑定的函数: %s" % str(func_names)
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n事件阻断模式: %s" % Plugin.block_mode_dic[block_mode]
+
+
+func _on_event_list_focus_exited():
+	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/EventList/ItemList.deselect_all()
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text = "请选择任意项目来查看其详情..."
+
+
+func _on_keyword_list_item_selected(index):
+	await get_tree().process_frame
+	var datas:Dictionary = current_keywords[index]
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text = "绑定的函数: %s" % str(datas["function"].get_method())
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n动态变量字典: %s" % str(datas["var_dic"])
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n匹配模式: %s" % Plugin.match_mode_dic[datas["match_mode"]]
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n匹配后阻断事件传递: %s" % ("是" if datas["block"] else "否")
+
+
+func _on_keyword_list_focus_exited():
+	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/KeywordList/ItemList.deselect_all()
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text = "请选择任意项目来查看其详情..."
+
+
+func _on_reg_refresh_button_button_down():
+	_update_register_panel()
+	GuiManager.popup_notification("插件注册列表刷新完毕!")
+
+
+func _on_command_list_item_selected(index):
+	await get_tree().process_frame
+	var datas:Dictionary = current_console_commands[index]
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text = "绑定的函数: %s" % str(datas["function"].get_method())
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n需要参数: %s" % ("是" if datas["need_arg"] else "否")
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n需要连接到后端: %s" % ("是" if datas["need_connect"] else "否")
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n命令用法: %s" % str(datas["usages"])
+
+
+func _on_command_list_focus_exited():
+	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/CommandList/ItemList.deselect_all()
+	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text = "请选择任意项目来查看其详情..."

@@ -23,17 +23,22 @@ var default_plugin_info:Dictionary = {
 
 func _ready()->void:
 	add_to_group("console_command_plugins")
+	add_to_group("console_command_plugin")
 	var usages:Array = [
 		"plugins manager - 打开插件管理器GUI",
 		"plugins list - 查看所有已加载的插件列表",
 		"plugins load <文件名> - 加载一个指定的插件",
-		"plugins unload <插件id> - 卸载一个指定的插件",
-		"plugins reload <插件id> - 重新加载一个指定的插件",
+		"plugins unload <插件ID> - 卸载一个指定的插件",
+		"plugins reload <插件ID> - 重新加载一个指定的插件",
 		"plugins areload - 重新加载所有插件",
 		"plugins reimport - 重新导入所有资源并重新启动",
 		"plugins create <文件名> - 新建一个插件",
 		"plugins edit <文件名> - 编辑一个插件",
-		"plugins delete <文件名> - 删除一个插件"
+		"plugins delete <文件名> - 删除一个插件",
+		"plugins cdata <插件ID> - 清除指定插件的数据库中的所有数据",
+		"plugins cdata <插件ID> <数据项名称> - 清除指定插件数据库中指定数据项的值",
+		"plugins pdata <插件ID> - 列出指定插件数据库中的所有数据项的列表",
+		"plugins pdata <插件ID> <数据项名称> - 打印指定插件数据库中指定数据项的值"
 	]
 	CommandManager.register_console_command("plugins",true,usages,"RainyBot-Core",false)
 
@@ -69,6 +74,44 @@ func _call_console_command(_cmd:String,args:Array)->void:
 			for child in get_children():
 				Console.print_text(get_beautify_plugin_info(child.get_plugin_info()))
 			Console.print_text("-----插件列表-----")
+		"cdata":
+			if args.size() > 2:
+				var plugin:Plugin = get_node_or_null(args[1])
+				if is_instance_valid(plugin):
+					if plugin.has_plugin_data(args[2]):
+						plugin.remove_plugin_data(args[2])
+					else:
+						Console.print_error("指定的插件数据项不存在!")
+				else:
+					Console.print_error("插件ID不存在!")
+			elif args.size() > 1:
+				var plugin:Plugin = get_node_or_null(args[1])
+				if is_instance_valid(plugin):
+					plugin.clear_plugin_data()
+				else:
+					Console.print_error("插件ID不存在!")
+			else:
+				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
+		"pdata":
+			if args.size() > 2:
+				var plugin:Plugin = get_node_or_null(args[1])
+				if is_instance_valid(plugin):
+					if plugin.has_plugin_data(args[2]):
+						Console.print_text("插件数据项%s的值为: %s"%[args[2],str(plugin.get_plugin_data(args[2]))])
+					else:
+						Console.print_error("指定的插件数据项不存在!")
+				else:
+					Console.print_error("插件ID不存在!")
+			elif args.size() > 1:
+				var plugin:Plugin = get_node_or_null(args[1])
+				if is_instance_valid(plugin):
+					if plugin.plugin_data_loaded:
+						Console.print_text("插件数据库中当前存在的数据项列表为: %s"% str(plugin.get_plugin_data_metadata().keys()))
+						Console.print_text("您可以使用命令 plugins pdata <插件ID> <数据项名称> 来查看指定数据项的值")
+					else:
+						Console.print_error("此插件暂未初始化插件数据库，因此无法获取其数据项列表!")
+			else:
+				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
 		"load":
 			if args.size() > 1:
 				load_plugin(args[1])
@@ -83,7 +126,6 @@ func _call_console_command(_cmd:String,args:Array)->void:
 					Console.print_error("插件ID不存在!")
 			else:
 				Console.print_error("错误的命令用法! 请输入help plugins来查看帮助!")
-					
 		"reload":
 			if args.size() > 1:
 				var plugin:Plugin = get_node_or_null(args[1])

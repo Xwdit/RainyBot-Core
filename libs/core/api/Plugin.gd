@@ -32,7 +32,7 @@ enum BlockMode{
 }
 
 
-var match_mode_dic:Dictionary = {
+const match_mode_dic:Dictionary = {
 	int(MatchMode.BEGIN) : "关键词位于开头",
 	int(MatchMode.BETWEEN) : "关键词位于中间",
 	int(MatchMode.END) : "关键词位于结尾",
@@ -41,6 +41,14 @@ var match_mode_dic:Dictionary = {
 	int(MatchMode.EQUAL) : "与关键词完全相等",
 	int(MatchMode.REGEX) : "满足正则表达式"
 }
+
+const block_mode_dic:Dictionary = {
+	int(BlockMode.DISABLE) : "即使标记为停止传递也不会进行阻断",
+	int(BlockMode.EVENT) : "若标记为停止传递，在当前插件中的所有该事件函数处理完毕后，将阻断传递，不会传递给后续插件",
+	int(BlockMode.FUNCTION) : "若标记为停止传递，在当前函数处理完毕后，将阻断事件在当前插件内的传递，但后续插件仍会接收到事件",
+	int(BlockMode.ALL) : "若标记为停止传递，在当前函数处理完毕后，将完全阻断事件传递，事件后续函数及其他插件均不会收到事件",
+}
+
 
 var plugin_path:String = ""
 
@@ -154,7 +162,7 @@ func _on_unload()->void:
 
 func _call_console_command(cmd:String,args:Array)->void:
 	if plugin_console_command_dic.has(cmd):
-		var function:Callable = plugin_console_command_dic[cmd]
+		var function:Callable = plugin_console_command_dic[cmd].function
 		function.call(cmd,args)
 
 
@@ -410,7 +418,7 @@ func _register_console_command(command:String,function:Callable,need_arguments:b
 		Console.print_error("无法注册以下命令，因为指定的函数不存在: " + command)
 		return
 	if CommandManager.register_console_command(command,need_arguments,usages,plugin_info.name,need_connect)==OK:
-		plugin_console_command_dic[command] = function
+		plugin_console_command_dic[command] = {"function":function,"need_arg":need_arguments,"need_connect":need_connect,"usages":usages}
 		add_to_group("console_command_"+command)
 		Console.print_success("成功注册命令: %s!" % [command])
 

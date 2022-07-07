@@ -6,14 +6,14 @@
 [node name="PluginEditor" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( "1_afc2x" )
+script = ExtResource("1_afc2x")
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[node name="CodeEdit" parent="." instance=ExtResource( "2_mo1oq" )]
+[node name="CodeEdit" parent="." instance=ExtResource("2_mo1oq")]
 offset_top = 32.0
 offset_bottom = -30.0
 focus_neighbor_left = NodePath(".")

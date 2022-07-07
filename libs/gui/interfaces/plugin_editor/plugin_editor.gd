@@ -13,6 +13,7 @@ func load_script(path:String)->int:
 	var scr:GDScript = PluginManager.load_plugin_script(path)
 	if is_instance_valid(scr):
 		get_code_edit().text = scr.source_code
+		get_code_edit().clear_undo_history()
 		$EditorPanel/File/FileName.text = path.get_file()
 		loaded_path = path
 		loaded_name = path.get_file()
