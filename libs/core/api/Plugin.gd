@@ -63,6 +63,7 @@ var plugin_info:Dictionary = {
 	"dependency":[]
 }
 
+var default_plugin_config:Dictionary = {}
 var plugin_config:Dictionary = {}
 var plugin_data:Dictionary = {}
 var plugin_cache:Dictionary = {}
@@ -631,11 +632,15 @@ func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:M
 ## 默认配置的字典(即为新建配置文件时其中将包含的内容，RainyBot将以Json格式将其保存为配置文件)
 ## [可选,默认为空字典]每个配置项的介绍(字典的key为配置项的名称,对应的值为此配置项的相关介绍,两者均为字符串)
 func init_plugin_config(default_config:Dictionary,config_description:Dictionary={})->int:
+	if plugin_config_loaded:
+		Console.print_error("插件配置已被加载，因此无法对其进行初始化!")
+		return ERR_ALREADY_IN_USE
 	Console.print_warning("正在加载插件配置文件.....")
 	if default_config.is_empty():
 		Console.print_error("默认配置字典不能为空，插件配置初始化失败！")
 		return ERR_INVALID_DATA
-	plugin_config = default_config
+	default_plugin_config = default_config
+	plugin_config = default_config.duplicate(true)
 	var config_path:String = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file:File = File.new()
 	if file.file_exists(config_path):
@@ -766,6 +771,38 @@ func set_plugin_config(key,value,save_file:bool=true)->int:
 		return ERR_FILE_CANT_WRITE
 
 
+## 用于在已加载的配置中将指定key还原回默认值，需要先初始化配置文件才能使用此函数
+## 最后一项可选的参数用于指定是否在还原的同时将更改立刻保存到配置文件中	
+func reset_plugin_config(key,save_file:bool=true)->int:
+	if !plugin_config_loaded:
+		Console.print_error("配置内容还原失败，请先初始化配置后再执行此操作")
+		return ERR_FILE_CANT_WRITE
+	if plugin_config.has(key):
+		if default_plugin_config.has(key):
+			plugin_config[key]=default_plugin_config[key]
+			if save_file:
+				save_plugin_config()
+			return OK
+		else:
+			Console.print_error("配置内容还原失败，试图设置的key在插件默认配置中不存在!")
+			return ERR_DOES_NOT_EXIST
+	else:
+		Console.print_error("配置内容还原失败，试图设置的key在插件配置中不存在!")
+		return ERR_DOES_NOT_EXIST
+
+
+## 用于在已加载的配置中将所有内容还原回默认值，需要先初始化配置文件才能使用此函数
+## 最后一项可选参数用于指定是否在还原的同时将更改立即保存到配置文件中
+func reset_all_plugin_data(save_file:bool=true)->int:
+	if !plugin_config_loaded:
+		Console.print_error("配置文件还原失败，请先初始化配置文件后再执行此操作!")
+		return ERR_CANT_OPEN
+	plugin_data = default_plugin_config.duplicate(true)
+	if save_file:
+		save_plugin_data()
+	return OK
+
+
 ## 用于直接获取已加载的配置的字典，便于以字典的形式对其进行操作，需要先初始化配置文件才能使用此函数
 func get_plugin_config_metadata()->Dictionary:
 	if !plugin_config_loaded:
@@ -830,6 +867,9 @@ func set_plugin_cache_metadata(dic:Dictionary,save_file:bool=true)->int:
 ## 对于配置的储存，建议使用插件配置功能，以便指定默认配置与配置说明，且能使用常规编辑器对其进行编辑与更改
 ## 执行此函数时，将会检测是否已存在此插件对应的数据库文件，否则将会新建一个空白的数据库文件(.rdb格式)
 func init_plugin_data()->int:
+	if plugin_data_loaded:
+		Console.print_error("插件数据库已被加载，因此无法对其进行初始化!")
+		return ERR_ALREADY_IN_USE
 	Console.print_warning("正在加载插件数据库.....")
 	var data_path:String = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file:File = File.new()
@@ -942,6 +982,9 @@ func clear_plugin_data(save_file:bool=true)->int:
 
 
 func init_plugin_cache()->int:
+	if plugin_cache_loaded:
+		Console.print_error("插件缓存数据库已被加载，因此无法对其进行初始化!")
+		return ERR_ALREADY_IN_USE
 	Console.print_warning("正在加载插件缓存数据库.....")
 	var data_path:String = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
 	var file:File = File.new()

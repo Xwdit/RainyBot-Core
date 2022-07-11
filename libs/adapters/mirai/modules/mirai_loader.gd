@@ -69,7 +69,7 @@ func _exit_tree()->void:
 func check_java_version()->bool:
 	var output:Array[String] = []
 	OS.execute("java", ["--version"], output)
-	if output.size() > 0:
+	if output.size() > 0 and output[0] != "":
 		var ver_str:String = output[0]
 		var ver_arr:PackedStringArray = ver_str.split("\n")
 		ver_str = ver_arr[0]

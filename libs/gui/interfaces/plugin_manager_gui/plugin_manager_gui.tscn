@@ -104,6 +104,7 @@ offset_right = 672.0
 offset_bottom = 41.0
 theme_override_font_sizes/font_size = 30
 text = "示例插件"
+vertical_alignment = 1
 
 [node name="PluginID" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 offset_top = 51.0
@@ -144,6 +145,7 @@ text = "描述: 这是一个示例插件，实际上并没有什么作用....."
 offset_top = 256.0
 offset_right = 672.0
 offset_bottom = 510.0
+delimiter_strings = ["' '", "\" \""]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 offset_top = 520.0
@@ -267,6 +269,137 @@ offset_right = 672.0
 offset_bottom = 550.0
 text = "刷新注册列表"
 
+[node name="PluginDataPanel" type="VBoxContainer" parent="HSplitContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 30.0
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer/PluginDataPanel"]
+offset_right = 672.0
+offset_bottom = 360.0
+size_flags_vertical = 3
+alignment = 1
+
+[node name="DataList" type="VBoxContainer" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer"]
+offset_right = 221.0
+offset_bottom = 360.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList"]
+offset_right = 221.0
+offset_bottom = 27.0
+text = "数据库项目列表"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList"]
+offset_top = 31.0
+offset_right = 221.0
+offset_bottom = 292.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AllClearButton" type="Button" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList"]
+offset_top = 296.0
+offset_right = 221.0
+offset_bottom = 326.0
+text = "清空所有数据"
+
+[node name="OpenDirButton" type="Button" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList"]
+offset_top = 330.0
+offset_right = 221.0
+offset_bottom = 360.0
+text = "打开数据目录"
+
+[node name="CacheList" type="VBoxContainer" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer"]
+offset_left = 225.0
+offset_right = 446.0
+offset_bottom = 360.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList"]
+offset_right = 221.0
+offset_bottom = 27.0
+text = "缓存项目列表"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList"]
+offset_top = 31.0
+offset_right = 221.0
+offset_bottom = 292.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AllClearButton" type="Button" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList"]
+offset_top = 296.0
+offset_right = 221.0
+offset_bottom = 326.0
+text = "清空所有缓存"
+
+[node name="OpenDirButton" type="Button" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList"]
+offset_top = 330.0
+offset_right = 221.0
+offset_bottom = 360.0
+text = "打开缓存目录"
+
+[node name="ConfigList" type="VBoxContainer" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer"]
+offset_left = 450.0
+offset_right = 672.0
+offset_bottom = 360.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList"]
+offset_right = 222.0
+offset_bottom = 27.0
+text = "配置项目列表"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList"]
+offset_top = 31.0
+offset_right = 222.0
+offset_bottom = 292.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AllClearButton" type="Button" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList"]
+offset_top = 296.0
+offset_right = 222.0
+offset_bottom = 326.0
+text = "还原所有配置"
+
+[node name="OpenDirButton" type="Button" parent="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList"]
+offset_top = 330.0
+offset_right = 222.0
+offset_bottom = 360.0
+text = "打开配置目录"
+
+[node name="Infos" type="RichTextLabel" parent="HSplitContainer/TabContainer/PluginDataPanel"]
+custom_minimum_size = Vector2(0, 100)
+offset_top = 370.0
+offset_right = 672.0
+offset_bottom = 470.0
+size_flags_horizontal = 3
+threaded = true
+
+[node name="DeleteButton" type="Button" parent="HSplitContainer/TabContainer/PluginDataPanel"]
+offset_top = 480.0
+offset_right = 672.0
+offset_bottom = 510.0
+text = "删除选定项目"
+
+[node name="RefreshButton" type="Button" parent="HSplitContainer/TabContainer/PluginDataPanel"]
+offset_top = 520.0
+offset_right = 672.0
+offset_bottom = 550.0
+text = "刷新数据列表"
+
 [node name="NoSelectLabel" type="Label" parent="HSplitContainer"]
 visible = false
 offset_left = 332.0
@@ -296,3 +429,17 @@ vertical_alignment = 1
 [connection signal="focus_exited" from="HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/CommandList/ItemList" to="." method="_on_command_list_focus_exited"]
 [connection signal="item_selected" from="HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/CommandList/ItemList" to="." method="_on_command_list_item_selected"]
 [connection signal="button_down" from="HSplitContainer/TabContainer/PluginRegisterPanel/RefreshButton" to="." method="_on_reg_refresh_button_button_down"]
+[connection signal="focus_exited" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList/ItemList" to="." method="_on_data_list_focus_exited"]
+[connection signal="item_selected" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList/ItemList" to="." method="_on_data_list_item_selected"]
+[connection signal="button_down" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList/AllClearButton" to="." method="_on_data_all_clear_button_button_down"]
+[connection signal="button_down" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList/OpenDirButton" to="." method="_on_data_open_dir_button_button_down"]
+[connection signal="focus_exited" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList/ItemList" to="." method="_on_cache_list_focus_exited"]
+[connection signal="item_selected" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList/ItemList" to="." method="_on_cache_list_item_selected"]
+[connection signal="button_down" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList/AllClearButton" to="." method="_on_cache_all_clear_button_button_down"]
+[connection signal="button_down" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList/OpenDirButton" to="." method="_on_cache_open_dir_button_button_down"]
+[connection signal="focus_exited" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList/ItemList" to="." method="_on_config_list_focus_exited"]
+[connection signal="item_selected" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList/ItemList" to="." method="_on_config_list_item_selected"]
+[connection signal="button_down" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList/AllClearButton" to="." method="_on_config_all_clear_button_button_down"]
+[connection signal="button_down" from="HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList/OpenDirButton" to="." method="_on_config_open_dir_button_button_down"]
+[connection signal="button_down" from="HSplitContainer/TabContainer/PluginDataPanel/DeleteButton" to="." method="_on_datas_delete_button_button_down"]
+[connection signal="button_down" from="HSplitContainer/TabContainer/PluginDataPanel/RefreshButton" to="." method="_on_data_refresh_button_button_down"]
