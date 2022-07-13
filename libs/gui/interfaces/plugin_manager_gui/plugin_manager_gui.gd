@@ -337,7 +337,7 @@ func _on_create_plugin_button_button_down()->void:
 		set_lock_panel(false)
 
 
-func _on_event_list_item_selected(index):
+func _on_event_list_item_selected(index:int)->void:
 	await get_tree().process_frame
 	current_selected_item = index
 	current_selected_item_type = SelectType.EVENT
@@ -354,14 +354,14 @@ func _on_event_list_item_selected(index):
 	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n事件阻断模式: %s" % Plugin.block_mode_dic[block_mode]
 
 
-func _on_event_list_focus_exited():
+func _on_event_list_focus_exited()->void:
 	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/EventList/ItemList.deselect_all()
 	_reset_register_info()
 	current_selected_item = -1
 	current_selected_item_type = -1
 
 
-func _on_keyword_list_item_selected(index):
+func _on_keyword_list_item_selected(index:int)->void:
 	await get_tree().process_frame
 	current_selected_item = index
 	current_selected_item_type = SelectType.KEYWORD
@@ -373,19 +373,19 @@ func _on_keyword_list_item_selected(index):
 	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n匹配后阻断事件传递: %s" % ("是" if datas["block"] else "否")
 
 
-func _on_keyword_list_focus_exited():
+func _on_keyword_list_focus_exited()->void:
 	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/KeywordList/ItemList.deselect_all()
 	_reset_register_info()
 	current_selected_item = -1
 	current_selected_item_type = -1
 
 
-func _on_reg_refresh_button_button_down():
+func _on_reg_refresh_button_button_down()->void:
 	_update_register_panel()
 	GuiManager.popup_notification("插件注册列表刷新完毕!")
 
 
-func _on_command_list_item_selected(index):
+func _on_command_list_item_selected(index:int)->void:
 	await get_tree().process_frame
 	current_selected_item = index
 	current_selected_item_type = SelectType.COMMAND
@@ -397,14 +397,14 @@ func _on_command_list_item_selected(index):
 	$HSplitContainer/TabContainer/PluginRegisterPanel/Infos.text += "\n命令用法: %s" % str(datas["usages"])
 
 
-func _on_command_list_focus_exited():
+func _on_command_list_focus_exited()->void:
 	$HSplitContainer/TabContainer/PluginRegisterPanel/HBoxContainer/CommandList/ItemList.deselect_all()
 	_reset_register_info()
 	current_selected_item = -1
 	current_selected_item_type = -1
 
 
-func _on_data_list_item_selected(index):
+func _on_data_list_item_selected(index:int)->void:
 	await get_tree().process_frame
 	current_selected_item = index
 	current_selected_item_type = SelectType.DATA
@@ -414,7 +414,7 @@ func _on_data_list_item_selected(index):
 	$HSplitContainer/TabContainer/PluginDataPanel/DeleteButton.show()
 
 
-func _on_data_list_focus_exited():
+func _on_data_list_focus_exited()->void:
 	$HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/DataList/ItemList.deselect_all()
 	_reset_data_info()
 	await get_tree().process_frame
@@ -423,7 +423,7 @@ func _on_data_list_focus_exited():
 	current_selected_item_type = -1
 
 
-func _on_cache_list_item_selected(index):
+func _on_cache_list_item_selected(index:int)->void:
 	await get_tree().process_frame
 	current_selected_item = index
 	current_selected_item_type = SelectType.CACHE
@@ -433,7 +433,7 @@ func _on_cache_list_item_selected(index):
 	$HSplitContainer/TabContainer/PluginDataPanel/DeleteButton.show()
 
 
-func _on_cache_list_focus_exited():
+func _on_cache_list_focus_exited()->void:
 	$HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/CacheList/ItemList.deselect_all()
 	_reset_data_info()
 	await get_tree().process_frame
@@ -442,7 +442,7 @@ func _on_cache_list_focus_exited():
 	current_selected_item_type = -1
 
 
-func _on_config_list_item_selected(index):
+func _on_config_list_item_selected(index:int)->void:
 	await get_tree().process_frame
 	current_selected_item = index
 	current_selected_item_type = SelectType.CONFIG
@@ -451,7 +451,7 @@ func _on_config_list_item_selected(index):
 	$HSplitContainer/TabContainer/PluginDataPanel/Infos.text = "此配置项的内容: %s" % str(content)
 
 
-func _on_config_list_focus_exited():
+func _on_config_list_focus_exited()->void:
 	$HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList/ItemList.deselect_all()
 	_reset_data_info()
 	await get_tree().process_frame
@@ -460,12 +460,12 @@ func _on_config_list_focus_exited():
 	current_selected_item_type = -1
 
 
-func _on_data_refresh_button_button_down():
+func _on_data_refresh_button_button_down()->void:
 	_update_data_panel()
 	GuiManager.popup_notification("插件数据列表刷新完毕!")
 
 
-func _on_data_all_clear_button_button_down():
+func _on_data_all_clear_button_button_down()->void:
 	var confirmed:bool = await GuiManager.popup_confirm("确定要清空所有数据库项目吗?")
 	if confirmed:
 		var id:String = plugin_list_dic[current_selected].info.id
@@ -482,7 +482,7 @@ func _on_data_all_clear_button_button_down():
 			GuiManager.popup_notification("无法清空插件数据库，请查看控制台来了解更多信息!")
 
 
-func _on_cache_all_clear_button_button_down():
+func _on_cache_all_clear_button_button_down()->void:
 	var confirmed:bool = await GuiManager.popup_confirm("确定要清空所有缓存项目吗?")
 	if confirmed:
 		var id:String = plugin_list_dic[current_selected].info.id
@@ -499,7 +499,7 @@ func _on_cache_all_clear_button_button_down():
 			GuiManager.popup_notification("无法清空插件缓存，请查看控制台来了解更多信息!")
 
 
-func _on_config_all_clear_button_button_down():
+func _on_config_all_clear_button_button_down()->void:
 	var confirmed:bool = await GuiManager.popup_confirm("确定要还原所有配置项目吗?")
 	if confirmed:
 		var id:String = plugin_list_dic[current_selected].info.id
@@ -516,28 +516,28 @@ func _on_config_all_clear_button_button_down():
 			GuiManager.popup_notification("无法还原插件配置，请查看控制台来了解更多信息!")
 
 
-func _on_data_open_dir_button_button_down():
+func _on_data_open_dir_button_button_down()->void:
 	if OS.get_name() != "macOS":
 		OS.shell_open(PluginManager.plugin_data_path)
 	else:
 		OS.execute("open",[PluginManager.plugin_data_path])
 
 
-func _on_cache_open_dir_button_button_down():
+func _on_cache_open_dir_button_button_down()->void:
 	if OS.get_name() != "macOS":
 		OS.shell_open(PluginManager.plugin_cache_path)
 	else:
 		OS.execute("open",[PluginManager.plugin_cache_path])
 
 
-func _on_config_open_dir_button_button_down():
+func _on_config_open_dir_button_button_down()->void:
 	if OS.get_name() != "macOS":
 		OS.shell_open(PluginManager.plugin_config_path)
 	else:
 		OS.execute("open",[PluginManager.plugin_config_path])
 
 
-func _on_datas_delete_button_button_down():
+func _on_datas_delete_button_button_down()->void:
 	match current_selected_item_type:
 		SelectType.DATA:
 			var id:String = plugin_list_dic[current_selected].info.id

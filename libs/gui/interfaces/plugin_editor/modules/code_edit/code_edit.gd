@@ -531,12 +531,12 @@ func _gui_input(event:InputEvent)->void:
 				set_line(line, get_line(line).substr(1))
 
 
-func _on_code_edit_symbol_validate(symbol):
+func _on_code_edit_symbol_validate(symbol:String)->void:
 	if class_dic.has(symbol) or api_dic.has(symbol):
 		set_symbol_lookup_word_as_valid(true)
 
 
-func _on_code_edit_symbol_lookup(symbol, line, column):
+func _on_code_edit_symbol_lookup(symbol:String, line:int, column:int)->void:
 	if class_dic.has(symbol):
 		OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html" % symbol.to_lower())
 	elif api_dic.has(symbol):

@@ -4,14 +4,14 @@ extends ConfirmationDialog
 signal closed(confirmed:bool)
 
 
-func _on_confirm_popup_cancelled():
+func _on_confirm_popup_cancelled()->void:
 	closed.emit(false)
 
 
-func _on_confirm_popup_confirmed():
+func _on_confirm_popup_confirmed()->void:
 	closed.emit(true)
 
 
-func _on_confirm_popup_visibility_changed():
+func _on_confirm_popup_visibility_changed()->void:
 	if !visible:
 		queue_free()
