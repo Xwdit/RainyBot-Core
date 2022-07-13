@@ -135,7 +135,11 @@ func check_error()->void:
 		for _l in _err:
 			if _l.findn("built-in")!=-1:
 				var _sl:PackedStringArray = _l.split(" - ")
-				var _text:String = "第%s行 - %s"%[abs(_sl[0].to_int()),_sl[1]]
+				var _line:int = abs(_sl[0].to_int())
+				var _err_t = _sl[1]
+				if _err_t.find('"await"'):
+					continue
+				var _text:String = "第%s行 - %s"%[_line,_err_t]
 				last_errors.append("脚本运行时错误: "+_text)
 				Console.print_error("检测到脚本运行时错误: "+_text)
 		last_log_text = curr_text
