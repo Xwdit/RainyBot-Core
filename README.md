@@ -66,8 +66,8 @@ RainyBot精心设计了一系列的便于使用的抽象API，并在底层将各
 ### 从源码运行
 
 如果您希望从项目源码顺利运行RainyBot，请确保遵循以下条目：
-- 请使用 Godot-4.0.alpha10 或以上版本的 [Godot Engine](https://github.com/godotengine/godot) 来打开本项目。
-- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.11.1`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
+- 请使用 Godot-4.0.alpha11 或以上版本的 [Godot Engine](https://github.com/godotengine/godot) 来打开本项目。
+- 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.12.0`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
 - 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.5.2`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
 RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已包含以上所需文件，因此无需额外进行配置。若您在配置以上文件时遇到问题，可以直接从最新的发布版本文件包中复制`adapters`文件夹以及其中的内容，并置于*Godot编辑器可执行文件同目录下*即可。
@@ -90,9 +90,9 @@ RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已
 - [x] 添加在线插件社区
 - [x] 初步支持插件加载场景来实现可视化图片生成/GUI制作
 - [x] 简化对内部图形相关API的调用
+- [x] 为更多内置功能实现GUI化
 - [ ] 实现节点化的权限系统
 - [ ] 支持通过聊天消息来使用命令系统
-- [ ] 为更多内置功能实现GUI化
 - [ ] 支持多机器人账号同时运行
 
 对于更详细的功能计划，已知问题或功能建议，请访问储存库的 [Issues](https://github.com/Xwdit/RainyBot-Core/issues) 页面
