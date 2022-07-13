@@ -30,38 +30,11 @@
 </div>
 
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>本页目录</summary>
-  <ol>
-	<li>
-	  <a href="#关于本项目">关于本项目</a>
-	  <ul>
-		<li><a href="#基于的项目">基于的项目</a></li>
-	  </ul>
-	</li>
-	<li>
-	  <a href="#开始使用">开始使用</a>
-	  <ul>
-		<li><a href="#运行需求">运行需求</a></li>
-		<li><a href="#配置与使用">配置与使用</a></li>
-		<li><a href="#版本更新">版本更新</a></li>
-		<li><a href="#故障排除">故障排除</a></li>
-		<li><a href="#源码注意事项">源码注意事项</a></li>
-	  </ul>
-	</li>
-	<li><a href="#插件示例">插件示例</a></li>
-	<li><a href="#主要功能开发路线图">开发路线图</a></li>
-	<li><a href="#贡献指南">贡献指南</a></li>
-	<li><a href="#项目许可">项目许可</a></li>
-	<li><a href="#联系信息">联系方式</a></li>
-	<li><a href="#更多信息">更多信息</a></li>
-  </ol>
-</details>
-
-
 ## 欢迎使用RainyBot!
-这是一个新手友好，功能强大，简单易上手的跨平台聊天机器人开发框架
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Xwdit/RainyBot-Core?include_prereleases)](https://github.com/Xwdit/RainyBot-Core/releases)
+[![Total Lines](https://img.shields.io/tokei/lines/github/Xwdit/RainyBot-Core)](https://github.com/Xwdit/RainyBot-Core)
+[![Godot Engine](https://img.shields.io/badge/Powered%20By-Godot%20Engine%204.0-blue)](https://godotengine.org)
+[![License](https://img.shields.io/github/license/Xwdit/RainyBot-Core)](LICENSE)
 ### 概览
 RainyBot是一个跨平台的机器人开发框架，基于 [Godot Engine 4.0](https://godotengine.org/) 进行开发。 本项目成立的目的，是为了建立一个低门槛，简单易用的机器人开发框架。 通过提供大量精心设计，智能且极简的交互API与预置功能，结合[GDScript脚本语言](https://docs.godotengine.org/en/latest/tutorials/scripting/gdscript/gdscript\_basics.html)的简便语法， 来尽可能地提升开发效率且降低开发难度，且让更多开发经验不足，乃至无经验的用户也能够轻松开发属于自己的各类社交平台机器人应用。
 
