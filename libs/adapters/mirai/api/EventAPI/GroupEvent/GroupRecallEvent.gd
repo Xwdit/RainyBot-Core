@@ -45,7 +45,7 @@ func get_message_id()->int:
 	return data_dic.messageId
 	
 	
-func get_message_time()->int:
+func get_message_timestamp()->int:
 	return data_dic.time
 	
 	
