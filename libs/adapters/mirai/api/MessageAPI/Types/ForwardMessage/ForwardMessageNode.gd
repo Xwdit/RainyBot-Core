@@ -46,11 +46,11 @@ func set_sender_id(id:int)->void:
 	data_dic.senderId = id
 	
 
-func get_time()->int:
+func get_timestamp()->int:
 	return data_dic.time
 	
 	
-func set_time(time:int)->void:
+func set_timestamp(time:int)->void:
 	data_dic.time = time
 	
 	
