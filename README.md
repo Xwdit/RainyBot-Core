@@ -14,7 +14,7 @@
 	<a href="https://github.com/Xwdit/RainyBot-Core/releases"><strong>立即下载</strong></a>
 	<br />
 	<br />
-	<a href="https://github.com/Xwdit/RainyBot-API">API文档</a>
+	<a href="https://docs.rainybot.dev">在线文档</a>
 	 ·
 	<a href="https://godoter.cn/t/rainybot">官方社区</a>
 	 ·
@@ -23,6 +23,8 @@
 	<a href="https://godoter.cn/t/rainybot-tutorials">教程分享</a>
 	·
 	<a href="https://godoter.cn/t/rainybot-qa">问与答</a>
+	·
+	<a href="https://qm.qq.com/cgi-bin/qm/qr?k=1nKmcY2qdc-q2Q8BYkn1MyhHrfc3oZ58&jump_from=webapi">社区群聊</a>
 
   </p>
 </div>
