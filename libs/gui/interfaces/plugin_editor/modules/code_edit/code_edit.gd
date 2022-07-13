@@ -529,3 +529,15 @@ func _gui_input(event:InputEvent)->void:
 			else:
 				# Code isn't commented out at the beginning of the line. Comment it.
 				set_line(line, get_line(line).substr(1))
+
+
+func _on_code_edit_symbol_validate(symbol):
+	if class_dic.has(symbol) or api_dic.has(symbol):
+		set_symbol_lookup_word_as_valid(true)
+
+
+func _on_code_edit_symbol_lookup(symbol, line, column):
+	if class_dic.has(symbol):
+		OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html" % symbol.to_lower())
+	elif api_dic.has(symbol):
+		OS.shell_open("https://docs.rainybot.dev/readme/api/%s"% symbol.to_lower())

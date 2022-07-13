@@ -127,13 +127,13 @@ func _on_help_menu_pressed(id:int)->void:
 		HelpMenuOptions.ONLINE_TUTORIAL:
 			OS.shell_open("https://godoter.cn/t/rainybot-tutorials")
 		HelpMenuOptions.PLUGIN_API:
-			OS.shell_open("https://github.com/Xwdit/RainyBot-API")
+			OS.shell_open("https://docs.rainybot.dev")
 		HelpMenuOptions.QUESTIONS:
 			OS.shell_open("https://godoter.cn/t/rainybot-qa")
 		HelpMenuOptions.ISSUES:
 			OS.shell_open("https://github.com/Xwdit/RainyBot-Core/issues")
 		HelpMenuOptions.DOC_FEEDBACK:
-			OS.shell_open("https://github.com/Xwdit/RainyBot-Api/issues")
+			OS.shell_open("https://github.com/Xwdit/RainyBot-Docs/issues")
 		HelpMenuOptions.COMMUNITY_GROUP:
 			OS.shell_open("https://qm.qq.com/cgi-bin/qm/qr?k=1nKmcY2qdc-q2Q8BYkn1MyhHrfc3oZ58&jump_from=webapi")
 		HelpMenuOptions.COMMUNITY_WEB:

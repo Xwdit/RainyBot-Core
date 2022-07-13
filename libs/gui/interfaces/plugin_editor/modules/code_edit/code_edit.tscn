@@ -24,12 +24,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/line_spacing = 5
 theme_override_constants/outline_size = 0
-theme_override_styles/normal = ExtResource( "1_c1dt0" )
-theme_override_styles/focus = ExtResource( "1_c1dt0" )
+theme_override_styles/normal = ExtResource("1_c1dt0")
+theme_override_styles/focus = ExtResource("1_c1dt0")
 highlight_current_line = true
 draw_control_chars = true
 draw_tabs = true
-syntax_highlighter = SubResource( "CodeHighlighter_nyeeb" )
+syntax_highlighter = SubResource("CodeHighlighter_nyeeb")
 scroll_smooth = true
 minimap_draw = true
 caret_blink = true
@@ -43,7 +43,7 @@ code_completion_prefixes = [" ", "."]
 indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
-script = ExtResource( "1_ds5mq" )
+script = ExtResource("1_ds5mq")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.25
@@ -51,5 +51,7 @@ one_shot = true
 
 [connection signal="caret_changed" from="." to="." method="_on_CodeEdit_caret_changed"]
 [connection signal="code_completion_requested" from="." to="." method="_on_CodeEdit_request_code_completion"]
+[connection signal="symbol_lookup" from="." to="." method="_on_code_edit_symbol_lookup"]
+[connection signal="symbol_validate" from="." to="." method="_on_code_edit_symbol_validate"]
 [connection signal="text_changed" from="." to="." method="_on_CodeEdit_text_changed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
