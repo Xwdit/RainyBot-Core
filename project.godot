@@ -650,6 +650,7 @@ config/quit_on_go_back=false
 [autoload]
 
 GlobalManager="*res://libs/core/modules/global_manager.gd"
+UpdateManager="*res://libs/core/modules/update_manager.gd"
 HttpRequestManager="*res://libs/core/modules/http_request_manager.gd"
 CommandManager="*res://libs/core/modules/command_manager.gd"
 PluginManager="*res://libs/core/modules/plugin_manager.gd"

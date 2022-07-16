@@ -9,3 +9,9 @@ export_presets.cfg
 .godot/editor
 .godot/shader_cache
 export/
+cache/
+config/
+data/
+logs/
+RainyBot.exe
+启动RainyBot场景编辑器.cmd

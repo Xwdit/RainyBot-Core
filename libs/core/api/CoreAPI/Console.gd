@@ -32,11 +32,11 @@ static func save_log(close:bool=false)->void:
 
 ## 在控制台弹出一个具有指定文本的提示框，并且可以指定一个可选的自定义窗口标题
 ## [br][br]配合await关键词使用可以在提示框的确认按钮被点击时返回true，直接关闭时返回false
-func popup_notification(text:String,title:String="提示")->bool:
+static func popup_notification(text:String,title:String="提示")->bool:
 	return await GuiManager.popup_notification(text,title)
 	
 
 ## 在控制台弹出一个具有指定文本的确认框，并且可以指定一个可选的自定义窗口标题
 ## [br][br]配合await关键词使用可以在确认框的确认按钮被点击时返回true，点击取消或直接关闭时返回false
-func popup_confirm(text:String,title:String="请确认")->bool:
+static func popup_confirm(text:String,title:String="请确认")->bool:
 	return await GuiManager.popup_confirm(text,title)
