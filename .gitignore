@@ -6,5 +6,6 @@ export_presets.cfg
 
 # Mono-specific ignores
 .mono/
-.godot/
+.godot/editor
+.godot/shader_cache
 export/
