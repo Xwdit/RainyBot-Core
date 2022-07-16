@@ -28,7 +28,8 @@ func _call_console_command(_cmd:String,_args:Array)->void:
 
 
 func check_update()->bool:
-	Console.print_warning("正在检查您的RainyBot是否为最新版本，请稍候...")
+	GuiManager.console_print_warning("正在检查您的RainyBot是否为最新版本，请稍候...")
+	Console.disable_sysout(true)
 	var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
 	var dic:Dictionary = result.get_as_dic()
 	if !dic.is_empty():
@@ -43,14 +44,14 @@ func check_update()->bool:
 				if confirmed:
 					update_files(dic)
 			return false
-		Console.print_success("版本检查完毕，您的RainyBot已为最新版本！")
+		GuiManager.console_print_success("版本检查完毕，您的RainyBot已为最新版本！")
 		return true
-	Console.print_error("检查更新时出现错误，请检查网络连接是否正常")
+	GuiManager.console_print_error("检查更新时出现错误，请检查网络连接是否正常")
 	return false
 	
 
 func build_update_json(path:String):
-	Console.print_warning("正在生成升级统计文件，请稍候...")
+	GuiManager.console_print_warning("正在生成升级统计文件，请稍候...")
 	var file_ins:File = File.new()
 	var dict:Dictionary = {"total_size":0}
 	var root:String = GlobalManager.root_path
@@ -65,11 +66,11 @@ func build_update_json(path:String):
 	file_ins.open(path,File.WRITE)
 	file_ins.store_line(_text)
 	file_ins.close()
-	Console.print_success("成功生成升级统计文件 %s" % path)
+	GuiManager.console_print_success("成功生成升级统计文件 %s" % path)
 
 
 func update_files(dict:Dictionary={}):
-	Console.print_warning("正在统计需要更新的文件，请稍候...")
+	GuiManager.console_print_warning("正在统计需要更新的文件，请稍候...")
 	if dict.is_empty():
 		var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
 		dict = result.get_as_dic()

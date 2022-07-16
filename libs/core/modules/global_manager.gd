@@ -74,11 +74,11 @@ func _init_dir()->void:
 			
 func _notification(what:int)->void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		Console.print_warning("正在安全退出RainyBot核心进程.....")
+		GuiManager.console_print_warning("正在安全退出RainyBot核心进程.....")
 		await PluginManager.unload_plugins()
 		BotAdapter.mirai_client.disconnect_to_mirai()
 		await get_tree().create_timer(0.5).timeout
-		Console.print_success("RainyBot核心进程已被安全退出!")
+		GuiManager.console_print_success("RainyBot核心进程已被安全退出!")
 		await get_tree().create_timer(0.5).timeout
 		clear_cache()
 		Console.save_log(true)
@@ -107,18 +107,18 @@ func _check_load_status()->void:
 
 
 func clear_cache()->void:
-	Console.print_warning("正在清理缓存目录，请稍候.....")
+	GuiManager.console_print_warning("正在清理缓存目录，请稍候.....")
 	clear_dir_files(cache_path,false)
 	var file:File = File.new()
 	if !file.file_exists(cache_path+".gdignore"):
 		file.open(cache_path+".gdignore",File.WRITE)
 		file.close()
-	Console.print_success("缓存目录清理完毕!")
+	GuiManager.console_print_success("缓存目录清理完毕!")
 
 
 func restart()->void:
 	restarting = true
-	Console.print_warning("正在重新启动RainyBot.....")
+	GuiManager.console_print_warning("正在重新启动RainyBot.....")
 	notification(NOTIFICATION_WM_CLOSE_REQUEST)
 
 
@@ -141,26 +141,26 @@ func check_error()->void:
 					continue
 				var _text:String = "第%s行 - %s"%[_line,_err_t]
 				last_errors.append("脚本运行时错误: "+_text)
-				Console.print_error("检测到脚本运行时错误: "+_text)
+				GuiManager.console_print_error("检测到脚本运行时错误: "+_text)
 		last_log_text = curr_text
 		get_tree().call_group("Plugin","_on_error")
 
 
 func reimport()->void:
-	Console.print_warning("正在准备重新导入资源.....")
+	GuiManager.console_print_warning("正在准备重新导入资源.....")
 	await get_tree().create_timer(0.5).timeout
 	await PluginManager.unload_plugins()
 	BotAdapter.mirai_client.disconnect_to_mirai()
 	clear_cache()
 	_add_import_helper()
 	await get_tree().create_timer(0.5).timeout
-	Console.print_warning("正在重新导入资源，在此过程中RainyBot将会停止响应，请耐心等待.....")
+	GuiManager.console_print_warning("正在重新导入资源，在此过程中RainyBot将会停止响应，请耐心等待.....")
 	await get_tree().create_timer(0.5).timeout
 	clear_dir_files(godot_dir_path)
 	await get_tree().create_timer(0.5).timeout
 	OS.execute(OS.get_executable_path(),["--editor","--headless","--wait-import"])
 	_remove_import_helper()
-	Console.print_success("资源重新导入完毕！正在准备重新启动RainyBot...")
+	GuiManager.console_print_success("资源重新导入完毕！正在准备重新启动RainyBot...")
 	await get_tree().create_timer(0.5).timeout
 	restart()
 
@@ -180,24 +180,24 @@ func clear_dir_files(dir_path:String,remove_dir:bool=true)->void:
 
 func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->Resource:
 	if ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_LOADED:
-		Console.print_success("此资源此前已被加载，正在返回已加载的资源: "+path)
+		GuiManager.console_print_success("此资源此前已被加载，正在返回已加载的资源: "+path)
 		return ResourceLoader.load_threaded_get(path)
 	else:
-		Console.print_warning("正在请求异步加载以下路径的资源: "+path)
+		GuiManager.console_print_warning("正在请求异步加载以下路径的资源: "+path)
 		var err:int = ResourceLoader.load_threaded_request(path,type_hint,use_sub_threads)
 		if err == OK:
 			var helper:ResourceLoadHelper = ResourceLoadHelper.new()
 			loading_resources[path]=helper
-			Console.print_warning("资源异步加载请求成功，开始等待以下路径的资源加载完成: "+path)
+			GuiManager.console_print_warning("资源异步加载请求成功，开始等待以下路径的资源加载完成: "+path)
 			await helper.finished
 			if ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_LOADED:
-				Console.print_success("成功异步加载以下路径的资源: "+path)
+				GuiManager.console_print_success("成功异步加载以下路径的资源: "+path)
 				return ResourceLoader.load_threaded_get(path)
 			else:
-				Console.print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
+				GuiManager.console_print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
 				return null
 		else:
-			Console.print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
+			GuiManager.console_print_error("异步加载以下路径的资源时出现错误，请检查文件路径或状态是否有误: "+path)
 			return null
 
 

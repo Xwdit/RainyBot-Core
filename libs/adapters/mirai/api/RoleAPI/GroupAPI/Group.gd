@@ -144,10 +144,10 @@ func send_nudge(member_id:int,timeout:float=-INF)->BotRequestResult:
 
 func publish_announce(announce:GroupAnnounce,timeout:float=-INF)->GroupAnnounceInfoList:
 	if !is_instance_valid(announce):
-		Console.print_error("要发送的群公告实例无效，因此无法进行发送!")
+		GuiManager.console_print_error("要发送的群公告实例无效，因此无法进行发送!")
 		return
 	if announce.get_content() == "":
-		Console.print_error("要发送的群公告实例内容不能为空，因此无法进行发送!")
+		GuiManager.console_print_error("要发送的群公告实例内容不能为空，因此无法进行发送!")
 		return
 	var _req_dic:Dictionary = announce.get_metadata().duplicate()
 	_req_dic["target"]=get_id()

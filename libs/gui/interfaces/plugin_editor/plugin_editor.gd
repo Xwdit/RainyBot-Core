@@ -19,7 +19,7 @@ func load_script(path:String)->int:
 		loaded_name = path.get_file()
 		return OK
 	else:
-		Console.print_error("插件文件加载时出现错误，请检查文件权限是否正确")
+		GuiManager.console_print_error("插件文件加载时出现错误，请检查文件权限是否正确")
 		return ERR_CANT_OPEN
 	
 
@@ -33,7 +33,7 @@ func save_script(reload:bool=false)->int:
 	var err_code:int = ResourceSaver.save(loaded_path,scr)
 	if err_code == OK:
 		set_unsaved(false)
-		Console.print_success("插件保存成功！")
+		GuiManager.console_print_success("插件保存成功！")
 		if reload:
 			var plug:Plugin = PluginManager.get_plugin_with_filename(loaded_name)
 			if is_instance_valid(plug):
@@ -49,9 +49,9 @@ func save_script(reload:bool=false)->int:
 			else:
 				GuiManager.popup_notification("插件已保存并加载成功!")
 		else:
-			Console.print_success("请不要忘记重载插件以使更改生效!")	
+			GuiManager.console_print_success("请不要忘记重载插件以使更改生效!")	
 	else:
-		Console.print_error("插件文件保存时出现错误，请检查文件权限是否正确")
+		GuiManager.console_print_error("插件文件保存时出现错误，请检查文件权限是否正确")
 		GuiManager.popup_notification("插件文件保存时出现错误，请检查文件权限是否正确!")
 	return err_code
 

@@ -234,7 +234,7 @@ func _on_reload_button_button_down()->void:
 			update_plugin_list()
 			set_lock_panel(false)
 		else:
-			Console.print_error("插件ID不存在!")
+			GuiManager.console_print_error("插件ID不存在!")
 			GuiManager.popup_notification("无法重载插件%s，请查看控制台来了解更多信息"% id)
 	else:
 		var file:String = plugin_list_dic[current_selected].file
@@ -263,7 +263,7 @@ func _on_unload_button_button_down()->void:
 			update_plugin_list()
 			set_lock_panel(false)
 		else:
-			Console.print_error("插件ID不存在!")
+			GuiManager.console_print_error("插件ID不存在!")
 			GuiManager.popup_notification("无法卸载插件%s，请查看控制台来了解更多信息"% id)
 
 
@@ -478,7 +478,7 @@ func _on_data_all_clear_button_button_down()->void:
 			else:
 				GuiManager.popup_notification("无法清空插件数据库，请查看控制台来了解更多信息!")
 		else:
-			Console.print_error("插件实例无效，因此无法清空插件数据库!")
+			GuiManager.console_print_error("插件实例无效，因此无法清空插件数据库!")
 			GuiManager.popup_notification("无法清空插件数据库，请查看控制台来了解更多信息!")
 
 
@@ -495,7 +495,7 @@ func _on_cache_all_clear_button_button_down()->void:
 			else:
 				GuiManager.popup_notification("无法清空插件缓存，请查看控制台来了解更多信息!")
 		else:
-			Console.print_error("插件实例无效，因此无法清空插件缓存!")
+			GuiManager.console_print_error("插件实例无效，因此无法清空插件缓存!")
 			GuiManager.popup_notification("无法清空插件缓存，请查看控制台来了解更多信息!")
 
 
@@ -512,7 +512,7 @@ func _on_config_all_clear_button_button_down()->void:
 			else:
 				GuiManager.popup_notification("无法还原插件配置，请查看控制台来了解更多信息!")
 		else:
-			Console.print_error("插件实例无效，因此无法还原插件配置!")
+			GuiManager.console_print_error("插件实例无效，因此无法还原插件配置!")
 			GuiManager.popup_notification("无法还原插件配置，请查看控制台来了解更多信息!")
 
 
@@ -553,7 +553,7 @@ func _on_datas_delete_button_button_down()->void:
 					else:
 						GuiManager.popup_notification("无法删除数据库项目%s，请查看控制台来了解更多信息!"% str(key))
 			else:
-				Console.print_error("插件实例无效，因此无法删除选定的数据库项目!")
+				GuiManager.console_print_error("插件实例无效，因此无法删除选定的数据库项目!")
 				GuiManager.popup_notification("无法删除选定的数据库项目，请查看控制台来了解更多信息!")
 		SelectType.CACHE:
 			var id:String = plugin_list_dic[current_selected].info.id
@@ -569,5 +569,5 @@ func _on_datas_delete_button_button_down()->void:
 					else:
 						GuiManager.popup_notification("无法删除缓存项目%s，请查看控制台来了解更多信息!"% str(key))
 			else:
-				Console.print_error("插件实例无效，因此无法删除选定的缓存项目!")
+				GuiManager.console_print_error("插件实例无效，因此无法删除选定的缓存项目!")
 				GuiManager.popup_notification("无法删除选定的缓存项目，请查看控制台来了解更多信息!")

@@ -21,12 +21,12 @@ static func init(image:Image)->FlashImageMessage:
 			var ins:FlashImageMessage = FlashImageMessage.new()
 			var dic:Dictionary = ins.data_dic
 			dic.path = f_path
-			Console.print_success("成功将Image图像实例缓存至文件并构造为闪图消息: %s"% f_path)
+			GuiManager.console_print_success("成功将Image图像实例缓存至文件并构造为闪图消息: %s"% f_path)
 			return ins
 		else:
-			Console.print_error("无法将Image图像实例缓存至文件 %s，因此无法构造为闪图消息，请检查路径或权限是否有误!"% f_path)
+			GuiManager.console_print_error("无法将Image图像实例缓存至文件 %s，因此无法构造为闪图消息，请检查路径或权限是否有误!"% f_path)
 	else:
-		Console.print_error("传入的实例无效，因此无法将指定的图像实例构造为闪图消息!")
+		GuiManager.console_print_error("传入的实例无效，因此无法将指定的图像实例构造为闪图消息!")
 	return null
 
 
@@ -38,12 +38,12 @@ static func init_gif(gif_image:GifImage)->FlashImageMessage:
 			var ins:FlashImageMessage = FlashImageMessage.new()
 			var dic:Dictionary = ins.data_dic
 			dic.path = f_path
-			Console.print_success("成功将GifImage图像实例缓存至文件并构造为闪图消息: %s"% f_path)
+			GuiManager.console_print_success("成功将GifImage图像实例缓存至文件并构造为闪图消息: %s"% f_path)
 			return ins
 		else:
-			Console.print_error("无法将GifImage图像实例缓存至文件 %s，因此无法构造为闪图消息，请检查路径或权限是否有误!"% f_path)
+			GuiManager.console_print_error("无法将GifImage图像实例缓存至文件 %s，因此无法构造为闪图消息，请检查路径或权限是否有误!"% f_path)
 	else:
-		Console.print_error("传入的实例无效，因此无法将指定的GifImage图像实例构造为闪图消息!")
+		GuiManager.console_print_error("传入的实例无效，因此无法将指定的GifImage图像实例构造为闪图消息!")
 	return null
 
 

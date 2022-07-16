@@ -11,7 +11,7 @@ func get_plugin_editor()->PluginEditor:
 
 func load_script(path:String)->int:
 	if visible:
-		Console.print_error("当前已存在编辑中的插件文件，请关闭编辑器后重试!")
+		GuiManager.console_print_error("当前已存在编辑中的插件文件，请关闭编辑器后重试!")
 		return ERR_ALREADY_IN_USE
 	var err:int = get_plugin_editor().load_script(path)
 	if err != OK:
@@ -29,10 +29,10 @@ func exit()->void:
 	if get_plugin_editor().unsaved:
 		$ExitConfirmWindow.popup_centered(Vector2(430,130))
 	else:
-		Console.print_success("插件编辑器已被成功关闭! | 文件:"+get_plugin_editor().loaded_name)
+		GuiManager.console_print_success("插件编辑器已被成功关闭! | 文件:"+get_plugin_editor().loaded_name)
 		queue_free()
 
 
 func _on_ExitConfirmWindow_confirm_pressed()->void:
-	Console.print_success("插件编辑器已被成功关闭! | 文件:"+get_plugin_editor().loaded_name)
+	GuiManager.console_print_success("插件编辑器已被成功关闭! | 文件:"+get_plugin_editor().loaded_name)
 	queue_free()

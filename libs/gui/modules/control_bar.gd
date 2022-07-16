@@ -74,7 +74,7 @@ func _on_console_menu_pressed(id:int)->void:
 	match id:
 		ConsoleMenuOptions.CLEAR_CONSOLE:
 			get_tree().call_group("Console","clear")
-			Console.print_success("已成功清空控制台的所有内容！")
+			GuiManager.console_print_success("已成功清空控制台的所有内容！")
 		ConsoleMenuOptions.OPEN_LOG_DIR:
 			if OS.get_name() != "macOS":
 				OS.shell_open(GlobalManager.log_path)
@@ -106,11 +106,11 @@ func _on_adapter_menu_pressed(id:int)->void:
 				OS.shell_open(GlobalManager.config_path + "mirai_adapter.json")
 			else:
 				OS.execute("open",[GlobalManager.config_path + "mirai_adapter.json"])
-			Console.print_warning("已为您使用系统默认方式打开协议后端配置文件!")
-			Console.print_text("配置选项说明:")
+			GuiManager.console_print_warning("已为您使用系统默认方式打开协议后端配置文件!")
+			GuiManager.console_print_text("配置选项说明:")
 			for key in MiraiConfigManager.config_description:
-				Console.print_text(key+":"+MiraiConfigManager.config_description[key])
-			Console.print_warning("修改配置后请重启RainyBot")
+				GuiManager.console_print_text(key+":"+MiraiConfigManager.config_description[key])
+			GuiManager.console_print_warning("修改配置后请重启RainyBot")
 		AdapterMenuOptions.RESTART_ADAPTER:
 			CommandManager.parse_console_command("mirai restart")
 		AdapterMenuOptions.ADAPTER_STATUS:

@@ -31,9 +31,9 @@ func get_request_data_dic()->Dictionary:
 	var _data:Dictionary = {}
 	if _error == OK:
 		_data = _json.get_data()
-		Console.print_success("成功将Http请求数据获取为字典: "+str(_data))
+		GuiManager.console_print_success("成功将Http请求数据获取为字典: "+str(_data))
 	else:
-		Console.print_error("无法将Http请求数据获取为字典，请检查其格式是否正确!")
+		GuiManager.console_print_error("无法将Http请求数据获取为字典，请检查其格式是否正确!")
 	return _data
 	
 
@@ -69,9 +69,9 @@ func get_as_dic()->Dictionary:
 	var _result:Dictionary = {}
 	if _error == OK:
 		_result = _json.get_data()
-		Console.print_success("成功将Http请求结果获取为字典: "+str(_result))
+		GuiManager.console_print_success("成功将Http请求结果获取为字典: "+str(_result))
 	else:
-		Console.print_error("无法将Http请求结果获取为字典，请检查其格式是否正确!")
+		GuiManager.console_print_error("无法将Http请求结果获取为字典，请检查其格式是否正确!")
 	return _result
 
 
@@ -86,9 +86,9 @@ func get_as_image()->Image:
 	for ext in formats:
 		var err:int = img.call("load_%s_from_buffer"% ext,body)
 		if err == OK:
-			Console.print_success("成功将Http请求结果获取为%s格式的图像实例!"% ext)
+			GuiManager.console_print_success("成功将Http请求结果获取为%s格式的图像实例!"% ext)
 			return img
-	Console.print_error("无法将Http请求结果获取为图像实例，请求结果可能是不支持的图像格式 (支持的格式为: %s)，或无法被解析为图像!"% formats)
+	GuiManager.console_print_error("无法将Http请求结果获取为图像实例，请求结果可能是不支持的图像格式 (支持的格式为: %s)，或无法被解析为图像!"% formats)
 	return null
 
 	
@@ -96,10 +96,10 @@ func get_as_png_image()->Image:
 	var img:Image = Image.new()
 	var err:int = img.load_png_from_buffer(body)
 	if err == OK:
-		Console.print_success("成功将Http请求结果获取为png格式的图像实例!")
+		GuiManager.console_print_success("成功将Http请求结果获取为png格式的图像实例!")
 		return img
 	else:
-		Console.print_error("无法将Http请求结果获取为png格式的图像实例，请检查其格式是否正确!")
+		GuiManager.console_print_error("无法将Http请求结果获取为png格式的图像实例，请检查其格式是否正确!")
 		return null
 	
 	
@@ -107,10 +107,10 @@ func get_as_jpg_image()->Image:
 	var img:Image = Image.new()
 	var err:int = img.load_jpg_from_buffer(body)
 	if err == OK:
-		Console.print_success("成功将Http请求结果获取为jpg格式的图像实例!")
+		GuiManager.console_print_success("成功将Http请求结果获取为jpg格式的图像实例!")
 		return img
 	else:
-		Console.print_error("无法将Http请求结果获取为jpg格式的图像实例，请检查其格式是否正确!")
+		GuiManager.console_print_error("无法将Http请求结果获取为jpg格式的图像实例，请检查其格式是否正确!")
 		return null
 	
 	
@@ -118,10 +118,10 @@ func get_as_bmp_image()->Image:
 	var img:Image = Image.new()
 	var err:int = img.load_bmp_from_buffer(body)
 	if err == OK:
-		Console.print_success("成功将Http请求结果获取为bmp格式的图像实例!")
+		GuiManager.console_print_success("成功将Http请求结果获取为bmp格式的图像实例!")
 		return img
 	else:
-		Console.print_error("无法将Http请求结果获取为bmp格式的图像实例，请检查其格式是否正确!")
+		GuiManager.console_print_error("无法将Http请求结果获取为bmp格式的图像实例，请检查其格式是否正确!")
 		return null
 	
 	
@@ -129,10 +129,10 @@ func get_as_tga_image()->Image:
 	var img:Image = Image.new()
 	var err:int = img.load_tga_from_buffer(body)
 	if err == OK:
-		Console.print_success("成功将Http请求结果获取为tga格式的图像实例!")
+		GuiManager.console_print_success("成功将Http请求结果获取为tga格式的图像实例!")
 		return img
 	else:
-		Console.print_error("无法将Http请求结果获取为tga格式的图像实例，请检查其格式是否正确!")
+		GuiManager.console_print_error("无法将Http请求结果获取为tga格式的图像实例，请检查其格式是否正确!")
 		return null
 
 
@@ -140,10 +140,10 @@ func get_as_webp_image()->Image:
 	var img:Image = Image.new()
 	var err:int = img.load_webp_from_buffer(body)
 	if err == OK:
-		Console.print_success("成功将Http请求结果获取为webp格式的图像实例!")
+		GuiManager.console_print_success("成功将Http请求结果获取为webp格式的图像实例!")
 		return img
 	else:
-		Console.print_error("无法将Http请求结果获取为webp格式的图像实例，请检查其格式是否正确!")
+		GuiManager.console_print_error("无法将Http请求结果获取为webp格式的图像实例，请检查其格式是否正确!")
 		return null
 
 
@@ -153,7 +153,7 @@ func save_to_file(path:String)->int:
 	if err == OK:
 		file.store_buffer(body)
 		file.close()
-		Console.print_success("成功将Http请求结果储存到以下路径的文件: "+path)
+		GuiManager.console_print_success("成功将Http请求结果储存到以下路径的文件: "+path)
 	else:
-		Console.print_error("无法将Http请求结果储存到以下路径，请检查路径拼写及文件权限是否有误: "+path)
+		GuiManager.console_print_error("无法将Http请求结果储存到以下路径，请检查路径拼写及文件权限是否有误: "+path)
 	return err

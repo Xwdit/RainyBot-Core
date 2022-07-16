@@ -127,7 +127,7 @@ func load_script(path:String)->int:
 		text = scr.source_code
 		return OK
 	else:
-		Console.print_error("插件文件加载时出现错误，请检查文件权限是否正确")
+		GuiManager.console_print_error("插件文件加载时出现错误，请检查文件权限是否正确")
 		return ERR_CANT_OPEN
 
 

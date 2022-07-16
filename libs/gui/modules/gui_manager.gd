@@ -8,6 +8,8 @@ var _manager:Window = load("res://libs/gui/interfaces/plugin_manager_gui/modules
 
 var scene_editor_pid:int = -1
 
+var sysout_disabled:bool = false
+
 
 func _ready()->void:
 	await get_tree().physics_frame
@@ -49,19 +51,27 @@ func open_scene_editor()->void:
 		scene_editor_pid = OS.create_instance(["--editor"])
 	
 
-func console_print_text(text)->void:
+func console_print_text(text,sysout:bool=true)->void:
+	if sysout_disabled and sysout:
+		return
 	get_tree().call_group("Console","add_newline_with_time",text)
 	
 	
-func console_print_error(text)->void:
+func console_print_error(text,sysout:bool=true)->void:
+	if sysout_disabled and sysout:
+		return
 	get_tree().call_group("Console","add_error",text)
 	
 	
-func console_print_warning(text)->void:
+func console_print_warning(text,sysout:bool=true)->void:
+	if sysout_disabled and sysout:
+		return
 	get_tree().call_group("Console","add_warning",text)
 	
 
-func console_print_success(text)->void:
+func console_print_success(text,sysout:bool=true)->void:
+	if sysout_disabled and sysout:
+		return
 	get_tree().call_group("Console","add_success",text)
 	
 	
