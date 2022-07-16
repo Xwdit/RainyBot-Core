@@ -1,7 +1,7 @@
 class_name RainyBotCore
 
 
-const VERSION:String = "V2.0-RC-9"
+const VERSION:String = "V2.0-RC-10"
 const NEED_FULL_UPDATE:bool = true
 
 

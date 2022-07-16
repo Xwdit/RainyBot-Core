@@ -32,6 +32,7 @@ func check_update()->bool:
 	Console.disable_sysout(true)
 	var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
 	var dic:Dictionary = result.get_as_dic()
+	Console.disable_sysout(false)
 	if !dic.is_empty():
 		var version:String = dic["version"]
 		if RainyBotCore.VERSION.to_lower() != version.to_lower():
