@@ -230,6 +230,7 @@ func _remove_import_helper()->void:
 	if c_file.has_section("editor_plugins"):
 		c_file.erase_section("editor_plugins")
 	c_file.save(project_file_path)
+	OS.execute(OS.get_executable_path(),["--editor","--headless","--quit"])
 
 
 class ResourceLoadHelper:
