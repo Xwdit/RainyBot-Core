@@ -15,6 +15,7 @@ var files_to_check:Array = [
 ]
 
 var update_url:String = "https://raw.githubusercontent.com/Xwdit/RainyBot-Core/main/"
+var full_update_url:String = "https://github.com/Xwdit/RainyBot-Core/releases"
 
 
 func _ready():
@@ -31,15 +32,17 @@ func check_update()->bool:
 	if !dic.is_empty():
 		var version:String = dic["version"]
 		if RainyBotCore.VERSION.to_lower() != version.to_lower():
-			if dic["need_full_update"]:
+			if dic["godot_version"] != Engine.get_version_info()["hash"]:
 				var confirmed:bool = await Console.popup_confirm("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s\n此版本需要下载完整更新包，您想要更新吗?"%[version,RainyBotCore.VERSION])
 				if confirmed:
-					OS.shell_open("https://github.com/Xwdit/RainyBot-Core/releases")
+					OS.shell_open(full_update_url)
+				return true
 			else:
 				var confirmed:bool = await Console.popup_confirm("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s\n您想要进行自动增量热更新吗?"%[version,RainyBotCore.VERSION])
 				if confirmed:
 					await update_files(dic)
-			return true
+					return false
+				return true
 		GuiManager.console_print_success("版本检查完毕，您的RainyBot已为最新版本！")
 		return true
 	GuiManager.console_print_error("检查更新时出现错误，请检查网络连接是否正常")
@@ -56,13 +59,13 @@ func build_update_json(path:String):
 	for _file in files_to_check:
 		build_file_dict(root+_file,dict)
 	dict["version"]=RainyBotCore.VERSION
-	dict["need_full_update"]=RainyBotCore.NEED_FULL_UPDATE
+	dict["godot_version"]=Engine.get_version_info()["hash"]
 	var json:JSON = JSON.new()
 	var _text:String = json.stringify(dict)
 	file_ins.open(path,File.WRITE)
 	file_ins.store_line(_text)
 	file_ins.close()
-	GuiManager.console_print_success("成功生成升级统计文件 %s" % path)
+	GuiManager.console_print_success("成功生成升级统计文件: %s" % path)
 
 
 func update_files(dict:Dictionary={}):
@@ -81,22 +84,60 @@ func update_files(dict:Dictionary={}):
 		var confirm:bool = await Console.popup_confirm("本次更新需要下载 %s，将更新%s个文件，新增%s个文件，删除%s个文件\n确定要进行更新吗？"% args) 
 		if confirm:
 			var removed:int = 0
-			var added:int = 0
 			var updated:int = 0
+			var added:int = 0
+			Console.print_warning("更新已开始，在此期间请勿操作RainyBot...")
 			for f in result_dict["removes"]:
+				removed += 1
+				Console.print_warning("正在移除旧文件%s (%s/%s)"% [f,removed,result_dict["removes"].size()])
 				var dir:Directory = Directory.new()
 				if dir.file_exists(f):
 					var err:int = dir.remove(f)
 					if err==OK:
-						removed+=1
+						Console.print_success("成功移除旧文件%s (%s/%s)"% [f,removed,result_dict["removes"].size()])
+						continue
+				var r_confirm:bool = await Console.popup_confirm("无法移除旧文件%s\n您想要重试更新RainyBot吗?"% f) 
+				if r_confirm:
+					update_files(dict)
+					return
+				var d_confirm:bool = await Console.popup_confirm("增量更新时出现问题，建议下载完整包进行覆盖更新，是否打开下载页面？")
+				if d_confirm:
+					OS.shell_open(full_update_url)
+				notification(NOTIFICATION_WM_CLOSE_REQUEST)
+				return
 			for f in result_dict["updates"]:
-				var err:int = await download_file(f)
-				if err==OK:
-					updated+=1
+				updated += 1
+				Console.print_warning("正在更新文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
+				var err:int = await download_file(f,dict)
+				if err!=OK:
+					var r_confirm:bool = await Console.popup_confirm("无法更新文件%s\n您想要重试更新RainyBot吗?"% f) 
+					if r_confirm:
+						update_files(dict)
+						return
+					var d_confirm:bool = await Console.popup_confirm("增量更新时出现问题，建议下载完整包进行覆盖更新，是否打开下载页面？")
+					if d_confirm:
+						OS.shell_open(full_update_url)
+					notification(NOTIFICATION_WM_CLOSE_REQUEST)
+					return
+				Console.print_success("成功更新文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
 			for f in result_dict["adds"]:
-				var err:int = await download_file(f)
-				if err==OK:
-					added+=1
+				added += 1
+				Console.print_warning("正在添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
+				var err:int = await download_file(f,dict)
+				if err!=OK:
+					var r_confirm:bool = await Console.popup_confirm("无法添加文件%s\n您想要重试更新RainyBot吗?"% f) 
+					if r_confirm:
+						update_files(dict)
+						return
+					var d_confirm:bool = await Console.popup_confirm("增量更新时出现问题，建议下载完整包进行覆盖更新，是否打开下载页面？")
+					if d_confirm:
+						OS.shell_open(full_update_url)
+					notification(NOTIFICATION_WM_CLOSE_REQUEST)
+					return
+				Console.print_success("成功添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
+			Console.print_success("增量更新成功！RainyBot将自动重新启动来应用更新...") 
+			await get_tree().create_timer(3).timeout
+			GlobalManager.restart()
 
 
 func format_bytes(bytes:int, decimals:int = 2)->String:
@@ -166,12 +207,15 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary):
 			result_dict["total_size"]+=dict[f]["size"]
 
 
-func download_file(path:String):
+func download_file(path:String,dict:Dictionary):
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
 	var result:HttpRequestResult = await Utils.send_http_get_request("https://raw.githubusercontent.com/Xwdit/RainyBot-Core/main/"+_unique_path)
 	var dir_path:String = (path).get_base_dir()+"/"
 	var _dir:Directory = Directory.new()
 	if !_dir.dir_exists(dir_path):
 		_dir.make_dir_recursive(dir_path)
-	result.save_to_file(path)
-	return result
+	var err:int = result.save_to_file(path)
+	var file:File = File.new()
+	if err==OK and dict[_unique_path]["md5"]==file.get_md5(path):
+		return OK
+	return ERR_INVALID_DATA
