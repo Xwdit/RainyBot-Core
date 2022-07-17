@@ -209,12 +209,14 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary):
 
 func download_file(path:String,dict:Dictionary):
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
+	Console.disable_sysout(true)
 	var result:HttpRequestResult = await Utils.send_http_get_request("https://raw.githubusercontent.com/Xwdit/RainyBot-Core/main/"+_unique_path)
 	var dir_path:String = (path).get_base_dir()+"/"
 	var _dir:Directory = Directory.new()
 	if !_dir.dir_exists(dir_path):
 		_dir.make_dir_recursive(dir_path)
 	var err:int = result.save_to_file(path)
+	Console.disable_sysout(false)
 	var file:File = File.new()
 	if err==OK and dict[_unique_path]["md5"]==file.get_md5(path):
 		return OK
