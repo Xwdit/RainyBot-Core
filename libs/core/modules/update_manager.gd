@@ -225,7 +225,7 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 func download_file(path:String,dict:Dictionary)->int:
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
 	Console.disable_sysout(true)
-	var result:HttpRequestResult = await Utils.send_http_get_request("https://raw.githubusercontent.com/Xwdit/RainyBot-Core/main/"+_unique_path)
+	var result:HttpRequestResult = await Utils.send_http_get_request(update_url+_unique_path.uri_encode())
 	var dir_path:String = (path).get_base_dir()+"/"
 	var _dir:Directory = Directory.new()
 	if !_dir.dir_exists(dir_path):
