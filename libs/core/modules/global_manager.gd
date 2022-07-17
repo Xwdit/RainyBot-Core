@@ -219,18 +219,17 @@ func _add_import_helper()->void:
 	dir.open(import_helper_path)
 	for f in dir.get_files():
 		dir.copy(import_helper_path+f,import_helper_target_path+f)
+	dir.copy(project_file_path,"res://project.godot.bak")
 	c_file.set_value("editor_plugins","enabled",PackedStringArray(arr))
 	c_file.save(project_file_path)
-	
-	
+
+
 func _remove_import_helper()->void:
 	clear_dir_files(root_path+"addons/")
-	var c_file:ConfigFile = ConfigFile.new()
-	var err:int = c_file.load(project_file_path)
-	if c_file.has_section("editor_plugins"):
-		c_file.erase_section("editor_plugins")
-	c_file.save(project_file_path)
-	OS.execute(OS.get_executable_path(),["--editor","--headless","--quit"])
+	var dir:Directory = Directory.new()
+	dir.open(GlobalManager.root_path)
+	dir.copy("res://project.godot.bak",project_file_path)
+	dir.remove("res://project.godot.bak")
 
 
 class ResourceLoadHelper:
