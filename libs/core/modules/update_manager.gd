@@ -2,7 +2,6 @@ extends Node
 
 
 var paths_to_check:Array = [
-	".godot/imported/",
 	"adapters/mirai/libs/",
 	"adapters/mirai/plugin-libraries/",
 	"adapters/mirai/plugins/",
@@ -10,7 +9,6 @@ var paths_to_check:Array = [
 ]
 
 var files_to_check:Array = [
-	".godot/uid_cache.bin",
 	"project.godot"
 ]
 
@@ -147,8 +145,8 @@ func update_files(dict:Dictionary={})->void:
 					notification(NOTIFICATION_WM_CLOSE_REQUEST)
 					return
 				GuiManager.console_print_success("成功添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
-			await GuiManager.popup_notification("增量更新成功！RainyBot将自动重新启动来应用更新...") 
-			GlobalManager.restart()
+			GuiManager.console_print_success("增量更新成功！即将重新导入资源并自动重启RainyBot...") 
+			GlobalManager.reimport()
 	else:
 		GuiManager.console_print_error("进行更新时出现错误，请检查到Github的网络连接是否正常！ (可能需要科学上网)")
 
