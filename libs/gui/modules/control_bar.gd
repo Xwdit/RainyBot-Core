@@ -3,6 +3,7 @@ extends HBoxContainer
 
 enum MainMenuOptions {
 	CHECK_UPDATE,
+	FIX_FILES,
 	SCENE_EDITOR,
 	OPEN_INTERNAL_LOG_DIR,
 	RESTART,
@@ -57,6 +58,8 @@ func _on_main_menu_pressed(id:int)->void:
 	match id:
 		MainMenuOptions.CHECK_UPDATE:
 			get_parent().check_update()
+		MainMenuOptions.FIX_FILES:
+			UpdateManager.update_files()
 		MainMenuOptions.SCENE_EDITOR:
 			GuiManager.open_scene_editor()
 		MainMenuOptions.OPEN_INTERNAL_LOG_DIR:

@@ -42,5 +42,6 @@ static func popup_confirm(text:String,title:String="请确认")->bool:
 	return await GuiManager.popup_confirm(text,title)
 
 
+## 临时禁用控制台中的系统消息输出，不影响插件通过Console.print_系列函数进行的输出
 static func disable_sysout(disabled:bool)->void:
 	GuiManager.sysout_disabled = disabled

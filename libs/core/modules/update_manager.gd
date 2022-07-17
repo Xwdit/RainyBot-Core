@@ -18,11 +18,6 @@ var update_url:String = "https://raw.githubusercontent.com/Xwdit/RainyBot-Core/m
 var full_update_url:String = "https://github.com/Xwdit/RainyBot-Core/releases/"
 
 
-func _ready()->void:
-	if GlobalManager.is_running_from_editor():
-		build_update_json("res://update.json")
-
-
 func check_update()->bool:
 	GuiManager.console_print_warning("正在检查您的RainyBot是否为最新版本，请稍候...")
 	Console.disable_sysout(true)
@@ -32,7 +27,9 @@ func check_update()->bool:
 	if !dic.is_empty():
 		var version:String = dic["version"]
 		if RainyBotCore.VERSION.to_lower() != version.to_lower():
-			Console.popup_confirm("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s。更新日志请访问: %s"%[version,RainyBotCore.VERSION,full_update_url])
+			if GlobalManager.is_running_from_editor():
+				build_update_json("res://update.json")
+			Console.print_warning("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s。更新日志请访问: %s"%[version,RainyBotCore.VERSION,full_update_url])
 			if dic["godot_version"] != Engine.get_version_info()["hash"]:
 				var confirmed:bool = await Console.popup_confirm("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s\n此版本需要下载完整更新包，您想要更新吗?"%[version,RainyBotCore.VERSION])
 				if confirmed:
@@ -70,7 +67,7 @@ func build_update_json(path:String)->void:
 
 
 func update_files(dict:Dictionary={})->void:
-	GuiManager.console_print_warning("正在统计需要更新的文件，请稍候...")
+	GuiManager.console_print_warning("正在统计需要更新或修复的文件，请稍候...")
 	if dict.is_empty():
 		var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
 		dict = result.get_as_dic()
@@ -81,6 +78,9 @@ func update_files(dict:Dictionary={})->void:
 			parse_path_dict(root+_path,dict,result_dict)
 		for _file in files_to_check:
 			check_file_update(root+_file,dict,result_dict)
+		if result_dict["updates"].is_empty() and result_dict["adds"].is_empty() and result_dict["removes"].is_empty():
+			Console.popup_notification("未找到需要更新或修复的文件！")
+			return
 		var args:Array = [format_bytes(result_dict["total_size"]),result_dict["updates"].size(),result_dict["adds"].size(),result_dict["removes"].size()]
 		var confirm:bool = await Console.popup_confirm("本次更新需要下载 %s，将更新%s个文件，新增%s个文件，删除%s个文件\n确定要进行更新吗？"% args) 
 		if confirm:
