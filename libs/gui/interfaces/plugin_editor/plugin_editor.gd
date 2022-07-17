@@ -31,7 +31,7 @@ func save_script(reload:bool=false)->int:
 	var scr:GDScript = GDScript.new()
 	scr.source_code = get_code_edit().text
 	var err_code:int = ResourceSaver.save(loaded_path,scr)
-	if err_code == OK:
+	if !err_code:
 		set_unsaved(false)
 		GuiManager.console_print_success("插件保存成功！")
 		if reload:

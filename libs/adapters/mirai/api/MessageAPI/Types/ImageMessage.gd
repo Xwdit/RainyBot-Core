@@ -17,7 +17,7 @@ static func init(image:Image)->ImageMessage:
 	if is_instance_valid(image):
 		var f_path:String = GlobalManager.cache_path + "image_cache_%s.png" % randi()
 		var err:int = image.save_png(f_path)
-		if err == OK:
+		if !err:
 			var ins:ImageMessage = ImageMessage.new()
 			var dic:Dictionary = ins.data_dic
 			dic.path = f_path
@@ -34,7 +34,7 @@ static func init_gif(gif_image:GifImage)->ImageMessage:
 	if is_instance_valid(gif_image):
 		var f_path:String = GlobalManager.cache_path + "gif_image_cache_%s.gif" % randi()
 		var err:int = await gif_image.save(f_path)
-		if err == OK:
+		if !err:
 			var ins:ImageMessage = ImageMessage.new()
 			var dic:Dictionary = ins.data_dic
 			dic.path = f_path

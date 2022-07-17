@@ -66,7 +66,7 @@ func _connected(_proto:String="")->void:
 func _on_data()->void:
 	var json:JSON = JSON.new()
 	var err:int = json.parse(_client.get_peer(1).get_packet().get_string_from_utf8())
-	if err == OK:
+	if !err:
 		var data:Dictionary = json.get_data()
 		if data.has("syncId"):
 			if processing_command.has(data["syncId"].to_int()):

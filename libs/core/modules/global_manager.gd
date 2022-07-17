@@ -185,7 +185,7 @@ func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->
 	else:
 		GuiManager.console_print_warning("正在请求异步加载以下路径的资源: "+path)
 		var err:int = ResourceLoader.load_threaded_request(path,type_hint,use_sub_threads)
-		if err == OK:
+		if !err:
 			var helper:ResourceLoadHelper = ResourceLoadHelper.new()
 			loading_resources[path]=helper
 			GuiManager.console_print_warning("资源异步加载请求成功，开始等待以下路径的资源加载完成: "+path)

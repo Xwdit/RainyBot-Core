@@ -171,7 +171,7 @@ func save(path:String)->int:
 		return ERR_DOES_NOT_EXIST
 	var file:File = File.new()
 	var _err:int = file.open(path, File.WRITE)
-	if _err == OK:
+	if !_err:
 		file.store_buffer(await get_data())
 		file.close()
 		GuiManager.console_print_success("成功将Gif图像数据储存至文件 %s"% path)
@@ -190,7 +190,7 @@ func get_data()->PackedByteArray:
 	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
 	var _err:int = _thread.start(_export_data.bind(frames))
-	if _err == OK:
+	if !_err:
 		while _thread.is_alive():
 			await GlobalManager.get_tree().process_frame
 		data = _thread.wait_to_finish()
@@ -221,7 +221,7 @@ func _test_generate_speed()->int:
 	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
 	var _err:int = _thread.start(_export_data.bind(_test_frames))
-	if _err == OK:
+	if !_err:
 		while _thread.is_alive():
 			await GlobalManager.get_tree().process_frame
 		var _data:PackedByteArray = _thread.wait_to_finish()

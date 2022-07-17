@@ -162,7 +162,7 @@ func _call_console_command(_cmd:String,args:Array)->void:
 func load_plugin_script(path:String)->GDScript:
 	var _file:File = File.new()
 	var _err:int = _file.open(path,File.READ)
-	if _err == OK:
+	if !_err:
 		var _str:String = _file.get_as_text()
 		_file.close()
 		var _script:GDScript

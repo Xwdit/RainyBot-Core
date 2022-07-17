@@ -227,7 +227,7 @@ func _on_reload_button_button_down()->void:
 		if is_instance_valid(plugin):
 			set_lock_panel(true)
 			var err:int = await PluginManager.reload_plugin(plugin)
-			if err == OK:
+			if !err:
 				GuiManager.popup_notification("成功重载插件%s!"% id)
 			else:
 				GuiManager.popup_notification("无法重载插件%s，请查看控制台来了解更多信息"% id)
@@ -240,7 +240,7 @@ func _on_reload_button_button_down()->void:
 		var file:String = plugin_list_dic[current_selected].file
 		set_lock_panel(true)
 		var err:int = await PluginManager.load_plugin(file)
-		if err == OK:
+		if !err:
 			GuiManager.popup_notification("成功加载插件文件%s!"% file)
 		else:
 			GuiManager.popup_notification("无法加载插件文件%s，请查看控制台来了解更多信息"% file)
@@ -256,7 +256,7 @@ func _on_unload_button_button_down()->void:
 		if is_instance_valid(plugin):
 			set_lock_panel(true)
 			var err:int = await PluginManager.unload_plugin(plugin)
-			if err == OK:
+			if !err:
 				GuiManager.popup_notification("成功卸载插件%s!"% id)
 			else:
 				GuiManager.popup_notification("无法卸载插件%s，请查看控制台来了解更多信息"% id)
@@ -273,7 +273,7 @@ func _on_delete_button_button_down()->void:
 	if confirmed:
 		set_lock_panel(true)
 		var err:int = await PluginManager.delete_plugin(file)
-		if err == OK:
+		if !err:
 			GuiManager.popup_notification("成功删除插件文件%s!"% file)
 		else:
 			GuiManager.popup_notification("无法删除插件文件%s，请查看控制台来了解更多信息"% file)

@@ -43,7 +43,7 @@ func init_config()->void:
 		var _file_err:int = file.open(config_path,File.READ)
 		var _json_err:int = json.parse(file.get_as_text())
 		file.close()
-		if _json_err == OK:
+		if !_json_err:
 			_config = json.get_data()
 		if !_config.is_empty():
 			var missing_keys:Array = []
@@ -59,7 +59,7 @@ func init_config()->void:
 			if !missing_keys.is_empty() or !extra_keys.is_empty():
 				GuiManager.console_print_warning("检测到需要更新的配置项，正在尝试对配置文件进行更新.....")
 				_file_err = file.open(config_path,File.WRITE)
-				if _file_err == OK:
+				if !_file_err:
 					file.store_string(json.stringify(_config,"\t"))
 					file.close()
 					if !missing_keys.is_empty():
