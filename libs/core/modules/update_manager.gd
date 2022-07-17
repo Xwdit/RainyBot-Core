@@ -69,8 +69,10 @@ func build_update_json(path:String)->void:
 func update_files(dict:Dictionary={})->void:
 	GuiManager.console_print_warning("正在统计需要更新或修复的文件，请稍候...")
 	if dict.is_empty():
+		Console.disable_sysout(true)
 		var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
 		dict = result.get_as_dic()
+		Console.disable_sysout(false)
 	var root:String = GlobalManager.root_path
 	if !dict.is_empty():
 		var result_dict:Dictionary = {"total_size":0,"removes":[],"adds":[],"updates":[]}
@@ -138,7 +140,8 @@ func update_files(dict:Dictionary={})->void:
 				GuiManager.console_print_success("成功添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
 			await GuiManager.popup_notification("增量更新成功！RainyBot将自动重新启动来应用更新...") 
 			GlobalManager.restart()
-	GuiManager.console_print_error("进行更新时出现错误，请检查到Github的网络连接是否正常！ (可能需要科学上网)")
+	else:
+		GuiManager.console_print_error("进行更新时出现错误，请检查到Github的网络连接是否正常！ (可能需要科学上网)")
 
 
 func format_bytes(bytes:int, decimals:int = 2)->String:
