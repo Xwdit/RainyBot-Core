@@ -87,6 +87,7 @@ func update_files(dict:Dictionary={})->void:
 			parse_path_dict(root+_path,dict,result_dict)
 		for _file in files_to_check:
 			check_file_update(root+_file,dict,result_dict)
+		check_new_files(dict,result_dict)
 		if result_dict["updates"].is_empty() and result_dict["adds"].is_empty() and result_dict["removes"].is_empty():
 			Console.popup_notification("未找到需要更新或修复的文件！")
 			return
@@ -145,7 +146,7 @@ func update_files(dict:Dictionary={})->void:
 					notification(NOTIFICATION_WM_CLOSE_REQUEST)
 					return
 				GuiManager.console_print_success("成功添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
-			GuiManager.console_print_success("增量更新成功！即将重新导入资源并自动重启RainyBot...") 
+			await GuiManager.popup_notification("增量更新成功! 即将重新导入资源并重新启动RainyBot...") 
 			GlobalManager.reimport()
 	else:
 		GuiManager.console_print_error("进行更新时出现错误，请检查到Github的网络连接是否正常！ (可能需要科学上网)")
