@@ -213,6 +213,8 @@ func check_file_update(_f_path:String,dict:Dictionary,result_dict:Dictionary)->v
 func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 	var root_path:String = GlobalManager.root_path
 	for f in dict:
+		if !(f is Dictionary) or !f.has("size"):
+			continue
 		var _dir:Directory = Directory.new()
 		if !_dir.file_exists(root_path+f):
 			result_dict["adds"].append(root_path+f)
