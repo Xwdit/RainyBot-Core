@@ -57,7 +57,7 @@ func _ready()->void:
 func _on_main_menu_pressed(id:int)->void:
 	match id:
 		MainMenuOptions.CHECK_UPDATE:
-			get_parent().check_update()
+			UpdateManager.check_update()
 		MainMenuOptions.FIX_FILES:
 			UpdateManager.update_files()
 		MainMenuOptions.SCENE_EDITOR:
