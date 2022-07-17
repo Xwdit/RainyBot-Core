@@ -1,7 +1,6 @@
-[gd_resource type="Font" load_steps=2 format=3 uid="uid://c5xxf1vl46ona"]
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://bdaw01li0f44o"]
 
-[ext_resource type="FontData" uid="uid://bcaend563s3qn" path="res://libs/gui/resources/font/main_font.ttf" id="1_mnj4y"]
+[ext_resource type="FontFile" uid="uid://bcaend563s3qn" path="res://libs/gui/resources/font/main_font.ttf" id="1_a20s5"]
 
 [resource]
-spacing_top = 5
-data/0 = ExtResource( "1_mnj4y" )
+base_font = ExtResource("1_a20s5")

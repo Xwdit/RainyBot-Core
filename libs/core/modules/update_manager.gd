@@ -19,8 +19,14 @@ var full_update_url:String = "https://github.com/Xwdit/RainyBot-Core/releases/"
 
 
 func _ready():
-	if GlobalManager.is_running_from_editor():
-		build_update_json("res://update.json")
+	add_to_group("console_command_build-update-json")
+	CommandManager.register_console_command("build-update-json",false,["build-update-json - 生成升级统计数据Json文件"],"RainyBot-Core",false)
+
+
+func _call_console_command(_cmd:String,args:Array)->void:
+	match _cmd:
+		"build-update-json":
+			build_update_json("res://update.json")
 
 
 func check_update()->bool:

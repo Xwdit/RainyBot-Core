@@ -13,5 +13,6 @@ cache/
 config/
 data/
 logs/
+plugins/
 RainyBot.exe
 启动RainyBot场景编辑器.cmd
