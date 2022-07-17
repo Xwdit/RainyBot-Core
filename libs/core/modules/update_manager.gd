@@ -18,6 +18,11 @@ var update_url:String = "https://raw.githubusercontent.com/Xwdit/RainyBot-Core/m
 var full_update_url:String = "https://github.com/Xwdit/RainyBot-Core/releases/"
 
 
+func _ready():
+	if GlobalManager.is_running_from_editor():
+		build_update_json("res://update.json")
+
+
 func check_update()->bool:
 	GuiManager.console_print_warning("正在检查您的RainyBot是否为最新版本，请稍候...")
 	Console.disable_sysout(true)
@@ -27,9 +32,7 @@ func check_update()->bool:
 	if !dic.is_empty():
 		var version:String = dic["version"]
 		if RainyBotCore.VERSION.to_lower() != version.to_lower():
-			if GlobalManager.is_running_from_editor():
-				build_update_json("res://update.json")
-			Console.print_warning("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s。更新日志请访问: %s"%[version,RainyBotCore.VERSION,full_update_url])
+			GuiManager.console_print_warning("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s。更新日志请访问: %s"%[version,RainyBotCore.VERSION,full_update_url])
 			if dic["godot_version"] != Engine.get_version_info()["hash"]:
 				var confirmed:bool = await Console.popup_confirm("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s\n此版本需要下载完整更新包，您想要更新吗?"%[version,RainyBotCore.VERSION])
 				if confirmed:
@@ -146,10 +149,10 @@ func update_files(dict:Dictionary={})->void:
 
 func format_bytes(bytes:int, decimals:int = 2)->String:
 	if bytes == 0:
-		return "0 Bytes"
+		return "0 B"
 	var k:int = 1024
 	var dm:int = 0 if decimals < 0 else decimals
-	var sizes:Array = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+	var sizes:Array = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
 
 	var i:int = floor(log(bytes) / log(k))
 
