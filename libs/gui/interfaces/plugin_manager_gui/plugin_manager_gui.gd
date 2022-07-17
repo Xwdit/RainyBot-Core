@@ -215,7 +215,7 @@ func _reset_data_info()->void:
 func _on_edit_button_button_down()->void:
 	var file:String = plugin_list_dic[current_selected].file
 	var err:int = await GuiManager.open_plugin_editor(PluginManager.plugin_path+file)
-	if err != OK:
+	if err:
 		GuiManager.popup_notification("尝试编辑插件文件%s时出现错误，请查看控制台来了解更多信息"% file)
 
 
@@ -472,7 +472,7 @@ func _on_data_all_clear_button_button_down()->void:
 		var plugin:Plugin = PluginManager.get_node_or_null(id)
 		if is_instance_valid(plugin):
 			var err:int = plugin.clear_plugin_data()
-			if err==OK:
+			if !err:
 				_update_data_panel()
 				GuiManager.popup_notification("插件数据库清空完毕!")
 			else:
@@ -489,7 +489,7 @@ func _on_cache_all_clear_button_button_down()->void:
 		var plugin:Plugin = PluginManager.get_node_or_null(id)
 		if is_instance_valid(plugin):
 			var err:int = plugin.clear_plugin_cache()
-			if err==OK:
+			if !err:
 				_update_data_panel()
 				GuiManager.popup_notification("插件缓存清空完毕!")
 			else:
@@ -506,7 +506,7 @@ func _on_config_all_clear_button_button_down()->void:
 		var plugin:Plugin = PluginManager.get_node_or_null(id)
 		if is_instance_valid(plugin):
 			var err:int = plugin.reset_all_plugin_data()
-			if err==OK:
+			if !err:
 				_update_data_panel()
 				GuiManager.popup_notification("插件配置还原完毕!")
 			else:
@@ -547,7 +547,7 @@ func _on_datas_delete_button_button_down()->void:
 				var confirmed:bool = await GuiManager.popup_confirm("确定要删除数据库项目%s吗?"% str(key))
 				if confirmed:
 					var err:int = plugin.remove_plugin_data(key)
-					if err==OK:
+					if !err:
 						_update_data_panel()
 						GuiManager.popup_notification("成功删除数据库项目%s!"% str(key))
 					else:
@@ -563,7 +563,7 @@ func _on_datas_delete_button_button_down()->void:
 				var confirmed:bool = await GuiManager.popup_confirm("确定要删除缓存项目%s吗?"% str(key))
 				if confirmed:
 					var err:int = plugin.remove_plugin_cache(key)
-					if err==OK:
+					if !err:
 						_update_data_panel()
 						GuiManager.popup_notification("成功删除缓存项目%s!"% str(key))
 					else:

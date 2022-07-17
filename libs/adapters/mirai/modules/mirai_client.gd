@@ -21,7 +21,7 @@ func _ready()->void:
 func connect_to_mirai(ws_url:String)->void:
 	GuiManager.console_print_warning("正在尝试连接到Mirai框架中，请稍候... | 连接地址: "+ws_url)
 	var err:int = _client.connect_to_url(ws_url)
-	if err != OK:
+	if err:
 		GuiManager.console_print_error("无法连接到Mirai框架，请检查配置是否有误")
 		GuiManager.console_print_warning("将于10秒后尝试重新连接...")
 		await get_tree().create_timer(10).timeout

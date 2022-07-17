@@ -696,7 +696,7 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 	else:
 		GuiManager.console_print_warning("没有已存在的配置文件，正在生成新的配置文件...")
 		var _err:int = file.open(config_path,File.WRITE)
-		if _err != OK:
+		if _err:
 			file.close()
 			GuiManager.console_print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
 			return _err
@@ -723,7 +723,7 @@ func save_plugin_config()->int:
 	var config_path:String = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file:File = File.new()
 	var _err:int = file.open(config_path,File.WRITE)
-	if _err != OK:
+	if _err:
 		GuiManager.console_print_error("配置文件保存失败，请检查文件权限是否配置正确! 路径:"+config_path)
 		file.close()
 		return _err
@@ -888,7 +888,7 @@ func init_plugin_data()->int:
 	else:
 		GuiManager.console_print_warning("没有已存在的数据库文件，正在生成新的数据库文件...")
 		var _err:int = file.open(data_path,File.WRITE)
-		if _err != OK:
+		if _err:
 			GuiManager.console_print_error("数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
 			file.close()
 			return _err
@@ -910,7 +910,7 @@ func save_plugin_data()->int:
 	var data_path:String = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file:File = File.new()
 	var _err:int = file.open(data_path,File.WRITE)
-	if _err != OK:
+	if _err:
 		GuiManager.console_print_error("数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
 		file.close()
 		return _err
@@ -1003,7 +1003,7 @@ func init_plugin_cache()->int:
 	else:
 		GuiManager.console_print_warning("没有已存在的缓存数据库文件，正在生成新的缓存数据库文件...")
 		var _err:int = file.open(data_path,File.WRITE)
-		if _err != OK:
+		if _err:
 			GuiManager.console_print_error("缓存数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
 			file.close()
 			return _err
@@ -1025,7 +1025,7 @@ func save_plugin_cache()->int:
 	var data_path:String = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
 	var file:File = File.new()
 	var _err:int = file.open(data_path,File.WRITE)
-	if _err != OK:
+	if _err:
 		GuiManager.console_print_error("缓存数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
 		file.close()
 		return _err

@@ -38,13 +38,13 @@ func save_script(reload:bool=false)->int:
 			var plug:Plugin = PluginManager.get_plugin_with_filename(loaded_name)
 			if is_instance_valid(plug):
 				var err:int = await PluginManager.reload_plugin(plug)
-				if err != OK:
+				if err:
 					GuiManager.popup_notification("无法重载此插件，请查看控制台来了解更多信息")
 				else:
 					GuiManager.popup_notification("插件已保存并重载成功!")
 				return err_code
 			var err:int = await PluginManager.load_plugin(loaded_name)
-			if err != OK:
+			if err:
 				GuiManager.popup_notification("无法加载此插件，请查看控制台来了解更多信息")
 			else:
 				GuiManager.popup_notification("插件已保存并加载成功!")

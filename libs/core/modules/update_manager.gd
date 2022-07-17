@@ -104,7 +104,7 @@ func update_files(dict:Dictionary={})->void:
 				var dir:Directory = Directory.new()
 				if dir.file_exists(f):
 					var err:int = dir.remove(f)
-					if err==OK:
+					if !err:
 						GuiManager.console_print_success("成功移除旧文件%s (%s/%s)"% [f,removed,result_dict["removes"].size()])
 						continue
 				var r_confirm:bool = await Console.popup_confirm("无法移除旧文件%s\n您想要重试更新RainyBot吗?"% f) 
@@ -120,7 +120,7 @@ func update_files(dict:Dictionary={})->void:
 				updated += 1
 				GuiManager.console_print_warning("正在更新文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
 				var err:int = await download_file(f,dict)
-				if err!=OK:
+				if err:
 					var r_confirm:bool = await Console.popup_confirm("无法更新文件%s\n您想要重试更新RainyBot吗?"% f) 
 					if r_confirm:
 						update_files(dict)
@@ -135,7 +135,7 @@ func update_files(dict:Dictionary={})->void:
 				added += 1
 				GuiManager.console_print_warning("正在添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
 				var err:int = await download_file(f,dict)
-				if err!=OK:
+				if err:
 					var r_confirm:bool = await Console.popup_confirm("无法添加文件%s\n您想要重试更新RainyBot吗?"% f) 
 					if r_confirm:
 						update_files(dict)
@@ -167,7 +167,7 @@ func format_bytes(bytes:int, decimals:int = 2)->String:
 func parse_path_dict(path:String,dict:Dictionary,update_dict:Dictionary={})->void:
 	var dir:Directory = Directory.new()
 	var error:int = dir.open(path)
-	if error!=OK:
+	if error:
 		print(path)
 		return
 		
@@ -233,6 +233,6 @@ func download_file(path:String,dict:Dictionary)->int:
 	var err:int = result.save_to_file(path)
 	Console.disable_sysout(false)
 	var file:File = File.new()
-	if err==OK and dict[_unique_path]["md5"]==file.get_md5(path):
+	if !err and dict[_unique_path]["md5"]==file.get_md5(path):
 		return OK
 	return ERR_INVALID_DATA

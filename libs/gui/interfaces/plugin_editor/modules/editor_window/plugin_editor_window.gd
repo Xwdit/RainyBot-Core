@@ -14,7 +14,7 @@ func load_script(path:String)->int:
 		GuiManager.console_print_error("当前已存在编辑中的插件文件，请关闭编辑器后重试!")
 		return ERR_ALREADY_IN_USE
 	var err:int = get_plugin_editor().load_script(path)
-	if err != OK:
+	if err:
 		return err
 	popup_centered(Vector2i(1280,720))
 	await get_tree().process_frame

@@ -191,7 +191,7 @@ func build_class_dics(path:String)->void:
 func build_api_dics(path:String)->void:
 	var dir:Directory = Directory.new()
 	var error:int = dir.open(path)
-	if error!=OK:
+	if error:
 		print(error_string(error))
 		return
 		

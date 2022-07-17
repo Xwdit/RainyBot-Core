@@ -10,7 +10,7 @@ func send_http_get_request(url:String,timeout:int=20)->HttpRequestResult:
 		node.timeout = timeout
 	add_child(node)
 	var error:int = node.request(url)
-	if error != OK:
+	if error:
 		node.queue_free()
 		GuiManager.console_print_error("当发送Http Get请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
 		var _r:HttpRequestResult = HttpRequestResult.new()
@@ -41,7 +41,7 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 		node.timeout = timeout
 	add_child(node)
 	var error:int = node.request(url,headers,true,HTTPClient.METHOD_POST,data)
-	if error != OK:
+	if error:
 		node.queue_free()
 		GuiManager.console_print_error("在发送Http Post请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
 		var _r:HttpRequestResult = HttpRequestResult.new()

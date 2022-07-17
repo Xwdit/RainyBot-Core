@@ -100,7 +100,7 @@ func init_config()->void:
 	else:
 		GuiManager.console_print_warning("没有已存在的配置文件，正在生成新的配置文件...")
 		var _err:int = file.open(config_path,File.WRITE)
-		if _err != OK:
+		if _err:
 			GuiManager.console_print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
 			GuiManager.console_print_warning("若要重试请重启RainyBot")
 			file.close()
