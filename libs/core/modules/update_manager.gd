@@ -18,7 +18,7 @@ var update_url:String = "https://raw.githubusercontent.com/Xwdit/RainyBot-Core/m
 var full_update_url:String = "https://github.com/Xwdit/RainyBot-Core/releases"
 
 
-func _ready():
+func _ready()->void:
 	if GlobalManager.is_running_from_editor():
 		build_update_json("res://update.json")
 
@@ -49,7 +49,7 @@ func check_update()->bool:
 	return false
 	
 
-func build_update_json(path:String):
+func build_update_json(path:String)->void:
 	GuiManager.console_print_warning("正在生成升级统计文件，请稍候...")
 	var file_ins:File = File.new()
 	var dict:Dictionary = {"total_size":0}
@@ -68,7 +68,7 @@ func build_update_json(path:String):
 	GuiManager.console_print_success("成功生成升级统计文件: %s" % path)
 
 
-func update_files(dict:Dictionary={}):
+func update_files(dict:Dictionary={})->void:
 	GuiManager.console_print_warning("正在统计需要更新的文件，请稍候...")
 	if dict.is_empty():
 		var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
@@ -152,7 +152,7 @@ func format_bytes(bytes:int, decimals:int = 2)->String:
 	return (("%."+str(decimals)+"f") % (bytes / pow(k, i))) + " " + sizes[i]
 
 
-func parse_path_dict(path:String,dict:Dictionary,update_dict:Dictionary={}):
+func parse_path_dict(path:String,dict:Dictionary,update_dict:Dictionary={})->void:
 	var dir:Directory = Directory.new()
 	var error:int = dir.open(path)
 	if error!=OK:
@@ -176,7 +176,7 @@ func parse_path_dict(path:String,dict:Dictionary,update_dict:Dictionary={}):
 	dir.list_dir_end()
 
 
-func build_file_dict(_f_path:String,dict:Dictionary):
+func build_file_dict(_f_path:String,dict:Dictionary)->void:
 	var _file:File = File.new()
 	var _unique_path:String = _f_path.replace(GlobalManager.root_path,"")
 	dict[_unique_path] = {}
@@ -187,7 +187,7 @@ func build_file_dict(_f_path:String,dict:Dictionary):
 	_file.close()
 
 
-func check_file_update(_f_path:String,dict:Dictionary,result_dict:Dictionary):
+func check_file_update(_f_path:String,dict:Dictionary,result_dict:Dictionary)->void:
 	var _file:File = File.new()
 	var _unique_path:String = _f_path.replace(GlobalManager.root_path,"")
 	if dict.has(_unique_path):
@@ -198,7 +198,7 @@ func check_file_update(_f_path:String,dict:Dictionary,result_dict:Dictionary):
 		result_dict["removes"].append(_f_path)
 
 
-func check_new_files(dict:Dictionary,result_dict:Dictionary):
+func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 	var root_path:String = GlobalManager.root_path
 	for f in dict:
 		var _dir:Directory = Directory.new()
@@ -207,7 +207,7 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary):
 			result_dict["total_size"]+=dict[f]["size"]
 
 
-func download_file(path:String,dict:Dictionary):
+func download_file(path:String,dict:Dictionary)->int:
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
 	Console.disable_sysout(true)
 	var result:HttpRequestResult = await Utils.send_http_get_request("https://raw.githubusercontent.com/Xwdit/RainyBot-Core/main/"+_unique_path)
