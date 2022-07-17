@@ -213,12 +213,13 @@ func check_file_update(_f_path:String,dict:Dictionary,result_dict:Dictionary)->v
 func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 	var root_path:String = GlobalManager.root_path
 	for f in dict:
-		if !(f is Dictionary) or !f.has("size"):
+		var _value = dict[f]
+		if !(_value is Dictionary) or !_value.has("size"):
 			continue
 		var _dir:Directory = Directory.new()
 		if !_dir.file_exists(root_path+f):
 			result_dict["adds"].append(root_path+f)
-			result_dict["total_size"]+=dict[f]["size"]
+			result_dict["total_size"]+=_value["size"]
 
 
 func download_file(path:String,dict:Dictionary)->int:
