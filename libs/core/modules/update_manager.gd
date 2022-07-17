@@ -18,12 +18,7 @@ var update_url:String = "https://raw.githubusercontent.com/Xwdit/RainyBot-Core/m
 
 
 func _ready():
-	add_to_group("console_command_build-update-json")
-	CommandManager.register_console_command("build-update-json",false,["build-update-json - 生成版本更新数据json文件"],"RainyBot-Core",false)
-
-
-func _call_console_command(_cmd:String,_args:Array)->void:
-	if _cmd == "build-update-json":
+	if GlobalManager.is_running_from_editor():
 		build_update_json("res://update.json")
 
 
@@ -41,10 +36,10 @@ func check_update()->bool:
 				if confirmed:
 					OS.shell_open("https://github.com/Xwdit/RainyBot-Core/releases")
 			else:
-				var confirmed:bool = await Console.popup_confirm("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s\n您想要进行自动更新吗?"%[version,RainyBotCore.VERSION])
+				var confirmed:bool = await Console.popup_confirm("发现RainyBot新版本! 最新版本为: %s, 您的当前版本为: %s\n您想要进行自动增量热更新吗?"%[version,RainyBotCore.VERSION])
 				if confirmed:
-					update_files(dic)
-			return false
+					await update_files(dic)
+			return true
 		GuiManager.console_print_success("版本检查完毕，您的RainyBot已为最新版本！")
 		return true
 	GuiManager.console_print_error("检查更新时出现错误，请检查网络连接是否正常")
@@ -77,12 +72,43 @@ func update_files(dict:Dictionary={}):
 		dict = result.get_as_dic()
 	var root:String = GlobalManager.root_path
 	if !dict.is_empty():
-		var result_dict:Dictionary = {"total_size":0,"removes":0,"adds":0,"updates":0}
+		var result_dict:Dictionary = {"total_size":0,"removes":[],"adds":[],"updates":[]}
 		for _path in paths_to_check:
 			parse_path_dict(root+_path,dict,result_dict)
 		for _file in files_to_check:
 			check_file_update(root+_file,dict,result_dict)
-		print(result_dict)
+		var args:Array = [format_bytes(result_dict["total_size"]),result_dict["updates"].size(),result_dict["adds"].size(),result_dict["removes"].size()]
+		var confirm:bool = await Console.popup_confirm("本次更新需要下载 %s，将更新%s个文件，新增%s个文件，删除%s个文件\n确定要进行更新吗？"% args) 
+		if confirm:
+			var removed:int = 0
+			var added:int = 0
+			var updated:int = 0
+			for f in result_dict["removes"]:
+				var dir:Directory = Directory.new()
+				if dir.file_exists(f):
+					var err:int = dir.remove(f)
+					if err==OK:
+						removed+=1
+			for f in result_dict["updates"]:
+				var err:int = await download_file(f)
+				if err==OK:
+					updated+=1
+			for f in result_dict["adds"]:
+				var err:int = await download_file(f)
+				if err==OK:
+					added+=1
+
+
+func format_bytes(bytes:int, decimals:int = 2)->String:
+	if bytes == 0:
+		return "0 Bytes"
+	var k:int = 1024
+	var dm:int = 0 if decimals < 0 else decimals
+	var sizes:Array = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+
+	var i:int = floor(log(bytes) / log(k))
+
+	return (("%."+str(decimals)+"f") % (bytes / pow(k, i))) + " " + sizes[i]
 
 
 func parse_path_dict(path:String,dict:Dictionary,update_dict:Dictionary={}):
@@ -125,12 +151,10 @@ func check_file_update(_f_path:String,dict:Dictionary,result_dict:Dictionary):
 	var _unique_path:String = _f_path.replace(GlobalManager.root_path,"")
 	if dict.has(_unique_path):
 		if _file.get_md5(_f_path) != dict[_unique_path]["md5"]:
-			result_dict[_f_path]={"type":"update"}
+			result_dict["updates"].append(_f_path)
 			result_dict["total_size"]+=dict[_unique_path]["size"]
-			result_dict["updates"]+=1
 	else:
-		result_dict[_f_path]={"type":"remove"}
-		result_dict["removes"]+=1
+		result_dict["removes"].append(_f_path)
 
 
 func check_new_files(dict:Dictionary,result_dict:Dictionary):
@@ -138,9 +162,8 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary):
 	for f in dict:
 		var _dir:Directory = Directory.new()
 		if !_dir.file_exists(root_path+f):
-			result_dict[root_path+f]={"type":"update"}
+			result_dict["adds"].append(root_path+f)
 			result_dict["total_size"]+=dict[f]["size"]
-			result_dict["adds"]+=1
 
 
 func download_file(path:String):
@@ -151,3 +174,4 @@ func download_file(path:String):
 	if !_dir.dir_exists(dir_path):
 		_dir.make_dir_recursive(dir_path)
 	result.save_to_file(path)
+	return result
