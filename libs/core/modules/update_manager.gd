@@ -73,8 +73,8 @@ func build_update_json(path:String)->void:
 	GuiManager.console_print_success("成功生成升级统计文件: %s" % path)
 
 
-func update_files(dict:Dictionary={})->void:
-	GuiManager.console_print_warning("正在统计需要更新或修复的文件，请稍候...")
+func update_files(dict:Dictionary={},action:String="更新")->void:
+	GuiManager.console_print_warning("正在统计需要{action}的文件，请稍候...".format({"action":action}))
 	if dict.is_empty():
 		Console.disable_sysout(true)
 		var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
@@ -89,15 +89,15 @@ func update_files(dict:Dictionary={})->void:
 			check_file_update(root+_file,dict,result_dict)
 		check_new_files(dict,result_dict)
 		if result_dict["updates"].is_empty() and result_dict["adds"].is_empty() and result_dict["removes"].is_empty():
-			Console.popup_notification("未找到需要更新或修复的文件！")
+			Console.popup_notification("未找到需要{action}的文件！".format({"action":action}))
 			return
 		var args:Array = [format_bytes(result_dict["total_size"]),result_dict["updates"].size(),result_dict["adds"].size(),result_dict["removes"].size()]
-		var confirm:bool = await Console.popup_confirm("本次更新需要下载 %s，将更新%s个文件，新增%s个文件，删除%s个文件\n确定要进行更新吗？"% args) 
+		var confirm:bool = await Console.popup_confirm("本次{action}需要下载 %s，将更改%s个文件，新增%s个文件，删除%s个文件\n确定要进行{action}吗？".format({"action":action})% args) 
 		if confirm:
 			var removed:int = 0
 			var updated:int = 0
 			var added:int = 0
-			GuiManager.console_print_warning("更新已开始，在此期间请勿操作RainyBot...")
+			GuiManager.console_print_warning("{action}已开始，在此期间请勿使用RainyBot...".format({"action":action}))
 			for f in result_dict["removes"]:
 				removed += 1
 				GuiManager.console_print_warning("正在移除旧文件%s (%s/%s)"% [f,removed,result_dict["removes"].size()])
@@ -107,49 +107,49 @@ func update_files(dict:Dictionary={})->void:
 					if !err:
 						GuiManager.console_print_success("成功移除旧文件%s (%s/%s)"% [f,removed,result_dict["removes"].size()])
 						continue
-				var r_confirm:bool = await Console.popup_confirm("无法移除旧文件%s\n您想要重试更新RainyBot吗?"% f) 
+				var r_confirm:bool = await Console.popup_confirm("无法移除旧文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
 				if r_confirm:
 					update_files(dict)
 					return
-				var d_confirm:bool = await Console.popup_confirm("增量更新时出现问题，建议下载完整包进行覆盖更新，是否打开下载页面？")
+				var d_confirm:bool = await Console.popup_confirm("增量{action}时出现问题，建议下载完整包进行覆盖安装，是否打开下载页面？".format({"action":action}))
 				if d_confirm:
 					OS.shell_open(full_update_url)
 				notification(NOTIFICATION_WM_CLOSE_REQUEST)
 				return
 			for f in result_dict["updates"]:
 				updated += 1
-				GuiManager.console_print_warning("正在更新文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
+				GuiManager.console_print_warning("正在更改文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
 				var err:int = await download_file(f,dict)
 				if err:
-					var r_confirm:bool = await Console.popup_confirm("无法更新文件%s\n您想要重试更新RainyBot吗?"% f) 
+					var r_confirm:bool = await Console.popup_confirm("无法更改文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
 					if r_confirm:
 						update_files(dict)
 						return
-					var d_confirm:bool = await Console.popup_confirm("增量更新时出现问题，建议下载完整包进行覆盖更新，是否打开下载页面？")
+					var d_confirm:bool = await Console.popup_confirm("增量{action}时出现问题，建议下载完整包进行覆盖安装，是否打开下载页面？".format({"action":action}))
 					if d_confirm:
 						OS.shell_open(full_update_url)
 					notification(NOTIFICATION_WM_CLOSE_REQUEST)
 					return
-				GuiManager.console_print_success("成功更新文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
+				GuiManager.console_print_success("成功更改文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
 			for f in result_dict["adds"]:
 				added += 1
 				GuiManager.console_print_warning("正在添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
 				var err:int = await download_file(f,dict)
 				if err:
-					var r_confirm:bool = await Console.popup_confirm("无法添加文件%s\n您想要重试更新RainyBot吗?"% f) 
+					var r_confirm:bool = await Console.popup_confirm("无法添加文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
 					if r_confirm:
 						update_files(dict)
 						return
-					var d_confirm:bool = await Console.popup_confirm("增量更新时出现问题，建议下载完整包进行覆盖更新，是否打开下载页面？")
+					var d_confirm:bool = await Console.popup_confirm("增量{action}时出现问题，建议下载完整包进行覆盖安装，是否打开下载页面？".format({"action":action}))
 					if d_confirm:
 						OS.shell_open(full_update_url)
 					notification(NOTIFICATION_WM_CLOSE_REQUEST)
 					return
 				GuiManager.console_print_success("成功添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
-			await GuiManager.popup_notification("增量更新成功! 即将重新导入资源并重新启动RainyBot...") 
+			await GuiManager.popup_notification("增量{action}成功! 请点击确定来重新导入资源并重新启动RainyBot".format({"action":action})) 
 			GlobalManager.reimport()
 	else:
-		GuiManager.console_print_error("进行更新时出现错误，请检查到Github的网络连接是否正常！ (可能需要科学上网)")
+		GuiManager.console_print_error("进行{action}时出现错误，请检查到Github的网络连接是否正常！ (可能需要科学上网)".format({"action":action}))
 
 
 func format_bytes(bytes:int, decimals:int = 2)->String:

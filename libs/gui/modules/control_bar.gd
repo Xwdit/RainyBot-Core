@@ -59,7 +59,7 @@ func _on_main_menu_pressed(id:int)->void:
 		MainMenuOptions.CHECK_UPDATE:
 			UpdateManager.check_update()
 		MainMenuOptions.FIX_FILES:
-			UpdateManager.update_files()
+			UpdateManager.update_files({},"修复")
 		MainMenuOptions.SCENE_EDITOR:
 			GuiManager.open_scene_editor()
 		MainMenuOptions.OPEN_INTERNAL_LOG_DIR:
