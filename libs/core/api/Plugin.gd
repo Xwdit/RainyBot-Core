@@ -793,13 +793,13 @@ func reset_plugin_config(key,save_file:bool=true)->int:
 
 ## 用于在已加载的配置中将所有内容还原回默认值，需要先初始化配置文件才能使用此函数
 ## 最后一项可选参数用于指定是否在还原的同时将更改立即保存到配置文件中
-func reset_all_plugin_data(save_file:bool=true)->int:
+func reset_all_plugin_config(save_file:bool=true)->int:
 	if !plugin_config_loaded:
 		GuiManager.console_print_error("配置文件还原失败，请先初始化配置文件后再执行此操作!")
 		return ERR_CANT_OPEN
-	plugin_data = default_plugin_config.duplicate(true)
+	plugin_config = default_plugin_config.duplicate(true)
 	if save_file:
-		save_plugin_data()
+		save_plugin_config()
 	return OK
 
 

@@ -505,7 +505,7 @@ func _on_config_all_clear_button_button_down()->void:
 		var id:String = plugin_list_dic[current_selected].info.id
 		var plugin:Plugin = PluginManager.get_node_or_null(id)
 		if is_instance_valid(plugin):
-			var err:int = plugin.reset_all_plugin_data()
+			var err:int = plugin.reset_all_plugin_config()
 			if !err:
 				_update_data_panel()
 				GuiManager.popup_notification("插件配置还原完毕!")
