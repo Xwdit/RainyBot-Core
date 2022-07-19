@@ -540,4 +540,4 @@ func _on_code_edit_symbol_lookup(symbol:String, line:int, column:int)->void:
 	if class_dic.has(symbol):
 		OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html" % symbol.to_lower())
 	elif api_dic.has(symbol):
-		OS.shell_open("https://docs.rainybot.dev/readme/api/%s"% symbol.to_lower())
+		OS.shell_open("https://docs.rainybot.dev/api/%s"% symbol.to_lower())

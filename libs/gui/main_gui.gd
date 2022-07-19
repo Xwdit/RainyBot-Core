@@ -3,6 +3,7 @@ extends Control
 
 func _ready()->void:
 	DisplayServer.window_set_title("RainyBot")
+	ConfigManager.init_config()
 	GuiManager.console_print_success("成功加载 RainyBot-Gui | 版本: %s | 作者: Xwdit" % RainyBotCore.VERSION)
 	if !await UpdateManager.check_update():
 		GuiManager.console_print_warning("将于10秒后继续启动RainyBot...")

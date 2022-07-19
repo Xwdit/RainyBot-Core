@@ -72,11 +72,13 @@ size_flags_vertical = 3
 text = "控制台"
 alignment = 0
 expand_icon = true
-item_count = 2
-popup/item_0/text = "清空控制台"
+item_count = 3
+popup/item_0/text = "打开配置文件"
 popup/item_0/id = 0
-popup/item_1/text = "打开控制台日志目录"
+popup/item_1/text = "清空控制台"
 popup/item_1/id = 1
+popup/item_2/text = "打开控制台日志目录"
+popup/item_2/id = 2
 
 [node name="PluginMenu" type="MenuButton" parent="ControlBar"]
 offset_left = 120.0

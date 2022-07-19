@@ -29,6 +29,7 @@ func _ready():
 	$HSplitContainer/TabContainer.set_tab_title(0,"插件信息")
 	$HSplitContainer/TabContainer.set_tab_title(1,"插件注册列表")
 	$HSplitContainer/TabContainer.set_tab_title(2,"插件数据列表")
+	PluginManager.connect("plugin_list_changed",update_plugin_list)
 
 
 func update_plugin_list(reload_dic:bool=false)->void:
@@ -449,6 +450,8 @@ func _on_config_list_item_selected(index:int)->void:
 	var key = $HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList/ItemList.get_item_metadata(index)
 	var content = current_configs[key]
 	$HSplitContainer/TabContainer/PluginDataPanel/Infos.text = "此配置项的内容: %s" % str(content)
+	$HSplitContainer/TabContainer/PluginDataPanel/DeleteButton.show()
+	$HSplitContainer/TabContainer/PluginDataPanel/DeleteButton.text = "还原选定项目"
 
 
 func _on_config_list_focus_exited()->void:
@@ -456,6 +459,7 @@ func _on_config_list_focus_exited()->void:
 	_reset_data_info()
 	await get_tree().process_frame
 	$HSplitContainer/TabContainer/PluginDataPanel/DeleteButton.hide()
+	$HSplitContainer/TabContainer/PluginDataPanel/DeleteButton.text = "删除选定项目"
 	current_selected_item = -1
 	current_selected_item_type = -1
 
@@ -571,3 +575,19 @@ func _on_datas_delete_button_button_down()->void:
 			else:
 				GuiManager.console_print_error("插件实例无效，因此无法删除选定的缓存项目!")
 				GuiManager.popup_notification("无法删除选定的缓存项目，请查看控制台来了解更多信息!")
+		SelectType.CONFIG:
+			var id:String = plugin_list_dic[current_selected].info.id
+			var plugin:Plugin = PluginManager.get_node_or_null(id)
+			if is_instance_valid(plugin):
+				var key = $HSplitContainer/TabContainer/PluginDataPanel/HBoxContainer/ConfigList/ItemList.get_item_metadata(current_selected_item)
+				var confirmed:bool = await GuiManager.popup_confirm("确定要还原配置项目%s吗?"% str(key))
+				if confirmed:
+					var err:int = plugin.reset_plugin_config(key)
+					if !err:
+						_update_data_panel()
+						GuiManager.popup_notification("成功还原配置项目%s!"% str(key))
+					else:
+						GuiManager.popup_notification("无法还原配置项目%s，请查看控制台来了解更多信息!"% str(key))
+			else:
+				GuiManager.console_print_error("插件实例无效，因此无法还原选定的配置项目!")
+				GuiManager.popup_notification("无法还原选定的配置项目，请查看控制台来了解更多信息!")

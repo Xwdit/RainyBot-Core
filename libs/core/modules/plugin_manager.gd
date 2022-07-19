@@ -1,6 +1,9 @@
 extends Node
 
 
+signal plugin_list_changed()
+
+
 var plugin_path:String = GlobalManager.plugin_path
 var plugin_config_path:String = GlobalManager.config_path 
 var plugin_data_path:String = GlobalManager.data_path
@@ -234,6 +237,7 @@ func load_plugin(file:String,files_dic:Dictionary={},source:String="")->int:
 			plugin_ins.add_to_group("Plugin")
 			add_child(plugin_ins,true)
 			file_load_status[file] = true
+			plugin_list_changed.emit()
 			GuiManager.console_print_success("成功加载插件: " +get_beautify_plugin_info(_plugin_info))
 			return OK
 	GuiManager.console_print_error("无法加载插件文件: " + file)
@@ -257,6 +261,7 @@ func unload_plugin(plugin:Plugin)->int:
 	await plugin.tree_exited
 	plugin.set_script(null)
 	file_load_status.erase(_file)
+	plugin_list_changed.emit()
 	GuiManager.console_print_success("成功卸载插件: " +get_beautify_plugin_info(_plugin_info))
 	return OK
 
@@ -269,6 +274,7 @@ func create_plugin(file_name:String)->int:
 		file_name = file_name + ".gd"
 	var scr:GDScript = load("res://libs/core/templates/plugin_template.gd")
 	if ResourceSaver.save(plugin_path+file_name,scr) == OK:
+		plugin_list_changed.emit()
 		GuiManager.console_print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
 		GuiManager.console_print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
 		return OK
@@ -284,6 +290,7 @@ func delete_plugin(file_name:String)->int:
 			var plug:Plugin = get_plugin_with_filename(file_name)
 			if is_instance_valid(plug):
 				await unload_plugin(plug)
+			plugin_list_changed.emit()
 			GuiManager.console_print_success("插件文件删除成功!")
 			return OK
 		else:

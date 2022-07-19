@@ -12,7 +12,10 @@ var files_to_check:Array = [
 	"project.godot"
 ]
 
-var update_url:String = "https://raw.githubusercontent.com/Xwdit/RainyBot-Core/main/"
+var update_sources:Dictionary = {
+	"GitHub":"https://raw.githubusercontent.com/Xwdit/RainyBot-Core/main/",
+	"Gitee":"https://gitee.com/xwdit/RainyBot-Core/raw/main/"
+}
 var full_update_url:String = "https://github.com/Xwdit/RainyBot-Core/releases/"
 
 
@@ -28,9 +31,9 @@ func _call_console_command(_cmd:String,args:Array)->void:
 
 
 func check_update()->bool:
-	GuiManager.console_print_warning("正在检查您的RainyBot是否为最新版本，请稍候...")
+	GuiManager.console_print_warning("正在检查您的RainyBot是否为最新版本，请稍候...(下载源: %s)"% ConfigManager.get_update_source())
 	Console.disable_sysout(true)
-	var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
+	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+"update.json")
 	var dic:Dictionary = result.get_as_dic()
 	Console.disable_sysout(false)
 	if !dic.is_empty():
@@ -74,10 +77,10 @@ func build_update_json(path:String)->void:
 
 
 func update_files(dict:Dictionary={},action:String="更新")->void:
-	GuiManager.console_print_warning("正在统计需要{action}的文件，请稍候...".format({"action":action}))
+	GuiManager.console_print_warning("正在统计需要{action}的文件，请稍候...(下载源: %s)".format({"action":action})% ConfigManager.get_update_source())
 	if dict.is_empty():
 		Console.disable_sysout(true)
-		var result:HttpRequestResult = await Utils.send_http_get_request(update_url+"update.json")
+		var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+"update.json")
 		dict = result.get_as_dic()
 		Console.disable_sysout(false)
 	var root:String = GlobalManager.root_path
@@ -225,7 +228,7 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 func download_file(path:String,dict:Dictionary)->int:
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
 	Console.disable_sysout(true)
-	var result:HttpRequestResult = await Utils.send_http_get_request(update_url+_unique_path.uri_encode())
+	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+_unique_path.uri_encode())
 	var dir_path:String = (path).get_base_dir()+"/"
 	var _dir:Directory = Directory.new()
 	if !_dir.dir_exists(dir_path):
@@ -236,3 +239,12 @@ func download_file(path:String,dict:Dictionary)->int:
 	if !err and dict[_unique_path]["md5"]==file.get_md5(path):
 		return OK
 	return ERR_INVALID_DATA
+
+
+func get_update_url()->String:
+	var source:String = ConfigManager.get_update_source()
+	if update_sources.has(source):
+		return update_sources[source]
+	else:
+		Console.print_error("配置文件中指定的下载源不存在，已选择Gitee作为默认下载源！")
+		return update_sources["Gitee"]

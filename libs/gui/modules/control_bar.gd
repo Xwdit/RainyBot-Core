@@ -12,6 +12,7 @@ enum MainMenuOptions {
 
 
 enum ConsoleMenuOptions {
+	OPEN_CONFIG_FILE,
 	CLEAR_CONSOLE,
 	OPEN_LOG_DIR
 }
@@ -75,6 +76,16 @@ func _on_main_menu_pressed(id:int)->void:
 			
 func _on_console_menu_pressed(id:int)->void:
 	match id:
+		ConsoleMenuOptions.OPEN_CONFIG_FILE:
+			if OS.get_name() != "macOS":
+				OS.shell_open(ConfigManager.config_path)
+			else:
+				OS.execute("open",[ConfigManager.config_path])
+			GuiManager.console_print_warning("已为您使用系统默认方式打开控制台配置文件!")
+			GuiManager.console_print_text("配置选项说明:")
+			for key in ConfigManager.config_description:
+				GuiManager.console_print_text(key+":"+ConfigManager.config_description[key])
+			GuiManager.console_print_warning("修改配置后请重启RainyBot")
 		ConsoleMenuOptions.CLEAR_CONSOLE:
 			get_tree().call_group("Console","clear")
 			GuiManager.console_print_success("已成功清空控制台的所有内容！")
