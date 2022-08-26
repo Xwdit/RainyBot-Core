@@ -226,6 +226,7 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 
 
 func download_file(path:String,dict:Dictionary)->int:
+	print("dl_start")
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
 	Console.disable_sysout(true)
 	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+_unique_path.uri_encode())
@@ -233,19 +234,18 @@ func download_file(path:String,dict:Dictionary)->int:
 	var _dir:Directory = Directory.new()
 	if !_dir.dir_exists(dir_path):
 		_dir.make_dir_recursive(dir_path)
-	_dir.open(dir_path)
-	var err:int = result.save_to_file(path+".dl")
+	var err:int = result.save_to_file(path)
 	Console.disable_sysout(false)
 	var file:File = File.new()
-	file.open(path+".dl",File.READ)
-	var md5:String = file.get_md5(path+".dl")
+	file.open(path,File.READ)
+	var md5:String = file.get_md5(path)
 	var size:int = file.get_length()
 	if !err and (dict[_unique_path]["md5"]==md5 || dict[_unique_path]["size"]==size):
 		if dict[_unique_path]["md5"]!=md5 && dict[_unique_path]["size"]==size:
 			GuiManager.console_print_warning("已下载文件%s的MD5与记录不匹配但大小相同，此类情况较为常见且通常不会出现问题，因此默认视为下载成功；若出现运行异常，您可以下载完整包进行覆盖更新"%path)
-		_dir.rename(path+".dl",path)
+		print("ok")
 		return OK
-	_dir.remove(path+".dl")
+	print("err")
 	return ERR_INVALID_DATA
 
 
