@@ -151,11 +151,7 @@ func save_to_file(path:String)->int:
 	var file:File = File.new()
 	var err:int = file.open(path,File.WRITE)
 	if !err:
-		var text:String = get_as_text()
-		if text!= "":
-			file.store_line(text)
-		else:
-			file.store_buffer(body)
+		file.store_buffer(body)
 		file.close()
 		GuiManager.console_print_success("成功将Http请求结果储存到以下路径的文件: "+path)
 	else:
