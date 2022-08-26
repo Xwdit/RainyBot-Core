@@ -9,9 +9,6 @@ func _ready()->void:
 		GuiManager.console_print_warning("将于10秒后继续启动RainyBot...")
 		await get_tree().create_timer(10).timeout
 	RainyBotCore.start()
-	var ifr = ImageFrames.new()
-	ifr.add_frame(load("res://libs/resources/logo.png").get_image())
-	ifr.save_gif("res://test.gif")
 
 
 func _process(_delta:float)->void:
