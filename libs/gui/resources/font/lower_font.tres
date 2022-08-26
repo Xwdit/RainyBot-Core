@@ -1,8 +1,6 @@
-[gd_resource type="Font" load_steps=2 format=3 uid="uid://dc2n125nfhi84"]
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://bqboy4xoev2up"]
 
-[ext_resource type="FontData" uid="uid://bcaend563s3qn" path="res://libs/gui/resources/font/main_font.ttf" id="1_kedqm"]
+[ext_resource type="FontFile" uid="uid://ct0cw8xr6u6dk" path="res://libs/gui/resources/font/main_font.ttf" id="1_kedqm"]
 
 [resource]
-spacing_top = -3
-spacing_bottom = -2
-data/0 = ExtResource( "1_kedqm" )
+base_font = ExtResource("1_kedqm")

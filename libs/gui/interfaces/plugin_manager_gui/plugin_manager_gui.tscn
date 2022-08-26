@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5jsjshx2x220"]
+[gd_scene load_steps=3 format=3 uid="uid://c5jsjshx2x220"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/plugin_manager_gui/plugin_manager_gui.gd" id="1_y8fcn"]
 [ext_resource type="PackedScene" path="res://libs/gui/interfaces/plugin_manager_gui/modules/code_preview/code_preview.tscn" id="2_hev7f"]
-[ext_resource type="Font" uid="uid://dc2n125nfhi84" path="res://libs/gui/resources/font/lower_font.tres" id="2_kkbno"]
 
 [node name="PluginManagerGui" type="Control"]
 anchor_right = 1.0
@@ -65,8 +64,6 @@ offset_right = 244.0
 offset_bottom = 30.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource("2_kkbno")
-placeholder_text = "插件文件名(如abc.gd)"
 
 [node name="CreatePluginButton" type="Button" parent="HSplitContainer/PluginListContainer/CreatePlugin"]
 offset_left = 248.0
@@ -94,7 +91,6 @@ offset_right = 1004.0
 offset_bottom = 580.0
 
 [node name="PluginInfoPanel" type="VBoxContainer" parent="HSplitContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 30.0
@@ -146,7 +142,6 @@ text = "描述: 这是一个示例插件，实际上并没有什么作用....."
 offset_top = 256.0
 offset_right = 672.0
 offset_bottom = 510.0
-delimiter_strings = ["' '", "\" \""]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 offset_top = 520.0
@@ -271,6 +266,7 @@ offset_bottom = 550.0
 text = "刷新注册列表"
 
 [node name="PluginDataPanel" type="VBoxContainer" parent="HSplitContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 30.0

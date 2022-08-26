@@ -273,7 +273,7 @@ func create_plugin(file_name:String)->int:
 	if !file_name.ends_with(".gd"):
 		file_name = file_name + ".gd"
 	var scr:GDScript = load("res://libs/core/templates/plugin_template.gd")
-	if ResourceSaver.save(plugin_path+file_name,scr) == OK:
+	if ResourceSaver.save(scr,plugin_path+file_name) == OK:
 		plugin_list_changed.emit()
 		GuiManager.console_print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
 		GuiManager.console_print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
