@@ -77,9 +77,7 @@ func build_update_json(path:String)->void:
 
 
 func update_files(dict:Dictionary={},action:String="更新")->void:
-	var removed:int = 0
-	var updated:int = 0
-	var added:int = 0
+	var status:Dictionary = {"removed":0,"updated":0,"added":0}
 	GuiManager.console_print_warning("正在统计需要{action}的文件，请稍候...(下载源: %s)".format({"action":action})% ConfigManager.get_update_source())
 	if dict.is_empty():
 		Console.disable_sysout(true)
@@ -102,13 +100,13 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 		if confirm:
 			GuiManager.console_print_warning("{action}已开始，在此期间请勿使用RainyBot...".format({"action":action}))
 			for f in result_dict["removes"]:
-				removed += 1
-				GuiManager.console_print_warning("正在移除旧文件%s (%s/%s)"% [f,removed,result_dict["removes"].size()])
+				status.removed += 1
+				GuiManager.console_print_warning("正在移除旧文件%s (%s/%s)"% [f,status.removed,result_dict["removes"].size()])
 				var dir:Directory = Directory.new()
 				if dir.file_exists(f):
 					var err:int = dir.remove(f)
 					if !err:
-						GuiManager.console_print_success("成功移除旧文件%s (%s/%s)"% [f,removed,result_dict["removes"].size()])
+						GuiManager.console_print_success("成功移除旧文件%s (%s/%s)"% [f,status.removed,result_dict["removes"].size()])
 						continue
 				var r_confirm:bool = await Console.popup_confirm("无法移除旧文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
 				if r_confirm:
@@ -120,8 +118,8 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 				notification(NOTIFICATION_WM_CLOSE_REQUEST)
 				return
 			for f in result_dict["updates"]:
-				updated += 1
-				GuiManager.console_print_warning("正在更改文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
+				status.updated += 1
+				GuiManager.console_print_warning("正在更改文件%s (%s/%s)"% [f,status.updated,result_dict["updates"].size()])
 				var err:int = await download_file(f,dict)
 				if err:
 					var r_confirm:bool = await Console.popup_confirm("无法更改文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
@@ -133,10 +131,10 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 						OS.shell_open(full_update_url)
 					notification(NOTIFICATION_WM_CLOSE_REQUEST)
 					return
-				GuiManager.console_print_success("成功更改文件%s (%s/%s)"% [f,updated,result_dict["updates"].size()])
+				GuiManager.console_print_success("成功更改文件%s (%s/%s)"% [f,status.updated,result_dict["updates"].size()])
 			for f in result_dict["adds"]:
-				added += 1
-				GuiManager.console_print_warning("正在添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
+				status.added += 1
+				GuiManager.console_print_warning("正在添加文件%s (%s/%s)"% [f,status.added,result_dict["adds"].size()])
 				var err:int = await download_file(f,dict)
 				if err:
 					var r_confirm:bool = await Console.popup_confirm("无法添加文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
@@ -148,7 +146,7 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 						OS.shell_open(full_update_url)
 					notification(NOTIFICATION_WM_CLOSE_REQUEST)
 					return
-				GuiManager.console_print_success("成功添加文件%s (%s/%s)"% [f,added,result_dict["adds"].size()])
+				GuiManager.console_print_success("成功添加文件%s (%s/%s)"% [f,status.added,result_dict["adds"].size()])
 			await GuiManager.popup_notification("增量{action}成功! 请点击确定来重新导入资源并重新启动RainyBot".format({"action":action})) 
 			GlobalManager.reimport()
 	else:
@@ -226,7 +224,6 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 
 
 func download_file(path:String,dict:Dictionary)->int:
-	print("dl_start")
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
 	Console.disable_sysout(true)
 	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+_unique_path.uri_encode())
@@ -237,15 +234,9 @@ func download_file(path:String,dict:Dictionary)->int:
 	var err:int = result.save_to_file(path)
 	Console.disable_sysout(false)
 	var file:File = File.new()
-	file.open(path,File.READ)
 	var md5:String = file.get_md5(path)
-	var size:int = file.get_length()
-	if !err and (dict[_unique_path]["md5"]==md5 || dict[_unique_path]["size"]==size):
-		if dict[_unique_path]["md5"]!=md5 && dict[_unique_path]["size"]==size:
-			GuiManager.console_print_warning("已下载文件%s的MD5与记录不匹配但大小相同，此类情况较为常见且通常不会出现问题，因此默认视为下载成功；若出现运行异常，您可以下载完整包进行覆盖更新"%path)
-		print("ok")
+	if !err and dict[_unique_path]["md5"]==md5:
 		return OK
-	print("err")
 	return ERR_INVALID_DATA
 
 
