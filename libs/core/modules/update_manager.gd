@@ -77,6 +77,9 @@ func build_update_json(path:String)->void:
 
 
 func update_files(dict:Dictionary={},action:String="更新")->void:
+	var removed:int = 0
+	var updated:int = 0
+	var added:int = 0
 	GuiManager.console_print_warning("正在统计需要{action}的文件，请稍候...(下载源: %s)".format({"action":action})% ConfigManager.get_update_source())
 	if dict.is_empty():
 		Console.disable_sysout(true)
@@ -97,9 +100,6 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 		var args:Array = [format_bytes(result_dict["total_size"]),result_dict["updates"].size(),result_dict["adds"].size(),result_dict["removes"].size()]
 		var confirm:bool = await Console.popup_confirm("本次{action}需要下载 %s，将更改%s个文件，新增%s个文件，删除%s个文件\n确定要进行{action}吗？".format({"action":action})% args) 
 		if confirm:
-			var removed:int = 0
-			var updated:int = 0
-			var added:int = 0
 			GuiManager.console_print_warning("{action}已开始，在此期间请勿使用RainyBot...".format({"action":action}))
 			for f in result_dict["removes"]:
 				removed += 1
@@ -233,16 +233,19 @@ func download_file(path:String,dict:Dictionary)->int:
 	var _dir:Directory = Directory.new()
 	if !_dir.dir_exists(dir_path):
 		_dir.make_dir_recursive(dir_path)
-	var err:int = result.save_to_file(path)
+	_dir.open(dir_path)
+	var err:int = result.save_to_file(path+".dl")
 	Console.disable_sysout(false)
 	var file:File = File.new()
-	file.open(path,File.READ)
-	var md5:String = file.get_md5(path)
+	file.open(path+".dl",File.READ)
+	var md5:String = file.get_md5(path+".dl")
 	var size:int = file.get_length()
 	if !err and (dict[_unique_path]["md5"]==md5 || dict[_unique_path]["size"]==size):
 		if dict[_unique_path]["md5"]!=md5 && dict[_unique_path]["size"]==size:
-			GuiManager.console_print_warning("已下载文件%s的MD5与记录不匹配但大小相同，此类情况较为常见且通常不会出现问题，因此默认视为下载成功；若出现运行异常，您可以下载完整包进行覆盖更新")
+			GuiManager.console_print_warning("已下载文件%s的MD5与记录不匹配但大小相同，此类情况较为常见且通常不会出现问题，因此默认视为下载成功；若出现运行异常，您可以下载完整包进行覆盖更新"%path)
+		_dir.rename(path+".dl",path)
 		return OK
+	_dir.remove(path+".dl")
 	return ERR_INVALID_DATA
 
 
