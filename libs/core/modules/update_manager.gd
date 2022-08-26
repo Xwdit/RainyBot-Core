@@ -53,7 +53,7 @@ func check_update()->bool:
 				return true
 		GuiManager.console_print_success("版本检查完毕，您的RainyBot已为最新版本！")
 		return true
-	GuiManager.console_print_error("检查更新时出现错误，请检查到Github的网络连接是否正常！ (可能需要科学上网)")
+	GuiManager.console_print_error("检查更新时出现错误，请检查网络连接是否正常！ (某些下载源可能需要科学上网)")
 	return false
 	
 
@@ -152,7 +152,7 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 			await GuiManager.popup_notification("增量{action}成功! 请点击确定来重新导入资源并重新启动RainyBot".format({"action":action})) 
 			GlobalManager.reimport()
 	else:
-		GuiManager.console_print_error("进行{action}时出现错误，请检查到Github的网络连接是否正常！ (可能需要科学上网)".format({"action":action}))
+		GuiManager.console_print_error("进行{action}时出现错误，请检查网络连接是否正常！ (某些下载源可能需要科学上网)".format({"action":action}))
 
 
 func format_bytes(bytes:int, decimals:int = 2)->String:
@@ -236,7 +236,12 @@ func download_file(path:String,dict:Dictionary)->int:
 	var err:int = result.save_to_file(path)
 	Console.disable_sysout(false)
 	var file:File = File.new()
-	if !err and dict[_unique_path]["md5"]==file.get_md5(path):
+	file.open(path,File.READ)
+	var md5:String = file.get_md5(path)
+	var size:int = file.get_length()
+	if !err and (dict[_unique_path]["md5"]==md5 || dict[_unique_path]["size"]==size):
+		if dict[_unique_path]["md5"]!=md5 && dict[_unique_path]["size"]==size:
+			GuiManager.console_print_warning("已下载文件%s的MD5与记录不匹配但大小相同，此类情况较为常见且通常不会出现问题，因此默认视为下载成功；若出现运行异常，您可以下载完整包进行覆盖更新")
 		return OK
 	return ERR_INVALID_DATA
 
@@ -246,5 +251,5 @@ func get_update_url()->String:
 	if update_sources.has(source):
 		return update_sources[source]
 	else:
-		Console.print_error("配置文件中指定的下载源不存在，已选择Gitee作为默认下载源！")
-		return update_sources["Gitee"]
+		Console.print_error("配置文件中指定的下载源不存在，已选择GitHub作为默认下载源！")
+		return update_sources["GitHub"]

@@ -142,7 +142,6 @@ text = "描述: 这是一个示例插件，实际上并没有什么作用....."
 offset_top = 256.0
 offset_right = 672.0
 offset_bottom = 510.0
-delimiter_strings = ["' '", "\" \""]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 offset_top = 520.0

@@ -5,11 +5,11 @@ signal config_loaded
 
 
 const default_config:Dictionary = {
-	"update_source":"Gitee"
+	"update_source":"GitHub"
 }
 
 const config_description:Dictionary = {
-	"update_source":"在这里填写自动更新/修复所使用的下载源，可填写GitHub(海外/中国港澳台地区推荐)或Gitee(中国大陆推荐)，默认为Gitee"
+	"update_source":"在这里填写自动更新/修复所使用的下载源，可填写GitHub(海外/中国港澳台地区推荐)或Gitee(中国大陆推荐，但可能因不明原因屏蔽文件)，默认为GitHub"
 }
 
 var loaded_config:Dictionary = default_config
