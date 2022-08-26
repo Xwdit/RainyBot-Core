@@ -25,8 +25,7 @@ func _convert(image: Image, colors: Array) -> PackedByteArray:
 	var ci_rid:RID = RenderingServer.canvas_item_create()
 	RenderingServer.viewport_set_canvas_transform(vp, canvas, Transform2D())
 	RenderingServer.canvas_item_set_parent(ci_rid, canvas)
-	var texture:ImageTexture = ImageTexture.new()
-	texture.create_from_image(image)
+	var texture:ImageTexture = ImageTexture.create_from_image(image)
 	RenderingServer.canvas_item_add_texture_rect(
 		ci_rid, Rect2(Vector2(0, 0), image.get_size()), texture
 	)
@@ -38,8 +37,7 @@ func _convert(image: Image, colors: Array) -> PackedByteArray:
 	lut.fill(Color8(int(colors[0][0]), int(colors[0][1]), int(colors[0][2])))
 	for i in colors.size():
 		lut.set_pixel(i, 0, Color8(int(colors[i][0]), int(colors[i][1]), int(colors[i][2])))
-	var lut_tex:ImageTexture = ImageTexture.new()
-	lut_tex.create_from_image(lut)
+	var lut_tex:ImageTexture = ImageTexture.create_from_image(image)
 	RenderingServer.material_set_param(mat_rid, "lut", lut_tex.get_rid())
 	RenderingServer.canvas_item_set_material(ci_rid, mat_rid)
 

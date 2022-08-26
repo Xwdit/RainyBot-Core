@@ -9,12 +9,7 @@ var data_dic:Dictionary = {
 	"imageId": null,
 	"url": null,
 	"path": null,
-	"base64": null,
-	"height": null,
-	"width": null,
-	"size": null,
-	"isEmoji": null,
-	"imageType": null
+	"base64": null
 }
 
 
