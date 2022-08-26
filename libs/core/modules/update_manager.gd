@@ -53,7 +53,7 @@ func check_update()->bool:
 				return true
 		GuiManager.console_print_success("版本检查完毕，您的RainyBot已为最新版本！")
 		return true
-	GuiManager.console_print_error("检查更新时出现错误，请检查网络连接是否正常！ (某些下载源可能需要科学上网)")
+	GuiManager.console_print_error("检查更新时出现错误，请检查网络连接是否正常！ (某些下载源可能需要特殊上网方式)")
 	return false
 	
 
@@ -152,7 +152,7 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 			await GuiManager.popup_notification("增量{action}成功! 请点击确定来重新导入资源并重新启动RainyBot".format({"action":action})) 
 			GlobalManager.reimport()
 	else:
-		GuiManager.console_print_error("进行{action}时出现错误，请检查网络连接是否正常！ (某些下载源可能需要科学上网)".format({"action":action}))
+		GuiManager.console_print_error("进行{action}时出现错误，请检查网络连接是否正常！ (某些下载源可能需要特殊上网方式)".format({"action":action}))
 
 
 func format_bytes(bytes:int, decimals:int = 2)->String:
