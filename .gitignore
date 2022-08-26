@@ -1,19 +1,19 @@
 
 # Godot-specific ignores
-.import/
-.godot/
-export.cfg
-export_presets.cfg
+/.import/
+/.godot/
+/export.cfg
+/export_presets.cfg
 
 # Mono-specific ignores
-.mono/
+/.mono/
 
 # RainyBot-specific ignores
-export/
-cache/
-config/
-data/
-logs/
-plugins/
-RainyBot.exe
-启动RainyBot场景编辑器.cmd
+/export/
+/cache/
+/config/
+/data/
+/logs/
+/plugins/
+/RainyBot.exe
+/启动RainyBot场景编辑器.cmd
