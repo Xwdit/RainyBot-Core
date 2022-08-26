@@ -51,13 +51,3 @@ static func get_profile(timeout:float=-INF)->MemberProfile:
 	var _result:Dictionary = await BotAdapter.send_bot_request("botProfile","",{},timeout)
 	var _ins:MemberProfile = MemberProfile.init_meta(_result)
 	return _ins
-
-
-## 从当前机器人账号的历史消息缓存中获取指定id的缓存消息，需要与await关键词配合使用
-static func get_cache_message(msg_id:int,timeout:float=-INF)->CacheMessage:
-	var _req_dic:Dictionary = {
-		"id":msg_id
-	}
-	var _result_dic:Dictionary = await BotAdapter.send_bot_request("messageFromId","",_req_dic,timeout)
-	var ins:CacheMessage = CacheMessage.init_meta(_result_dic.get("data",{}))
-	return ins

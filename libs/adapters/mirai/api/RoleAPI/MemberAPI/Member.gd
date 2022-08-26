@@ -142,3 +142,34 @@ func delete_friend(timeout:float=-INF)->BotRequestResult:
 	var _result:Dictionary = await BotAdapter.send_bot_request("deleteFriend","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
+
+
+func get_roaming_messages(start_time:int=0,end_time:int=9223372036854775807,timeout:float=-INF)->MessageChain:
+	var _req_dic:Dictionary = {
+		"timeStart":start_time,
+		"timeEnd": end_time,
+		"target":get_id()
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("roamingMessages","",_req_dic,timeout)
+	var _ins:MessageChain = MessageChain.init_meta(_result.get("data",[]))
+	return _ins
+
+
+func recall_message(msg_id:int,timeout:float=-INF)->BotRequestResult:
+	var _req_dic:Dictionary = {
+		"messageId":msg_id,
+		"target":get_id()
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("recall","",_req_dic,timeout)
+	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins
+
+
+func get_cache_message(msg_id:int,timeout:float=-INF)->CacheMessage:
+	var _req_dic:Dictionary = {
+		"id":msg_id,
+		"target":get_id()
+	}
+	var _result_dic:Dictionary = await BotAdapter.send_bot_request("messageFromId","",_req_dic,timeout)
+	var ins:CacheMessage = CacheMessage.init_meta(_result_dic.get("data",{}))
+	return ins

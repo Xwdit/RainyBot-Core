@@ -66,13 +66,13 @@ func reply(msg,quote:bool=false,at:bool=false,timeout:float=-INF)->BotRequestRes
 	return _ins
 
 
-func recall()->BotRequestResult:
-	return await get_message_chain().recall()
-	
-
 func is_at_bot()->bool:
 	return get_message_chain().is_at_bot()
+	
+	
+func recall(timeout:float=-INF)->BotRequestResult:
+	return await get_group().recall_message(get_message_id(),timeout)
 
 
-func set_essence()->BotRequestResult:
-	return await get_message_chain().set_essence()
+func set_essence(timeout:float=-INF)->BotRequestResult:
+	return await get_group().set_essence_message(get_message_id(),timeout)

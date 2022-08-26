@@ -170,6 +170,8 @@ func parse_event(result_dic:Dictionary)->void:
 			ins = BotLeaveGroupEvent.init_meta(event_dic,BotLeaveGroupEvent.ReasonType.ACTIVE)
 		"BotLeaveEventKick":
 			ins = BotLeaveGroupEvent.init_meta(event_dic,BotLeaveGroupEvent.ReasonType.KICK)
+		"BotLeaveEventDisband":
+			ins = BotLeaveGroupEvent.init_meta(event_dic,BotLeaveGroupEvent.ReasonType.DISBAND)
 		"GroupRecallEvent":
 			ins = GroupRecallEvent.init_meta(event_dic)
 		"GroupNameChangeEvent":

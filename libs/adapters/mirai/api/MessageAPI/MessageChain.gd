@@ -194,24 +194,6 @@ func has_message_type(type)->bool:
 	return false
 
 
-func set_essence(timeout:float=-INF)->BotRequestResult:
-	var _req_dic:Dictionary = {
-		"target":get_message_id()
-	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("setEssence","",_req_dic,timeout)
-	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
-	return _ins
-
-
-func recall(timeout:float=-INF)->BotRequestResult:
-	var _req_dic:Dictionary = {
-		"target":get_message_id()
-	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("recall","",_req_dic,timeout)
-	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
-	return _ins
-
-
 func is_at_bot()->bool:
 	for _dic in data_array:
 		if _dic.type == "At":

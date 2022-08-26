@@ -72,13 +72,3 @@ func is_success()->bool:
 ## 判断请求结果是否为指定的结果
 func is_status(code:int)->bool:
 	return get_status_code() == code
-
-
-## 撤回请求结果中消息ID对应的消息
-func recall(timeout:float=-INF)->BotRequestResult:
-	var _req_dic:Dictionary = {
-		"target":get_message_id()
-	}
-	var _result:Dictionary = await BotAdapter.send_bot_request("recall","",_req_dic,timeout)
-	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
-	return _ins

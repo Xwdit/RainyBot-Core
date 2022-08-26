@@ -9,7 +9,12 @@ var data_dic:Dictionary = {
 	"imageId": null,
 	"url": null,
 	"path": null,
-	"base64": null
+	"base64": null,
+	"height": null,
+	"width": null,
+	"size": null,
+	"isEmoji": null,
+	"imageType": null
 }
 
 
@@ -111,6 +116,26 @@ func get_image_base64()->String:
 	
 func set_image_base64(image_base64:String)->void:
 	data_dic.base64 = image_base64
+
+
+func get_image_height()->int:
+	return data_dic.height
+	
+	
+func get_image_width()->int:
+	return data_dic.width
+	
+	
+func get_image_size()->float:
+	return data_dic.size
+
+
+func get_image_type()->String:
+	return data_dic.imageType
+
+
+func is_emoji()->bool:
+	return data_dic.isEmoji
 
 
 func get_as_text()->String:

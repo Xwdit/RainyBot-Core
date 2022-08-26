@@ -6,7 +6,8 @@ class_name BotLeaveGroupEvent
 
 enum ReasonType{
 	ACTIVE,
-	KICK
+	KICK,
+	DISBAND
 }
 
 

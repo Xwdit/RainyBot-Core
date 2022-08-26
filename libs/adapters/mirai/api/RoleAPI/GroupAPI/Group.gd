@@ -186,3 +186,33 @@ func quit(timeout:float=-INF)->BotRequestResult:
 	var _result:Dictionary = await BotAdapter.send_bot_request("quit","",_req_dic,timeout)
 	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
 	return _ins
+
+
+func set_essence_message(msg_id:int,timeout:float=-INF)->BotRequestResult:
+	var _req_dic:Dictionary = {
+		"messageId":msg_id,
+		"target":get_id()
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("setEssence","",_req_dic,timeout)
+	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins
+
+
+func recall_message(msg_id:int,timeout:float=-INF)->BotRequestResult:
+	var _req_dic:Dictionary = {
+		"messageId":msg_id,
+		"target":get_id()
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("recall","",_req_dic,timeout)
+	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins
+
+
+func get_cache_message(msg_id:int,timeout:float=-INF)->CacheMessage:
+	var _req_dic:Dictionary = {
+		"id":msg_id,
+		"target":get_id()
+	}
+	var _result_dic:Dictionary = await BotAdapter.send_bot_request("messageFromId","",_req_dic,timeout)
+	var ins:CacheMessage = CacheMessage.init_meta(_result_dic.get("data",{}))
+	return ins
