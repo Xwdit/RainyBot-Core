@@ -17,6 +17,7 @@ var update_sources:Dictionary = {
 	"Gitee":"https://gitee.com/xwdit/RainyBot-Core/raw/main/"
 }
 var full_update_url:String = "https://github.com/Xwdit/RainyBot-Core/releases/"
+var updating:bool = false
 
 
 func _ready():
@@ -77,7 +78,7 @@ func build_update_json(path:String)->void:
 
 
 func update_files(dict:Dictionary={},action:String="更新")->void:
-	var status:Dictionary = {"removed":0,"updated":0,"added":0}
+	var status:Dictionary = {"removed":[],"updated":[],"added":[],"remove_failed":[],"update_failed":[],"add_failed":[]}
 	GuiManager.console_print_warning("正在统计需要{action}的文件，请稍候...(下载源: %s)".format({"action":action})% ConfigManager.get_update_source())
 	if dict.is_empty():
 		Console.disable_sysout(true)
@@ -98,59 +99,100 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 		var args:Array = [format_bytes(result_dict["total_size"]),result_dict["updates"].size(),result_dict["adds"].size(),result_dict["removes"].size()]
 		var confirm:bool = await Console.popup_confirm("本次{action}需要下载 %s，将更改%s个文件，新增%s个文件，删除%s个文件\n确定要进行{action}吗？".format({"action":action})% args) 
 		if confirm:
-			GuiManager.console_print_warning("{action}已开始，在此期间请勿使用RainyBot...".format({"action":action}))
+			updating = true
+			GuiManager.console_print_warning("{action}已开始，RainyBot可能会暂时停止响应，在此期间请勿执行任何操作...".format({"action":action}))
+			await get_tree().create_timer(1).timeout
+			Console.disable_sysout(true)
 			for f in result_dict["removes"]:
-				status.removed += 1
-				GuiManager.console_print_warning("正在移除旧文件%s (%s/%s)"% [f,status.removed,result_dict["removes"].size()])
-				var dir:Directory = Directory.new()
-				if dir.file_exists(f):
-					var err:int = dir.remove(f)
-					if !err:
-						GuiManager.console_print_success("成功移除旧文件%s (%s/%s)"% [f,status.removed,result_dict["removes"].size()])
-						continue
-				var r_confirm:bool = await Console.popup_confirm("无法移除旧文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
+				_remove(status,f)
+			var r_progress:int = status.remove_failed.size()+status.removed.size()
+			while !r_progress == result_dict["removes"].size():
+				await get_tree().process_frame
+				r_progress = status.remove_failed.size()+status.removed.size()
+				DisplayServer.window_set_title("RainyBot - 自动更新 - 移除文件中(%s/%s)"%[r_progress,result_dict["removes"].size()])
+			Console.disable_sysout(false)
+			if !status.remove_failed.is_empty():
+				updating = false
+				var r_confirm:bool = await Console.popup_confirm("%s个文件删除失败\n您想要重试{action}RainyBot吗?".format({"action":action})% status.update_failed.size()) 
 				if r_confirm:
-					update_files(dict)
+					update_files(dict,action)
 					return
 				var d_confirm:bool = await Console.popup_confirm("增量{action}时出现问题，建议下载完整包进行覆盖安装，是否打开下载页面？".format({"action":action}))
 				if d_confirm:
 					OS.shell_open(full_update_url)
 				notification(NOTIFICATION_WM_CLOSE_REQUEST)
 				return
+			Console.disable_sysout(true)
 			for f in result_dict["updates"]:
-				status.updated += 1
-				GuiManager.console_print_warning("正在更改文件%s (%s/%s)"% [f,status.updated,result_dict["updates"].size()])
-				var err:int = await download_file(f,dict)
-				if err:
-					var r_confirm:bool = await Console.popup_confirm("无法更改文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
-					if r_confirm:
-						update_files(dict)
-						return
-					var d_confirm:bool = await Console.popup_confirm("增量{action}时出现问题，建议下载完整包进行覆盖安装，是否打开下载页面？".format({"action":action}))
-					if d_confirm:
-						OS.shell_open(full_update_url)
-					notification(NOTIFICATION_WM_CLOSE_REQUEST)
+				_update(status,f,dict)
+			var u_progress:int = status.update_failed.size()+status.updated.size()
+			while !u_progress == result_dict["updates"].size():
+				await get_tree().process_frame
+				u_progress = status.update_failed.size()+status.updated.size()
+				DisplayServer.window_set_title("RainyBot - 自动更新 - 更改文件中(%s/%s)"%[u_progress,result_dict["updates"].size()])
+			Console.disable_sysout(false)
+			if !status.update_failed.is_empty():
+				updating = false
+				var r_confirm:bool = await Console.popup_confirm("%s个文件更新失败\n您想要重试{action}RainyBot吗?".format({"action":action})% status.update_failed.size()) 
+				if r_confirm:
+					update_files(dict,action)
 					return
-				GuiManager.console_print_success("成功更改文件%s (%s/%s)"% [f,status.updated,result_dict["updates"].size()])
+				var d_confirm:bool = await Console.popup_confirm("增量{action}时出现问题，建议下载完整包进行覆盖安装，是否打开下载页面？".format({"action":action}))
+				if d_confirm:
+					OS.shell_open(full_update_url)
+				notification(NOTIFICATION_WM_CLOSE_REQUEST)
+				return
+			Console.disable_sysout(true)
 			for f in result_dict["adds"]:
-				status.added += 1
-				GuiManager.console_print_warning("正在添加文件%s (%s/%s)"% [f,status.added,result_dict["adds"].size()])
-				var err:int = await download_file(f,dict)
-				if err:
-					var r_confirm:bool = await Console.popup_confirm("无法添加文件%s\n您想要重试{action}RainyBot吗?".format({"action":action})% f) 
-					if r_confirm:
-						update_files(dict)
-						return
-					var d_confirm:bool = await Console.popup_confirm("增量{action}时出现问题，建议下载完整包进行覆盖安装，是否打开下载页面？".format({"action":action}))
-					if d_confirm:
-						OS.shell_open(full_update_url)
-					notification(NOTIFICATION_WM_CLOSE_REQUEST)
+				_add(status,f,dict)
+			var a_progress:int = status.add_failed.size()+status.added.size()
+			while !a_progress == result_dict["adds"].size():
+				await get_tree().process_frame
+				a_progress = status.add_failed.size()+status.added.size()
+				DisplayServer.window_set_title("RainyBot - 自动更新 - 添加文件中(%s/%s)"%[a_progress,result_dict["adds"].size()])
+			Console.disable_sysout(false)
+			if !status.add_failed.is_empty():
+				updating = false
+				var r_confirm:bool = await Console.popup_confirm("%s个文件添加失败\n您想要重试{action}RainyBot吗?".format({"action":action})% status.add_failed.size()) 
+				if r_confirm:
+					update_files(dict,action)
 					return
-				GuiManager.console_print_success("成功添加文件%s (%s/%s)"% [f,status.added,result_dict["adds"].size()])
+				var d_confirm:bool = await Console.popup_confirm("增量{action}时出现问题，建议下载完整包进行覆盖安装，是否打开下载页面？".format({"action":action}))
+				if d_confirm:
+					OS.shell_open(full_update_url)
+				notification(NOTIFICATION_WM_CLOSE_REQUEST)
+				return
+			updating = false
 			await GuiManager.popup_notification("增量{action}成功! 请点击确定来重新导入资源并重新启动RainyBot".format({"action":action})) 
 			GlobalManager.reimport()
 	else:
 		GuiManager.console_print_error("进行{action}时出现错误，请检查网络连接是否正常！ (某些下载源可能需要特殊上网方式)".format({"action":action}))
+
+
+func _remove(status:Dictionary,file:String):
+	var dir:Directory = Directory.new()
+	if dir.file_exists(file):
+		var err:int = dir.remove(file)
+		if !err:
+			status.removed.append[file]
+			return
+	status.remove_failed.append[file]
+
+
+func _update(status:Dictionary,file:String,dict:Dictionary):
+	var err:int = await download_file(file,dict)
+	if err:
+		status.update_failed.append(file)
+	else:
+		status.updated.append(file)
+
+
+func _add(status:Dictionary,file:String,dict:Dictionary):
+	var err:int = await download_file(file,dict)
+	if err:
+		status.add_failed.append(file)
+	else:
+		status.added.append(file)
 
 
 func format_bytes(bytes:int, decimals:int = 2)->String:
@@ -225,14 +267,12 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 
 func download_file(path:String,dict:Dictionary)->int:
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
-	Console.disable_sysout(true)
-	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+_unique_path.uri_encode())
+	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+_unique_path.uri_encode(),600)
 	var dir_path:String = (path).get_base_dir()+"/"
 	var _dir:Directory = Directory.new()
 	if !_dir.dir_exists(dir_path):
 		_dir.make_dir_recursive(dir_path)
 	var err:int = result.save_to_file(path)
-	Console.disable_sysout(false)
 	var file:File = File.new()
 	var md5:String = file.get_md5(path)
 	if !err and dict[_unique_path]["md5"]==md5:

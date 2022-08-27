@@ -17,11 +17,13 @@ border_color = Color(0.235294, 0.776471, 0.8, 1)
 border_blend = true
 
 [node name="Console" type="Panel"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_qi3ek")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
