@@ -132,17 +132,9 @@ func save(path:String,color_count:int=256)->int:
 	if data.get_frame_count() == 0:
 		GuiManager.console_print_error("此Gif图像实例中不存在任何图像帧，因此无法将其保存为文件！")
 		return ERR_DOES_NOT_EXIST
-	var _thread:Thread = Thread.new()
-	var _err:int = _thread.start(data.save_gif.bind(path,color_count))
+	var _err:int = data.save_gif(path,color_count)
 	if !_err:
-		while _thread.is_alive():
-			await GlobalManager.get_tree().process_frame
-		var _gif_err = _thread.wait_to_finish()
-		if !_gif_err:
-			GuiManager.console_print_success("成功将Gif图像数据储存至文件 %s"% path)
-		else:
-			GuiManager.console_print_error("无法将指定Gif图像数据储存到文件 %s，请检查文件路径或权限是否正确!"% path)
-		return _gif_err
+		GuiManager.console_print_success("成功将Gif图像数据储存至文件 %s"% path)
 	else:
-		GuiManager.console_print_error("无法创建用于储存Gif图像数据的线程，请再试一次!")
+		GuiManager.console_print_error("无法将指定Gif图像数据储存到文件 %s，请检查文件路径或权限是否正确!"% path)
 	return _err
