@@ -40,7 +40,6 @@ metadata/_edit_layout_mode = 1
 
 [node name="Console" parent="." instance=ExtResource("2_xrvn5")]
 layout_mode = 1
-anchors_preset = 15
 offset_top = 33.0
 grow_horizontal = 2
 grow_vertical = 2
