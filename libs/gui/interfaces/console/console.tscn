@@ -20,6 +20,8 @@ border_blend = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qi3ek")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
@@ -30,20 +32,23 @@ offset_left = 8.0
 offset_top = 10.0
 offset_right = -8.0
 offset_bottom = -8.0
-split_offset = 220
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 240
 
 [node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource("1_yhib5")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_right = 1008.0
-offset_bottom = 505.0
+offset_right = 1136.0
+offset_bottom = 549.0
 
 [node name="CommandInput" parent="VSplitContainer" instance=ExtResource("2_i0io6")]
+anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 517.0
-offset_right = 1008.0
-offset_bottom = 582.0
+offset_top = 561.0
+offset_right = 1136.0
+offset_bottom = 630.0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")

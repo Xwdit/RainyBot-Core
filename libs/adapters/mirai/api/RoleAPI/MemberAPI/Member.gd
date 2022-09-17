@@ -167,7 +167,7 @@ func recall_message(msg_id:int,timeout:float=-INF)->BotRequestResult:
 
 func get_cache_message(msg_id:int,timeout:float=-INF)->CacheMessage:
 	var _req_dic:Dictionary = {
-		"id":msg_id,
+		"messageId":msg_id,
 		"target":get_id()
 	}
 	var _result_dic:Dictionary = await BotAdapter.send_bot_request("messageFromId","",_req_dic,timeout)

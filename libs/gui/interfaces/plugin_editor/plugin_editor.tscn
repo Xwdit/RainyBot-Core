@@ -4,16 +4,20 @@
 [ext_resource type="PackedScene" uid="uid://6x8cc0fngicq" path="res://libs/gui/interfaces/plugin_editor/modules/code_edit/code_edit.tscn" id="2_mo1oq"]
 
 [node name="PluginEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_afc2x")
 
 [node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.113725, 0.133333, 0.160784, 1)
 
 [node name="CodeEdit" parent="." instance=ExtResource("2_mo1oq")]
+anchors_preset = 15
 offset_top = 32.0
 offset_bottom = -30.0
 focus_neighbor_left = NodePath(".")
@@ -24,6 +28,8 @@ focus_next = NodePath(".")
 focus_previous = NodePath(".")
 
 [node name="EditorPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
@@ -55,6 +61,7 @@ text = "打开API文档"
 flat = true
 
 [node name="File" type="HBoxContainer" parent="EditorPanel"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -78,6 +85,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Edit" type="HBoxContainer" parent="EditorPanel"]
+anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -96,12 +104,15 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="StatusPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -30.0
 
 [node name="CodeStatus" type="Label" parent="StatusPanel"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
