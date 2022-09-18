@@ -109,6 +109,20 @@
 				Performs a cubic interpolation between this vector and [param b] using [param pre_a] and [param post_b] as handles, and returns the result at position [param weight]. [param weight] is on the range of 0.0 to 1.0, representing the amount of interpolation.
 			</description>
 		</method>
+		<method name="cubic_interpolate_in_time" qualifiers="const">
+			<return type="Vector3" />
+			<param index="0" name="b" type="Vector3" />
+			<param index="1" name="pre_a" type="Vector3" />
+			<param index="2" name="post_b" type="Vector3" />
+			<param index="3" name="weight" type="float" />
+			<param index="4" name="b_t" type="float" />
+			<param index="5" name="pre_a_t" type="float" />
+			<param index="6" name="post_b_t" type="float" />
+			<description>
+				Performs a cubic interpolation between this vector and [param b] using [param pre_a] and [param post_b] as handles, and returns the result at position [param weight]. [param weight] is on the range of 0.0 to 1.0, representing the amount of interpolation.
+				It can perform smoother interpolation than [code]cubic_interpolate()[/code] by the time values.
+			</description>
+		</method>
 		<method name="direction_to" qualifiers="const">
 			<return type="Vector3" />
 			<param index="0" name="to" type="Vector3" />
@@ -164,6 +178,13 @@
 			<return type="bool" />
 			<description>
 				Returns [code]true[/code] if the vector is normalized, [code]false[/code] otherwise.
+			</description>
+		</method>
+		<method name="is_zero_approx" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] if this vector's values are approximately zero, by running [method @GlobalScope.is_zero_approx] on each component.
+				This method is faster than using [method is_equal_approx] with one value as a zero vector.
 			</description>
 		</method>
 		<method name="length" qualifiers="const">

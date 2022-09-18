@@ -70,8 +70,8 @@
 			<return type="float" />
 			<param index="0" name="to" type="Quaternion" />
 			<description>
-				Returns the angle between this quaternion and [code]to[/code]. This is the magnitude of the angle you would need to rotate by to get from one to the other.
-				[b]Note:[/b] This method has an abnormally high amount of floating-point error, so methods such as [code]is_zero_approx[/code] will not work reliably.
+				Returns the angle between this quaternion and [param to]. This is the magnitude of the angle you would need to rotate by to get from one to the other.
+				[b]Note:[/b] This method has an abnormally high number of floating-point errors, so methods such as [code]is_zero_approx[/code] will not work reliably.
 			</description>
 		</method>
 		<method name="dot" qualifiers="const">
@@ -112,7 +112,7 @@
 			<return type="bool" />
 			<param index="0" name="to" type="Quaternion" />
 			<description>
-				Returns [code]true[/code] if this quaternion and [code]quat[/code] are approximately equal, by running [method @GlobalScope.is_equal_approx] on each component.
+				Returns [code]true[/code] if this quaternion and [param to] are approximately equal, by running [method @GlobalScope.is_equal_approx] on each component.
 			</description>
 		</method>
 		<method name="is_normalized" qualifiers="const">
@@ -149,7 +149,7 @@
 			<param index="0" name="to" type="Quaternion" />
 			<param index="1" name="weight" type="float" />
 			<description>
-				Returns the result of the spherical linear interpolation between this quaternion and [code]to[/code] by amount [code]weight[/code].
+				Returns the result of the spherical linear interpolation between this quaternion and [param to] by amount [param weight].
 				[b]Note:[/b] Both quaternions must be normalized.
 			</description>
 		</method>
@@ -158,7 +158,7 @@
 			<param index="0" name="to" type="Quaternion" />
 			<param index="1" name="weight" type="float" />
 			<description>
-				Returns the result of the spherical linear interpolation between this quaternion and [code]to[/code] by amount [code]weight[/code], but without checking if the rotation path is not bigger than 90 degrees.
+				Returns the result of the spherical linear interpolation between this quaternion and [param to] by amount [param weight], but without checking if the rotation path is not bigger than 90 degrees.
 			</description>
 		</method>
 		<method name="spherical_cubic_interpolate" qualifiers="const">
@@ -168,7 +168,21 @@
 			<param index="2" name="post_b" type="Quaternion" />
 			<param index="3" name="weight" type="float" />
 			<description>
-				Performs a spherical cubic interpolation between quaternions [code]pre_a[/code], this vector, [code]b[/code], and [code]post_b[/code], by the given amount [code]weight[/code].
+				Performs a spherical cubic interpolation between quaternions [param pre_a], this vector, [param b], and [param post_b], by the given amount [param weight].
+			</description>
+		</method>
+		<method name="spherical_cubic_interpolate_in_time" qualifiers="const">
+			<return type="Quaternion" />
+			<param index="0" name="b" type="Quaternion" />
+			<param index="1" name="pre_a" type="Quaternion" />
+			<param index="2" name="post_b" type="Quaternion" />
+			<param index="3" name="weight" type="float" />
+			<param index="4" name="b_t" type="float" />
+			<param index="5" name="pre_a_t" type="float" />
+			<param index="6" name="post_b_t" type="float" />
+			<description>
+				Performs a spherical cubic interpolation between quaternions [param pre_a], this vector, [param b], and [param post_b], by the given amount [param weight].
+				It can perform smoother interpolation than [code]spherical_cubic_interpolate()[/code] by the time values.
 			</description>
 		</method>
 	</methods>

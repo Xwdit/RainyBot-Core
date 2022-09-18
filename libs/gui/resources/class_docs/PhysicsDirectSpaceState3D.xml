@@ -12,7 +12,7 @@
 	</tutorials>
 	<methods>
 		<method name="cast_motion">
-			<return type="Array" />
+			<return type="PackedFloat32Array" />
 			<param index="0" name="parameters" type="PhysicsShapeQueryParameters3D" />
 			<description>
 				Checks how far a [Shape3D] can move without colliding. All the parameters for the query, including the shape, are supplied through a [PhysicsShapeQueryParameters3D] object.
@@ -21,7 +21,7 @@
 			</description>
 		</method>
 		<method name="collide_shape">
-			<return type="Array" />
+			<return type="PackedVector2Array[]" />
 			<param index="0" name="parameters" type="PhysicsShapeQueryParameters3D" />
 			<param index="1" name="max_results" type="int" default="32" />
 			<description>
@@ -46,7 +46,7 @@
 			</description>
 		</method>
 		<method name="intersect_point">
-			<return type="Array" />
+			<return type="Dictionary[]" />
 			<param index="0" name="parameters" type="PhysicsPointQueryParameters3D" />
 			<param index="1" name="max_results" type="int" default="32" />
 			<description>
@@ -55,7 +55,7 @@
 				[code]collider_id[/code]: The colliding object's ID.
 				[code]rid[/code]: The intersecting object's [RID].
 				[code]shape[/code]: The shape index of the colliding shape.
-				The number of intersections can be limited with the [code]max_results[/code] parameter, to reduce the processing time.
+				The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 			</description>
 		</method>
 		<method name="intersect_ray">
@@ -73,7 +73,7 @@
 			</description>
 		</method>
 		<method name="intersect_shape">
-			<return type="Array" />
+			<return type="Dictionary[]" />
 			<param index="0" name="parameters" type="PhysicsShapeQueryParameters3D" />
 			<param index="1" name="max_results" type="int" default="32" />
 			<description>
@@ -82,7 +82,7 @@
 				[code]collider_id[/code]: The colliding object's ID.
 				[code]rid[/code]: The intersecting object's [RID].
 				[code]shape[/code]: The shape index of the colliding shape.
-				The number of intersections can be limited with the [code]max_results[/code] parameter, to reduce the processing time.
+				The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 				[b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 			</description>
 		</method>

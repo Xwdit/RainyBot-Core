@@ -90,7 +90,7 @@
 		<method name="get_area" qualifiers="const">
 			<return type="int" />
 			<description>
-				Returns the area of the [Rect2i]. See also [method has_no_area].
+				Returns the area of the [Rect2i]. See also [method has_area].
 			</description>
 		</method>
 		<method name="get_center" qualifiers="const">
@@ -104,7 +104,7 @@
 			<return type="Rect2i" />
 			<param index="0" name="amount" type="int" />
 			<description>
-				Returns a copy of the [Rect2i] grown by the specified [code]amount[/code] on all sides.
+				Returns a copy of the [Rect2i] grown by the specified [param amount] on all sides.
 			</description>
 		</method>
 		<method name="grow_individual" qualifiers="const">
@@ -122,14 +122,13 @@
 			<param index="0" name="side" type="int" />
 			<param index="1" name="amount" type="int" />
 			<description>
-				Returns a copy of the [Rect2i] grown by the specified [code]amount[/code] on the specified [enum Side].
+				Returns a copy of the [Rect2i] grown by the specified [param amount] on the specified [enum Side].
 			</description>
 		</method>
-		<method name="has_no_area" qualifiers="const">
+		<method name="has_area" qualifiers="const">
 			<return type="bool" />
 			<description>
-				Returns [code]true[/code] if the [Rect2i] is flat or empty, [code]false[/code] otherwise. See also [method get_area].
-				[b]Note:[/b] If the [Rect2i] has a negative size and is not flat or empty, [method has_no_area] will return [code]true[/code].
+				Returns [code]true[/code] if the [Rect2i] has area, and [code]false[/code] if the [Rect2i] is linear, empty, or has a negative [member size]. See also [method get_area].
 			</description>
 		</method>
 		<method name="has_point" qualifiers="const">
@@ -159,7 +158,7 @@
 			<return type="Rect2i" />
 			<param index="0" name="b" type="Rect2i" />
 			<description>
-				Returns a larger [Rect2i] that contains this [Rect2i] and [code]b[/code].
+				Returns a larger [Rect2i] that contains this [Rect2i] and [param b].
 			</description>
 		</method>
 	</methods>

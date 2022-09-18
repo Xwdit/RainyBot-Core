@@ -22,15 +22,15 @@
 			<return type="void" />
 			<param index="0" name="primitive" type="int" enum="Mesh.PrimitiveType" />
 			<param index="1" name="arrays" type="Array" />
-			<param index="2" name="blend_shapes" type="Array" default="[]" />
+			<param index="2" name="blend_shapes" type="Array[]" default="[]" />
 			<param index="3" name="lods" type="Dictionary" default="{}" />
 			<param index="4" name="material" type="Material" default="null" />
 			<param index="5" name="name" type="String" default="&quot;&quot;" />
 			<param index="6" name="flags" type="int" default="0" />
 			<description>
 				Creates a new surface, analogous to [method ArrayMesh.add_surface_from_arrays].
-				Surfaces are created to be rendered using a [code]primitive[/code], which may be any of the types defined in [enum Mesh.PrimitiveType]. (As a note, when using indices, it is recommended to only use points, lines, or triangles.) [method Mesh.get_surface_count] will become the [code]surf_idx[/code] for this new surface.
-				The [code]arrays[/code] argument is an array of arrays. See [enum Mesh.ArrayType] for the values used in this array. For example, [code]arrays[0][/code] is the array of vertices. That first vertex sub-array is always required; the others are optional. Adding an index array puts this function into "index mode" where the vertex and other arrays become the sources of data and the index array defines the vertex order. All sub-arrays must have the same length as the vertex array (or be an exact multiple of the vertex array's length, when multiple elements of a sub-array correspond to a single vertex) or be empty, except for [constant Mesh.ARRAY_INDEX] if it is used.
+				Surfaces are created to be rendered using a [param primitive], which may be any of the types defined in [enum Mesh.PrimitiveType]. (As a note, when using indices, it is recommended to only use points, lines, or triangles.) [method Mesh.get_surface_count] will become the [code]surf_idx[/code] for this new surface.
+				The [param arrays] argument is an array of arrays. See [enum Mesh.ArrayType] for the values used in this array. For example, [code]arrays[0][/code] is the array of vertices. That first vertex sub-array is always required; the others are optional. Adding an index array puts this function into "index mode" where the vertex and other arrays become the sources of data and the index array defines the vertex order. All sub-arrays must have the same length as the vertex array (or be an exact multiple of the vertex array's length, when multiple elements of a sub-array correspond to a single vertex) or be empty, except for [constant Mesh.ARRAY_INDEX] if it is used.
 			</description>
 		</method>
 		<method name="clear">
@@ -43,10 +43,12 @@
 			<return type="void" />
 			<param index="0" name="normal_merge_angle" type="float" />
 			<param index="1" name="normal_split_angle" type="float" />
+			<param index="2" name="bone_transform_array" type="Array" />
 			<description>
 				Generates all lods for this ImporterMesh.
-				[code]normal_merge_angle[/code] and [code]normal_split_angle[/code] are in degrees and used in the same way as the importer settings in [code]lods[/code]. As a good default, use 25 and 60 respectively.
+				[param normal_merge_angle] and [param normal_split_angle] are in degrees and used in the same way as the importer settings in [code]lods[/code]. As a good default, use 25 and 60 respectively.
 				The number of generated lods can be accessed using [method get_surface_lod_count], and each LOD is available in [method get_surface_lod_size] and [method get_surface_lod_indices].
+				[param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 			</description>
 		</method>
 		<method name="get_blend_shape_count" qualifiers="const">
@@ -80,7 +82,7 @@
 			<description>
 				Returns the mesh data represented by this [ImporterMesh] as a usable [ArrayMesh].
 				This method caches the returned mesh, and subsequent calls will return the cached data until [method clear] is called.
-				If not yet cached and [code]base_mesh[/code] is provided, [code]base_mesh[/code] will be used and mutated.
+				If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
 			</description>
 		</method>
 		<method name="get_surface_arrays" qualifiers="const">
@@ -101,7 +103,7 @@
 		<method name="get_surface_count" qualifiers="const">
 			<return type="int" />
 			<description>
-				Returns the amount of surfaces that the mesh holds.
+				Returns the number of surfaces that the mesh holds.
 			</description>
 		</method>
 		<method name="get_surface_format" qualifiers="const">
@@ -115,7 +117,7 @@
 			<return type="int" />
 			<param index="0" name="surface_idx" type="int" />
 			<description>
-				Returns the amount of lods that the mesh holds on a given surface.
+				Returns the number of lods that the mesh holds on a given surface.
 			</description>
 		</method>
 		<method name="get_surface_lod_indices" qualifiers="const">

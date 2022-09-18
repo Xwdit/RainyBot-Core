@@ -232,7 +232,7 @@
 			<param index="2" name="position" type="Vector2" default="Vector2(0, 0)" />
 			<description>
 				Adds a constant positioned force to the body that keeps being applied over time until cleared with [code]body_set_constant_force(body, Vector2(0, 0))[/code].
-				[code]position[/code] is the offset from the body origin in global coordinates.
+				[param position] is the offset from the body origin in global coordinates.
 			</description>
 		</method>
 		<method name="body_add_constant_torque">
@@ -279,7 +279,7 @@
 			<param index="2" name="position" type="Vector2" default="Vector2(0, 0)" />
 			<description>
 				Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
-				[code]position[/code] is the offset from the body origin in global coordinates.
+				[param position] is the offset from the body origin in global coordinates.
 			</description>
 		</method>
 		<method name="body_apply_impulse">
@@ -290,7 +290,7 @@
 			<description>
 				Applies a positioned impulse to the body.
 				An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
-				[code]position[/code] is the offset from the body origin in global coordinates.
+				[param position] is the offset from the body origin in global coordinates.
 			</description>
 		</method>
 		<method name="body_apply_torque">
@@ -356,6 +356,13 @@
 			<param index="0" name="body" type="RID" />
 			<description>
 				Returns the physics layer or layers a body can collide with.
+			</description>
+		</method>
+		<method name="body_get_collision_priority" qualifiers="const">
+			<return type="float" />
+			<param index="0" name="body" type="RID" />
+			<description>
+				Returns the body's collision priority.
 			</description>
 		</method>
 		<method name="body_get_constant_force" qualifiers="const">
@@ -509,6 +516,14 @@
 				Sets the physics layer or layers a body can collide with.
 			</description>
 		</method>
+		<method name="body_set_collision_priority">
+			<return type="void" />
+			<param index="0" name="body" type="RID" />
+			<param index="1" name="priority" type="float" />
+			<description>
+				Sets the body's collision priority.
+			</description>
+		</method>
 		<method name="body_set_constant_force">
 			<return type="void" />
 			<param index="0" name="body" type="RID" />
@@ -553,7 +568,7 @@
 			<param index="0" name="body" type="RID" />
 			<param index="1" name="amount" type="int" />
 			<description>
-				Sets the maximum contacts to report. Bodies can keep a log of the contacts with other bodies, this is enabled by setting the maximum amount of contacts reported to a number greater than 0.
+				Sets the maximum contacts to report. Bodies can keep a log of the contacts with other bodies. This is enabled by setting the maximum number of contacts reported to a number greater than 0.
 			</description>
 		</method>
 		<method name="body_set_mode">
@@ -597,7 +612,7 @@
 			<param index="2" name="enable" type="bool" />
 			<param index="3" name="margin" type="float" />
 			<description>
-				Enables one way collision on body if [code]enable[/code] is [code]true[/code].
+				Enables one way collision on body if [param enable] is [code]true[/code].
 			</description>
 		</method>
 		<method name="body_set_shape_disabled">
@@ -606,7 +621,7 @@
 			<param index="1" name="shape_idx" type="int" />
 			<param index="2" name="disabled" type="bool" />
 			<description>
-				Disables shape in body if [code]disable[/code] is [code]true[/code].
+				Disables shape in body if [param disabled] is [code]true[/code].
 			</description>
 		</method>
 		<method name="body_set_shape_transform">
@@ -882,7 +897,7 @@
 			Constant to set/get the default solver bias for all physics constraints. A solver bias is a factor controlling how much two objects "rebound", after violating a constraint, to avoid leaving them in that state because of numerical imprecision.
 		</constant>
 		<constant name="SPACE_PARAM_SOLVER_ITERATIONS" value="8" enum="SpaceParameter">
-			Constant to set/get the number of solver iterations for all contacts and constraints. The greater the amount of iterations, the more accurate the collisions will be. However, a greater amount of iterations requires more CPU power, which can decrease performance.
+			Constant to set/get the number of solver iterations for all contacts and constraints. The greater the number of iterations, the more accurate the collisions will be. However, a greater number of iterations requires more CPU power, which can decrease performance.
 		</constant>
 		<constant name="SHAPE_WORLD_BOUNDARY" value="0" enum="ShapeType">
 			This is the constant for creating world boundary shapes. A world boundary shape is an [i]infinite[/i] line with an origin point, and a normal. Thus, it can be used for front/behind checks.
@@ -965,11 +980,11 @@
 		<constant name="BODY_MODE_KINEMATIC" value="1" enum="BodyMode">
 			Constant for kinematic bodies. In this mode, a body can be only moved by user code and collides with other bodies along its path.
 		</constant>
-		<constant name="BODY_MODE_DYNAMIC" value="2" enum="BodyMode">
-			Constant for dynamic bodies. In this mode, a body can be pushed by other bodies and has forces applied.
+		<constant name="BODY_MODE_RIGID" value="2" enum="BodyMode">
+			Constant for rigid bodies. In this mode, a body can be pushed by other bodies and has forces applied.
 		</constant>
-		<constant name="BODY_MODE_DYNAMIC_LINEAR" value="3" enum="BodyMode">
-			Constant for linear dynamic bodies. In this mode, a body is dynamic but can not rotate, and only its linear velocity is affected by external forces.
+		<constant name="BODY_MODE_RIGID_LINEAR" value="3" enum="BodyMode">
+			Constant for linear rigid bodies. In this mode, a body can not rotate, and only its linear velocity is affected by external forces.
 		</constant>
 		<constant name="BODY_PARAM_BOUNCE" value="0" enum="BodyParameter">
 			Constant to set/get a body's bounce factor.
@@ -1042,6 +1057,8 @@
 		<constant name="JOINT_PARAM_MAX_BIAS" value="1" enum="JointParam">
 		</constant>
 		<constant name="JOINT_PARAM_MAX_FORCE" value="2" enum="JointParam">
+		</constant>
+		<constant name="PIN_JOINT_SOFTNESS" value="0" enum="PinJointParam">
 		</constant>
 		<constant name="DAMPED_SPRING_REST_LENGTH" value="0" enum="DampedSpringParam">
 			Sets the resting length of the spring joint. The joint will always try to go to back this length when pulled apart.
