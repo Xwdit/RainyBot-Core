@@ -6,14 +6,14 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
 bg_color = Color(0.101961, 0.113725, 0.137255, 0)
 border_width_top = 2
-border_color = Color(0.235294, 0.776471, 0.8, 1)
+border_color = Color(0.356863, 0.580392, 0.776471, 1)
 border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jndw"]
 content_margin_left = 2.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_top = 2
-border_color = Color(0.235294, 0.776471, 0.8, 1)
+border_color = Color(0.356863, 0.580392, 0.776471, 1)
 border_blend = true
 
 [node name="Console" type="Panel"]
@@ -40,15 +40,17 @@ split_offset = 240
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_right = 1136.0
-offset_bottom = 549.0
+offset_bottom = 551.0
 
 [node name="CommandInput" parent="VSplitContainer" instance=ExtResource("2_i0io6")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 561.0
+offset_top = 559.0
 offset_right = 1136.0
 offset_bottom = 630.0
+grow_horizontal = 1
+grow_vertical = 1
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")

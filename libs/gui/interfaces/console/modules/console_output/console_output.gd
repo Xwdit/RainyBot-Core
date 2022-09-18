@@ -19,21 +19,21 @@ func add_newline_with_time(_text)->void:
 
 func add_error(_text)->void:
 	var _s_text:String = str(_text)
-	push_color(Color.RED)
+	push_color(Color("ff7085"))
 	add_newline_with_time(_s_text)
 	pop()
 	
 	
 func add_warning(_text)->void:
 	var _s_text:String = str(_text)
-	push_color(Color.YELLOW)
+	push_color(Color("ffeda1"))
 	add_newline_with_time(_s_text)
 	pop()
 
 
 func add_success(_text)->void:
 	var _s_text:String = str(_text)
-	push_color(Color.GREEN)
+	push_color(Color("42ffc2"))
 	add_newline_with_time(_s_text)
 	pop()
 

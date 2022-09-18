@@ -55,7 +55,7 @@ script = ExtResource("3_j8q6e")
 
 [node name="MainMenu" type="MenuButton" parent="ControlBar"]
 layout_mode = 2
-offset_right = 56.0
+offset_right = 60.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "主菜单"
@@ -77,8 +77,8 @@ popup/item_5/id = 5
 
 [node name="ConsoleMenu" type="MenuButton" parent="ControlBar"]
 layout_mode = 2
-offset_left = 60.0
-offset_right = 116.0
+offset_left = 64.0
+offset_right = 124.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "控制台"
@@ -94,8 +94,8 @@ popup/item_2/id = 2
 
 [node name="PluginMenu" type="MenuButton" parent="ControlBar"]
 layout_mode = 2
-offset_left = 120.0
-offset_right = 160.0
+offset_left = 128.0
+offset_right = 172.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "插件"
@@ -115,8 +115,8 @@ popup/item_4/id = 4
 
 [node name="AdapterMenu" type="MenuButton" parent="ControlBar"]
 layout_mode = 2
-offset_left = 164.0
-offset_right = 236.0
+offset_left = 176.0
+offset_right = 252.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "协议后端"
@@ -134,8 +134,8 @@ popup/item_3/id = 3
 
 [node name="HelpMenu" type="MenuButton" parent="ControlBar"]
 layout_mode = 2
-offset_left = 240.0
-offset_right = 280.0
+offset_left = 256.0
+offset_right = 300.0
 offset_bottom = 33.0
 size_flags_vertical = 3
 text = "帮助"
