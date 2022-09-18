@@ -674,6 +674,7 @@ run/main_run_args="--from-editor"
 
 [gui]
 
+theme/custom="res://libs/gui/resources/theme/main_theme.res"
 theme/custom_font="res://libs/gui/resources/font/main_font.tres"
 
 [input]
