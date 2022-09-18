@@ -4,17 +4,10 @@ extends Node
 var _confirm_popup:PackedScene = load("res://libs/gui/modules/popups/confirm_popup/confirm_popup.tscn")
 var _accept_popup:PackedScene = load("res://libs/gui/modules/popups/accept_popup/accept_popup.tscn")
 var _editor:PackedScene = load("res://libs/gui/interfaces/plugin_editor/modules/editor_window/plugin_editor_window.tscn")
-var _manager:Window = load("res://libs/gui/interfaces/plugin_manager_gui/modules/gui_window/gui_window.tscn").instantiate()
 
 var scene_editor_pid:int = -1
 
 var sysout_disabled:bool = false
-
-
-func _ready()->void:
-	await get_tree().physics_frame
-	_manager.name = "PluginManagerGuiWindow"
-	add_child(_manager,true)
 
 	
 func open_plugin_editor(path:String)->int:
@@ -34,13 +27,6 @@ func open_plugin_editor(path:String)->int:
 	add_child(_ins,true)
 	_ins.load_script(path)
 	return OK
-
-
-func open_plugin_manager()->void:
-	console_print_warning("正在启动插件管理器，请稍候.....")
-	await get_tree().physics_frame
-	_manager.popup_centered(Vector2i(1024,600))
-	_manager.grab_focus()
 	
 	
 func open_scene_editor()->void:

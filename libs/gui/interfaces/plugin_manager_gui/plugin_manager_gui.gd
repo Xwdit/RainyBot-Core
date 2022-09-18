@@ -32,6 +32,11 @@ func _ready():
 	PluginManager.connect("plugin_list_changed",update_plugin_list)
 
 
+func _on_plugin_manager_gui_visibility_changed():
+	if is_inside_tree():
+		update_plugin_list(true)
+
+
 func update_plugin_list(reload_dic:bool=false)->void:
 	var _file_dic:Dictionary = PluginManager.plugin_files_dic
 	if reload_dic:
