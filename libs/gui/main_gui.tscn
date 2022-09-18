@@ -16,6 +16,7 @@ size_flags_vertical = 3
 script = ExtResource("1_g1tev")
 
 [node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,6 +25,7 @@ grow_vertical = 2
 color = Color(0.113725, 0.133333, 0.160784, 1)
 
 [node name="Status" type="Label" parent="."]
+layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -37,21 +39,22 @@ vertical_alignment = 1
 metadata/_edit_layout_mode = 1
 
 [node name="Console" parent="." instance=ExtResource("2_xrvn5")]
+layout_mode = 1
 offset_top = 33.0
-grow_horizontal = 2
-grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 
 [node name="ControlBar" type="HBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 4.0
 offset_right = 604.0
 offset_bottom = 33.0
 script = ExtResource("3_j8q6e")
 
 [node name="MainMenu" type="MenuButton" parent="ControlBar"]
+layout_mode = 2
 offset_right = 56.0
 offset_bottom = 33.0
 size_flags_vertical = 3
@@ -73,6 +76,7 @@ popup/item_5/text = "退出"
 popup/item_5/id = 5
 
 [node name="ConsoleMenu" type="MenuButton" parent="ControlBar"]
+layout_mode = 2
 offset_left = 60.0
 offset_right = 116.0
 offset_bottom = 33.0
@@ -89,6 +93,7 @@ popup/item_2/text = "打开控制台日志目录"
 popup/item_2/id = 2
 
 [node name="PluginMenu" type="MenuButton" parent="ControlBar"]
+layout_mode = 2
 offset_left = 120.0
 offset_right = 160.0
 offset_bottom = 33.0
@@ -109,6 +114,7 @@ popup/item_4/text = "打开插件文件夹"
 popup/item_4/id = 4
 
 [node name="AdapterMenu" type="MenuButton" parent="ControlBar"]
+layout_mode = 2
 offset_left = 164.0
 offset_right = 236.0
 offset_bottom = 33.0
@@ -127,6 +133,7 @@ popup/item_3/text = "打开协议后端文件夹"
 popup/item_3/id = 3
 
 [node name="HelpMenu" type="MenuButton" parent="ControlBar"]
+layout_mode = 2
 offset_left = 240.0
 offset_right = 280.0
 offset_bottom = 33.0

@@ -89,7 +89,7 @@ msgstr ""
 "Project-Id-Version: Chinese (Simplified) (Godot Engine)\n"
 "Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
 "POT-Creation-Date: 2018-01-20 12:15+0200\n"
-"PO-Revision-Date: 2022-06-01 10:42+0000\n"
+"PO-Revision-Date: 2022-08-25 13:04+0000\n"
 "Last-Translator: Haoyu Qiu <timothyqiu32@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "godot-engine/godot/zh_Hans/>\n"
@@ -98,7 +98,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.13-dev\n"
+"X-Generator: Weblate 4.14-dev\n"
 
 #: core/bind/core_bind.cpp main/main.cpp
 msgid "Tablet Driver"
@@ -282,9 +282,10 @@ msgid "Data"
 msgstr "数据"
 
 #: core/io/file_access_network.cpp core/register_core_types.cpp
-#: editor/editor_settings.cpp main/main.cpp
+#: editor/editor_file_dialog.cpp editor/editor_settings.cpp main/main.cpp
 #: modules/gdscript/language_server/gdscript_language_server.cpp
 #: modules/webrtc/webrtc_data_channel.h modules/websocket/websocket_macros.h
+#: scene/gui/file_dialog.cpp
 msgid "Network"
 msgstr "网络"
 
@@ -388,9 +389,8 @@ msgid "Not enough bytes for decoding bytes, or invalid format."
 msgstr "解码字节数不够，或格式无效。"
 
 #: core/math/expression.cpp
-#, fuzzy
 msgid "Invalid input %d (not passed) in expression"
-msgstr "表达式的输入 %i 无效（未传递）"
+msgstr "表达式的输入 %d 无效（未传递）"
 
 #: core/math/expression.cpp
 msgid "self can't be used because instance is null (not passed)"
@@ -433,6 +433,14 @@ msgstr "消息队列"
 msgid "Max Size (KB)"
 msgstr "最大大小（KB）"
 
+#: core/os/input.cpp
+msgid "Mouse Mode"
+msgstr "鼠标模式"
+
+#: core/os/input.cpp
+msgid "Use Accumulated Input"
+msgstr "使用累积输入"
+
 #: core/os/input_event.cpp editor/project_settings_editor.cpp
 #: servers/audio_server.cpp
 msgid "Device"
@@ -457,6 +465,10 @@ msgstr "Meta"
 #: core/os/input_event.cpp
 msgid "Command"
 msgstr "Command"
+
+#: core/os/input_event.cpp
+msgid "Physical"
+msgstr "物理"
 
 #: core/os/input_event.cpp scene/2d/touch_screen_button.cpp
 #: scene/gui/base_button.cpp scene/gui/texture_button.cpp
@@ -507,6 +519,10 @@ msgstr "倾斜"
 #: core/os/input_event.cpp
 msgid "Pressure"
 msgstr "压力"
+
+#: core/os/input_event.cpp
+msgid "Pen Inverted"
+msgstr "笔触翻转"
 
 #: core/os/input_event.cpp
 msgid "Relative"
@@ -612,7 +628,8 @@ msgstr "描述"
 
 #: core/project_settings.cpp editor/editor_node.cpp editor/editor_settings.cpp
 #: editor/plugins/script_editor_plugin.cpp editor/project_manager.cpp
-#: main/main.cpp
+#: main/main.cpp platform/android/export/export_plugin.cpp
+#: platform/javascript/export/export.cpp
 msgid "Run"
 msgstr "运行"
 
@@ -695,6 +712,10 @@ msgid "Main Run Args"
 msgstr "主运行参数"
 
 #: core/project_settings.cpp
+msgid "Scene Naming"
+msgstr "场景命名"
+
+#: core/project_settings.cpp
 msgid "Search In File Extensions"
 msgstr "搜索文件扩展名"
 
@@ -702,18 +723,13 @@ msgstr "搜索文件扩展名"
 msgid "Script Templates Search Path"
 msgstr "脚本模板搜索路径"
 
-#: core/project_settings.cpp editor/editor_node.cpp
-#: editor/plugins/version_control_editor_plugin.cpp
-msgid "Version Control"
-msgstr "版本控制"
+#: core/project_settings.cpp
+msgid "Version Control Autoload On Startup"
+msgstr "启动时自动加载版本控制"
 
 #: core/project_settings.cpp
-msgid "Autoload On Startup"
-msgstr "启动时自动加载"
-
-#: core/project_settings.cpp
-msgid "Plugin Name"
-msgstr "插件名"
+msgid "Version Control Plugin Name"
+msgstr "版本控制插件名"
 
 #: core/project_settings.cpp scene/2d/collision_object_2d.cpp
 #: scene/3d/collision_object.cpp scene/gui/control.cpp
@@ -820,7 +836,8 @@ msgid "Quality"
 msgstr "质量"
 
 #: core/project_settings.cpp scene/gui/file_dialog.cpp
-#: scene/main/scene_tree.cpp servers/visual_server.cpp
+#: scene/main/scene_tree.cpp scene/resources/navigation_mesh.cpp
+#: servers/visual_server.cpp
 msgid "Filters"
 msgstr "过滤"
 
@@ -1345,19 +1362,16 @@ msgid "Remove this track."
 msgstr "移除该轨道。"
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Time (s):"
-msgstr "时间（秒）： "
+msgstr "时间（秒）："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Position:"
-msgstr "位置"
+msgstr "位置："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Rotation:"
-msgstr "旋转"
+msgstr "旋转："
 
 #: editor/animation_track_editor.cpp
 #: editor/plugins/animation_tree_player_editor_plugin.cpp
@@ -1374,44 +1388,36 @@ msgid "Type:"
 msgstr "类型："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "(Invalid, expected type: %s)"
-msgstr "导出模板无效："
+msgstr "（无效，期望类型：%s）"
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Easing:"
-msgstr "缓入缓出"
+msgstr "缓动："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "In-Handle:"
-msgstr "入点手柄"
+msgstr "入点手柄："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Out-Handle:"
-msgstr "出点手柄"
+msgstr "出点手柄："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Stream:"
-msgstr "流"
+msgstr "流："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Start (s):"
-msgstr "重新开始（秒）："
+msgstr "开始（秒）："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "End (s):"
-msgstr "淡入（秒）："
+msgstr "结束（秒）："
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Animation Clip:"
-msgstr "动画："
+msgstr "动画剪辑："
 
 #: editor/animation_track_editor.cpp
 msgid "Toggle Track Enabled"
@@ -1624,9 +1630,8 @@ msgid "Add Method Track Key"
 msgstr "添加方法轨道帧"
 
 #: editor/animation_track_editor.cpp
-#, fuzzy
 msgid "Method not found in object:"
-msgstr "对象方法未找到： "
+msgstr "对象方法未找到："
 
 #: editor/animation_track_editor.cpp
 msgid "Anim Move Keys"
@@ -2151,14 +2156,15 @@ msgstr "收藏："
 msgid "Recent:"
 msgstr "最近使用："
 
-#: editor/create_dialog.cpp editor/plugins/script_editor_plugin.cpp
-#: editor/property_selector.cpp editor/quick_open.cpp editor/rename_dialog.cpp
+#: editor/create_dialog.cpp editor/editor_quick_open.cpp
+#: editor/plugins/script_editor_plugin.cpp editor/property_selector.cpp
+#: editor/rename_dialog.cpp
 #: modules/visual_script/visual_script_property_selector.cpp
 msgid "Search:"
 msgstr "搜索："
 
-#: editor/create_dialog.cpp editor/plugins/script_editor_plugin.cpp
-#: editor/property_selector.cpp editor/quick_open.cpp
+#: editor/create_dialog.cpp editor/editor_quick_open.cpp
+#: editor/plugins/script_editor_plugin.cpp editor/property_selector.cpp
 #: modules/visual_script/visual_script_property_selector.cpp
 msgid "Matches:"
 msgstr "匹配项："
@@ -2218,8 +2224,8 @@ msgstr "查找替换资源："
 
 #: editor/dependency_editor.cpp editor/editor_file_dialog.cpp
 #: editor/editor_help_search.cpp editor/editor_node.cpp
-#: editor/filesystem_dock.cpp editor/plugins/script_editor_plugin.cpp
-#: editor/property_selector.cpp editor/quick_open.cpp
+#: editor/editor_quick_open.cpp editor/filesystem_dock.cpp
+#: editor/plugins/script_editor_plugin.cpp editor/property_selector.cpp
 #: editor/script_create_dialog.cpp
 #: modules/visual_script/visual_script_property_selector.cpp
 #: scene/gui/file_dialog.cpp
@@ -2227,8 +2233,8 @@ msgid "Open"
 msgstr "打开"
 
 #: editor/dependency_editor.cpp
-msgid "Owners Of:"
-msgstr "拥有者："
+msgid "Owners of: %s (Total: %d)"
+msgstr "%s 的所有者（总计：%d）"
 
 #: editor/dependency_editor.cpp
 msgid ""
@@ -2525,7 +2531,7 @@ msgid "Bus Options"
 msgstr "总线选项"
 
 #: editor/editor_audio_buses.cpp editor/filesystem_dock.cpp
-#: editor/scene_tree_dock.cpp
+#: editor/project_export.cpp editor/scene_tree_dock.cpp
 msgid "Duplicate"
 msgstr "创建副本"
 
@@ -2578,9 +2584,8 @@ msgid "There is no '%s' file."
 msgstr "文件 “%s” 不存在。"
 
 #: editor/editor_audio_buses.cpp
-#, fuzzy
 msgid "Layout:"
-msgstr "布局"
+msgstr "布局："
 
 #: editor/editor_audio_buses.cpp
 msgid "Invalid file, not an audio bus layout."
@@ -2782,6 +2787,22 @@ msgid "Choose"
 msgstr "选择"
 
 #: editor/editor_export.cpp
+msgid "Project export for platform:"
+msgstr "针对平台导出项目："
+
+#: editor/editor_export.cpp
+msgid "Completed with warnings."
+msgstr "已完成，存在警告。"
+
+#: editor/editor_export.cpp
+msgid "Completed successfully."
+msgstr "成功完成。"
+
+#: editor/editor_export.cpp
+msgid "Failed."
+msgstr "失败。"
+
+#: editor/editor_export.cpp
 msgid "Storing File:"
 msgstr "保存文件："
 
@@ -2792,6 +2813,26 @@ msgstr "目标路径找不到导出模板："
 #: editor/editor_export.cpp
 msgid "Packing"
 msgstr "打包中"
+
+#: editor/editor_export.cpp
+msgid "Save PCK"
+msgstr "保存 PCK"
+
+#: editor/editor_export.cpp
+msgid "Cannot create file \"%s\"."
+msgstr "无法创建文件“%s”。"
+
+#: editor/editor_export.cpp
+msgid "Failed to export project files."
+msgstr "导出项目文件失败。"
+
+#: editor/editor_export.cpp
+msgid "Can't open file to read from path \"%s\"."
+msgstr "无法打开位于“%s”的文件用于读取。"
+
+#: editor/editor_export.cpp
+msgid "Save ZIP"
+msgstr "保存 ZIP"
 
 #: editor/editor_export.cpp
 msgid ""
@@ -2902,9 +2943,26 @@ msgstr "找不到自定义调试模板。"
 msgid "Custom release template not found."
 msgstr "找不到自定义发布模板。"
 
+#: editor/editor_export.cpp
+msgid "Prepare Template"
+msgstr "准备模板"
+
+#: editor/editor_export.cpp platform/osx/export/export.cpp
+msgid "The given export path doesn't exist."
+msgstr "给定的导出路径不存在。"
+
 #: editor/editor_export.cpp platform/javascript/export/export.cpp
-msgid "Template file not found:"
-msgstr "找不到模板文件："
+msgid "Template file not found: \"%s\"."
+msgstr "模板文件不存在：“%s”。"
+
+#: editor/editor_export.cpp
+msgid "Failed to copy export template."
+msgstr "复制导出模板失败。"
+
+#: editor/editor_export.cpp platform/windows/export/export.cpp
+#: platform/x11/export/export.cpp
+msgid "PCK Embedding"
+msgstr "PCK 内嵌"
 
 #: editor/editor_export.cpp
 msgid "On 32-bit exports the embedded PCK cannot be bigger than 4 GiB."
@@ -3073,9 +3131,9 @@ msgid "Import"
 msgstr "导入"
 
 #: editor/editor_feature_profile.cpp editor/project_export.cpp
-#: platform/android/export/export.cpp platform/javascript/export/export.cpp
-#: platform/osx/export/export.cpp platform/uwp/export/export.cpp
-#: platform/windows/export/export.cpp
+#: platform/android/export/export.cpp platform/android/export/export_plugin.cpp
+#: platform/javascript/export/export.cpp platform/osx/export/export.cpp
+#: platform/uwp/export/export.cpp platform/windows/export/export.cpp
 msgid "Export"
 msgstr "导出"
 
@@ -4186,14 +4244,6 @@ msgid ""
 "Unable to write to file '%s', file in use, locked or lacking permissions."
 msgstr "无法写入文件“%s”，文件被占用、已锁定、或权限不足。"
 
-#: editor/editor_node.cpp editor/plugins/theme_editor_plugin.cpp
-msgid "Scene"
-msgstr "场景"
-
-#: editor/editor_node.cpp
-msgid "Scene Naming"
-msgstr "场景命名"
-
 #: editor/editor_node.cpp editor/editor_settings.cpp editor/scene_tree_dock.cpp
 #: servers/arvr/arvr_interface.cpp
 msgid "Interface"
@@ -4308,6 +4358,10 @@ msgid "Default Color Picker Mode"
 msgstr "默认取色器模式"
 
 #: editor/editor_node.cpp editor/plugins/version_control_editor_plugin.cpp
+msgid "Version Control"
+msgstr "版本控制"
+
+#: editor/editor_node.cpp editor/plugins/version_control_editor_plugin.cpp
 msgid "Username"
 msgstr "用户名"
 
@@ -4334,6 +4388,10 @@ msgstr "切换专注模式。"
 #: editor/editor_node.cpp
 msgid "Add a new scene."
 msgstr "添加新场景。"
+
+#: editor/editor_node.cpp editor/plugins/theme_editor_plugin.cpp
+msgid "Scene"
+msgstr "场景"
 
 #: editor/editor_node.cpp
 msgid "Go to previously opened scene."
@@ -4407,6 +4465,7 @@ msgstr "其他项目或全场景工具。"
 
 #: editor/editor_node.cpp editor/project_manager.cpp
 #: editor/script_create_dialog.cpp modules/mono/editor/csharp_project.cpp
+#: modules/mono/godotsharp_dirs.cpp
 msgid "Project"
 msgstr "项目"
 
@@ -5004,9 +5063,8 @@ msgid "Size:"
 msgstr "大小："
 
 #: editor/editor_properties_array_dict.cpp
-#, fuzzy
 msgid "Page:"
-msgstr "页： "
+msgstr "页："
 
 #: editor/editor_properties_array_dict.cpp
 #: editor/plugins/theme_editor_plugin.cpp
@@ -5098,6 +5156,10 @@ msgid ""
 msgstr ""
 "没有对应该平台的可执行导出预设。\n"
 "请在导出菜单中添加可执行预设，或将已有预设设为可执行。"
+
+#: editor/editor_run_native.cpp
+msgid "Project Run"
+msgstr "项目运行"
 
 #: editor/editor_run_script.cpp
 msgid "Write your logic in the _run() method."
@@ -5352,7 +5414,9 @@ msgid "Draw Spaces"
 msgstr "绘制空格"
 
 #: editor/editor_settings.cpp editor/plugins/spatial_editor_plugin.cpp
-#: editor/plugins/tile_set_editor_plugin.cpp scene/main/scene_tree.cpp
+#: editor/plugins/tile_set_editor_plugin.cpp scene/2d/tile_map.cpp
+#: scene/main/scene_tree.cpp scene/resources/world.cpp
+#: scene/resources/world_2d.cpp
 msgid "Navigation"
 msgstr "导航"
 
@@ -5375,6 +5439,14 @@ msgstr "小地图宽度"
 #: editor/editor_settings.cpp
 msgid "Mouse Extra Buttons Navigate History"
 msgstr "使用专门鼠标按键查看历史"
+
+#: editor/editor_settings.cpp
+msgid "Drag And Drop Selection"
+msgstr "拖放选中内容"
+
+#: editor/editor_settings.cpp
+msgid "Stay In Script Editor On Node Selected"
+msgstr "选中节点时保持脚本编辑器"
 
 #: editor/editor_settings.cpp
 msgid "Appearance"
@@ -5608,7 +5680,7 @@ msgstr "网格细分级别下限"
 
 #: editor/editor_settings.cpp
 msgid "Grid Division Level Bias"
-msgstr "网格细分级别偏倚"
+msgstr "网格细分级别偏置"
 
 #: editor/editor_settings.cpp
 msgid "Grid XZ Plane"
@@ -6746,7 +6818,7 @@ msgstr "重复"
 
 #: editor/import/resource_importer_layered_texture.cpp
 #: editor/import/resource_importer_texture.cpp scene/2d/light_2d.cpp
-#: scene/gui/control.cpp scene/resources/navigation_mesh.cpp
+#: scene/gui/control.cpp
 msgid "Filter"
 msgstr "过滤"
 
@@ -6980,9 +7052,8 @@ msgid "Generating Lightmaps"
 msgstr "正在生成光照贴图"
 
 #: editor/import/resource_importer_scene.cpp
-#, fuzzy
 msgid "Generating for Mesh:"
-msgstr "正在生成网格： "
+msgstr "正在生成网格："
 
 #: editor/import/resource_importer_scene.cpp
 msgid "Running Custom Script..."
@@ -7007,6 +7078,21 @@ msgstr "有在 `post_import()` 方法中返回继承了 Node 的对象吗？"
 #: editor/import/resource_importer_scene.cpp
 msgid "Saving..."
 msgstr "保存中..."
+
+#: editor/import/resource_importer_texture.cpp
+msgid ""
+"%s: Texture detected as used as a normal map in 3D. Enabling red-green "
+"texture compression to reduce memory usage (blue channel is discarded)."
+msgstr ""
+"%s：检测到纹理被用于 3D 法线贴图。正在启用红绿纹理压缩，降低内存使用（蓝通道"
+"被丢弃）。"
+
+#: editor/import/resource_importer_texture.cpp
+msgid ""
+"%s: Texture detected as used in 3D. Enabling filter, repeat, mipmap "
+"generation and VRAM texture compression."
+msgstr ""
+"%s：检测到纹理被用于 3D。正在启用过滤、重复、Mipmap 生成和 VRAM 纹理压缩。"
 
 #: editor/import/resource_importer_texture.cpp
 msgid "2D, Detect 3D"
@@ -7103,7 +7189,8 @@ msgid "8 Bit"
 msgstr "8 位"
 
 #: editor/import/resource_importer_wav.cpp main/main.cpp
-#: modules/mono/editor/csharp_project.cpp modules/mono/mono_gd/gd_mono.cpp
+#: modules/mono/editor/csharp_project.cpp modules/mono/godotsharp_dirs.cpp
+#: modules/mono/mono_gd/gd_mono.cpp
 msgid "Mono"
 msgstr "Mono"
 
@@ -7667,8 +7754,17 @@ msgid "New Anim"
 msgstr "新建动画"
 
 #: editor/plugins/animation_player_editor_plugin.cpp
+msgid "Create New Animation"
+msgstr "创建新动画"
+
+#: editor/plugins/animation_player_editor_plugin.cpp
 msgid "Change Animation Name:"
 msgstr "修改动画名称："
+
+#: editor/plugins/animation_player_editor_plugin.cpp
+#: editor/plugins/sprite_frames_editor_plugin.cpp
+msgid "Rename Animation"
+msgstr "重命名动画"
 
 #: editor/plugins/animation_player_editor_plugin.cpp
 #: editor/plugins/sprite_frames_editor_plugin.cpp
@@ -7687,11 +7783,6 @@ msgstr "无效的动画名称！"
 #: editor/plugins/animation_player_editor_plugin.cpp
 msgid "Animation name already exists!"
 msgstr "动画名称已存在！"
-
-#: editor/plugins/animation_player_editor_plugin.cpp
-#: editor/plugins/sprite_frames_editor_plugin.cpp
-msgid "Rename Animation"
-msgstr "重命名动画"
 
 #: editor/plugins/animation_player_editor_plugin.cpp
 msgid "Duplicate Animation"
@@ -7836,10 +7927,6 @@ msgid "Pin AnimationPlayer"
 msgstr "固定 AnimationPlayer"
 
 #: editor/plugins/animation_player_editor_plugin.cpp
-msgid "Create New Animation"
-msgstr "创建新动画"
-
-#: editor/plugins/animation_player_editor_plugin.cpp
 msgid "Animation Name:"
 msgstr "动画名称："
 
@@ -7953,9 +8040,8 @@ msgid "Set the end animation. This is useful for sub-transitions."
 msgstr "设置终点结束动画。适用于子过渡动画。"
 
 #: editor/plugins/animation_state_machine_editor.cpp
-#, fuzzy
 msgid "Transition:"
-msgstr "过渡： "
+msgstr "过渡："
 
 #: editor/plugins/animation_state_machine_editor.cpp
 msgid "Play Mode:"
@@ -9688,9 +9774,8 @@ msgid "Volume"
 msgstr "体积"
 
 #: editor/plugins/particles_editor_plugin.cpp
-#, fuzzy
 msgid "Emission Source:"
-msgstr "发射源： "
+msgstr "发射源："
 
 #: editor/plugins/particles_editor_plugin.cpp
 msgid "A processor material of type 'ParticlesMaterial' is required."
@@ -9921,6 +10006,7 @@ msgid "Points"
 msgstr "点"
 
 #: editor/plugins/polygon_2d_editor_plugin.cpp scene/2d/polygon_2d.cpp
+#: scene/resources/navigation_mesh.cpp
 msgid "Polygons"
 msgstr "多边形"
 
@@ -10620,7 +10706,7 @@ msgid ""
 "This shader has been modified on on disk.\n"
 "What action should be taken?"
 msgstr ""
-"此着色器已在磁盘上修改。\n"
+"这个着色器已在磁盘上修改。\n"
 "应该采取什么行动？"
 
 #: editor/plugins/shader_editor_plugin.cpp scene/resources/material.cpp
@@ -10772,15 +10858,13 @@ msgstr "平移"
 
 #. TRANSLATORS: Refers to changing the scale of a node in the 3D editor.
 #: editor/plugins/spatial_editor_plugin.cpp
-#, fuzzy
 msgid "Scaling:"
-msgstr "缩放： "
+msgstr "缩放："
 
 #. TRANSLATORS: Refers to changing the position of a node in the 3D editor.
 #: editor/plugins/spatial_editor_plugin.cpp
-#, fuzzy
 msgid "Translating:"
-msgstr "移动： "
+msgstr "移动："
 
 #: editor/plugins/spatial_editor_plugin.cpp
 msgid "Rotating %s degrees."
@@ -11284,8 +11368,8 @@ msgid "Invalid geometry, can't replace by mesh."
 msgstr "无效的几何体，无法使用网格替换。"
 
 #: editor/plugins/sprite_editor_plugin.cpp
-msgid "Convert to Mesh2D"
-msgstr "转换为 Mesh2D"
+msgid "Convert to MeshInstance2D"
+msgstr "转换为 MeshInstance2D"
 
 #: editor/plugins/sprite_editor_plugin.cpp
 msgid "Invalid geometry, can't create polygon."
@@ -11316,19 +11400,16 @@ msgid "Sprite"
 msgstr "Sprite"
 
 #: editor/plugins/sprite_editor_plugin.cpp
-#, fuzzy
 msgid "Simplification:"
-msgstr "简化： "
+msgstr "简化："
 
 #: editor/plugins/sprite_editor_plugin.cpp
-#, fuzzy
 msgid "Shrink (Pixels):"
-msgstr "收缩（像素）： "
+msgstr "收缩（像素）："
 
 #: editor/plugins/sprite_editor_plugin.cpp
-#, fuzzy
 msgid "Grow (Pixels):"
-msgstr "扩展（像素）： "
+msgstr "扩展（像素）："
 
 #: editor/plugins/sprite_editor_plugin.cpp
 msgid "Update Preview"
@@ -11389,6 +11470,10 @@ msgstr "动画："
 #: editor/plugins/sprite_frames_editor_plugin.cpp
 msgid "New Animation"
 msgstr "新建动画"
+
+#: editor/plugins/sprite_frames_editor_plugin.cpp
+msgid "Filter animations"
+msgstr "筛选动画"
 
 #: editor/plugins/sprite_frames_editor_plugin.cpp
 msgid "Speed:"
@@ -12256,8 +12341,7 @@ msgid "Select the previous shape, subtile, or Tile."
 msgstr "选择上一个形状、子图块、图块。"
 
 #: editor/plugins/tile_set_editor_plugin.cpp scene/2d/sprite.cpp
-#: scene/3d/sprite_3d.cpp scene/resources/navigation_mesh.cpp
-#: scene/resources/texture.cpp
+#: scene/3d/sprite_3d.cpp scene/resources/texture.cpp
 msgid "Region"
 msgstr "区域"
 
@@ -13713,33 +13797,8 @@ msgid "Delete preset '%s'?"
 msgstr "是否删除预设 “%s”？"
 
 #: editor/project_export.cpp
-msgid ""
-"Failed to export the project for platform '%s'.\n"
-"Export templates seem to be missing or invalid."
-msgstr ""
-"无法为平台 “%s” 导出项目。\n"
-"导出模板似乎缺失或无效。"
-
-#: editor/project_export.cpp
-msgid ""
-"Failed to export the project for platform '%s'.\n"
-"This might be due to a configuration issue in the export preset or your "
-"export settings."
-msgstr ""
-"无法为平台 “%s” 导出项目。\n"
-"原因可能是导出预设或导出设置内的配置有问题。"
-
-#: editor/project_export.cpp
 msgid "Exporting All"
 msgstr "全部导出"
-
-#: editor/project_export.cpp
-msgid "The given export path doesn't exist:"
-msgstr "指定导出路径不存在："
-
-#: editor/project_export.cpp
-msgid "Export templates for this platform are missing/corrupted:"
-msgstr "该平台的导出模板缺失或损坏："
 
 #: editor/project_export.cpp
 msgid "Export Path"
@@ -13880,6 +13939,10 @@ msgstr "Godot 项目包"
 #: editor/project_export.cpp
 msgid "Export templates for this platform are missing:"
 msgstr "该平台的导出模板缺失："
+
+#: editor/project_export.cpp
+msgid "Project Export"
+msgstr "项目导出"
 
 #: editor/project_export.cpp
 msgid "Manage Export Templates"
@@ -14130,7 +14193,7 @@ msgid ""
 "Please edit the project and set the main scene in the Project Settings under "
 "the \"Application\" category."
 msgstr ""
-"无法运行项目：未定义主场景。 \n"
+"无法运行项目：未定义主场景。\n"
 "请编辑项目并在 “项目设置” 的 “Application” 类别下设置主场景。"
 
 #: editor/project_manager.cpp
@@ -14958,16 +15021,19 @@ msgstr ""
 msgid "Make Local"
 msgstr "转为本地"
 
-#: editor/scene_tree_dock.cpp editor/scene_tree_editor.cpp
-msgid "Another node already uses this unique name in the scene."
+#: editor/scene_tree_dock.cpp
+#, fuzzy
+msgid "Enable Scene Unique Name(s)"
+msgstr "启用场景唯一名称"
+
+#: editor/scene_tree_dock.cpp
+#, fuzzy
+msgid "Unique names already used by another node in the scene:"
 msgstr "该场景中已有使用该唯一名称的节点。"
 
 #: editor/scene_tree_dock.cpp
-msgid "Enable Scene Unique Name"
-msgstr "启用场景唯一名称"
-
-#: editor/scene_tree_dock.cpp editor/scene_tree_editor.cpp
-msgid "Disable Scene Unique Name"
+#, fuzzy
+msgid "Disable Scene Unique Name(s)"
 msgstr "禁用场景唯一名称"
 
 #: editor/scene_tree_dock.cpp
@@ -15161,6 +15227,10 @@ msgid "Button Group"
 msgstr "按钮组"
 
 #: editor/scene_tree_editor.cpp
+msgid "Disable Scene Unique Name"
+msgstr "禁用场景唯一名称"
+
+#: editor/scene_tree_editor.cpp
 msgid "(Connecting From)"
 msgstr "（连接来源）"
 
@@ -15236,6 +15306,10 @@ msgstr ""
 #: editor/scene_tree_editor.cpp
 msgid "Invalid node name, the following characters are not allowed:"
 msgstr "节点名称无效，不允许包含以下字符："
+
+#: editor/scene_tree_editor.cpp
+msgid "Another node already uses this unique name in the scene."
+msgstr "该场景中已有使用该唯一名称的节点。"
 
 #: editor/scene_tree_editor.cpp
 msgid "Rename Node"
@@ -15382,9 +15456,8 @@ msgid "Attach Node Script"
 msgstr "设置节点的脚本"
 
 #: editor/script_editor_debugger.cpp
-#, fuzzy
 msgid "Remote %s:"
-msgstr "远程 "
+msgstr "远程 %s："
 
 #: editor/script_editor_debugger.cpp
 msgid "Bytes:"
@@ -16199,7 +16272,7 @@ msgstr "环边数"
 
 #: modules/csg/csg_shape.cpp scene/2d/collision_polygon_2d.cpp
 #: scene/2d/light_occluder_2d.cpp scene/2d/polygon_2d.cpp
-#: scene/3d/collision_polygon.cpp scene/resources/navigation_mesh.cpp
+#: scene/3d/collision_polygon.cpp
 msgid "Polygon"
 msgstr "多边形"
 
@@ -16359,9 +16432,8 @@ msgid "Disabled GDNative Singleton"
 msgstr "禁用的 GDNative 单例"
 
 #: modules/gdnative/gdnative_library_singleton_editor.cpp
-#, fuzzy
 msgid "Libraries:"
-msgstr "库： "
+msgstr "库："
 
 #: modules/gdnative/nativescript/nativescript.cpp
 msgid "Class Name"
@@ -16754,7 +16826,6 @@ msgid "Use In Baked Light"
 msgstr "用于烘焙光照"
 
 #: modules/gridmap/grid_map.cpp scene/2d/tile_map.cpp
-#: scene/resources/navigation_mesh.cpp
 msgid "Cell"
 msgstr "单元格"
 
@@ -16779,6 +16850,17 @@ msgstr "Z 轴居中"
 #: scene/resources/material.cpp
 msgid "Mask"
 msgstr "遮罩"
+
+#: modules/gridmap/grid_map.cpp scene/2d/tile_map.cpp
+msgid "Bake Navigation"
+msgstr "烘焙导航"
+
+#: modules/gridmap/grid_map.cpp scene/2d/navigation_2d.cpp
+#: scene/2d/navigation_agent_2d.cpp scene/2d/navigation_polygon.cpp
+#: scene/2d/tile_map.cpp scene/3d/navigation.cpp scene/3d/navigation_agent.cpp
+#: scene/3d/navigation_mesh_instance.cpp
+msgid "Navigation Layers"
+msgstr "导航层"
 
 #: modules/gridmap/grid_map_editor_plugin.cpp
 msgid "Next Plane"
@@ -17003,6 +17085,21 @@ msgstr "构建解决方案"
 msgid "Auto Update Project"
 msgstr "自动更新项目"
 
+#: modules/mono/godotsharp_dirs.cpp
+#, fuzzy
+msgid "Assembly Name"
+msgstr "显示名称"
+
+#: modules/mono/godotsharp_dirs.cpp
+#, fuzzy
+msgid "Solution Directory"
+msgstr "选择目录"
+
+#: modules/mono/godotsharp_dirs.cpp
+#, fuzzy
+msgid "C# Project Directory"
+msgstr "选择目录"
+
 #: modules/mono/mono_gd/gd_mono_utils.cpp
 msgid "End of inner exception stack trace"
 msgstr "内部异常堆栈追朔结束"
@@ -17177,18 +17274,16 @@ msgid ""
 msgstr "节点工作内存的第一个节点的返回值必须被赋值！请修正节点。"
 
 #: modules/visual_script/visual_script.cpp
-#, fuzzy
 msgid "Node returned an invalid sequence output:"
-msgstr "节点返回了一个无效的连续输出： "
+msgstr "节点返回了一个无效的序列输出："
 
 #: modules/visual_script/visual_script.cpp
 msgid "Found sequence bit but not the node in the stack, report bug!"
 msgstr "在非堆栈中的节点中找到连续比特，请回报 Bug！"
 
 #: modules/visual_script/visual_script.cpp
-#, fuzzy
 msgid "Stack overflow with stack depth:"
-msgstr "堆栈深度溢出： "
+msgstr "堆栈深度溢出："
 
 #: modules/visual_script/visual_script.cpp
 msgid "Visual Script"
@@ -17549,18 +17644,16 @@ msgid "for (elem) in (input):"
 msgstr "对 input 中的每一个 elem："
 
 #: modules/visual_script/visual_script_flow_control.cpp
-#, fuzzy
 msgid "Input type not iterable:"
-msgstr "输入类型不可迭代： "
+msgstr "输入类型不可迭代："
 
 #: modules/visual_script/visual_script_flow_control.cpp
 msgid "Iterator became invalid"
 msgstr "迭代器失效"
 
 #: modules/visual_script/visual_script_flow_control.cpp
-#, fuzzy
 msgid "Iterator became invalid:"
-msgstr "迭代器失效： "
+msgstr "迭代器失效："
 
 #: modules/visual_script/visual_script_flow_control.cpp
 msgid "Sequence"
@@ -17711,14 +17804,12 @@ msgid "Operator"
 msgstr "操作符"
 
 #: modules/visual_script/visual_script_nodes.cpp
-#, fuzzy
 msgid "Invalid argument of type:"
-msgstr ": 无效参数类型: "
+msgstr "无效参数类型："
 
 #: modules/visual_script/visual_script_nodes.cpp
-#, fuzzy
 msgid "Invalid arguments:"
-msgstr ": 无效参数: "
+msgstr "无效参数："
 
 #: modules/visual_script/visual_script_nodes.cpp
 msgid "a if cond, else b"
@@ -17729,14 +17820,12 @@ msgid "Var Name"
 msgstr "变量名称"
 
 #: modules/visual_script/visual_script_nodes.cpp
-#, fuzzy
 msgid "VariableGet not found in script:"
-msgstr "脚本中未找到 VariableGet： "
+msgstr "脚本中未找到 VariableGet："
 
 #: modules/visual_script/visual_script_nodes.cpp
-#, fuzzy
 msgid "VariableSet not found in script:"
-msgstr "脚本中未找到 VariableSet： "
+msgstr "脚本中未找到 VariableSet："
 
 #: modules/visual_script/visual_script_nodes.cpp
 msgid "Preload"
@@ -18025,12 +18114,24 @@ msgid "The package must have at least one '.' separator."
 msgstr "包必须至少有一个 “.” 分隔符。"
 
 #: platform/android/export/export_plugin.cpp
+msgid "Custom Build"
+msgstr "自定义构建"
+
+#: platform/android/export/export_plugin.cpp
 msgid "Use Custom Build"
 msgstr "使用自定义构建"
 
 #: platform/android/export/export_plugin.cpp
 msgid "Export Format"
 msgstr "导出格式"
+
+#: platform/android/export/export_plugin.cpp
+msgid "Min SDK"
+msgstr "最小 SDK"
+
+#: platform/android/export/export_plugin.cpp
+msgid "Target SDK"
+msgstr "目标 SDK"
 
 #: platform/android/export/export_plugin.cpp platform/iphone/export/export.cpp
 msgid "Architectures"
@@ -18067,14 +18168,6 @@ msgstr "清除上次安装"
 #: platform/android/export/export_plugin.cpp
 msgid "Code"
 msgstr "代码"
-
-#: platform/android/export/export_plugin.cpp
-msgid "Min SDK"
-msgstr "最小 SDK"
-
-#: platform/android/export/export_plugin.cpp
-msgid "Target SDK"
-msgstr "目标 SDK"
 
 #: platform/android/export/export_plugin.cpp platform/uwp/export/export.cpp
 msgid "Package"
@@ -18217,10 +18310,6 @@ msgid "Could not execute on device."
 msgstr "无法在设备上运行。"
 
 #: platform/android/export/export_plugin.cpp
-msgid "Unable to find the 'apksigner' tool."
-msgstr "找不到“apksigner”工具。"
-
-#: platform/android/export/export_plugin.cpp
 msgid ""
 "Android build template not installed in the project. Install it from the "
 "Project menu."
@@ -18301,44 +18390,67 @@ msgstr "必须启用 “使用自定义构建” 才能使用插件。"
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"\"Hand Tracking\" is only valid when \"Xr Mode\" is \"Oculus Mobile VrApi\" "
+"\"Hand Tracking\" is only valid when \"XR Mode\" is \"Oculus Mobile VrApi\" "
 "or \"OpenXR\"."
-msgstr ""
-"“Hand Tracking”只有在当“Xr Mode”是“Oculus Mobile VrApi”或“OpenXR”时才有效。"
+msgstr "“手势跟踪”只有在当“XR 模式”是“Oculus Mobile VrApi”或“OpenXR”时才有效。"
 
 #: platform/android/export/export_plugin.cpp
-msgid "\"Passthrough\" is only valid when \"Xr Mode\" is \"OpenXR\"."
-msgstr "“Passthrough”只有在当“Xr Mode”是“OpenXR”时才有效。"
+msgid "\"Passthrough\" is only valid when \"XR Mode\" is \"OpenXR\"."
+msgstr "“穿透”只有在当“XR Mode”是“OpenXR”时才有效。"
 
 #: platform/android/export/export_plugin.cpp
 msgid "\"Export AAB\" is only valid when \"Use Custom Build\" is enabled."
-msgstr "“Export AAB”只有在当启用“Use Custom Build”时才有效。"
+msgstr "“Export AAB”只有在当启用“使用自定义构建”时才有效。"
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"Changing the \"Min Sdk\" is only valid when \"Use Custom Build\" is enabled."
-msgstr "修改“Min Sdk”只有在当启用“Use Custom Build”时才有效。"
+"\"Min SDK\" can only be overridden when \"Use Custom Build\" is enabled."
+msgstr "修改“最小 SDK”只有在当启用“使用自定义构建”时才有效。"
+
+#: platform/android/export/export_plugin.cpp
+msgid "\"Min SDK\" should be a valid integer, but got \"%s\" which is invalid."
+msgstr "“最小 SDK”应当为有效的整数，但获得了无效的“%s”。"
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"Changing the \"Target Sdk\" is only valid when \"Use Custom Build\" is "
-"enabled."
-msgstr "修改“Target Sdk”只有在当启用“Use Custom Build”时才有效。"
-
-#: platform/android/export/export_plugin.cpp
-msgid "\"Target Sdk\" version must be greater or equal to \"Min Sdk\" version."
-msgstr "“Target Sdk”版本必须大于等于“Min Sdk”版本。"
+"\"Min SDK\" cannot be lower than %d, which is the version needed by the "
+"Godot library."
+msgstr "“最小 SDK”不能低于 %d，这是 Godot 库所需要的版本。"
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"'apksigner' could not be found.\n"
-"Please check the command is available in the Android SDK build-tools "
-"directory.\n"
-"The resulting %s is unsigned."
+"\"Target SDK\" can only be overridden when \"Use Custom Build\" is enabled."
+msgstr "修改“目标 SDK”只有在当启用“使用自定义构建”时才有效。"
+
+#: platform/android/export/export_plugin.cpp
+msgid ""
+"\"Target SDK\" should be a valid integer, but got \"%s\" which is invalid."
+msgstr "“目标 SDK”应当为有效的整数，但获得了无效的“%s”。"
+
+#: platform/android/export/export_plugin.cpp
+msgid ""
+"\"Target SDK\" %d is higher than the default version %d. This may work, but "
+"wasn't tested and may be unstable."
 msgstr ""
-"无法找到“apksigner”。\n"
-"请检查 Android SDK 的 build-tools 目录中是否有此命令。\n"
-"生成的 %s 未签名。"
+"“目标 SDK”%d 比默认版本 %d 要高。这样做也许可行，但并没有经过测试，可能不稳"
+"定。"
+
+#: platform/android/export/export_plugin.cpp
+msgid "\"Target SDK\" version must be greater or equal to \"Min SDK\" version."
+msgstr "“目标 SDK”版本必须大于等于“最小 SDK”版本。"
+
+#: platform/android/export/export_plugin.cpp platform/osx/export/export.cpp
+#: platform/windows/export/export.cpp
+msgid "Code Signing"
+msgstr "代码签名"
+
+#: platform/android/export/export_plugin.cpp
+msgid ""
+"'apksigner' could not be found. Please check that the command is available "
+"in the Android SDK build-tools directory. The resulting %s is unsigned."
+msgstr ""
+"无法找到“apksigner”。请检查 Android SDK 的 build-tools 目录中是否有此命令。生"
+"成的 %s 未签名。"
 
 #: platform/android/export/export_plugin.cpp
 msgid "Signing debug %s..."
@@ -18351,6 +18463,10 @@ msgstr "正在签名发布 %s……"
 #: platform/android/export/export_plugin.cpp
 msgid "Could not find keystore, unable to export."
 msgstr "找不到密钥库，无法导出。"
+
+#: platform/android/export/export_plugin.cpp
+msgid "Could not start apksigner executable."
+msgstr "无法启动 apksigner 可执行文件。"
 
 #: platform/android/export/export_plugin.cpp
 msgid "'apksigner' returned with error #%d"
@@ -18381,8 +18497,8 @@ msgid "Invalid filename! Android APK requires the *.apk extension."
 msgstr "无效文件名！Android APK 必须有 *.apk 扩展。"
 
 #: platform/android/export/export_plugin.cpp
-msgid "Unsupported export format!\n"
-msgstr "不支持的导出格式！\n"
+msgid "Unsupported export format!"
+msgstr "不支持的导出格式！"
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
@@ -18393,24 +18509,20 @@ msgstr ""
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"Android build version mismatch:\n"
-"   Template installed: %s\n"
-"   Godot Version: %s\n"
+"Android build version mismatch: Template installed: %s, Godot version: %s. "
 "Please reinstall Android build template from 'Project' menu."
 msgstr ""
-"Android 构建版本不匹配：\n"
-"   安装的模板：%s\n"
-"   Godot 版本：%s\n"
-"请从“项目”菜单中重新安装 Android 构建模板。"
+"Android 构建版本不匹配：安装的模板：%s，Godot 版本：%s。请从“项目”菜单中重新"
+"安装 Android 构建模板。"
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"Unable to overwrite res://android/build/res/*.xml files with project name"
-msgstr "无法使用项目名称覆盖 res://android/build/res/*.xml 文件"
+"Unable to overwrite res://android/build/res/*.xml files with project name."
+msgstr "无法使用项目名称覆盖 res://android/build/res/*.xml 文件。"
 
 #: platform/android/export/export_plugin.cpp
-msgid "Could not export project files to gradle project\n"
-msgstr "无法将项目文件导出至 gradle 项目\n"
+msgid "Could not export project files to gradle project."
+msgstr "无法将项目文件导出至 gradle 项目。"
 
 #: platform/android/export/export_plugin.cpp
 msgid "Could not write expansion package file!"
@@ -18422,11 +18534,11 @@ msgstr "构建 Android 项目 (Gradle)"
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"Building of Android project failed, check output for the error.\n"
+"Building of Android project failed, check output for the error. "
 "Alternatively visit docs.godotengine.org for Android build documentation."
 msgstr ""
-"Android 项目构建失败，请检查输出中显示的错误。\n"
-"也可以访问 docs.godotengine.org 查看 Android 构建文档。"
+"Android 项目构建失败，请检查输出中显示的错误。也可以访问 docs.godotengine."
+"org 查看 Android 构建文档。"
 
 #: platform/android/export/export_plugin.cpp
 msgid "Moving output"
@@ -18439,38 +18551,33 @@ msgid ""
 msgstr "无法复制与更名导出文件，请在 Gradle 项目文件夹内确认输出。"
 
 #: platform/android/export/export_plugin.cpp
-msgid "Package not found: %s"
-msgstr "包不存在：%s"
+msgid "Package not found: \"%s\"."
+msgstr "包不存在：“%s”。"
 
 #: platform/android/export/export_plugin.cpp
 msgid "Creating APK..."
 msgstr "正在创建 APK……"
 
 #: platform/android/export/export_plugin.cpp
-msgid ""
-"Could not find template APK to export:\n"
-"%s"
-msgstr ""
-"找不到导出模板 APK：\n"
-"%s"
+msgid "Could not find template APK to export: \"%s\"."
+msgstr "找不到导出模板 APK：“%s”。"
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"Missing libraries in the export template for the selected architectures: "
-"%s.\n"
+"Missing libraries in the export template for the selected architectures: %s. "
 "Please build a template with all required libraries, or uncheck the missing "
 "architectures in the export preset."
 msgstr ""
-"导出模板缺失所选架构的库：%s。\n"
-"请使用全部所需的库构建模板，或者在导出预设中取消对缺失架构的选择。"
+"导出模板缺失所选架构的库：%s。请使用全部所需的库构建模板，或者在导出预设中取"
+"消对缺失架构的选择。"
 
 #: platform/android/export/export_plugin.cpp
 msgid "Adding files..."
 msgstr "正在添加文件……"
 
 #: platform/android/export/export_plugin.cpp
-msgid "Could not export project files"
-msgstr "无法导出项目文件"
+msgid "Could not export project files."
+msgstr "无法导出项目文件。"
 
 #: platform/android/export/export_plugin.cpp
 msgid "Aligning APK..."
@@ -18694,6 +18801,20 @@ msgid "Custom BG Color"
 msgstr "自定义背景色"
 
 #: platform/iphone/export/export.cpp
+#, fuzzy
+msgid "Export Icons"
+msgstr "导出图标"
+
+#: platform/iphone/export/export.cpp platform/javascript/export/export.cpp
+#: platform/osx/export/export.cpp
+msgid "Prepare Templates"
+msgstr "准备模板"
+
+#: platform/iphone/export/export.cpp platform/osx/export/export.cpp
+msgid "Export template not found."
+msgstr "找不到导出模板。"
+
+#: platform/iphone/export/export.cpp
 msgid "App Store Team ID not specified - cannot configure the project."
 msgstr "未指定 App Store Team ID - 无法配置项目。"
 
@@ -18714,20 +18835,28 @@ msgid "Run exported HTML in the system's default browser."
 msgstr "使用默认浏览器打开导出的 HTML 文件。"
 
 #: platform/javascript/export/export.cpp
-msgid "Could not open template for export:"
-msgstr "无法打开导出模板："
+msgid "Could not open template for export: \"%s\"."
+msgstr "无法打开导出模板：“%s”。"
 
 #: platform/javascript/export/export.cpp
-msgid "Invalid export template:"
-msgstr "导出模板无效："
+msgid "Invalid export template: \"%s\"."
+msgstr "导出模板无效：“%s”。"
 
 #: platform/javascript/export/export.cpp
-msgid "Could not write file:"
-msgstr "无法写入文件:"
+msgid "Could not write file: \"%s\"."
+msgstr "无法写入文件：“%s”。"
+
+#: platform/javascript/export/export.cpp platform/osx/export/export.cpp
+msgid "Icon Creation"
+msgstr "图标创建"
 
 #: platform/javascript/export/export.cpp
-msgid "Could not read file:"
-msgstr "无法读取文件："
+msgid "Could not read file: \"%s\"."
+msgstr "无法读取文件：“%s”。"
+
+#: platform/javascript/export/export.cpp
+msgid "PWA"
+msgstr "PWA"
 
 #: platform/javascript/export/export.cpp
 msgid "Variant"
@@ -18798,16 +18927,16 @@ msgid "Icon 512 X 512"
 msgstr "图标 512×512"
 
 #: platform/javascript/export/export.cpp
-msgid "Could not read HTML shell:"
-msgstr "无法读取 HTML 壳："
+msgid "Could not read HTML shell: \"%s\"."
+msgstr "无法读取 HTML 壳：“%s”。"
 
 #: platform/javascript/export/export.cpp
-msgid "Could not create HTTP server directory:"
-msgstr "无法创建 HTTP 服务器目录："
+msgid "Could not create HTTP server directory: %s."
+msgstr "无法创建 HTTP 服务器目录：%s。"
 
 #: platform/javascript/export/export.cpp
-msgid "Error starting HTTP server:"
-msgstr "启动 HTTP 服务器时出错："
+msgid "Error starting HTTP server: %d."
+msgstr "启动 HTTP 服务器时出错：%d。"
 
 #: platform/javascript/export/export.cpp
 msgid "Web"
@@ -19071,10 +19200,26 @@ msgid "Apple Team ID"
 msgstr "Apple 团队 ID"
 
 #: platform/osx/export/export.cpp
+msgid "Could not open icon file \"%s\"."
+msgstr "无法打开图标文件“%s”。"
+
+#: platform/osx/export/export.cpp
+msgid "Could not start xcrun executable."
+msgstr "无法启动 xcrun 可执行文件。"
+
+#: platform/osx/export/export.cpp
+msgid "Notarization failed."
+msgstr "公证失败。"
+
+#: platform/osx/export/export.cpp
+msgid "Notarization request UUID: \"%s\""
+msgstr "公证请求 UUID：“%s”"
+
+#: platform/osx/export/export.cpp
 msgid ""
-"Note: The notarization process generally takes less than an hour. When the "
-"process is completed, you'll receive an email."
-msgstr "注意：公证过程通常少于一个小时。过程结束后，你会收到一封邮件。"
+"The notarization process generally takes less than an hour. When the process "
+"is completed, you'll receive an email."
+msgstr "公证过程通常少于一个小时。过程结束后，你会收到一封邮件。"
 
 #: platform/osx/export/export.cpp
 msgid ""
@@ -19089,16 +19234,67 @@ msgid ""
 msgstr "运行以下命令将公证票证装订到导出的应用中（可选）："
 
 #: platform/osx/export/export.cpp
+msgid "Timestamping is not compatible with ad-hoc signature, and was disabled!"
+msgstr "添加时间戳与 Ad-hoc 签名不兼容，已被禁用！"
+
+#: platform/osx/export/export.cpp
+msgid ""
+"Hardened Runtime is not compatible with ad-hoc signature, and was disabled!"
+msgstr "加固运行时环境与 Ad-hoc 签名不兼容，已被禁用！"
+
+#: platform/osx/export/export.cpp
+msgid "Built-in CodeSign failed with error \"%s\"."
+msgstr "内置 CodeSign 失败，错误为“%s”。"
+
+#: platform/osx/export/export.cpp
+msgid "Built-in CodeSign require regex module."
+msgstr "内置 CodeSign 需要 regex 模块。"
+
+#: platform/osx/export/export.cpp
+msgid ""
+"Could not start codesign executable, make sure Xcode command line tools are "
+"installed."
+msgstr "无法启动 codesign 可执行文件，请确保已安装 Xcode 命令行工具。"
+
+#: platform/osx/export/export.cpp platform/windows/export/export.cpp
 msgid "No identity found."
 msgstr "没有找到身份。"
+
+#: platform/osx/export/export.cpp
+msgid "Cannot sign file %s."
+msgstr "无法签名文件 %s。"
+
+#: platform/osx/export/export.cpp
+msgid "Relative symlinks are not supported, exported \"%s\" might be broken!"
+msgstr "不支持相对符号链接，导出的“%s”可能损坏！"
+
+#: platform/osx/export/export.cpp
+msgid "DMG Creation"
+msgstr "DMG 创建"
+
+#: platform/osx/export/export.cpp
+msgid "Could not start hdiutil executable."
+msgstr "无法启动 hdiutil 可执行文件。"
+
+#: platform/osx/export/export.cpp
+msgid "`hdiutil create` failed - file exists."
+msgstr "`hdiutil create` 失败 - 文件已存在。"
+
+#: platform/osx/export/export.cpp
+msgid "`hdiutil create` failed."
+msgstr "`hdiutil create` 失败。"
 
 #: platform/osx/export/export.cpp
 msgid "Creating app bundle"
 msgstr "正在创建应用捆绑包"
 
 #: platform/osx/export/export.cpp
-msgid "Could not find template app to export:"
-msgstr "无法找到导出的模板应用："
+msgid "Could not find template app to export: \"%s\"."
+msgstr "无法找到导出的模板应用：“%s”。"
+
+#: platform/osx/export/export.cpp
+msgid "Invalid export format."
+msgstr "导出格式无效。"
 
 #: platform/osx/export/export.cpp
 msgid ""
@@ -19108,9 +19304,9 @@ msgstr "该操作系统上不支持相对符号链接，导出的项目可能损
 
 #: platform/osx/export/export.cpp
 msgid ""
-"Requested template binary '%s' not found. It might be missing from your "
+"Requested template binary \"%s\" not found. It might be missing from your "
 "template archive."
-msgstr "未找到请求的二进制模板“%s”。你的模板归档中可能缺失该文件。"
+msgstr "未找到请求的模板二进制文件“%s”。你的模板归档中可能缺失该文件。"
 
 #: platform/osx/export/export.cpp
 msgid "Making PKG"
@@ -19147,6 +19343,14 @@ msgstr "公证要求该应用先进行归档，请选择 DMG 或 ZIP 导出格�
 #: platform/osx/export/export.cpp
 msgid "Sending archive for notarization"
 msgstr "正在发送归档进行公证"
+
+#: platform/osx/export/export.cpp
+msgid "ZIP Creation"
+msgstr "ZIP 创建"
+
+#: platform/osx/export/export.cpp
+msgid "Could not open file to read from path \"%s\"."
+msgstr "无法打开位于“%s”的文件进行读取。"
 
 #: platform/osx/export/export.cpp
 msgid "Invalid bundle identifier:"
@@ -19385,6 +19589,12 @@ msgid "Show Name On Square 310 X 310"
 msgstr "在正方形 310×310 上显示名称"
 
 #: platform/uwp/export/export.cpp
+msgid ""
+"Godot's Mono version does not support the UWP platform. Use the standard "
+"build (no C# support) if you wish to target UWP."
+msgstr ""
+
+#: platform/uwp/export/export.cpp
 msgid "Invalid package short name."
 msgstr "无效的包短名称。"
 
@@ -19453,6 +19663,10 @@ msgid "Debug Algorithm"
 msgstr "调试算法"
 
 #: platform/windows/export/export.cpp
+msgid "Failed to rename temporary file \"%s\"."
+msgstr "重命名临时文件“%s”失败。"
+
+#: platform/windows/export/export.cpp
 msgid "Identity Type"
 msgstr "身份类型"
 
@@ -19493,12 +19707,70 @@ msgid "Trademarks"
 msgstr "商标"
 
 #: platform/windows/export/export.cpp
+msgid "Resources Modification"
+msgstr "资源修改"
+
+#: platform/windows/export/export.cpp
+msgid "Could not find rcedit executable at \"%s\"."
+msgstr "无法在“%s”找到 rcedit 可执行文件。"
+
+#: platform/windows/export/export.cpp
+msgid "Could not find wine executable at \"%s\"."
+msgstr "无法在“%s”找到 wine 可执行文件。"
+
+#: platform/windows/export/export.cpp
+msgid ""
+"Could not start rcedit executable. Configure rcedit path in the Editor "
+"Settings (Export > Windows > Rcedit), or disable \"Application > Modify "
+"Resources\" in the export preset."
+msgstr ""
+"无法启动 rcedit 可执行文件。请在编辑器设置中配置 rcedit 路径（导出 > Windows "
+"> Rcedit），或在导出预设中禁用“应用 > 修改资源”。"
+
+#: platform/windows/export/export.cpp
+msgid "rcedit failed to modify executable: %s."
+msgstr "rcedit 修改可执行文件失败：%s。"
+
+#: platform/windows/export/export.cpp
+msgid "Could not find signtool executable at \"%s\"."
+msgstr "无法在“%s”找到 signtool 可执行文件。"
+
+#: platform/windows/export/export.cpp
+msgid "Could not find osslsigncode executable at \"%s\"."
+msgstr "无法在“%s”找到 osslsigncode 可执行文件。"
+
+#: platform/windows/export/export.cpp
+msgid "Invalid identity type."
+msgstr "身份类型无效。"
+
+#: platform/windows/export/export.cpp
+msgid "Invalid timestamp server."
+msgstr "时间戳服务器无效。"
+
+#: platform/windows/export/export.cpp
+msgid ""
+"Could not start signtool executable. Configure signtool path in the Editor "
+"Settings (Export > Windows > Signtool), or disable \"Codesign\" in the "
+"export preset."
+msgstr ""
+"无法启动 signtool 可执行文件。请在编辑器设置中配置 signtool 路径（导出 > "
+"Windows > Signtool），或在导出预设中禁用“代码签名”。"
+
+#: platform/windows/export/export.cpp
+msgid "Signtool failed to sign executable: %s."
+msgstr "Signtool 签名可执行文件失败：%s。"
+
+#: platform/windows/export/export.cpp
+msgid "Failed to remove temporary file \"%s\"."
+msgstr "移除临时文件“%s”失败。"
+
+#: platform/windows/export/export.cpp
 msgid ""
 "The rcedit tool must be configured in the Editor Settings (Export > Windows "
 "> Rcedit) to change the icon or app information data."
 msgstr ""
-"必须在编辑器设置中配置 rcedit 工具（Export > Windows > Rcedit）才能修改图标或"
-"应用信息数据。"
+"必须在编辑器设置中配置 rcedit 工具（导出 > Windows > Rcedit）才能修改图标或应"
+"用信息数据。"
 
 #: platform/windows/export/export.cpp
 msgid "Invalid icon path:"
@@ -19511,6 +19783,22 @@ msgstr "文件版本无效："
 #: platform/windows/export/export.cpp
 msgid "Invalid product version:"
 msgstr "产品版本无效："
+
+#: platform/windows/export/export.cpp
+msgid "Windows executables cannot be >= 4 GiB."
+msgstr "Windows 可执行文件不能 >= 4GiB。"
+
+#: platform/windows/export/export.cpp platform/x11/export/export.cpp
+msgid "Failed to open executable file \"%s\"."
+msgstr "打开可执行文件“%s”失败。"
+
+#: platform/windows/export/export.cpp platform/x11/export/export.cpp
+msgid "Executable file header corrupted."
+msgstr "可执行文件头已损坏。"
+
+#: platform/windows/export/export.cpp platform/x11/export/export.cpp
+msgid "Executable \"pck\" section not found."
+msgstr "可执行文件“pck”区未找到。"
 
 #: platform/windows/export/export.cpp
 msgid "Windows"
@@ -19527,6 +19815,10 @@ msgstr "Osslsigncode"
 #: platform/windows/export/export.cpp
 msgid "Wine"
 msgstr "Wine"
+
+#: platform/x11/export/export.cpp
+msgid "32-bit executables cannot have embedded data >= 4 GiB."
+msgstr "32 位可执行文件无法内嵌 >= 4 GiB 的数据。"
 
 #: scene/2d/animated_sprite.cpp scene/3d/sprite_3d.cpp
 #: scene/resources/texture.cpp
@@ -19638,7 +19930,8 @@ msgstr "暂停流"
 
 #: scene/2d/audio_stream_player_2d.cpp scene/3d/audio_stream_player_3d.cpp
 #: scene/3d/light.cpp scene/3d/reflection_probe.cpp
-#: scene/3d/visual_instance.cpp scene/resources/material.cpp
+#: scene/3d/visibility_notifier.cpp scene/3d/visual_instance.cpp
+#: scene/resources/material.cpp
 msgid "Max Distance"
 msgstr "最大距离"
 
@@ -19680,7 +19973,7 @@ msgstr "缩放"
 msgid "Custom Viewport"
 msgstr "自定义视区"
 
-#: scene/2d/camera_2d.cpp scene/3d/camera.cpp
+#: scene/2d/camera_2d.cpp scene/3d/camera.cpp scene/3d/interpolated_camera.cpp
 #: scene/animation/animation_player.cpp scene/animation/animation_tree.cpp
 #: scene/animation/animation_tree_player.cpp scene/main/timer.cpp
 msgid "Process Mode"
@@ -20180,7 +20473,7 @@ msgstr "节点 B"
 #: scene/3d/light.cpp scene/3d/physics_body.cpp scene/3d/physics_joint.cpp
 #: scene/resources/environment.cpp
 msgid "Bias"
-msgstr "偏倚"
+msgstr "偏置"
 
 #: scene/2d/joints_2d.cpp
 msgid "Disable Collision"
@@ -20347,9 +20640,38 @@ msgstr "单元格大小"
 msgid "Edge Connection Margin"
 msgstr "边界连接边距"
 
+#: scene/2d/navigation_2d.cpp
+msgid ""
+"'Navigation2D' node and 'Navigation2D.get_simple_path()' are deprecated and "
+"will be removed in a future version. Use 'Navigation2DServer.map_get_path()' "
+"instead."
+msgstr ""
+"“Navigation2D”节点和“Navigation2D.get_simple_path()”已废弃，会在将来的版本中"
+"移除。请用“Navigation2DServer.map_get_path()”替代。"
+
+#: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
+msgid "Pathfinding"
+msgstr "寻路"
+
+#: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
+msgid "Path Desired Distance"
+msgstr "路径期望距离"
+
 #: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
 msgid "Target Desired Distance"
 msgstr "目标期望距离"
+
+#: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
+msgid "Path Max Distance"
+msgstr "路径最大距离"
+
+#: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
+msgid "Avoidance"
+msgstr "避障"
+
+#: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
+msgid "Avoidance Enabled"
+msgstr "启用避障"
 
 #: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
 msgid "Neighbor Dist"
@@ -20366,14 +20688,6 @@ msgstr "时间下限"
 #: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
 msgid "Max Speed"
 msgstr "最大速度"
-
-#: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
-msgid "Path Max Distance"
-msgstr "路径最大距离"
-
-#: scene/2d/navigation_agent_2d.cpp scene/3d/navigation_agent.cpp
-msgid "Avoidance Enabled"
-msgstr "启用避障"
 
 #: scene/2d/navigation_agent_2d.cpp
 msgid ""
@@ -20398,23 +20712,23 @@ msgstr ""
 "请为此节点设置一个 NavigationPolygon 类型的资源作为形状，这样它才能正常工作。"
 
 #: scene/2d/navigation_polygon.cpp
-msgid ""
-"NavigationPolygonInstance must be a child or grandchild to a Navigation2D "
-"node. It only provides navigation data."
-msgstr ""
-"NavigationPolygonInstance 类型的节点必须作为 Navigation2D 的子节点或子孙节点"
-"才能为其提供导航数据。"
-
-#: scene/2d/navigation_polygon.cpp
 msgid "Navpoly"
 msgstr "导航多边形"
+
+#: scene/2d/navigation_polygon.cpp scene/3d/navigation_mesh_instance.cpp
+msgid "Enter Cost"
+msgstr "进入消耗"
+
+#: scene/2d/navigation_polygon.cpp scene/3d/navigation_mesh_instance.cpp
+msgid "Travel Cost"
+msgstr "移动消耗"
 
 #: scene/2d/node_2d.cpp scene/2d/polygon_2d.cpp scene/3d/spatial.cpp
 #: scene/main/canvas_layer.cpp
 msgid "Rotation Degrees"
 msgstr "旋转角度"
 
-#: scene/2d/node_2d.cpp
+#: scene/2d/node_2d.cpp scene/3d/spatial.cpp
 msgid "Global Rotation"
 msgstr "全局旋转"
 
@@ -21221,7 +21535,7 @@ msgstr "ConcavePolygonShape 只支持静态模式下的 RigidBody。"
 
 #: scene/3d/cpu_particles.cpp
 msgid "Nothing is visible because no mesh has been assigned."
-msgstr "无物可见，因为没有指定网格。"
+msgstr "未指定网格，无可见内容。"
 
 #: scene/3d/cpu_particles.cpp
 msgid ""
@@ -21318,7 +21632,7 @@ msgstr "动态范围"
 
 #: scene/3d/gi_probe.cpp scene/3d/light.cpp
 msgid "Normal Bias"
-msgstr "法线偏倚"
+msgstr "法线偏置"
 
 #: scene/3d/label_3d.cpp scene/3d/sprite_3d.cpp
 #: scene/resources/primitive_meshes.cpp
@@ -21429,7 +21743,7 @@ msgstr "混合拆分"
 
 #: scene/3d/light.cpp
 msgid "Bias Split Scale"
-msgstr "偏倚拆分缩放"
+msgstr "偏置拆分缩放"
 
 #: scene/3d/light.cpp
 msgid "Depth Range"
@@ -21467,6 +21781,15 @@ msgstr "软件蒙皮"
 msgid "Transform Normals"
 msgstr "变换法线"
 
+#: scene/3d/navigation.cpp
+msgid ""
+"'Navigation' node and 'Navigation.get_simple_path()' are deprecated and will "
+"be removed in a future version. Use 'NavigationServer.map_get_path()' "
+"instead."
+msgstr ""
+"“Navigation”节点和“Navigation.get_simple_path()”已废弃，会在将来的版本中移"
+"除。请用“NavigationServer.map_get_path()”替代。"
+
 #: scene/3d/navigation.cpp scene/resources/curve.cpp
 msgid "Up Vector"
 msgstr "上向量"
@@ -21487,14 +21810,6 @@ msgstr "忽略 Y"
 msgid ""
 "The NavigationAgent can be used only under a Spatial inheriting parent node."
 msgstr "NavigationAgent 只能在继承 Spatial 的父节点下使用。"
-
-#: scene/3d/navigation_mesh_instance.cpp
-msgid ""
-"NavigationMeshInstance must be a child or grandchild to a Navigation node. "
-"It only provides navigation data."
-msgstr ""
-"NavigationMeshInstance 类型节点必须作为 Navigation 节点的子节点或子孙节点才能"
-"提供导航数据。"
 
 #: scene/3d/navigation_mesh_instance.cpp scene/resources/mesh_library.cpp
 msgid "NavMesh"
@@ -21662,7 +21977,7 @@ msgstr "角度下限"
 
 #: scene/3d/physics_body.cpp
 msgid "Angular Limit Bias"
-msgstr "角度限制偏倚"
+msgstr "角度限制偏置"
 
 #: scene/3d/physics_body.cpp
 msgid "Angular Limit Softness"
@@ -22286,6 +22601,10 @@ msgid ""
 msgstr ""
 "对 SoftBody 尺寸的修改，将会在运行时被物理引擎所覆盖。\n"
 "建议修改子节点的碰撞体形状尺寸。"
+
+#: scene/3d/spatial.cpp
+msgid "Global Translation"
+msgstr "全局平移"
 
 #: scene/3d/spatial.cpp
 msgid "Matrix"
@@ -23181,7 +23500,7 @@ msgstr "最小值"
 
 #: scene/gui/range.cpp scene/resources/curve.cpp
 msgid "Max Value"
-msgstr "最大之"
+msgstr "最大值"
 
 #: scene/gui/range.cpp
 msgid "Page"
@@ -23197,11 +23516,11 @@ msgstr "舍入"
 
 #: scene/gui/range.cpp
 msgid "Allow Greater"
-msgstr "允许更多"
+msgstr "允许更大"
 
 #: scene/gui/range.cpp
 msgid "Allow Lesser"
-msgstr "允许更少"
+msgstr "允许更小"
 
 #: scene/gui/reference_rect.cpp
 msgid "Border Color"
@@ -23376,6 +23695,10 @@ msgstr "断点栏"
 #: scene/gui/text_edit.cpp
 msgid "Fold Gutter"
 msgstr "折叠栏"
+
+#: scene/gui/text_edit.cpp
+msgid "Drag And Drop Selection Enabled"
+msgstr "启用拖放选中内容"
 
 #: scene/gui/text_edit.cpp
 msgid "Hiding Enabled"
@@ -23734,20 +24057,21 @@ msgstr "Viewport 路径"
 
 #: scene/main/viewport.cpp
 msgid ""
-"This viewport is not set as render target. If you intend for it to display "
-"its contents directly to the screen, make it a child of a Control so it can "
-"obtain a size. Otherwise, make it a RenderTarget and assign its internal "
-"texture to some node for display."
-msgstr ""
-"这个视窗未被设置为渲染目标。如果你想让其直接在屏幕上显示内容，请使其成为 "
-"Control 的子节点，这样一来该 Viewport 才会有大小。否则请为其设置 "
-"RenderTarget 并分配其内部纹理来显示。"
-
-#: scene/main/viewport.cpp
-msgid ""
 "The Viewport size must be greater than or equal to 2 pixels on both "
 "dimensions to render anything."
 msgstr "Viewport 的宽高都大于等于 2 像素时才能进行渲染。"
+
+#: scene/main/viewport.cpp
+msgid ""
+"This Viewport has HDR enabled, but its Usage is set to 2D or 2D No-"
+"Sampling.\n"
+"HDR is only supported in Viewports that have their Usage set to 3D or 3D No-"
+"Effects.\n"
+"HDR will be disabled for this Viewport."
+msgstr ""
+"这个 Viewport 启用了 HDR，但其 Usage 为 2D 或 2D No-Sampling。\n"
+"HDR 仅在 Usage 为 3D 或 3D No-Effects 的 Viewport 中支持。\n"
+"这个 Viewport 将禁用 HDR。"
 
 #: scene/main/viewport.cpp
 msgid "ARVR"
@@ -23884,6 +24208,14 @@ msgstr "2D 物理"
 #: scene/register_scene_types.cpp
 msgid "3D Physics"
 msgstr "3D 物理"
+
+#: scene/register_scene_types.cpp
+msgid "2D Navigation"
+msgstr "2D 导航"
+
+#: scene/register_scene_types.cpp
+msgid "3D Navigation"
+msgstr "3D 导航"
 
 #: scene/register_scene_types.cpp
 msgid "Use hiDPI"
@@ -24994,11 +25326,11 @@ msgstr "公告板保持缩放"
 
 #: scene/resources/material.cpp
 msgid "Grow"
-msgstr "发光"
+msgstr "生长"
 
 #: scene/resources/material.cpp
 msgid "Grow Amount"
-msgstr "发光量"
+msgstr "生长量"
 
 #: scene/resources/material.cpp
 msgid "Use Alpha Scissor"
@@ -25096,7 +25428,7 @@ msgstr "传递"
 msgid "Refraction"
 msgstr "折射"
 
-#: scene/resources/material.cpp scene/resources/navigation_mesh.cpp
+#: scene/resources/material.cpp
 msgid "Detail"
 msgstr "细节"
 
@@ -25169,8 +25501,12 @@ msgid "Visible Instance Count"
 msgstr "可见实例数"
 
 #: scene/resources/navigation_mesh.cpp
-msgid "Sample Partition Type"
-msgstr "采样分区类型"
+msgid "Sampling"
+msgstr "采样"
+
+#: scene/resources/navigation_mesh.cpp
+msgid "Partition Type"
+msgstr "分区类型"
 
 #: scene/resources/navigation_mesh.cpp
 msgid "Parsed Geometry Type"
@@ -25185,7 +25521,11 @@ msgid "Source Group Name"
 msgstr "来源分组名称"
 
 #: scene/resources/navigation_mesh.cpp
-msgid "Agent"
+msgid "Cells"
+msgstr "单元格"
+
+#: scene/resources/navigation_mesh.cpp
+msgid "Agents"
 msgstr "代理"
 
 #: scene/resources/navigation_mesh.cpp
@@ -25197,11 +25537,15 @@ msgid "Max Slope"
 msgstr "最大斜坡"
 
 #: scene/resources/navigation_mesh.cpp
+msgid "Regions"
+msgstr "地区"
+
+#: scene/resources/navigation_mesh.cpp
 msgid "Merge Size"
 msgstr "合并大小"
 
 #: scene/resources/navigation_mesh.cpp
-msgid "Edge"
+msgid "Edges"
 msgstr "边界"
 
 #: scene/resources/navigation_mesh.cpp
@@ -25211,6 +25555,10 @@ msgstr "最大误差"
 #: scene/resources/navigation_mesh.cpp
 msgid "Verts Per Poly"
 msgstr "每多边形顶点数"
+
+#: scene/resources/navigation_mesh.cpp
+msgid "Details"
+msgstr "细节"
 
 #: scene/resources/navigation_mesh.cpp
 msgid "Sample Distance"
@@ -25229,8 +25577,16 @@ msgid "Ledge Spans"
 msgstr "凸台范围"
 
 #: scene/resources/navigation_mesh.cpp
-msgid "Filter Walkable Low Height Spans"
-msgstr "过滤可行走低高度范围"
+msgid "Walkable Low Height Spans"
+msgstr "可行走低高度范围"
+
+#: scene/resources/navigation_mesh.cpp
+msgid "Baking AABB"
+msgstr "烘焙 AABB"
+
+#: scene/resources/navigation_mesh.cpp
+msgid "Baking AABB Offset"
+msgstr "烘焙 AABB 偏移"
 
 #: scene/resources/occluder_shape.cpp
 msgid "Spheres"
@@ -25354,7 +25710,7 @@ msgstr "A"
 
 #: scene/resources/shape_2d.cpp
 msgid "Custom Solver Bias"
-msgstr "自定义求解器偏倚"
+msgstr "自定义求解器偏置"
 
 #: scene/resources/skin.cpp
 msgid "Bind Count"
@@ -25587,6 +25943,10 @@ msgid "Scenario"
 msgstr "场景"
 
 #: scene/resources/world.cpp scene/resources/world_2d.cpp
+msgid "Navigation Map"
+msgstr "导航地图"
+
+#: scene/resources/world.cpp scene/resources/world_2d.cpp
 msgid "Direct Space State"
 msgstr "DirectSpaceState"
 
@@ -25601,6 +25961,22 @@ msgstr "默认线性阻尼"
 #: scene/resources/world.cpp scene/resources/world_2d.cpp
 msgid "Default Angular Damp"
 msgstr "默认角度阻尼"
+
+#: scene/resources/world.cpp
+msgid "Default Map Up"
+msgstr "默认地图上方"
+
+#: scene/resources/world.cpp scene/resources/world_2d.cpp
+msgid "Default Cell Size"
+msgstr "默认单元格大小"
+
+#: scene/resources/world.cpp scene/resources/world_2d.cpp
+msgid "Default Cell Height"
+msgstr "默认单元格高度"
+
+#: scene/resources/world.cpp scene/resources/world_2d.cpp
+msgid "Default Edge Connection Margin"
+msgstr "默认边界连接边距"
 
 #: scene/resources/world_2d.cpp
 msgid "Canvas"
