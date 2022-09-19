@@ -35,8 +35,7 @@ enum AdapterMenuOptions {
 
 
 enum HelpMenuOptions {
-	ONLINE_TUTORIAL,
-	PLUGIN_API,
+	DOCUMENT,
 	QUESTIONS,
 	ISSUES,
 	DOC_FEEDBACK,
@@ -135,9 +134,7 @@ func _on_adapter_menu_pressed(id:int)->void:
 			
 func _on_help_menu_pressed(id:int)->void:
 	match id:
-		HelpMenuOptions.ONLINE_TUTORIAL:
-			OS.shell_open("https://godoter.cn/t/rainybot-tutorials")
-		HelpMenuOptions.PLUGIN_API:
+		HelpMenuOptions.DOCUMENT:
 			OS.shell_open("https://docs.rainybot.dev")
 		HelpMenuOptions.QUESTIONS:
 			OS.shell_open("https://godoter.cn/t/rainybot-qa")

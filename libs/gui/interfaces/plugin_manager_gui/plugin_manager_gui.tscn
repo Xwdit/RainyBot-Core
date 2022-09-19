@@ -43,22 +43,35 @@ offset_right = 230.0
 offset_bottom = 636.0
 theme_override_constants/separation = 8
 
-[node name="RefreshButton" type="Button" parent="HSplitContainer/PluginListContainer"]
+[node name="MarketButton" type="Button" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
 offset_right = 230.0
 offset_bottom = 32.0
+text = "访问插件市场"
+
+[node name="HSeparator" type="HSeparator" parent="HSplitContainer/PluginListContainer"]
+layout_mode = 2
+offset_top = 40.0
+offset_right = 230.0
+offset_bottom = 44.0
+
+[node name="RefreshButton" type="Button" parent="HSplitContainer/PluginListContainer"]
+layout_mode = 2
+offset_top = 52.0
+offset_right = 230.0
+offset_bottom = 84.0
 text = "刷新插件列表"
 
 [node name="FolderButton" type="Button" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
-offset_top = 40.0
+offset_top = 92.0
 offset_right = 230.0
-offset_bottom = 72.0
+offset_bottom = 124.0
 text = "打开插件文件夹"
 
 [node name="PluginList" type="ItemList" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
-offset_top = 80.0
+offset_top = 132.0
 offset_right = 230.0
 offset_bottom = 516.0
 grow_vertical = 2
@@ -175,7 +188,6 @@ layout_mode = 2
 offset_top = 291.0
 offset_right = 886.0
 offset_bottom = 552.0
-delimiter_strings = ["' '", "\" \""]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
@@ -487,6 +499,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [connection signal="visibility_changed" from="." to="." method="_on_plugin_manager_gui_visibility_changed"]
+[connection signal="button_down" from="HSplitContainer/PluginListContainer/MarketButton" to="." method="_on_market_button_button_down"]
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/RefreshButton" to="." method="_on_refresh_button_button_down"]
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/FolderButton" to="." method="_on_folder_button_button_down"]
 [connection signal="item_selected" from="HSplitContainer/PluginListContainer/PluginList" to="." method="_on_plugin_list_item_selected"]

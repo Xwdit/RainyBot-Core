@@ -225,6 +225,10 @@ func _on_edit_button_button_down()->void:
 		GuiManager.popup_notification("尝试编辑插件文件%s时出现错误，请查看控制台来了解更多信息"% file)
 
 
+func _on_market_button_button_down():
+	OS.shell_open("https://godoter.cn/t/rainybot-plugins")
+
+
 func _on_reload_button_button_down()->void:
 	var loaded:bool = plugin_list_dic[current_selected].loaded
 	if loaded:
