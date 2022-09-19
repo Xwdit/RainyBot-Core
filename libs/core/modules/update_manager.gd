@@ -172,11 +172,12 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 func _remove(status:Dictionary,file:String):
 	var dir:Directory = Directory.new()
 	if dir.file_exists(file):
+		dir.open(file.get_base_dir())
 		var err:int = dir.remove(file)
 		if !err:
-			status.removed.append[file]
+			status.removed.append(file)
 			return
-	status.remove_failed.append[file]
+	status.remove_failed.append(file)
 
 
 func _update(status:Dictionary,file:String,dict:Dictionary):
