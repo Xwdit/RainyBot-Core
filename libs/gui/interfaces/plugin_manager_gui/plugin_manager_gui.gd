@@ -33,7 +33,7 @@ func _ready():
 
 
 func _on_plugin_manager_gui_visibility_changed():
-	if is_inside_tree():
+	if is_inside_tree() and visible:
 		update_plugin_list(true)
 
 
