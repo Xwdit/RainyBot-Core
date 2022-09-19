@@ -34,21 +34,21 @@ offset_right = -8.0
 offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 240
+split_offset = 250
 
 [node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource("1_yhib5")]
 layout_mode = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_right = 1136.0
-offset_bottom = 554.0
+offset_bottom = 564.0
 
 [node name="CommandInput" parent="VSplitContainer" instance=ExtResource("2_i0io6")]
 layout_mode = 2
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 562.0
+offset_top = 572.0
 offset_right = 1136.0
 offset_bottom = 637.0
 grow_horizontal = 1
