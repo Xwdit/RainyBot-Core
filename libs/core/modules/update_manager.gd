@@ -33,7 +33,7 @@ func _call_console_command(_cmd:String,args:Array)->void:
 
 func check_update()->bool:
 	GuiManager.console_print_warning("正在检查您的RainyBot是否为最新版本，请稍候...(下载源: %s)"% ConfigManager.get_update_source())
-	Console.disable_sysout(true)
+#	Console.disable_sysout(true)
 	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+"update.json")
 	var dic:Dictionary = result.get_as_dic()
 	Console.disable_sysout(false)
@@ -60,7 +60,6 @@ func check_update()->bool:
 
 func build_update_json(path:String)->void:
 	GuiManager.console_print_warning("正在生成升级统计文件，请稍候...")
-	var file_ins:File = File.new()
 	var dict:Dictionary = {"total_size":0}
 	var root:String = GlobalManager.root_path
 	for _path in paths_to_check:
@@ -71,9 +70,8 @@ func build_update_json(path:String)->void:
 	dict["godot_version"]=Engine.get_version_info()["hash"]
 	var json:JSON = JSON.new()
 	var _text:String = json.stringify(dict)
-	file_ins.open(path,File.WRITE)
+	var file_ins:FileAccess = FileAccess.open(path,FileAccess.WRITE)
 	file_ins.store_line(_text)
-	file_ins.close()
 	GuiManager.console_print_success("成功生成升级统计文件: %s" % path)
 
 
@@ -170,9 +168,8 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 
 
 func _remove(status:Dictionary,file:String):
-	var dir:Directory = Directory.new()
-	if dir.file_exists(file):
-		dir.open(file.get_base_dir())
+	if FileAccess.file_exists(file):
+		var dir:DirAccess = DirAccess.open(file.get_base_dir())
 		var err:int = dir.remove(file)
 		if !err:
 			status.removed.append(file)
@@ -209,9 +206,8 @@ func format_bytes(bytes:int, decimals:int = 2)->String:
 
 
 func parse_path_dict(path:String,dict:Dictionary,update_dict:Dictionary={})->void:
-	var dir:Directory = Directory.new()
-	var error:int = dir.open(path)
-	if error:
+	var dir:DirAccess = DirAccess.open(path)
+	if !dir:
 		print(path)
 		return
 		
@@ -233,21 +229,18 @@ func parse_path_dict(path:String,dict:Dictionary,update_dict:Dictionary={})->voi
 
 
 func build_file_dict(_f_path:String,dict:Dictionary)->void:
-	var _file:File = File.new()
 	var _unique_path:String = _f_path.replace(GlobalManager.root_path,"")
 	dict[_unique_path] = {}
-	dict[_unique_path]["md5"] = _file.get_md5(_f_path)
-	_file.open(_f_path,File.READ)
+	dict[_unique_path]["md5"] = FileAccess.get_md5(_f_path)
+	var _file:FileAccess = FileAccess.open(_f_path,FileAccess.READ)
 	dict[_unique_path]["size"] = _file.get_length()
 	dict["total_size"] += _file.get_length()
-	_file.close()
 
 
 func check_file_update(_f_path:String,dict:Dictionary,result_dict:Dictionary)->void:
-	var _file:File = File.new()
 	var _unique_path:String = _f_path.replace(GlobalManager.root_path,"")
 	if dict.has(_unique_path):
-		if _file.get_md5(_f_path) != dict[_unique_path]["md5"]:
+		if FileAccess.get_md5(_f_path) != dict[_unique_path]["md5"]:
 			result_dict["updates"].append(_f_path)
 			result_dict["total_size"]+=dict[_unique_path]["size"]
 	else:
@@ -260,8 +253,7 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 		var _value = dict[f]
 		if !(_value is Dictionary) or !_value.has("size"):
 			continue
-		var _dir:Directory = Directory.new()
-		if !_dir.file_exists(root_path+f):
+		if !FileAccess.file_exists(root_path+f):
 			result_dict["adds"].append(root_path+f)
 			result_dict["total_size"]+=_value["size"]
 
@@ -270,12 +262,10 @@ func download_file(path:String,dict:Dictionary)->int:
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
 	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+_unique_path.uri_encode(),600)
 	var dir_path:String = (path).get_base_dir()+"/"
-	var _dir:Directory = Directory.new()
-	if !_dir.dir_exists(dir_path):
-		_dir.make_dir_recursive(dir_path)
+	if !DirAccess.dir_exists_absolute(dir_path):
+		DirAccess.make_dir_recursive_absolute(dir_path)
 	var err:int = result.save_to_file(path)
-	var file:File = File.new()
-	var md5:String = file.get_md5(path)
+	var md5:String = FileAccess.get_md5(path)
 	if !err and dict[_unique_path]["md5"]==md5:
 		return OK
 	return ERR_INVALID_DATA

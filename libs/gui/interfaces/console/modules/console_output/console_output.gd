@@ -1,12 +1,12 @@
 extends RichTextLabel
 
 
-var file:File = File.new()
+var file:FileAccess = null
 
 
 func _ready()->void:
 	save_log(false)
-	file.open(GlobalManager.log_path+"rainybot.log",File.WRITE)
+	file = FileAccess.open(GlobalManager.log_path+"rainybot.log",FileAccess.WRITE)
 
 
 func add_newline_with_time(_text)->void:
@@ -47,8 +47,7 @@ func add_to_log(_text)->void:
 	
 func save_log(_close:bool = false)->void:
 	if _close and file.is_open():
-		file.close()
-	var _dir:Directory = Directory.new()
-	_dir.open(GlobalManager.log_path)
+		file = null
+	var _dir:DirAccess = DirAccess.open(GlobalManager.log_path)
 	if _dir.file_exists("rainybot.log"):
 		_dir.rename("rainybot.log","rainybot_"+Time.get_datetime_string_from_system().replace("T","_").replace(":",".")+".log")

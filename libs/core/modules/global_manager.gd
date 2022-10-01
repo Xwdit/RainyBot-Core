@@ -59,17 +59,13 @@ func _process(_delta:float)->void:
 
 
 func _init_dir()->void:
-	var dir:Directory = Directory.new()
-	var file:File = File.new()
-	dir.include_hidden = true
 	for p in INIT_PATH:
 		var path:String = OS.get_executable_path().get_base_dir() + p
-		if !dir.dir_exists(path):
-			dir.make_dir(path)
+		if !DirAccess.dir_exists_absolute(path):
+			DirAccess.make_dir_absolute(path)
 		if p != "/plugins/":
-			if !file.file_exists(path+".gdignore"):
-				file.open(path+".gdignore",File.WRITE)
-				file.close()
+			if !FileAccess.file_exists(path+".gdignore"):
+				FileAccess.open(path+".gdignore",FileAccess.WRITE)
 			
 			
 func _notification(what:int)->void:
@@ -109,10 +105,8 @@ func _check_load_status()->void:
 func clear_cache()->void:
 	GuiManager.console_print_warning("正在清理缓存目录，请稍候.....")
 	clear_dir_files(cache_path,false)
-	var file:File = File.new()
-	if !file.file_exists(cache_path+".gdignore"):
-		file.open(cache_path+".gdignore",File.WRITE)
-		file.close()
+	if !FileAccess.file_exists(cache_path+".gdignore"):
+		FileAccess.open(cache_path+".gdignore",FileAccess.WRITE)
 	GuiManager.console_print_success("缓存目录清理完毕!")
 
 
@@ -123,10 +117,8 @@ func restart()->void:
 
 
 func check_error()->void:
-	var _f:File = File.new()
-	_f.open("user://logs/rainybot.log",File.READ)
+	var _f:FileAccess = FileAccess.open("user://logs/rainybot.log",FileAccess.READ)
 	var curr_text:String = _f.get_as_text()
-	_f.close()
 	if last_log_text == "":
 		last_log_text = curr_text
 	elif last_log_text != curr_text:
@@ -166,10 +158,9 @@ func reimport()->void:
 
 
 func clear_dir_files(dir_path:String,remove_dir:bool=true)->void:
-	var dir:Directory = Directory.new()
-	dir.include_hidden = true
-	if dir.dir_exists(dir_path):
-		dir.open(dir_path)
+	if DirAccess.dir_exists_absolute(dir_path):
+		var dir:DirAccess = DirAccess.open(dir_path)
+		dir.include_hidden = true
 		for _file in dir.get_files():
 			dir.remove(dir_path+_file)
 		for _dir in dir.get_directories():
@@ -210,13 +201,12 @@ func is_running_from_editor()->bool:
 
 func _add_import_helper()->void:
 	var c_file:ConfigFile = ConfigFile.new()
-	var dir:Directory = Directory.new()
-	dir.include_hidden = true
 	var err:int = c_file.load(project_file_path)
 	var arr:Array = ["res://addons/import_helper/plugin.cfg"]
-	if !dir.dir_exists(import_helper_target_path):
-		dir.make_dir_recursive(import_helper_target_path)
-	dir.open(import_helper_path)
+	if !DirAccess.dir_exists_absolute(import_helper_target_path):
+		DirAccess.make_dir_recursive_absolute(import_helper_target_path)
+	var dir:DirAccess = DirAccess.open(import_helper_path)
+	dir.include_hidden = true
 	for f in dir.get_files():
 		dir.copy(import_helper_path+f,import_helper_target_path+f)
 	dir.copy(project_file_path,"res://project.godot.bak")
@@ -226,10 +216,8 @@ func _add_import_helper()->void:
 
 func _remove_import_helper()->void:
 	clear_dir_files(root_path+"addons/")
-	var dir:Directory = Directory.new()
-	dir.open(GlobalManager.root_path)
-	dir.copy("res://project.godot.bak",project_file_path)
-	dir.remove("res://project.godot.bak")
+	DirAccess.copy_absolute("res://project.godot.bak",project_file_path)
+	DirAccess.remove_absolute("res://project.godot.bak")
 
 
 class ResourceLoadHelper:

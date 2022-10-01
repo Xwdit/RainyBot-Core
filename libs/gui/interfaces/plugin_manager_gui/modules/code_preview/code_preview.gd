@@ -140,9 +140,8 @@ func build_highlight_dics()->void:
 	
 
 func build_class_dics(path:String)->void:
-	var dir:Directory = Directory.new()
-	dir.open(path)
-	var files:PackedStringArray = dir.get_files()
+	var dir:DirAccess = DirAccess.open(path)
+	var files:PackedStringArray = dir.get_files() if dir else []
 	for f in files:
 		var _c:String = f.replacen(".xml","")
 		if !class_dic.has(_c):
@@ -189,10 +188,9 @@ func build_class_dics(path:String)->void:
 					
 
 func build_api_dics(path:String)->void:
-	var dir:Directory = Directory.new()
-	var error:int = dir.open(path)
-	if error:
-		print(error_string(error))
+	var dir:DirAccess = DirAccess.open(path)
+	if !dir:
+		print(error_string(DirAccess.get_open_error()))
 		return
 		
 	dir.list_dir_begin()

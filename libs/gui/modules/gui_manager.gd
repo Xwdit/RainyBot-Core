@@ -11,7 +11,7 @@ var sysout_disabled:bool = false
 
 	
 func open_plugin_editor(path:String)->int:
-	if !File.new().file_exists(path) or !path.get_file().ends_with(".gd"):
+	if !FileAccess.file_exists(path) or !path.get_file().ends_with(".gd"):
 		console_print_error("插件文件不存在或文件格式错误!")
 		return ERR_CANT_OPEN
 	for child in get_children():

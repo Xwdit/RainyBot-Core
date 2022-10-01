@@ -53,8 +53,9 @@ java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader
 
 
 func _exit_tree()->void:
-	var dir:Directory = Directory.new()
-	dir.open(mirai_path)
+	var dir:DirAccess = DirAccess.open(mirai_path)
+	if !is_instance_valid(dir):
+		return
 	if OS.get_name() == "Windows":
 		if dir.file_exists(mirai_path+"start.cmd"):
 			dir.remove(mirai_path+"start.cmd")
@@ -81,56 +82,48 @@ func check_java_version()->bool:
 
 
 func init_mirai_config()->void:
-	var dir:Directory = Directory.new()
-	var file:File = File.new()
-	
-	dir.open(mirai_path)
+	var dir:DirAccess = DirAccess.open(mirai_path)
 	
 	if !dir.dir_exists(mirai_http_path):
 		dir.make_dir_recursive(mirai_http_path)
 	else:
 		if dir.file_exists(mirai_http_file):
 			dir.remove(mirai_http_file)
-	file.open(mirai_http_file,File.WRITE)
+	var file:FileAccess = FileAccess.open(mirai_http_file,FileAccess.WRITE)
 	var _str:String = mirai_http_config.format(BotAdapter.mirai_config_manager.loaded_config).replace("	","    ")
 	file.store_string(_str)
-	file.close()
 	
 	if !dir.dir_exists(mirai_login_path):
 		dir.make_dir_recursive(mirai_login_path)
 	else:
 		if dir.file_exists(mirai_login_file):
 			dir.remove(mirai_login_file)
-	file.open(mirai_login_file,File.WRITE)
+	file = FileAccess.open(mirai_login_file,FileAccess.WRITE)
 	_str = mirai_login_config.format(BotAdapter.mirai_config_manager.loaded_config).replace("	","    ")
 	file.store_string(_str)
-	file.close()
 
 
 func init_mirai_cmd()->void:
-	var dir:Directory = Directory.new()
-	var file:File = File.new()
-	
-	dir.open(mirai_path)
+	var file:FileAccess
+	var dir:DirAccess = DirAccess.open(mirai_path)
 	
 	var _str:String
 	if OS.get_name() == "Windows":
 		if dir.file_exists(mirai_path+"start.cmd"):
 			dir.remove(mirai_path+"start.cmd")
-		file.open(mirai_path+"start.cmd",File.WRITE)
+		file = FileAccess.open(mirai_path+"start.cmd",FileAccess.WRITE)
 		_str = mirai_start_cmd.format({"mirai_path":mirai_path})
 	elif OS.get_name() == "macOS":
 		if dir.file_exists(mirai_path+"start.command"):
 			dir.remove(mirai_path+"start.command")
-		file.open(mirai_path+"start.command",File.WRITE)
+		file = FileAccess.open(mirai_path+"start.command",FileAccess.WRITE)
 		_str = mirai_start_cmd_unix.format({"mirai_path":mirai_path})
 	else:
 		if dir.file_exists(mirai_path+"start.sh"):
 			dir.remove(mirai_path+"start.sh")
-		file.open(mirai_path+"start.sh",File.WRITE)
+		file = FileAccess.open(mirai_path+"start.sh",FileAccess.WRITE)
 		_str = mirai_start_cmd_unix.format({"mirai_path":mirai_path})
 	file.store_string(_str)
-	file.close()
 
 
 func load_mirai()->int:
@@ -138,8 +131,7 @@ func load_mirai()->int:
 	if check_java_version():
 		GuiManager.console_print_success("Java环境检测通过，正在启动Mirai进程...")
 		init_mirai_cmd()
-		var file:File = File.new()
-		if file.file_exists(mirai_path+"start.cmd") or file.file_exists(mirai_path+"start.command") or file.file_exists(mirai_path+"start.sh"):
+		if FileAccess.file_exists(mirai_path+"start.cmd") or FileAccess.file_exists(mirai_path+"start.command") or FileAccess.file_exists(mirai_path+"start.sh"):
 			GuiManager.console_print_success("Mirai启动脚本初始化完毕!")
 			init_mirai_config()
 			GuiManager.console_print_success("Mirai配置文件生成完毕!")

@@ -169,15 +169,13 @@ func save(path:String)->int:
 	if frames.is_empty():
 		GuiManager.console_print_error("此Gif图像实例中不存在任何图像帧，因此无法将其保存为文件！")
 		return ERR_DOES_NOT_EXIST
-	var file:File = File.new()
-	var _err:int = file.open(path, File.WRITE)
-	if !_err:
+	var file:FileAccess = FileAccess.open(path, FileAccess.WRITE)
+	if file:
 		file.store_buffer(await get_data())
-		file.close()
 		GuiManager.console_print_success("成功将Gif图像数据储存至文件 %s"% path)
 	else:
 		GuiManager.console_print_error("无法将指定Gif图像数据储存到文件 %s，请检查文件路径或权限是否正确!"% path)
-	return _err
+	return FileAccess.get_open_error()
 
 
 func get_data()->PackedByteArray:

@@ -151,9 +151,8 @@ func init_auto_complete()->void:
 	
 
 func build_class_dics(path:String)->void:
-	var dir:Directory = Directory.new()
-	dir.open(path)
-	var files:PackedStringArray = dir.get_files()
+	var dir:DirAccess = DirAccess.open(path)
+	var files:PackedStringArray = dir.get_files() if dir else []
 	for f in files:
 		var _c:String = f.replacen(".xml","")
 		if !class_dic.has(_c):
@@ -200,10 +199,9 @@ func build_class_dics(path:String)->void:
 					
 
 func build_api_dics(path:String)->void:
-	var dir:Directory = Directory.new()
-	var error:int = dir.open(path)
-	if error:
-		print(error_string(error))
+	var dir:DirAccess = DirAccess.open(path)
+	if !dir:
+		print(error_string(DirAccess.get_open_error()))
 		return
 		
 	dir.list_dir_begin()
@@ -486,16 +484,13 @@ func check_error()->void:
 		else:
 			continue
 	error_lines.clear()
-	var _f:File = File.new()
-	_f.open("user://logs/rainybot.log",File.READ)
-	var curr_text:String = _f.get_as_text()
-	_f.close()
+	var _f:FileAccess = FileAccess.open("user://logs/rainybot.log",FileAccess.READ)
+	var curr_text:String = _f.get_as_text() if _f else ""
 	var _scr:GDScript = GDScript.new()
 	_scr.source_code = text
 	if _scr.reload() != OK:
-		_f.open("user://logs/rainybot.log",File.READ)
-		var _text:String = _f.get_as_text()
-		_f.close()
+		_f = FileAccess.open("user://logs/rainybot.log",FileAccess.READ)
+		var _text:String = _f.get_as_text() if _f else ""
 		GlobalManager.last_log_text = _text
 		var _err:PackedStringArray = _text.replacen(curr_text,"").split("\n")
 		for _l in _err:

@@ -163,11 +163,9 @@ func _call_console_command(_cmd:String,args:Array)->void:
 
 
 func load_plugin_script(path:String)->GDScript:
-	var _file:File = File.new()
-	var _err:int = _file.open(path,File.READ)
-	if !_err:
+	var _file:FileAccess = FileAccess.open(path,FileAccess.READ)
+	if _file:
 		var _str:String = _file.get_as_text()
-		_file.close()
 		var _script:GDScript
 		if !loaded_scripts.has(path):
 			_script = GDScript.new()
@@ -179,7 +177,6 @@ func load_plugin_script(path:String)->GDScript:
 		_script.source_code = _str
 		return _script
 	else:
-		_file.close()
 		return		
 
 
@@ -267,7 +264,7 @@ func unload_plugin(plugin:Plugin)->int:
 
 
 func create_plugin(file_name:String)->int:
-	if File.new().file_exists(plugin_path+file_name):
+	if FileAccess.file_exists(plugin_path+file_name):
 		GuiManager.console_print_error("此插件文件已存在!")
 		return ERR_ALREADY_EXISTS
 	if !file_name.ends_with(".gd"):
@@ -284,9 +281,9 @@ func create_plugin(file_name:String)->int:
 
 
 func delete_plugin(file_name:String)->int:
-	if File.new().file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
-		var dir:Directory = Directory.new()
-		if dir.open(plugin_path)==OK && dir.remove(plugin_path+file_name)==OK:
+	if FileAccess.file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
+		var dir:DirAccess = DirAccess.open(plugin_path)
+		if dir && dir.remove(plugin_path+file_name)==OK:
 			var plug:Plugin = get_plugin_with_filename(file_name)
 			if is_instance_valid(plug):
 				await unload_plugin(plug)
@@ -438,11 +435,10 @@ func get_plugin_with_filename(f_name:String)->Plugin:
 
 func _list_files_in_directory(path:String)->Array:
 	var files:Array = []
-	var dir:Directory = Directory.new()
-	if !dir.dir_exists(path):
-		dir.make_dir(path)
+	if !DirAccess.dir_exists_absolute(path):
+		DirAccess.make_dir_recursive_absolute(path)
 		GuiManager.console_print_warning("插件目录不存在，已创建新的插件目录!")
-	dir.open(path)
+	var dir:DirAccess = DirAccess.open(path)
 	dir.list_dir_begin()
 
 	while true:

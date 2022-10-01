@@ -642,13 +642,11 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 	default_plugin_config = default_config
 	plugin_config = default_config.duplicate(true)
 	var config_path:String = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
-	var file:File = File.new()
-	if file.file_exists(config_path):
+	if FileAccess.file_exists(config_path):
 		var _config:Dictionary
 		var json:JSON = JSON.new()
-		var _file_err:int = file.open(config_path,File.READ)
-		var _json_err:int = json.parse(file.get_as_text())
-		file.close()
+		var file:FileAccess = FileAccess.open(config_path,FileAccess.READ)
+		var _json_err:int = json.parse(file.get_as_text()) if file else ERR_CANT_OPEN
 		if !_json_err:
 			_config = json.get_data()
 		if !_config.is_empty():
@@ -664,10 +662,9 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 					extra_keys.append(k)
 			if !missing_keys.is_empty() or !extra_keys.is_empty():
 				GuiManager.console_print_warning("检测到需要更新的配置项，正在尝试对配置文件进行更新.....")
-				_file_err = file.open(config_path,File.WRITE)
-				if !_file_err:
+				file = FileAccess.open(config_path,FileAccess.WRITE)
+				if file:
 					file.store_string(json.stringify(_config,"\t"))
-					file.close()
 					if !missing_keys.is_empty():
 						GuiManager.console_print_success("成功在配置文件中新增了以下的配置项: "+str(missing_keys))
 						if !config_description.is_empty():
@@ -678,10 +675,9 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 						GuiManager.console_print_success("成功从配置文件中移除了以下的配置项: "+str(extra_keys))
 					GuiManager.console_print_warning("若有需要，您可以访问以下路径进行配置: "+config_path)
 				else:
-					file.close()
 					GuiManager.console_print_error("配置文件更新失败，请检查文件权限是否配置正确! 路径:"+config_path)
 					GuiManager.console_print_warning("若需重试，请重新加载此插件!")
-					return _file_err
+					return FileAccess.get_open_error()
 			for key in _config:
 				if (_config[key] is String && _config[key] == "") or (_config[key] == null):
 					GuiManager.console_print_warning("警告:检测到内容为空的配置项，可能会导致出现问题: "+str(key))
@@ -695,15 +691,13 @@ func init_plugin_config(default_config:Dictionary,config_description:Dictionary=
 			return ERR_FILE_CANT_READ
 	else:
 		GuiManager.console_print_warning("没有已存在的配置文件，正在生成新的配置文件...")
-		var _err:int = file.open(config_path,File.WRITE)
-		if _err:
-			file.close()
+		var file:FileAccess = FileAccess.open(config_path,FileAccess.WRITE)
+		if !file:
 			GuiManager.console_print_error("配置文件创建失败，请检查文件权限是否配置正确! 路径:"+config_path)
-			return _err
+			return FileAccess.get_open_error()
 		else:
 			var json:JSON = JSON.new()
 			file.store_string(json.stringify(plugin_config,"\t"))
-			file.close()
 			GuiManager.console_print_success("配置文件创建成功，可以访问以下路径进行配置: "+config_path)
 			if !config_description.is_empty():
 				GuiManager.console_print_text("配置选项说明:")
@@ -721,16 +715,13 @@ func save_plugin_config()->int:
 		return ERR_FILE_CANT_WRITE
 	GuiManager.console_print_warning("正在保存配置文件...")
 	var config_path:String = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
-	var file:File = File.new()
-	var _err:int = file.open(config_path,File.WRITE)
-	if _err:
+	var file:FileAccess = FileAccess.open(config_path,FileAccess.WRITE)
+	if !file:
 		GuiManager.console_print_error("配置文件保存失败，请检查文件权限是否配置正确! 路径:"+config_path)
-		file.close()
-		return _err
+		return FileAccess.get_open_error()
 	else:
 		var json:JSON = JSON.new()
 		file.store_string(json.stringify(plugin_config,"\t"))
-		file.close()
 		GuiManager.console_print_success("配置文件保存成功，路径: "+config_path)
 		return OK
 
@@ -872,11 +863,9 @@ func init_plugin_data()->int:
 		return ERR_ALREADY_IN_USE
 	GuiManager.console_print_warning("正在加载插件数据库.....")
 	var data_path:String = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
-	var file:File = File.new()
-	if file.file_exists(data_path):
-		var _err:int = file.open(data_path,File.READ)
-		var _data = file.get_var(true)
-		file.close()
+	if FileAccess.file_exists(data_path):
+		var file:FileAccess = FileAccess.open(data_path,FileAccess.READ)
+		var _data = file.get_var(true) if file else null
 		if _data is Dictionary:
 			plugin_data = _data
 			plugin_data_loaded = true
@@ -887,14 +876,12 @@ func init_plugin_data()->int:
 			return ERR_DATABASE_CANT_READ
 	else:
 		GuiManager.console_print_warning("没有已存在的数据库文件，正在生成新的数据库文件...")
-		var _err:int = file.open(data_path,File.WRITE)
-		if _err:
+		var file:FileAccess = FileAccess.open(data_path,FileAccess.WRITE)
+		if !file:
 			GuiManager.console_print_error("数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
-			file.close()
-			return _err
+			return FileAccess.get_open_error()
 		else:
 			file.store_var(plugin_data,true)
-			file.close()
 			plugin_data_loaded = true
 			GuiManager.console_print_success("数据库文件创建成功，路径: "+data_path)
 			GuiManager.console_print_warning("若发生任何数据库文件更改，请重载此插件")
@@ -908,15 +895,12 @@ func save_plugin_data()->int:
 		return ERR_DATABASE_CANT_WRITE
 	GuiManager.console_print_warning("正在保存插件数据库.....")
 	var data_path:String = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
-	var file:File = File.new()
-	var _err:int = file.open(data_path,File.WRITE)
-	if _err:
+	var file:FileAccess = FileAccess.open(data_path,FileAccess.WRITE)
+	if !file:
 		GuiManager.console_print_error("数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
-		file.close()
-		return _err
+		return FileAccess.get_open_error()
 	else:
 		file.store_var(plugin_data,true)
-		file.close()
 		GuiManager.console_print_success("数据库文件保存成功，路径: "+data_path)
 		return OK
 		
@@ -987,11 +971,9 @@ func init_plugin_cache()->int:
 		return ERR_ALREADY_IN_USE
 	GuiManager.console_print_warning("正在加载插件缓存数据库.....")
 	var data_path:String = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
-	var file:File = File.new()
-	if file.file_exists(data_path):
-		var _err:int = file.open(data_path,File.READ)
-		var _data = file.get_var(true)
-		file.close()
+	if FileAccess.file_exists(data_path):
+		var file:FileAccess = FileAccess.open(data_path,FileAccess.READ)
+		var _data = file.get_var(true) if file else null
 		if _data is Dictionary:
 			plugin_cache = _data
 			plugin_cache_loaded = true
@@ -1002,14 +984,12 @@ func init_plugin_cache()->int:
 			return ERR_DATABASE_CANT_READ
 	else:
 		GuiManager.console_print_warning("没有已存在的缓存数据库文件，正在生成新的缓存数据库文件...")
-		var _err:int = file.open(data_path,File.WRITE)
-		if _err:
+		var file:FileAccess = FileAccess.open(data_path,FileAccess.WRITE)
+		if !file:
 			GuiManager.console_print_error("缓存数据库文件创建失败，请检查文件权限是否配置正确! 路径:"+data_path)
-			file.close()
-			return _err
+			return FileAccess.get_open_error()
 		else:
 			file.store_var(plugin_cache,true)
-			file.close()
 			plugin_cache_loaded = true
 			GuiManager.console_print_success("缓存数据库文件创建成功，路径: "+data_path)
 			GuiManager.console_print_warning("若发生任何缓存数据库文件更改，请重载此插件")
@@ -1023,15 +1003,12 @@ func save_plugin_cache()->int:
 		return ERR_DATABASE_CANT_WRITE
 	GuiManager.console_print_warning("正在保存插件缓存数据库.....")
 	var data_path:String = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
-	var file:File = File.new()
-	var _err:int = file.open(data_path,File.WRITE)
-	if _err:
+	var file:FileAccess = FileAccess.open(data_path,FileAccess.WRITE)
+	if !file:
 		GuiManager.console_print_error("缓存数据库文件保存失败，请检查文件权限是否配置正确! 路径:"+data_path)
-		file.close()
-		return _err
+		return FileAccess.get_open_error()
 	else:
 		file.store_var(plugin_cache,true)
-		file.close()
 		GuiManager.console_print_success("缓存数据库文件保存成功，路径: "+data_path)
 		return OK
 		
