@@ -33,7 +33,7 @@ func _call_console_command(_cmd:String,args:Array)->void:
 
 func check_update()->bool:
 	GuiManager.console_print_warning("正在检查您的RainyBot是否为最新版本，请稍候...(下载源: %s)"% ConfigManager.get_update_source())
-#	Console.disable_sysout(true)
+	Console.disable_sysout(true)
 	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+"update.json")
 	var dic:Dictionary = result.get_as_dic()
 	Console.disable_sysout(false)
