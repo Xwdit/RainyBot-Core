@@ -47,6 +47,18 @@
 			<description>
 			</description>
 		</method>
+		<method name="_area_get_collision_layer" qualifiers="virtual const">
+			<return type="int" />
+			<param index="0" name="area" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="_area_get_collision_mask" qualifiers="virtual const">
+			<return type="int" />
+			<param index="0" name="area" type="RID" />
+			<description>
+			</description>
+		</method>
 		<method name="_area_get_object_instance_id" qualifiers="virtual const">
 			<return type="int" />
 			<param index="0" name="area" type="RID" />
@@ -602,7 +614,7 @@
 		<method name="_body_set_state_sync_callback" qualifiers="virtual">
 			<return type="void" />
 			<param index="0" name="body" type="RID" />
-			<param index="1" name="callback" type="PhysicsServer2DExtensionStateCallback*" />
+			<param index="1" name="callable" type="Callable" />
 			<description>
 			</description>
 		</method>
