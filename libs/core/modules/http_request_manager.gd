@@ -98,6 +98,8 @@ class HttpRequestInstance:
 	var result:HttpRequestResult = HttpRequestResult.new()
 
 	func _ready()->void:
+		use_threads = true
+		accept_gzip = false
 		connect("request_completed",_http_request_completed)
 
 	func _http_request_completed(_result:int, _response_code:int, _headers:PackedStringArray, _body:PackedByteArray)->void:

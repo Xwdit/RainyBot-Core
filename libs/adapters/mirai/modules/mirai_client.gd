@@ -85,7 +85,7 @@ func _on_data()->void:
 				get_tree().call_group("Plugin","_on_connect")
 
 
-func _process(_delta:float)->void:
+func _physics_process(_delta:float)->void:
 	_client.poll()
 
 

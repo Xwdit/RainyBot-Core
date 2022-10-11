@@ -637,7 +637,6 @@ run/main_scene="res://libs/gui/main_gui.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="RainyBot"
 config/features=PackedStringArray("4.0")
-run/low_processor_mode=true
 boot_splash/image="res://libs/resources/logo.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false

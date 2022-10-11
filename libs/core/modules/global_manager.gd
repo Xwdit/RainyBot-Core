@@ -53,7 +53,7 @@ func _ready()->void:
 	global_timer.start(1.0)
 
 
-func _process(_delta:float)->void:
+func _physics_process(_delta:float)->void:
 	_check_load_status()
 	check_error()
 

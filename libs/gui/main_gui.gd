@@ -12,7 +12,7 @@ func _ready()->void:
 	RainyBotCore.start()
 
 
-func _process(_delta:float)->void:
+func _physics_process(_delta:float)->void:
 	$Status.text = "协议后端:Mirai | %s | Bot ID:%s" % ["已连接" if BotAdapter.is_bot_connected() else "未连接", str(BotAdapter.get_bot_id()) if BotAdapter.get_bot_id()!=0 else "未配置"]
 	if !UpdateManager.updating:
 		var times_dic:Dictionary = Time.get_time_dict_from_unix_time(GlobalManager.global_run_time)

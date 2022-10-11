@@ -87,6 +87,7 @@ func _ready()->void:
 	plugin_timer = Timer.new()
 	plugin_timer.one_shot = false
 	plugin_timer.wait_time = 1
+	plugin_timer.process_callback = Timer.TIMER_PROCESS_PHYSICS
 	plugin_timer.connect("timeout",_plugin_timer_timeout)
 	add_child(plugin_timer)
 	plugin_timer.start()
