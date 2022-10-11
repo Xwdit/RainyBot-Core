@@ -24,7 +24,7 @@ static func get_beautifuler_num(num:int)->String:
 
 
 ## 通过await调用时，将发送一个Http Get请求到指定的URL，并在收到结果或超时后返回一个HttpRequestResult
-## 需要的参数从左到右分别为 请求URL,超时时间(可选，默认为20秒)
+## 需要的参数从左到右分别为 请求URL,请求headers(可选，默认为空数组),超时时间(可选，默认为20秒)
 static func send_http_get_request(url:String,headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	var result:HttpRequestResult = await HttpRequestManager.send_http_get_request(url,headers,timeout)
 	return result

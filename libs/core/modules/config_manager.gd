@@ -5,10 +5,12 @@ signal config_loaded
 
 
 const default_config:Dictionary = {
+	"update_enabled":true,
 	"update_source":"GitHub"
 }
 
 const config_description:Dictionary = {
+	"update_enabled":"在这里设置是否启用自动更新检查，若为false则不会在启动时自动检查更新 (默认为true)",
 	"update_source":"在这里填写自动更新/修复所使用的下载源，可填写GitHub(海外/中国港澳台地区推荐)或Gitee(中国大陆推荐，但可能因不明原因屏蔽文件)，默认为GitHub"
 }
 
@@ -87,3 +89,7 @@ func init_config()->void:
 
 func get_update_source()->String:
 	return loaded_config["update_source"]
+	
+	
+func is_update_enabled()->bool:
+	return loaded_config["update_enabled"]
