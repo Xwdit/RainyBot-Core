@@ -26,9 +26,8 @@ func send_http_get_request(url:String,headers:PackedStringArray=PackedStringArra
 func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	GuiManager.console_print_warning("正在尝试发送Http Post请求到: "+url)
 	if (data is Dictionary) or (data is Array):
-		var _json:JSON = JSON.new()
-		data = _json.stringify(data)
-		if !headers.has("Content-Type: application/json"):
+		data = JSON.stringify(data)
+		if !headers.has("Content-Type: application/json") or !headers.has("Content-Type:application/json"):
 			headers.append("Content-Type: application/json")
 	elif !(data is String):
 		data = ""
@@ -58,13 +57,12 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 func send_http_put_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	GuiManager.console_print_warning("正在尝试发送Http Put请求到: "+url)
 	if (data is Dictionary) or (data is Array):
-		var _json:JSON = JSON.new()
-		data = _json.stringify(data)
+		data = JSON.stringify(data)
+		if !headers.has("Content-Type: application/json") or !headers.has("Content-Type:application/json"):
+			headers.append("Content-Type: application/json")
 	elif !(data is String):
 		data = ""
 		GuiManager.console_print_warning("警告: 传入的请求数据不是一个字典/数组/字符串，因此已将其替换为空字符串(\"\")！")
-	if !headers.has("Content-Type: application/json"):
-		headers.append("Content-Type: application/json")
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
 	node.request_data = data
