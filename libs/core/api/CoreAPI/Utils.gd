@@ -47,3 +47,7 @@ static func send_http_put_request(url:String,request_data="",headers:PackedStrin
 static func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=false)->Resource:
 	var res:Resource = await GlobalManager.load_threaded(path,type_hint,use_sub_threads)
 	return res
+	
+	
+static func create_timer(time_sec:float)->void:
+	await GlobalManager.get_tree().create_timer(time_sec,true,true).timeout

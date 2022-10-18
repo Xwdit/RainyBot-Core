@@ -24,6 +24,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qi3ek")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -36,6 +37,7 @@ grow_vertical = 2
 split_offset = 250
 
 [node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource("1_yhib5")]
+layout_mode = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_right = 1136.0
@@ -44,6 +46,7 @@ bbcode_enabled = true
 context_menu_enabled = true
 
 [node name="CommandInput" parent="VSplitContainer" instance=ExtResource("2_i0io6")]
+layout_mode = 2
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0

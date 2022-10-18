@@ -12,10 +12,9 @@ var mirai_connected:bool = false
 
 
 func _ready()->void:
-	_client.connect("connection_closed", _closed)
-	_client.connect("connection_error", _closed)
-	_client.connect("connection_established", _connected)
-	_client.connect("data_received", _on_data)
+	_client.connection_closed.connect(_closed)
+	_client.connected_to_server.connect(_connected)
+	_client.message_received.connect(_on_data)
 
 
 func connect_to_mirai(ws_url:String)->void:
@@ -25,17 +24,16 @@ func connect_to_mirai(ws_url:String)->void:
 		GuiManager.console_print_error("无法连接到Mirai框架，请检查配置是否有误")
 		GuiManager.console_print_warning("将于10秒后尝试重新连接...")
 		await get_tree().create_timer(10).timeout
-		connect_to_mirai(BotAdapter.get_ws_url())
+		connect_to_mirai(ws_url)
 	else:
 		await get_tree().create_timer(5).timeout
-		if _client.get_connection_status() == _client.CONNECTION_CONNECTING:
-			_client.disconnect_from_host()
-			_closed()
+		if _client.get_socket().get_ready_state() == WebSocketPeer.STATE_CONNECTING:
+			_client.close()
 
 
 func disconnect_to_mirai()->void:
 	if is_bot_connected():
-		_client.get_peer(1).close()
+		_client.close()
 
 
 func _closed(_was_clean:bool=false)->void:
@@ -60,12 +58,11 @@ func _closed(_was_clean:bool=false)->void:
 func _connected(_proto:String="")->void:
 	found_mirai = true
 	GuiManager.console_print_success("成功与Mirai框架进行通信，正在等待响应...")
-	_client.get_peer(1).set_write_mode(WebSocketPeer.WRITE_MODE_TEXT)
 
 
-func _on_data()->void:
+func _on_data(message:String)->void:
 	var json:JSON = JSON.new()
-	var err:int = json.parse(_client.get_peer(1).get_packet().get_string_from_utf8())
+	var err:int = json.parse(message)
 	if !err:
 		var data:Dictionary = json.get_data()
 		if data.has("syncId"):
@@ -103,7 +100,7 @@ func send_bot_request(command:String,sub_command:String,content:Dictionary,timeo
 	cmd.request = request
 	processing_command[sync_id] = cmd
 	var json:JSON = JSON.new()
-	_client.get_peer(1).put_packet(json.stringify(request).to_utf8_buffer())
+	_client.send(json.stringify(request))
 	if timeout > 0.0:
 		GuiManager.console_print_warning("本次请求的超时时间为: %s秒"% timeout)
 		_tick_command_timeout(cmd,timeout)
@@ -113,7 +110,7 @@ func send_bot_request(command:String,sub_command:String,content:Dictionary,timeo
 
 
 func is_bot_connected()->bool:
-	return _client.get_peer(1).is_connected_to_host()
+	return _client.get_socket().get_ready_state() == WebSocketPeer.STATE_OPEN
 
 
 func _parse_command_result(result:Dictionary)->void:
