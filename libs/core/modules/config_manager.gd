@@ -99,5 +99,6 @@ func is_update_enabled()->bool:
 
 func get_ffmpeg_path()->String:
 	if FileAccess.file_exists(loaded_config["ffmpeg_path"]):
-		return loaded_config["ffmpeg_path"]
+		var path:String = loaded_config["ffmpeg_path"]
+		return path.simplify_path().replacen("res://",GlobalManager.root_path)
 	return ""
