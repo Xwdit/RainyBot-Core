@@ -9,18 +9,23 @@ var data_dic:Dictionary = {
 	"time": 0,
 	"senderName": "",
 	"messageChain": [],
-	"messageId": -1
 }
 
 
-static func init(message_id:int,sender_id:int=-1,time:int=0,sender_name:String="",message_chain:MessageChain=null)->ForwardMessageNode:
+static func init(sender_id:int,time:int,sender_name:String,message_chain:MessageChain)->ForwardMessageNode:
 	var ins:ForwardMessageNode = ForwardMessageNode.new()
 	var dic:Dictionary = ins.data_dic
 	dic.senderId = sender_id
 	dic.time = time
 	dic.senderName = sender_name
 	dic.messageChain = message_chain.get_metadata()
-	dic.messageId = message_id
+	return ins
+	
+	
+static func init_id(message_id:int)->ForwardMessageNode:
+	var ins:ForwardMessageNode = ForwardMessageNode.new()
+	var dic:Dictionary = ins.data_dic
+	dic["messageId"] = message_id
 	return ins
 
 
