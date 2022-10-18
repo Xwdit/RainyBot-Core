@@ -85,4 +85,5 @@ static func convert_to_voice(path:String)->VoiceMessage:
 		GuiManager.console_print_error("转换音频文件时出现错误，无法将其转换为语音消息，请检查后再试！")
 		return null
 	GuiManager.console_print_success("成功将音频文件转换为语音消息，并缓存至以下路径："+output_path)
+	GuiManager.console_print_success("本次转换用时：%s秒"%(_passed_time/1000.0))
 	return VoiceMessage.init_path(output_path)
