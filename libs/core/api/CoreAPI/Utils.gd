@@ -71,9 +71,10 @@ static func convert_to_voice(path:String)->VoiceMessage:
 		return ""
 	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
+	GuiManager.console_print_warning("正在尝试将音频文件%s转换为可被发送的语音消息..."%path)
 	var _err:int = _thread.start(convert_func.bind(path))
 	if _err:
-		GuiManager.console_print_error("语音文件格式转换线程启动失败，请检查文件路径后再试！")
+		GuiManager.console_print_error("语音消息转换线程启动失败，请检查文件路径后再试！")
 		return null
 	while _thread.is_alive():
 		await GlobalManager.get_tree().physics_frame
