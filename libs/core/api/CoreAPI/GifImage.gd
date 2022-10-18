@@ -190,7 +190,7 @@ func get_data()->PackedByteArray:
 	var _err:int = _thread.start(_export_data.bind(frames))
 	if !_err:
 		while _thread.is_alive():
-			await GlobalManager.get_tree().process_frame
+			await GlobalManager.get_tree().physics_frame
 		data = _thread.wait_to_finish()
 		var _end_time:int = Time.get_ticks_msec()
 		var _passed_time:int = _end_time-_start_time
@@ -221,7 +221,7 @@ func _test_generate_speed()->int:
 	var _err:int = _thread.start(_export_data.bind(_test_frames))
 	if !_err:
 		while _thread.is_alive():
-			await GlobalManager.get_tree().process_frame
+			await GlobalManager.get_tree().physics_frame
 		var _data:PackedByteArray = _thread.wait_to_finish()
 		var _end_time:int = Time.get_ticks_msec()
 		frame_generate_time = _end_time-_start_time

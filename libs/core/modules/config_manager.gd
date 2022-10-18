@@ -6,12 +6,14 @@ signal config_loaded
 
 const default_config:Dictionary = {
 	"update_enabled":true,
-	"update_source":"GitHub"
+	"update_source":"GitHub",
+	"ffmpeg_path":""
 }
 
 const config_description:Dictionary = {
 	"update_enabled":"在这里设置是否启用自动更新检查，若为false则不会在启动时自动检查更新 (默认为true)",
-	"update_source":"在这里填写自动更新/修复所使用的下载源，可填写GitHub(海外/中国港澳台地区推荐)或Gitee(中国大陆推荐，但可能因不明原因屏蔽文件)，默认为GitHub"
+	"update_source":"在这里填写自动更新/修复所使用的下载源，可填写GitHub(海外/中国港澳台地区推荐)或Gitee(中国大陆推荐，但可能因不明原因屏蔽文件)，默认为GitHub",
+	"ffmpeg_path":"在这里填写ffmpeg可执行文件的绝对路径，或其位于RainyBot根目录下的相对路径(以res://开头)，用于自动转换音频文件到可作为语音发送的.amr格式"
 }
 
 var loaded_config:Dictionary = default_config
@@ -93,3 +95,9 @@ func get_update_source()->String:
 	
 func is_update_enabled()->bool:
 	return loaded_config["update_enabled"]
+
+
+func get_ffmpeg_path()->String:
+	if FileAccess.file_exists(loaded_config["ffmpeg_path"]):
+		return loaded_config["ffmpeg_path"]
+	return ""

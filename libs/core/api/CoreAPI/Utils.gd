@@ -51,3 +51,37 @@ static func load_threaded(path:String,type_hint:String="",use_sub_threads:bool=f
 	
 static func create_timer(time_sec:float)->void:
 	await GlobalManager.get_tree().create_timer(time_sec,true,true).timeout
+
+
+static func convert_to_voice(path:String)->VoiceMessage:
+	if !FileAccess.file_exists(path):
+		GuiManager.console_print_error("指定的音频文件路径有误，无法将其转换为语音消息，请检查后再试！")
+		return null
+	if ConfigManager.get_ffmpeg_path().is_empty():
+		GuiManager.console_print_error("ffmpeg可执行文件路径未设置或有误，因此无法进行语音消息转换，请检查配置文件后再试！")
+		return null
+	if path.get_extension() == "amr" or path.get_extension() == "silk":
+		GuiManager.console_print_warning("指定的音频文件无需进行转换，将直接构造为语音消息实例")
+		return VoiceMessage.init_path(path)
+	var convert_func:Callable = func(input_path:String):
+		var _out_path:String = GlobalManager.cache_path+"voice-"+Time.get_datetime_string_from_system().replace(":","-")+"-"+str(randi())+".amr"
+		var _code:int = OS.execute(ConfigManager.get_ffmpeg_path(),["-y","-i",input_path,"-ar","8000","-ac",1,_out_path])
+		if _code != -1:
+			return _out_path
+		return ""
+	var _start_time:int = Time.get_ticks_msec()
+	var _thread:Thread = Thread.new()
+	var _err:int = _thread.start(convert_func.bind(path))
+	if _err:
+		GuiManager.console_print_error("语音文件格式转换线程启动失败，请检查文件路径后再试！")
+		return null
+	while _thread.is_alive():
+		await GlobalManager.get_tree().physics_frame
+	var output_path:String = _thread.wait_to_finish()
+	var _end_time:int = Time.get_ticks_msec()
+	var _passed_time:int = _end_time-_start_time
+	if output_path.is_empty():
+		GuiManager.console_print_error("转换音频文件时出现错误，无法将其转换为语音消息，请检查后再试！")
+		return null
+	GuiManager.console_print_success("成功将音频文件转换为语音消息，并缓存至以下路径："+output_path)
+	return VoiceMessage.init_path(output_path)

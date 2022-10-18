@@ -15,7 +15,7 @@ var data_dic:Dictionary = {
 
 static func init(image:Image)->FlashImageMessage:
 	if is_instance_valid(image):
-		var f_path:String = GlobalManager.cache_path + "image_cache_%s.png" % randi()
+		var f_path:String = GlobalManager.cache_path+"image-"+Time.get_datetime_string_from_system().replace(":","-")+"-"+str(randi())+".png"
 		var err:int = image.save_png(f_path)
 		if !err:
 			var ins:FlashImageMessage = FlashImageMessage.new()
@@ -32,7 +32,7 @@ static func init(image:Image)->FlashImageMessage:
 
 static func init_gif(gif_image:GifImage)->FlashImageMessage:
 	if is_instance_valid(gif_image):
-		var f_path:String = GlobalManager.cache_path + "gif_image_cache_%s.gif" % randi()
+		var f_path:String = GlobalManager.cache_path+"gif-image-"+Time.get_datetime_string_from_system().replace(":","-")+"-"+str(randi())+".gif"
 		var err:int = await gif_image.save(f_path)
 		if !err:
 			var ins:FlashImageMessage = FlashImageMessage.new()
