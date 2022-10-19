@@ -493,13 +493,15 @@ func check_error()->void:
 		var _text:String = _f.get_as_text() if _f else ""
 		GlobalManager.last_log_text = _text
 		var _err:PackedStringArray = _text.replacen(curr_text,"").split("\n")
-		for _l in _err:
-			if _l.findn("built-in")!=-1:
-				var _sl:PackedStringArray = _l.split(" - ")
-				var _num:int = clampi(abs(_sl[0].to_int())-1,0,get_line_count()-1)
-				var _error:String = _sl[1]
-				set_line_background_color(_num,Color(1,0.47,0.42,0.3))
-				error_lines[_num]=_error
+		for i in _err.size():
+			var _l = _err[i]
+			if _l.findn("GDScript::reload (built-in:")!=-1:
+				var _sl:String = _l.replacen("GDScript::reload (built-in:","").replacen(")","")
+				var _num:int = clampi(abs(_sl.to_int())-1,0,get_line_count()-1)
+				if i > 0:
+					var _error:String = _err[i-1].replacen("USER SCRIPT ERROR: ","")
+					set_line_background_color(_num,Color(1,0.47,0.42,0.3))
+					error_lines[_num]=_error
 
 
 func _on_Timer_timeout()->void:

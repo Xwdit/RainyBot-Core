@@ -124,18 +124,19 @@ func check_error()->void:
 	elif last_log_text != curr_text:
 		last_errors.resize(0)
 		var _err:PackedStringArray = curr_text.replacen(last_log_text,"").split("\n")
-		for _l in _err:
-			if _l.findn("built-in")!=-1:
-				var _sl:PackedStringArray = _l.split(" - ")
-				var _line:int = abs(_sl[0].to_int())
-				var _err_t = _sl[1]
-				if _err_t.find('"await"'):
-					continue
-				var _text:String = "第%s行 - %s"%[_line,_err_t]
-				last_errors.append("脚本运行时错误: "+_text)
-				GuiManager.console_print_error("检测到脚本运行时错误: "+_text)
+		for i in _err.size():
+			var _l = _err[i]
+			if _l.findn("USER SCRIPT ERROR: ")!=-1:
+				var _err_t = _l.replacen("USER SCRIPT ERROR: ","")
+				if i < _err.size()-1:
+					var _sl = _err[i+1].split(":")
+					var _line:int = abs(_sl[_sl.size()-1].to_int())
+					var _text:String = "第%s行 - %s"%[_line,_err_t]
+					last_errors.append("脚本运行时错误: "+_text)
+					GuiManager.console_print_error("检测到脚本运行时错误: "+_text)
 		last_log_text = curr_text
-		get_tree().call_group("Plugin","_on_error")
+		if !last_errors.is_empty():
+			get_tree().call_group("Plugin","_on_error")
 
 
 func reimport()->void:
