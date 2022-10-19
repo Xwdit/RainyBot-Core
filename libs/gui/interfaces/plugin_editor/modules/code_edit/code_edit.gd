@@ -494,7 +494,7 @@ func check_error()->void:
 		GlobalManager.last_log_text = _text
 		var _err:PackedStringArray = _text.replacen(curr_text,"").split("\n")
 		for i in _err.size():
-			var _l = _err[i]
+			var _l:String = _err[i]
 			if _l.findn("GDScript::reload (built-in:")!=-1:
 				var _sl:String = _l.replacen("GDScript::reload (built-in:","").replacen(")","")
 				var _num:int = clampi(abs(_sl.to_int())-1,0,get_line_count()-1)

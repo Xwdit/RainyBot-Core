@@ -125,11 +125,11 @@ func check_error()->void:
 		last_errors.resize(0)
 		var _err:PackedStringArray = curr_text.replacen(last_log_text,"").split("\n")
 		for i in _err.size():
-			var _l = _err[i]
+			var _l:String = _err[i]
 			if _l.findn("USER SCRIPT ERROR: ")!=-1:
-				var _err_t = _l.replacen("USER SCRIPT ERROR: ","")
+				var _err_t:String = _l.replacen("USER SCRIPT ERROR: ","")
 				if i < _err.size()-1:
-					var _sl = _err[i+1].split(":")
+					var _sl:PackedStringArray = _err[i+1].split(":")
 					var _line:int = abs(_sl[_sl.size()-1].to_int())
 					var _text:String = "第%s行 - %s"%[_line,_err_t]
 					last_errors.append("脚本运行时错误: "+_text)

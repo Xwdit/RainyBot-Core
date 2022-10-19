@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c5jsjshx2x220"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/plugin_manager_gui/plugin_manager_gui.gd" id="1_y8fcn"]
-[ext_resource type="PackedScene" path="res://libs/gui/interfaces/plugin_manager_gui/modules/code_preview/code_preview.tscn" id="2_hev7f"]
+[ext_resource type="PackedScene" uid="uid://0pmk0db3svaa" path="res://libs/gui/interfaces/plugin_manager_gui/modules/code_preview/code_preview.tscn" id="2_hev7f"]
 
 [node name="PluginManagerGui" type="Control"]
 layout_mode = 3
@@ -163,29 +163,32 @@ text = "作者: Xwdit"
 layout_mode = 2
 offset_top = 153.0
 offset_right = 886.0
-offset_bottom = 189.0
+offset_bottom = 190.0
 theme_override_font_sizes/font_size = 20
 text = "版本: 1.0"
 
 [node name="PluginDependency" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
-offset_top = 199.0
+offset_top = 200.0
 offset_right = 886.0
-offset_bottom = 235.0
+offset_bottom = 237.0
 theme_override_font_sizes/font_size = 20
 text = "依赖的插件: 无"
 
 [node name="PluginDescription" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
-offset_top = 245.0
+offset_top = 247.0
 offset_right = 886.0
-offset_bottom = 281.0
+offset_bottom = 284.0
 theme_override_font_sizes/font_size = 20
 text = "描述: 这是一个示例插件，实际上并没有什么作用....."
 
 [node name="PluginManagerPreview" parent="HSplitContainer/TabContainer/PluginInfoPanel" instance=ExtResource("2_hev7f")]
 layout_mode = 2
-offset_top = 291.0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 294.0
 offset_right = 886.0
 offset_bottom = 552.0
 
