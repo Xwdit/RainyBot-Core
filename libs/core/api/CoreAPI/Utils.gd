@@ -53,7 +53,7 @@ static func create_timer(time_sec:float)->void:
 	await GlobalManager.get_tree().create_timer(time_sec,true,true).timeout
 
 
-static func convert_to_voice(path:String)->VoiceMessage:
+static func convert_to_voice(path:String,delete_origin:bool=false)->VoiceMessage:
 	if !FileAccess.file_exists(path):
 		GuiManager.console_print_error("指定的音频文件路径有误，无法将其转换为语音消息，请检查后再试！")
 		return null
@@ -75,6 +75,7 @@ static func convert_to_voice(path:String)->VoiceMessage:
 		if _pcm_code == -1:
 			return ""
 		var _slk_code:int = OS.execute(ConfigManager.get_silk_encoder_path(),[_out_path+".pcm",_out_path+".slk","-tencent"])
+		DirAccess.remove_absolute(_out_path+".pcm")
 		if _slk_code == -1:
 			return ""
 		return _out_path+".slk"
@@ -99,4 +100,7 @@ static func convert_to_voice(path:String)->VoiceMessage:
 		return null
 	GuiManager.console_print_success("成功将音频文件转换为语音消息，并缓存至以下路径："+output_path)
 	GuiManager.console_print_success("本次转换用时：%s秒"%(_passed_time/1000.0))
+	if delete_origin:
+		DirAccess.remove_absolute(path)
+		GuiManager.console_print_success("已删除转换为语音消息前的原音频文件：%s"%path)
 	return VoiceMessage.init_path(output_path)
