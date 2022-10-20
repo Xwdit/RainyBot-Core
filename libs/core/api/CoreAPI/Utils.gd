@@ -71,10 +71,10 @@ static func convert_to_voice(path:String,delete_origin:bool=false)->VoiceMessage
 		return ""
 	var silk_convert_func:Callable = func(input_path:String):
 		var _out_path:String = GlobalManager.cache_path+"voice-"+Time.get_datetime_string_from_system().replace(":","-")+"-"+str(randi())
-		var _pcm_code:int = OS.execute(ConfigManager.get_ffmpeg_path(),["-y","-i",input_path,"-acodec","pcm_s16le","-f","s16le","-ac","1",_out_path+".pcm"])
+		var _pcm_code:int = OS.execute(ConfigManager.get_ffmpeg_path(),["-y","-i",input_path,"-ar","24000","-acodec","pcm_s16le","-f","s16le","-ac","1",_out_path+".pcm"])
 		if _pcm_code == -1:
 			return ""
-		var _slk_code:int = OS.execute(ConfigManager.get_silk_encoder_path(),[_out_path+".pcm",_out_path+".slk","-tencent"])
+		var _slk_code:int = OS.execute(ConfigManager.get_silk_encoder_path(),[_out_path+".pcm",_out_path+".slk","-rate","24000","-tencent"])
 		DirAccess.remove_absolute(_out_path+".pcm")
 		if _slk_code == -1:
 			return ""
