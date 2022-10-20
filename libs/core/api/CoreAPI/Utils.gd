@@ -63,14 +63,27 @@ static func convert_to_voice(path:String)->VoiceMessage:
 	if path.get_extension() == "amr" or path.get_extension() == "silk":
 		GuiManager.console_print_warning("指定的音频文件无需进行转换，将直接构造为语音消息实例")
 		return VoiceMessage.init_path(path)
-	var convert_func:Callable = func(input_path:String):
+	var amr_convert_func:Callable = func(input_path:String):
 		var _out_path:String = GlobalManager.cache_path+"voice-"+Time.get_datetime_string_from_system().replace(":","-")+"-"+str(randi())+".amr"
-		var _code:int = OS.execute(ConfigManager.get_ffmpeg_path(),["-y","-i",input_path,"-ar","8000","-ac",1,_out_path])
+		var _code:int = OS.execute(ConfigManager.get_ffmpeg_path(),["-y","-i",input_path,"-ar","8000","-ac","1",_out_path])
 		if _code != -1:
 			return _out_path
 		return ""
+	var silk_convert_func:Callable = func(input_path:String):
+		var _out_path:String = GlobalManager.cache_path+"voice-"+Time.get_datetime_string_from_system().replace(":","-")+"-"+str(randi())
+		var _pcm_code:int = OS.execute(ConfigManager.get_ffmpeg_path(),["-y","-i",input_path,"-acodec","pcm_s16le","-f","s16le","-ac","1",_out_path+".pcm"])
+		if _pcm_code == -1:
+			return ""
+		var _slk_code:int = OS.execute(ConfigManager.get_silk_encoder_path(),[_out_path+".pcm",_out_path+".slk","-tencent"])
+		if _slk_code == -1:
+			return ""
+		return _out_path+".slk"
 	var _thread:Thread = Thread.new()
 	GuiManager.console_print_warning("正在尝试将音频文件%s转换为可被发送的语音消息..."%path)
+	var convert_func:Callable = silk_convert_func
+	if ConfigManager.get_silk_encoder_path().is_empty():
+		GuiManager.console_print_warning("未设置silk-encoder可执行文件路径或路径无效，因此将转换为音质较差的.amr格式...")
+		convert_func = amr_convert_func
 	var _start_time:int = Time.get_ticks_msec()
 	var _err:int = _thread.start(convert_func.bind(path))
 	if _err:

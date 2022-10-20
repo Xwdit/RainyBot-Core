@@ -7,13 +7,15 @@ signal config_loaded
 const default_config:Dictionary = {
 	"update_enabled":true,
 	"update_source":"GitHub",
-	"ffmpeg_path":""
+	"ffmpeg_path":"",
+	"silk_encoder_path":""
 }
 
 const config_description:Dictionary = {
 	"update_enabled":"在这里设置是否启用自动更新检查，若为false则不会在启动时自动检查更新 (默认为true)",
 	"update_source":"在这里填写自动更新/修复所使用的下载源，可填写GitHub(海外/中国港澳台地区推荐)或Gitee(中国大陆推荐，但可能因不明原因屏蔽文件)，默认为GitHub",
-	"ffmpeg_path":"在这里填写ffmpeg可执行文件的绝对路径(请使用正斜杠\"/\"而不是反斜杠\"\\\")，或其位于RainyBot根目录下的相对路径(以res://作为前缀)，用于自动转换音频文件到可作为语音发送的.amr格式"
+	"ffmpeg_path":"在这里填写ffmpeg可执行文件的绝对路径(请使用正斜杠\"/\"而不是反斜杠\"\\\")，或其位于RainyBot根目录下的相对路径(以res://作为前缀)，用于自动转换音频文件到可作为语音发送的.amr格式",
+	"silk_encoder_path":"在这里填写silk-encoder可执行文件的绝对路径(请使用正斜杠\"/\"而不是反斜杠\"\\\")，或其位于RainyBot根目录下的相对路径(以res://作为前缀)，可用于与ffmpeg配合将音频文件自动转为音质更好的.slk语音格式"
 }
 
 var loaded_config:Dictionary = default_config
@@ -100,5 +102,12 @@ func is_update_enabled()->bool:
 func get_ffmpeg_path()->String:
 	if FileAccess.file_exists(loaded_config["ffmpeg_path"]):
 		var path:String = loaded_config["ffmpeg_path"]
+		return path.simplify_path().replacen("res://",GlobalManager.root_path)
+	return ""
+	
+	
+func get_silk_encoder_path()->String:
+	if FileAccess.file_exists(loaded_config["silk_encoder_path"]):
+		var path:String = loaded_config["silk_encoder_path"]
 		return path.simplify_path().replacen("res://",GlobalManager.root_path)
 	return ""

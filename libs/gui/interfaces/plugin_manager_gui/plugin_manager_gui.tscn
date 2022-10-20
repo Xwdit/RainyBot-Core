@@ -191,6 +191,8 @@ anchor_bottom = 0.0
 offset_top = 294.0
 offset_right = 886.0
 offset_bottom = 552.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
