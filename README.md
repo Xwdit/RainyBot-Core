@@ -66,7 +66,7 @@ RainyBot精心设计了一系列的便于使用的抽象API，并在底层将各
 ### 从源码运行
 
 如果您希望从项目源码顺利运行RainyBot，请确保遵循以下条目：
-- 请使用 Godot-4.0.beta2 或以上版本的 [Godot Engine](https://github.com/godotengine/godot) 来打开本项目。
+- 请使用 Godot-4.0.beta3 或以上版本的 [Godot Engine](https://github.com/godotengine/godot) 来打开本项目。
 - 请将 [Mirai](https://github.com/mamoe/mirai) 与 [Mirai-Console](https://github.com/mamoe/mirai-console) 的`v2.12.3`版Jar文件及相关依赖文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/libs`路径中
 - 请将 [Mirai-Api-HTTP](https://github.com/project-mirai/mirai-api-http) 的`v2.6.2`版Jar文件置于*与Godot编辑器可执行文件同目录下*的`adapters/mirai/plugins`路径中
 
