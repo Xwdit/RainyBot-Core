@@ -35,9 +35,9 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 				break
 		if !find_h:
 			headers.append("Content-Type: application/json")
-	elif !(data is String):
+	elif (!(data is String)) and (!(data is PackedByteArray)):
 		data = ""
-		GuiManager.console_print_warning("警告: 传入的请求数据不是一个字典/数组/字符串，因此已将其替换为空字符串(\"\")！")
+		GuiManager.console_print_warning("警告: 传入的请求数据不是一个字典/数组/字符串/字节数组，因此已将其替换为空字符串(\"\")！")
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
 	node.request_data = data
@@ -46,7 +46,11 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 	if timeout > 0:
 		node.timeout = timeout
 	add_child(node)
-	var error:int = node.request(url,headers,true,HTTPClient.METHOD_POST,data)
+	var error:int
+	if data is PackedByteArray:
+		error = node.request_raw(url,headers,true,HTTPClient.METHOD_POST,data)
+	else:
+		error = node.request(url,headers,true,HTTPClient.METHOD_POST,data)
 	if error:
 		node.queue_free()
 		GuiManager.console_print_error("在发送Http Post请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
@@ -72,9 +76,9 @@ func send_http_put_request(url:String,data="",headers:PackedStringArray=PackedSt
 				break
 		if !find_h:
 			headers.append("Content-Type: application/json")
-	elif !(data is String):
+	elif (!(data is String)) and (!(data is PackedByteArray)):
 		data = ""
-		GuiManager.console_print_warning("警告: 传入的请求数据不是一个字典/数组/字符串，因此已将其替换为空字符串(\"\")！")
+		GuiManager.console_print_warning("警告: 传入的请求数据不是一个字典/数组/字符串/字节数组，因此已将其替换为空字符串(\"\")！")
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
 	node.request_data = data
@@ -83,7 +87,11 @@ func send_http_put_request(url:String,data="",headers:PackedStringArray=PackedSt
 	if timeout > 0:
 		node.timeout = timeout
 	add_child(node)
-	var error:int = node.request(url,headers,true,HTTPClient.METHOD_PUT,data)
+	var error:int
+	if data is PackedByteArray:
+		error = node.request_raw(url,headers,true,HTTPClient.METHOD_PUT,data)
+	else:
+		error = node.request(url,headers,true,HTTPClient.METHOD_PUT,data)
 	if error:
 		node.queue_free()
 		GuiManager.console_print_error("在发送Http Put请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
@@ -104,7 +112,7 @@ class HttpRequestInstance:
 	signal request_finished
 
 	var request_url:String = ""
-	var request_data:String = ""
+	var request_data = ""
 	var request_headers:PackedStringArray = []
 	var result:HttpRequestResult = HttpRequestResult.new()
 
