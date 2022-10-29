@@ -218,3 +218,92 @@ func parse_event(result_dic:Dictionary)->void:
 			return
 			
 	PluginManager.call_event(ins)
+
+
+func get_meta_message_chain(msg)->Array:
+	var _chain:Array = []
+	if msg is String:
+		_chain.append(BotCodeMessage.init(msg).get_metadata())
+	elif msg is Message:
+		_chain.append(msg.get_metadata())
+	elif msg is MessageChain:
+		_chain = msg.get_metadata()
+	elif msg is Array:
+		_chain = MessageChain.init(msg).get_metadata()
+	return _chain
+
+
+## 获取当前机器人账号的好友列表，需要与await关键词配合使用
+func get_friend_list(timeout:float=-INF)->MemberList:
+	var _result:Dictionary = await send_bot_request("friendList","",{},timeout)
+	var _arr:Array = _result.get("data",[])
+	var _ins:MemberList = MemberList.init_meta(_arr)
+	return _ins
+	
+
+## 获取当前机器人账号的群组列表，需要与await关键词配合使用
+func get_group_list(timeout:float=-INF)->GroupList:
+	var _result:Dictionary = await send_bot_request("groupList","",{},timeout)
+	var _arr:Array = _result.get("data",[])
+	var _ins:GroupList = GroupList.init_meta(_arr)
+	return _ins
+
+
+## 获取当前机器人账号的资料卡，需要与await关键词配合使用
+func get_profile(timeout:float=-INF)->MemberProfile:
+	var _result:Dictionary = await send_bot_request("botProfile","",{},timeout)
+	var _ins:MemberProfile = MemberProfile.init_meta(_result)
+	return _ins
+	
+	
+func reply_temp_message(event:TempMessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
+	var _chain:Array = get_meta_message_chain(msg)
+	var _req_dic:Dictionary = {
+		"qq":event.data_dic.sender.id,
+		"group":event.data_dic.sender.group.id,
+		"messageChain":_chain,
+		"quote":event.get_message_chain().get_message_id() if quote else null
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendTempMessage","",_req_dic,timeout)
+	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins
+
+
+func reply_member_message(event:MessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
+	var _chain:Array = get_meta_message_chain(msg)
+	var _req_dic:Dictionary = {
+		"target":event.data_dic.sender.id,
+		"messageChain":_chain,
+		"quote":event.get_message_chain().get_message_id() if quote else null
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendFriendMessage","",_req_dic,timeout)
+	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins
+
+
+func reply_friend_message(event:FriendMessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
+	return await reply_member_message(event,msg,quote,_at,timeout)
+	
+	
+func reply_stranger_message(event:StrangerMessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
+	return await reply_member_message(event,msg,quote,_at,timeout)
+
+
+func reply_other_client_message(event:OtherClientMessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
+	return await reply_member_message(event,msg,quote,_at,timeout)
+
+
+func reply_group_message(event:GroupMessageEvent,msg,quote:bool=false,at:bool=false,timeout:float=-INF)->BotRequestResult:
+	var _chain:Array = get_meta_message_chain(msg)
+	if at:
+		var _arr:Array = [AtMessage.init(event.data_dic.sender.id).get_metadata(),TextMessage.init(" ").get_metadata()]
+		_arr.append_array(_chain)
+		_chain = _arr
+	var _req_dic:Dictionary = {
+		"target":event.data_dic.sender.group.id,
+		"messageChain":_chain,
+		"quote":event.get_message_chain().get_message_id() if quote else null
+	}
+	var _result:Dictionary = await BotAdapter.send_bot_request("sendGroupMessage","",_req_dic,timeout)
+	var _ins:BotRequestResult = BotRequestResult.init_meta(_result)
+	return _ins

@@ -33,6 +33,8 @@ var last_errors:PackedStringArray = []
 var loading_resources:Dictionary = {}
 
 
+
+
 func _init()->void:
 	var icon:Image = Image.new()
 	icon.load("res://libs/resources/logo.png")
