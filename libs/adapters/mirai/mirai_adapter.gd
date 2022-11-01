@@ -256,7 +256,7 @@ func get_profile(timeout:float=-INF)->MemberProfile:
 	return _ins
 	
 	
-func reply_temp_message(event:TempMessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
+func reply_temp_message(event:TempMessageEvent,msg,quote:bool=false,timeout:float=-INF)->BotRequestResult:
 	var _chain:Array = get_meta_message_chain(msg)
 	var _req_dic:Dictionary = {
 		"qq":event.data_dic.sender.id,
@@ -269,7 +269,7 @@ func reply_temp_message(event:TempMessageEvent,msg,quote:bool=false,_at:bool=fal
 	return _ins
 
 
-func reply_member_message(event:MessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
+func reply_member_message(event:MessageEvent,msg,quote:bool=false,timeout:float=-INF)->BotRequestResult:
 	var _chain:Array = get_meta_message_chain(msg)
 	var _req_dic:Dictionary = {
 		"target":event.data_dic.sender.id,
@@ -281,16 +281,16 @@ func reply_member_message(event:MessageEvent,msg,quote:bool=false,_at:bool=false
 	return _ins
 
 
-func reply_friend_message(event:FriendMessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
-	return await reply_member_message(event,msg,quote,_at,timeout)
+func reply_friend_message(event:FriendMessageEvent,msg,quote:bool=false,timeout:float=-INF)->BotRequestResult:
+	return await reply_member_message(event,msg,quote,timeout)
 	
 	
-func reply_stranger_message(event:StrangerMessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
-	return await reply_member_message(event,msg,quote,_at,timeout)
+func reply_stranger_message(event:StrangerMessageEvent,msg,quote:bool=false,timeout:float=-INF)->BotRequestResult:
+	return await reply_member_message(event,msg,quote,timeout)
 
 
-func reply_other_client_message(event:OtherClientMessageEvent,msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
-	return await reply_member_message(event,msg,quote,_at,timeout)
+func reply_other_client_message(event:OtherClientMessageEvent,msg,quote:bool=false,timeout:float=-INF)->BotRequestResult:
+	return await reply_member_message(event,msg,quote,timeout)
 
 
 func reply_group_message(event:GroupMessageEvent,msg,quote:bool=false,at:bool=false,timeout:float=-INF)->BotRequestResult:
