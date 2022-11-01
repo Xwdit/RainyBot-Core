@@ -322,7 +322,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Infos" type="RichTextLabel" parent="HSplitContainer/TabContainer/PluginRegisterPanel"]
-custom_minimum_size = Vector2i(0, 100)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 offset_top = 410.0
 offset_right = 672.0
@@ -469,7 +469,7 @@ offset_bottom = 360.0
 text = "打开配置目录"
 
 [node name="Infos" type="RichTextLabel" parent="HSplitContainer/TabContainer/PluginDataPanel"]
-custom_minimum_size = Vector2i(0, 100)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 offset_top = 370.0
 offset_right = 672.0
