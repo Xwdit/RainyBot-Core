@@ -600,3 +600,7 @@ func _on_datas_delete_button_button_down()->void:
 			else:
 				GuiManager.console_print_error("插件实例无效，因此无法还原选定的配置项目!")
 				GuiManager.popup_notification("无法还原选定的配置项目，请查看控制台来了解更多信息!")
+
+
+func _on_create_plugin_file_text_submitted(new_text:String)->void:
+	_on_create_plugin_button_button_down()

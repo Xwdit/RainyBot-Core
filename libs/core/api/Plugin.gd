@@ -1105,6 +1105,7 @@ func get_scene_image(scene:Node,size:Vector2i,stretch_size:Vector2i=Vector2i.ZER
 	if !is_instance_valid(scene):
 		GuiManager.console_print_error("指定的场景无效，因此无法根据其中的内容生成图像!")
 		return null
+	await get_tree().process_frame
 	var _v_port:SubViewport = scene.get_parent()
 	if !is_instance_valid(_v_port) or !(_v_port is SubViewport):
 		GuiManager.console_print_error("无法基于指定的场景生成图像，请确保此场景是通过load_scene()函数加载的，且加载时在函数中启用了for_capture参数!")

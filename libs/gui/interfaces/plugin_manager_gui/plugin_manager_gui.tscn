@@ -322,7 +322,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Infos" type="RichTextLabel" parent="HSplitContainer/TabContainer/PluginRegisterPanel"]
-custom_minimum_size = Vector2i(0, 100)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 offset_top = 410.0
 offset_right = 672.0
@@ -469,7 +469,7 @@ offset_bottom = 360.0
 text = "打开配置目录"
 
 [node name="Infos" type="RichTextLabel" parent="HSplitContainer/TabContainer/PluginDataPanel"]
-custom_minimum_size = Vector2i(0, 100)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 offset_top = 370.0
 offset_right = 672.0
@@ -509,6 +509,7 @@ vertical_alignment = 1
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/FolderButton" to="." method="_on_folder_button_button_down"]
 [connection signal="item_selected" from="HSplitContainer/PluginListContainer/PluginList" to="." method="_on_plugin_list_item_selected"]
 [connection signal="text_changed" from="HSplitContainer/PluginListContainer/CreatePlugin/CreatePluginFile" to="." method="_on_create_plugin_file_text_changed"]
+[connection signal="text_submitted" from="HSplitContainer/PluginListContainer/CreatePlugin/CreatePluginFile" to="." method="_on_create_plugin_file_text_submitted"]
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/CreatePlugin/CreatePluginButton" to="." method="_on_create_plugin_button_button_down"]
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/ReloadAllButton" to="." method="_on_reload_all_button_button_down"]
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/UnloadAllButton" to="." method="_on_unload_all_button_button_down"]
