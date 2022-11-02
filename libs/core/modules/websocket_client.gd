@@ -25,7 +25,6 @@ func connect_to_url(url) -> int:
 	var err = socket.connect_to_url(url, tls_verify, tls_trusted_certificate)
 	if err != OK:
 		return err
-	last_state = socket.get_ready_state()
 	return OK
 
 
@@ -46,12 +45,10 @@ func get_message() -> Variant:
 
 func close(code := 1000, reason := "") -> void:
 	socket.close(code, reason)
-	last_state = socket.get_ready_state()
 
 
 func clear() -> void:
 	socket = WebSocketPeer.new()
-	last_state = socket.get_ready_state()
 
 
 func get_socket() -> WebSocketPeer:
