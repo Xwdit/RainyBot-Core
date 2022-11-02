@@ -28,7 +28,6 @@ func _ready()->void:
 	add_to_group("console_command_plugins")
 	add_to_group("console_command_plugin")
 	var usages:Array = [
-		"plugins manager - 打开插件管理器GUI",
 		"plugins list - 查看所有已加载的插件列表",
 		"plugins load <文件名> - 加载一个指定的插件",
 		"plugins unload <插件ID> - 卸载一个指定的插件",
@@ -70,8 +69,6 @@ func call_event(event:Event)->void:
 
 func _call_console_command(_cmd:String,args:Array)->void:
 	match args[0]:
-		"manager":
-			GuiManager.open_plugin_manager()
 		"list":
 			GuiManager.console_print_text("-----插件列表-----")
 			for child in get_children():
