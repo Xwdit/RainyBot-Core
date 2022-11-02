@@ -40,11 +40,15 @@ func open_scene_editor()->void:
 func console_print_text(text,sysout:bool=true,debug_only:bool=false)->void:
 	if sysout_disabled and sysout:
 		return
+	if debug_only and !Engine.get_singleton("ConfigManager").is_debug_enabled():
+		return
 	get_tree().call_group("Console","add_newline_with_time",text)
 	
 	
 func console_print_error(text,sysout:bool=true,debug_only:bool=false)->void:
 	if sysout_disabled and sysout:
+		return
+	if debug_only and !Engine.get_singleton("ConfigManager").is_debug_enabled():
 		return
 	get_tree().call_group("Console","add_error",text)
 	
@@ -52,11 +56,15 @@ func console_print_error(text,sysout:bool=true,debug_only:bool=false)->void:
 func console_print_warning(text,sysout:bool=true,debug_only:bool=false)->void:
 	if sysout_disabled and sysout:
 		return
+	if debug_only and !Engine.get_singleton("ConfigManager").is_debug_enabled():
+		return
 	get_tree().call_group("Console","add_warning",text)
 	
 
 func console_print_success(text,sysout:bool=true,debug_only:bool=false)->void:
 	if sysout_disabled and sysout:
+		return
+	if debug_only and !Engine.get_singleton("ConfigManager").is_debug_enabled():
 		return
 	get_tree().call_group("Console","add_success",text)
 	

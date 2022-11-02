@@ -286,6 +286,10 @@ static func get_last_errors()->PackedStringArray:
 	return GlobalManager.last_errors
 
 
+static func is_debug_enabled()->bool:
+	return ConfigManager.is_debug_enabled()
+
+
 ## 用于注册一个或多个事件并将其绑定到一个或多个函数，事件发生时将触发绑定的函数并传入事件实例
 ## 需要的参数从左到右分别为:
 ## 事件的类型:
@@ -618,7 +622,7 @@ func trigger_keyword(event:Event)->bool:
 
 func _trigger_keyword(_func:Callable,_kw:String,_word:String,_arg:String,event:MessageEvent)->bool:
 	if _func.is_valid():
-		GuiManager.console_print_success("成功触发关键词:\"%s\"(解析后:\"%s\")，参数为:\"%s\"！"%[_kw,_word,_arg])
+		GuiManager.console_print_success("成功触发关键词:\"%s\"(解析后:\"%s\")，参数为:\"%s\"！"%[_kw,_word,_arg],true,true)
 		var _result = _func.call(_kw,_word,_arg,event) 
 		return _result if (_result is bool) else false
 	else:
@@ -1081,7 +1085,7 @@ func unload_plugin()->void:
 
 
 func load_scene(path:String,for_capture:bool=false)->Node:
-	GuiManager.console_print_warning("正在尝试加载场景文件: %s"% path)
+	GuiManager.console_print_warning("正在尝试加载场景文件: %s"% path,true,true)
 	var _scene:PackedScene = await GlobalManager.load_threaded(path)
 	if is_instance_valid(_scene) and _scene.can_instantiate():
 		var _ins:Node = _scene.instantiate()
@@ -1091,10 +1095,10 @@ func load_scene(path:String,for_capture:bool=false)->Node:
 			add_child(_v_port)
 			_v_port.add_child(_ins)
 			_ins.connect("tree_exited",_v_port.queue_free)
-			GuiManager.console_print_success("成功加载场景文件，并准备好对其内容进行图像获取: %s"% path)
+			GuiManager.console_print_success("成功加载场景文件，并准备好对其内容进行图像获取: %s"% path,true,true)
 		else:
 			add_child(_ins)
-			GuiManager.console_print_success("成功加载场景文件，并将其添加为插件的子级以便于后续使用: %s"% path)
+			GuiManager.console_print_success("成功加载场景文件，并将其添加为插件的子级以便于后续使用: %s"% path,true,true)
 		return _ins
 	else:
 		GuiManager.console_print_error("无法加载场景文件 %s，请检查路径及文件是否正确，或尝试在插件菜单中重新导入资源!"% path)
@@ -1122,9 +1126,9 @@ func get_scene_image(scene:Node,size:Vector2i,stretch_size:Vector2i=Vector2i.ZER
 	if is_instance_valid(img):
 		if stretch_size != Vector2i.ZERO:
 			img.resize(stretch_size.x,stretch_size.y,Image.INTERPOLATE_LANCZOS)
-			GuiManager.console_print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [_v_port.size,stretch_size,"启用" if _v_port.transparent_bg else "禁用"])
+			GuiManager.console_print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 拉伸大小为:%s, 背景透明状态为:%s"% [_v_port.size,stretch_size,"启用" if _v_port.transparent_bg else "禁用"],true,true)
 		else:
-			GuiManager.console_print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 背景透明状态为:%s"% [_v_port.size,"启用" if _v_port.transparent_bg else "禁用"])
+			GuiManager.console_print_success("成功基于指定场景中的内容生成图像! 大小为:%s, 背景透明状态为:%s"% [_v_port.size,"启用" if _v_port.transparent_bg else "禁用"],true,true)
 		return img
 	else:
 		if stretch_size != Vector2i.ZERO:
@@ -1202,7 +1206,7 @@ func wait_context_id(context_id:String,timeout:float=20.0,block:bool=true)->Vari
 	if context_id.length() < 1:
 		GuiManager.console_print_error("无法开始等待上下文响应，需要等待的上下文ID不能为空!")
 		return null
-	GuiManager.console_print_warning("开始等待上下文响应，ID为: %s，超时时间为: %s秒！"%[context_id,str(timeout)])
+	GuiManager.console_print_warning("开始等待上下文响应，ID为: %s，超时时间为: %s秒！"%[context_id,str(timeout)],true,true)
 	var _cont:PluginContextHelper
 	if plugin_context_dic.has(context_id) && is_instance_valid(plugin_context_dic[context_id]):
 		_cont = plugin_context_dic[context_id]
@@ -1215,7 +1219,7 @@ func wait_context_id(context_id:String,timeout:float=20.0,block:bool=true)->Vari
 	if timeout > 0.0:
 		_tick_context_timeout(_cont,timeout)
 	await _cont.finished
-	GuiManager.console_print_warning("上下文已完成，ID为: %s，响应结果为: %s！"%[context_id,str(_cont.get_result())])
+	GuiManager.console_print_warning("上下文已完成，ID为: %s，响应结果为: %s！"%[context_id,str(_cont.get_result())],true,true)
 	plugin_context_dic.erase(context_id)
 	return _cont.get_result()
 
@@ -1258,7 +1262,7 @@ func respond_context(context,response=true)->bool:
 		var _cont:PluginContextHelper = plugin_context_dic[context_id]
 		_cont.result = response
 		_cont.emit_signal("finished")
-		GuiManager.console_print_success("成功响应上下文，ID为: %s，响应结果为: %s！"%[context_id,str(response)])
+		GuiManager.console_print_success("成功响应上下文，ID为: %s，响应结果为: %s！"%[context_id,str(response)],true,true)
 		return _cont.block
 	elif context is String:
 		GuiManager.console_print_warning("未找到指定的上下文ID，无法进行响应: " + context_id)

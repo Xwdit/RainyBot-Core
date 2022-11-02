@@ -61,7 +61,7 @@ static func convert_to_voice(path:String,delete_origin:bool=false)->VoiceMessage
 		GuiManager.console_print_error("ffmpeg可执行文件路径未设置或有误，因此无法进行语音消息转换，请检查配置文件后再试！")
 		return null
 	if path.get_extension() == "amr" or path.get_extension() == "silk":
-		GuiManager.console_print_warning("指定的音频文件无需进行转换，将直接构造为语音消息实例")
+		GuiManager.console_print_warning("指定的音频文件无需进行转换，将直接构造为语音消息实例",true,true)
 		return VoiceMessage.init_path(path)
 	var amr_convert_func:Callable = func(input_path:String):
 		var _out_path:String = GlobalManager.cache_path+"voice-"+Time.get_datetime_string_from_system().replace(":","-")+"-"+str(randi())+".amr"
@@ -80,10 +80,10 @@ static func convert_to_voice(path:String,delete_origin:bool=false)->VoiceMessage
 			return ""
 		return _out_path+".slk"
 	var _thread:Thread = Thread.new()
-	GuiManager.console_print_warning("正在尝试将音频文件%s转换为可被发送的语音消息..."%path)
+	GuiManager.console_print_warning("正在尝试将音频文件%s转换为可被发送的语音消息..."%path,true,true)
 	var convert_func:Callable = silk_convert_func
 	if ConfigManager.get_silk_encoder_path().is_empty():
-		GuiManager.console_print_warning("未设置silk-encoder可执行文件路径或路径无效，因此将转换为音质较差的.amr格式...")
+		GuiManager.console_print_warning("未设置silk-encoder可执行文件路径或路径无效，因此将转换为音质较差的.amr格式...",true,true)
 		convert_func = amr_convert_func
 	var _start_time:int = Time.get_ticks_msec()
 	var _err:int = _thread.start(convert_func.bind(path))
@@ -98,9 +98,9 @@ static func convert_to_voice(path:String,delete_origin:bool=false)->VoiceMessage
 	if output_path.is_empty():
 		GuiManager.console_print_error("转换音频文件时出现错误，无法将其转换为语音消息，请检查后再试！")
 		return null
-	GuiManager.console_print_success("成功将音频文件转换为语音消息，并缓存至以下路径："+output_path)
-	GuiManager.console_print_success("本次转换用时：%s秒"%(_passed_time/1000.0))
+	GuiManager.console_print_success("成功将音频文件转换为语音消息，并缓存至以下路径："+output_path,true,true)
+	GuiManager.console_print_success("本次转换用时：%s秒"%(_passed_time/1000.0),true,true)
 	if delete_origin:
 		DirAccess.remove_absolute(path)
-		GuiManager.console_print_success("已删除转换为语音消息前的原音频文件：%s"%path)
+		GuiManager.console_print_success("已删除转换为语音消息前的原音频文件：%s"%path,true,true)
 	return VoiceMessage.init_path(output_path)

@@ -10,6 +10,9 @@ func _ready()->void:
 
 
 func add_newline_with_time(_text)->void:
+	if ConfigManager.get_output_line_limit() > 0 and get_line_count() > ConfigManager.get_output_line_limit():
+		remove_line(0)
+		
 	var _s_text:String = str(_text)
 	var n_text:String = "["+Time.get_datetime_string_from_system(false,true)+"] "+_s_text
 	add_text(n_text)

@@ -172,7 +172,7 @@ func save(path:String)->int:
 	var file:FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	if file:
 		file.store_buffer(await get_data())
-		GuiManager.console_print_success("成功将Gif图像数据储存至文件 %s"% path)
+		GuiManager.console_print_success("成功将Gif图像数据储存至文件 %s"% path,true,true)
 	else:
 		GuiManager.console_print_error("无法将指定Gif图像数据储存到文件 %s，请检查文件路径或权限是否正确!"% path)
 	return FileAccess.get_open_error()
@@ -184,7 +184,7 @@ func get_data()->PackedByteArray:
 		return PackedByteArray([])
 	if !data.is_empty():
 		return data
-	GuiManager.console_print_warning("正在生成Gif图像数据，请稍候.....")
+	GuiManager.console_print_warning("正在生成Gif图像数据，请稍候.....",true,true)
 	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
 	var _err:int = _thread.start(_export_data.bind(frames))
@@ -195,7 +195,7 @@ func get_data()->PackedByteArray:
 		var _end_time:int = Time.get_ticks_msec()
 		var _passed_time:int = _end_time-_start_time
 		frame_generate_time = int(round(float(_passed_time)/float(frames.size())))
-		GuiManager.console_print_success("Gif图像数据生成完毕，正在返回生成的数据.....(总用时: %s秒)"% (float(_passed_time)/1000.0))
+		GuiManager.console_print_success("Gif图像数据生成完毕，正在返回生成的数据.....(总用时: %s秒)"% (float(_passed_time)/1000.0),true,true)
 		return data
 	else:
 		GuiManager.console_print_error("无法创建用于生成Gif图像数据的线程，请再试一次!")
@@ -214,7 +214,7 @@ func get_generate_time()->float:
 
 
 func _test_generate_speed()->int:
-	GuiManager.console_print_warning("正在测试Gif图像数据的生成速度，请稍候.....")
+	GuiManager.console_print_warning("正在测试Gif图像数据的生成速度，请稍候.....",true,true)
 	var _test_frames:Array = [frames[0]]
 	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
@@ -225,7 +225,7 @@ func _test_generate_speed()->int:
 		var _data:PackedByteArray = _thread.wait_to_finish()
 		var _end_time:int = Time.get_ticks_msec()
 		frame_generate_time = _end_time-_start_time
-		GuiManager.console_print_success("Gif图像数据生成速度测试完毕！相关数据已保存至该Gif图像实例，以便用于预估生成时长！")
+		GuiManager.console_print_success("Gif图像数据生成速度测试完毕！相关数据已保存至该Gif图像实例，以便用于预估生成时长！",true,true)
 		return OK
 	else:
 		GuiManager.console_print_error("无法创建用于测试Gif图像数据生成速度的线程，请再试一次!")

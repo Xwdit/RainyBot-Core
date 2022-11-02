@@ -94,7 +94,7 @@ func send_bot_request(command:String,sub_command:String,content:Dictionary,timeo
 	while processing_command.has(sync_id):
 		sync_id = randi()
 	var request:Dictionary = {"syncId":sync_id,"command":command,"subCommand":sub_command,"content":content}
-	GuiManager.console_print_warning("正在发送指令请求到Mirai框架："+ str(request))
+	GuiManager.console_print_warning("正在发送指令请求到Mirai框架："+ str(request),true,true)
 	var cmd:MiraiRequestInstance = MiraiRequestInstance.new()
 	cmd.sync_id = sync_id
 	cmd.request = request
@@ -102,7 +102,7 @@ func send_bot_request(command:String,sub_command:String,content:Dictionary,timeo
 	var json:JSON = JSON.new()
 	_client.send(json.stringify(request))
 	if timeout > 0.0:
-		GuiManager.console_print_warning("本次请求的超时时间为: %s秒"% timeout)
+		GuiManager.console_print_warning("本次请求的超时时间为: %s秒"% timeout,true,true)
 		_tick_command_timeout(cmd,timeout)
 	await cmd.request_finished
 	processing_command.erase(sync_id)
@@ -118,7 +118,7 @@ func _parse_command_result(result:Dictionary)->void:
 	if processing_command.has(sync_id):
 		var cmd:MiraiRequestInstance = processing_command[sync_id]
 		cmd.result = result["data"]
-		GuiManager.console_print_success("获取到Mirai框架的回应: "+str(result))
+		GuiManager.console_print_success("获取到Mirai框架的回应: "+str(result),true,true)
 		cmd.emit_signal("request_finished")
 
 
