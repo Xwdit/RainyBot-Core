@@ -2,7 +2,7 @@ extends Node
 
 
 func send_http_get_request(url:String,headers:PackedStringArray=PackedStringArray([]),timeout:int=20,accept_gzip:bool=true)->HttpRequestResult:
-	GuiManager.console_print_warning("正在尝试发送Http Get请求到: "+url,true,true)
+	GuiManager.console_print_warning("正在尝试发送Http Get请求到: "+url)
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
 	node.request_headers = headers
@@ -25,7 +25,7 @@ func send_http_get_request(url:String,headers:PackedStringArray=PackedStringArra
 	
 	
 func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20,accept_gzip:bool=true)->HttpRequestResult:
-	GuiManager.console_print_warning("正在尝试发送Http Post请求到: "+url,true,true)
+	GuiManager.console_print_warning("正在尝试发送Http Post请求到: "+url)
 	if (data is Dictionary) or (data is Array):
 		data = JSON.stringify(data)
 		var find_h:bool = false
@@ -66,7 +66,7 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 
 
 func send_http_put_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20,accept_gzip:bool=true)->HttpRequestResult:
-	GuiManager.console_print_warning("正在尝试发送Http Put请求到: "+url,true,true)
+	GuiManager.console_print_warning("正在尝试发送Http Put请求到: "+url)
 	if (data is Dictionary) or (data is Array):
 		data = JSON.stringify(data)
 		var find_h:bool = false
@@ -131,7 +131,7 @@ class HttpRequestInstance:
 		if _result != HTTPRequest.RESULT_SUCCESS:
 			GuiManager.console_print_error("从 %s 获取Http请求结果时出现错误，错误代码为: %s"%[request_url,ClassDB.class_get_enum_constants("HTTPRequest","Result")[int(_result)]])
 		else:
-			GuiManager.console_print_success("成功从 %s 获取到Http请求的返回结果！"%[request_url],true,true)
+			GuiManager.console_print_success("成功从 %s 获取到Http请求的返回结果！"%[request_url])
 		emit_signal("request_finished")
 		
 	func get_result()->HttpRequestResult:
