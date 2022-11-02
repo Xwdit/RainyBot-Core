@@ -6,39 +6,41 @@ var file:FileAccess = null
 
 func _ready()->void:
 	save_log(false)
+	init_log()
+
+
+func init_log():
 	file = FileAccess.open(GlobalManager.log_path+"rainybot.log",FileAccess.WRITE)
 
 
-func add_newline_with_time(_text)->void:
-	if ConfigManager.get_output_line_limit() > 0 and get_line_count() > ConfigManager.get_output_line_limit():
-		remove_line(0)
-		
+func add_newline_with_time(_text,_color:Color=Color.WHITE)->void:
+	if ConfigManager.get_output_cleanup_threshold() > 0 and get_line_count() >= ConfigManager.get_output_cleanup_threshold():
+		clear()
+		save_log(true)
+		init_log()
+		add_success("当前历史输出行数已到达设定的触发值 (%s行)，因此已为您自动清空控制台中的所有历史输出！"%ConfigManager.get_output_cleanup_threshold())
 	var _s_text:String = str(_text)
 	var n_text:String = "["+Time.get_datetime_string_from_system(false,true)+"] "+_s_text
+	var _is_white:bool = _color.is_equal_approx(Color.WHITE)
+	if !_is_white:
+		push_color(_color)
 	add_text(n_text)
+	if !_is_white:
+		pop()
 	newline()
 	add_to_log(n_text)
 
 
 func add_error(_text)->void:
-	var _s_text:String = str(_text)
-	push_color(Color("ff7085"))
-	add_newline_with_time(_s_text)
-	pop()
+	add_newline_with_time(_text,Color("ff7085"))
 	
 	
 func add_warning(_text)->void:
-	var _s_text:String = str(_text)
-	push_color(Color("ffeda1"))
-	add_newline_with_time(_s_text)
-	pop()
+	add_newline_with_time(_text,Color("ffeda1"))
 
 
 func add_success(_text)->void:
-	var _s_text:String = str(_text)
-	push_color(Color("42ffc2"))
-	add_newline_with_time(_s_text)
-	pop()
+	add_newline_with_time(_text,Color("42ffc2"))
 
 
 func add_to_log(_text)->void:

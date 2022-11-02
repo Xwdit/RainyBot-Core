@@ -77,7 +77,7 @@ func _notification(what:int)->void:
 		GuiManager.console_print_success("RainyBot核心进程已被安全退出!")
 		await get_tree().create_timer(0.5).timeout
 		clear_cache()
-		Console.save_log(true)
+		GuiManager.console_save_log(true)
 		if restarting:
 			OS.create_instance([])
 		get_tree().quit()
