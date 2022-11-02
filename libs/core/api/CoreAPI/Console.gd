@@ -6,23 +6,23 @@ class_name Console
 
 
 ## 在控制台中打印一个普通文本，可以传入任意类型值，将自动尝试转换为字符串
-static func print_text(text)->void:
-	GuiManager.console_print_text(text,false)
+static func print_text(text,debug_only:bool=false)->void:
+	GuiManager.console_print_text(text,false,debug_only)
 	
 
 ## 在控制台中打印一个错误文本，可以传入任意类型值，将自动尝试转换为字符串
-static func print_error(text)->void:
-	GuiManager.console_print_error(text,false)
+static func print_error(text,debug_only:bool=false)->void:
+	GuiManager.console_print_error(text,false,debug_only)
 	
 
 ## 在控制台中打印一个警告文本，可以传入任意类型值，将自动尝试转换为字符串
-static func print_warning(text)->void:
-	GuiManager.console_print_warning(text,false)
+static func print_warning(text,debug_only:bool=false)->void:
+	GuiManager.console_print_warning(text,false,debug_only)
 	
 
 ## 在控制台中打印一个成功文本，可以传入任意类型值，将自动尝试转换为字符串
-static func print_success(text)->void:
-	GuiManager.console_print_success(text,false)
+static func print_success(text,debug_only:bool=false)->void:
+	GuiManager.console_print_success(text,false,debug_only)
 
 
 ## 将控制台的内容立刻保存为以当前日期与时间命名的日志文件
