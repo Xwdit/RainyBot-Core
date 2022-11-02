@@ -718,7 +718,7 @@ func save_plugin_config()->int:
 	if !plugin_config_loaded:
 		GuiManager.console_print_error("配置文件保存失败，请先初始化配置后再执行此操作")
 		return ERR_FILE_CANT_WRITE
-	GuiManager.console_print_warning("正在保存配置文件...")
+	GuiManager.console_print_warning("正在保存配置文件...",true,true)
 	var config_path:String = PluginManager.plugin_config_path + plugin_info["id"] + ".json"
 	var file:FileAccess = FileAccess.open(config_path,FileAccess.WRITE)
 	if !file:
@@ -727,7 +727,7 @@ func save_plugin_config()->int:
 	else:
 		var json:JSON = JSON.new()
 		file.store_string(json.stringify(plugin_config,"\t"))
-		GuiManager.console_print_success("配置文件保存成功，路径: "+config_path)
+		GuiManager.console_print_success("配置文件保存成功，路径: "+config_path,true,true)
 		return OK
 
 
@@ -898,7 +898,7 @@ func save_plugin_data()->int:
 	if !plugin_data_loaded:
 		GuiManager.console_print_error("数据库文件保存失败，请先初始化数据库后再执行此操作")
 		return ERR_DATABASE_CANT_WRITE
-	GuiManager.console_print_warning("正在保存插件数据库.....")
+	GuiManager.console_print_warning("正在保存插件数据库.....",true,true)
 	var data_path:String = PluginManager.plugin_data_path + plugin_info["id"] + ".rdb"
 	var file:FileAccess = FileAccess.open(data_path,FileAccess.WRITE)
 	if !file:
@@ -906,7 +906,7 @@ func save_plugin_data()->int:
 		return FileAccess.get_open_error()
 	else:
 		file.store_var(plugin_data,true)
-		GuiManager.console_print_success("数据库文件保存成功，路径: "+data_path)
+		GuiManager.console_print_success("数据库文件保存成功，路径: "+data_path,true,true)
 		return OK
 		
 
@@ -1006,7 +1006,7 @@ func save_plugin_cache()->int:
 	if !plugin_cache_loaded:
 		GuiManager.console_print_error("缓存数据库文件保存失败，请先初始化缓存数据库后再执行此操作")
 		return ERR_DATABASE_CANT_WRITE
-	GuiManager.console_print_warning("正在保存插件缓存数据库.....")
+	GuiManager.console_print_warning("正在保存插件缓存数据库.....",true,true)
 	var data_path:String = PluginManager.plugin_cache_path + plugin_info["id"] + ".rca"
 	var file:FileAccess = FileAccess.open(data_path,FileAccess.WRITE)
 	if !file:
@@ -1014,7 +1014,7 @@ func save_plugin_cache()->int:
 		return FileAccess.get_open_error()
 	else:
 		file.store_var(plugin_cache,true)
-		GuiManager.console_print_success("缓存数据库文件保存成功，路径: "+data_path)
+		GuiManager.console_print_success("缓存数据库文件保存成功，路径: "+data_path,true,true)
 		return OK
 		
 
