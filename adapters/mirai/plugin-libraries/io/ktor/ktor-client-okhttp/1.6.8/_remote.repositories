@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Nov 02 20:26:23 CET 2022
+ktor-client-okhttp-1.6.8.pom>=
+ktor-client-okhttp-1.6.8.jar>=
