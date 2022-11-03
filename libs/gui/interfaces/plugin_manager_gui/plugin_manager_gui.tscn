@@ -130,35 +130,35 @@ vertical_alignment = 1
 [node name="PluginID" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 offset_top = 59.0
 offset_right = 886.0
-offset_bottom = 96.0
+offset_bottom = 98.0
 theme_override_font_sizes/font_size = 20
 text = "插件ID: example_plugin"
 
 [node name="PluginAuthor" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
-offset_top = 106.0
+offset_top = 108.0
 offset_right = 886.0
-offset_bottom = 143.0
+offset_bottom = 147.0
 theme_override_font_sizes/font_size = 20
 text = "作者: Xwdit"
 
 [node name="PluginVersion" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
-offset_top = 153.0
+offset_top = 157.0
 offset_right = 886.0
-offset_bottom = 190.0
+offset_bottom = 196.0
 theme_override_font_sizes/font_size = 20
 text = "版本: 1.0"
 
 [node name="PluginDependency" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
-offset_top = 200.0
+offset_top = 206.0
 offset_right = 886.0
-offset_bottom = 237.0
+offset_bottom = 245.0
 theme_override_font_sizes/font_size = 20
 text = "依赖的插件: 无"
 
 [node name="PluginDescription" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
-offset_top = 247.0
+offset_top = 255.0
 offset_right = 886.0
-offset_bottom = 284.0
+offset_bottom = 294.0
 theme_override_font_sizes/font_size = 20
 text = "描述: 这是一个示例插件，实际上并没有什么作用....."
 
@@ -166,11 +166,12 @@ text = "描述: 这是一个示例插件，实际上并没有什么作用....."
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 294.0
+offset_top = 304.0
 offset_right = 886.0
 offset_bottom = 552.0
 grow_horizontal = 1
 grow_vertical = 1
+indent_size = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 offset_top = 562.0

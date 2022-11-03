@@ -25,8 +25,6 @@ color = Color(0.113725, 0.133333, 0.160784, 1)
 layout_mode = 1
 offset_top = 32.0
 offset_bottom = -30.0
-grow_horizontal = 2
-grow_vertical = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -83,19 +81,18 @@ alignment = 1
 
 [node name="FileName" type="Label" parent="EditorPanel/File"]
 layout_mode = 2
-offset_left = 538.0
-offset_right = 601.0
-offset_bottom = 32.0
+offset_left = 534.0
+offset_right = 604.0
+offset_bottom = 35.0
 text = "Test.gd"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FileStatus" type="Label" parent="EditorPanel/File"]
 layout_mode = 2
-offset_left = 605.0
-offset_top = 3.0
-offset_right = 614.0
-offset_bottom = 30.0
+offset_left = 608.0
+offset_right = 617.0
+offset_bottom = 35.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -114,9 +111,9 @@ alignment = 2
 
 [node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
 layout_mode = 2
-offset_left = 163.0
+offset_left = 150.0
 offset_right = 202.0
-offset_bottom = 32.0
+offset_bottom = 35.0
 text = "1 : 1"
 horizontal_alignment = 2
 vertical_alignment = 1
