@@ -86,7 +86,8 @@ func _on_console_menu_pressed(id:int)->void:
 			GuiManager.console_print_warning("修改配置后请重启RainyBot")
 		ConsoleMenuOptions.CLEAR_CONSOLE:
 			get_tree().call_group("Console","clear")
-			GuiManager.console_print_success("已成功清空控制台的所有内容！")
+			GuiManager.console_init_log(true)
+			GuiManager.console_print_success("已为您保存日志并清空控制台中的所有历史输出！")
 		ConsoleMenuOptions.OPEN_LOG_DIR:
 			if OS.get_name() != "macOS":
 				OS.shell_open(GlobalManager.log_path)

@@ -63,6 +63,10 @@ func console_print_success(text,sysout:bool=true)->void:
 	
 func console_save_log(close:bool=false)->void:
 	get_tree().call_group("Console","save_log",close)
+	
+	
+func console_init_log(save_current:bool=false)->void:
+	get_tree().call_group("Console","init_log",save_current)
 
 
 func popup_notification(text:String,title:String="提示")->bool:
