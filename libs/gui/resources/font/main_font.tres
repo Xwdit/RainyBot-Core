@@ -4,7 +4,4 @@
 
 [resource]
 base_font = ExtResource("1_mnj4y")
-opentype_features = {
-1667329140: 1
-}
 spacing_top = 5
