@@ -15,8 +15,10 @@ func _ready()->void:
 func _physics_process(_delta:float)->void:
 	$Status.text = "协议后端:Mirai | %s | Bot ID:%s" % ["已连接" if BotAdapter.is_bot_connected() else "未连接", str(BotAdapter.get_bot_id()) if BotAdapter.get_bot_id()!=0 else "未配置"]
 	if !UpdateManager.updating:
-		var times_dic:Dictionary = Time.get_time_dict_from_unix_time(GlobalManager.global_run_time)
-		var time:String = "{hour}小时{minute}分钟".format(times_dic)
+		var total_minutes:int = GlobalManager.global_run_time/60.0
+		var total_hours:int = total_minutes/60.0
+		var rest_minutes:int = total_minutes % 60
+		var time:String = "{hour}小时{minute}分钟".format({"hour":total_hours,"minute":rest_minutes})
 		DisplayServer.window_set_title("RainyBot - %s | 已运行时长: %s | 群聊消息: %s条 | 私聊消息: %s条 | 已发送消息: %s条" % [str(BotAdapter.get_bot_id()) if BotAdapter.get_bot_id()!=0 else "未配置账号",time,BotAdapter.group_message_count,BotAdapter.private_message_count,BotAdapter.sent_message_count])
 
 

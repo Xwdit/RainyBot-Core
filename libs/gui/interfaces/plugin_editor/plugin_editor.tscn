@@ -13,7 +13,6 @@ grow_vertical = 2
 script = ExtResource("1_afc2x")
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -22,7 +21,6 @@ grow_vertical = 2
 color = Color(0.113725, 0.133333, 0.160784, 1)
 
 [node name="CodeEdit" parent="." instance=ExtResource("2_mo1oq")]
-layout_mode = 1
 offset_top = 32.0
 offset_bottom = -30.0
 focus_neighbor_left = NodePath(".")
@@ -33,7 +31,7 @@ focus_next = NodePath(".")
 focus_previous = NodePath(".")
 
 [node name="EditorPanel" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 33.0
@@ -41,20 +39,17 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 
 [node name="Menu" type="HBoxContainer" parent="EditorPanel"]
-layout_mode = 0
 offset_left = 4.0
 offset_right = 343.0
 offset_bottom = 32.0
 
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
-layout_mode = 2
 offset_right = 76.0
 offset_bottom = 32.0
 text = "保存文件"
 flat = true
 
 [node name="SaveReloadButton" type="Button" parent="EditorPanel/Menu"]
-layout_mode = 2
 offset_left = 80.0
 offset_right = 172.0
 offset_bottom = 32.0
@@ -62,7 +57,6 @@ text = "保存并重载"
 flat = true
 
 [node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
-layout_mode = 2
 offset_left = 176.0
 offset_right = 279.0
 offset_bottom = 32.0
@@ -70,7 +64,6 @@ text = "打开API文档"
 flat = true
 
 [node name="File" type="HBoxContainer" parent="EditorPanel"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -80,7 +73,6 @@ mouse_filter = 2
 alignment = 1
 
 [node name="FileName" type="Label" parent="EditorPanel/File"]
-layout_mode = 2
 offset_left = 534.0
 offset_right = 604.0
 offset_bottom = 35.0
@@ -89,7 +81,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FileStatus" type="Label" parent="EditorPanel/File"]
-layout_mode = 2
 offset_left = 608.0
 offset_right = 617.0
 offset_bottom = 35.0
@@ -97,7 +88,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Edit" type="HBoxContainer" parent="EditorPanel"]
-layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
@@ -110,7 +100,6 @@ mouse_filter = 2
 alignment = 2
 
 [node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
-layout_mode = 2
 offset_left = 150.0
 offset_right = 202.0
 offset_bottom = 35.0
@@ -119,7 +108,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="StatusPanel" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -129,7 +118,6 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="CodeStatus" type="Label" parent="StatusPanel"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
