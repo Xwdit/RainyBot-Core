@@ -700,12 +700,10 @@ toggle_comment={
 ]
 }
 
+[input_devices]
+
+buffering/agile_event_flushing=true
+
 [internationalization]
 
 locale/translations=PackedStringArray("res://libs/gui/resources/lang/zh_CN.po")
-
-[rendering]
-
-2d/snap/snap_2d_transforms_to_pixel=true
-2d/snap/snap_2d_vertices_to_pixel=true
-batching/options/use_batching=true
