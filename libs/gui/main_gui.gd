@@ -3,6 +3,7 @@ extends Control
 
 func _ready()->void:
 	DisplayServer.window_set_title("RainyBot")
+	Input.use_accumulated_input = false
 	ConfigManager.init_config()
 	update_tabs()
 	GuiManager.console_print_success("成功加载 RainyBot-Gui | 版本: %s | 作者: Xwdit" % RainyBotCore.VERSION)
