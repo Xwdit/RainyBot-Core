@@ -1,12 +1,11 @@
 extends Node
 
 
-func send_http_get_request(url:String,headers:PackedStringArray=PackedStringArray([]),timeout:int=20,accept_gzip:bool=true)->HttpRequestResult:
+func send_http_get_request(url:String,headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	GuiManager.console_print_warning("正在尝试发送Http Get请求到: "+url)
 	var node:HttpRequestInstance = HttpRequestInstance.new()
 	node.request_url = url
 	node.request_headers = headers
-	node.accept_gzip = accept_gzip
 	if timeout > 0:
 		node.timeout = timeout
 	add_child(node)
@@ -24,7 +23,7 @@ func send_http_get_request(url:String,headers:PackedStringArray=PackedStringArra
 	return result
 	
 	
-func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20,accept_gzip:bool=true)->HttpRequestResult:
+func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	GuiManager.console_print_warning("正在尝试发送Http Post请求到: "+url)
 	if (data is Dictionary) or (data is Array):
 		data = JSON.stringify(data)
@@ -42,7 +41,6 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 	node.request_url = url
 	node.request_data = data
 	node.request_headers = headers
-	node.accept_gzip = accept_gzip
 	if timeout > 0:
 		node.timeout = timeout
 	add_child(node)
@@ -65,7 +63,7 @@ func send_http_post_request(url:String,data="",headers:PackedStringArray=PackedS
 	return result
 
 
-func send_http_put_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20,accept_gzip:bool=true)->HttpRequestResult:
+func send_http_put_request(url:String,data="",headers:PackedStringArray=PackedStringArray([]),timeout:int=20)->HttpRequestResult:
 	GuiManager.console_print_warning("正在尝试发送Http Put请求到: "+url)
 	if (data is Dictionary) or (data is Array):
 		data = JSON.stringify(data)
@@ -83,7 +81,6 @@ func send_http_put_request(url:String,data="",headers:PackedStringArray=PackedSt
 	node.request_url = url
 	node.request_data = data
 	node.request_headers = headers
-	node.accept_gzip = accept_gzip
 	if timeout > 0:
 		node.timeout = timeout
 	add_child(node)

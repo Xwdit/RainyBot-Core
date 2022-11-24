@@ -34,7 +34,7 @@ func _call_console_command(_cmd:String,args:Array)->void:
 func check_update()->bool:
 	GuiManager.console_print_warning("正在检查您的RainyBot是否为最新版本，请稍候...(下载源: %s)"% ConfigManager.get_update_source())
 	Console.disable_sysout(true)
-	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+"update.json",[],20,false)
+	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+"update.json",[],20)
 	var dic:Dictionary = result.get_as_dic()
 	Console.disable_sysout(false)
 	if !dic.is_empty():
@@ -80,7 +80,7 @@ func update_files(dict:Dictionary={},action:String="更新")->void:
 	GuiManager.console_print_warning("正在统计需要{action}的文件，请稍候...(下载源: %s)".format({"action":action})% ConfigManager.get_update_source())
 	if dict.is_empty():
 		Console.disable_sysout(true)
-		var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+"update.json",[],20,false)
+		var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+"update.json",[],20)
 		dict = result.get_as_dic()
 		Console.disable_sysout(false)
 	var root:String = GlobalManager.root_path
@@ -260,7 +260,7 @@ func check_new_files(dict:Dictionary,result_dict:Dictionary)->void:
 
 func download_file(path:String,dict:Dictionary)->int:
 	var _unique_path:String = path.replace(GlobalManager.root_path,"")
-	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+_unique_path.uri_encode(),[],600,false)
+	var result:HttpRequestResult = await Utils.send_http_get_request(get_update_url()+_unique_path.uri_encode(),[],600)
 	var dir_path:String = (path).get_base_dir()+"/"
 	if !DirAccess.dir_exists_absolute(dir_path):
 		DirAccess.make_dir_recursive_absolute(dir_path)
