@@ -36,6 +36,7 @@ func load_script(path:String)->int:
 		if unsaved_dic.has(path):
 			set_unsaved(true)
 		else:
+			get_code_edit().tag_saved_version()
 			set_unsaved(false)
 		return OK
 	else:
@@ -66,6 +67,7 @@ func save_script(reload:bool=false)->int:
 	scr.source_code = get_code_edit().text
 	var err_code:int = ResourceSaver.save(scr,loaded_path)
 	if !err_code:
+		get_code_edit().tag_saved_version()
 		set_unsaved(false)
 		GuiManager.console_print_success("插件保存成功！")
 		if reload:
@@ -102,7 +104,10 @@ func set_unsaved(enabled:bool=true)->void:
 
 
 func _on_CodeEdit_text_changed()->void:
-	set_unsaved()
+	if get_code_edit().get_version() != get_code_edit().get_saved_version():
+		set_unsaved()
+	else:
+		set_unsaved(false)
 
 
 func _on_CodeEdit_caret_changed()->void:
