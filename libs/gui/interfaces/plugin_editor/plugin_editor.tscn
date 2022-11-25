@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://beoswm81km06x"]
+[gd_scene load_steps=4 format=3 uid="uid://beoswm81km06x"]
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/plugin_editor/plugin_editor.gd" id="1_afc2x"]
 [ext_resource type="PackedScene" uid="uid://6x8cc0fngicq" path="res://libs/gui/interfaces/plugin_editor/modules/code_edit/code_edit.tscn" id="2_mo1oq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ldw3"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
+border_color = Color(0.439216, 0.729412, 0.980392, 1)
 
 [node name="PluginEditor" type="Control"]
 layout_mode = 3
@@ -13,6 +18,7 @@ grow_vertical = 2
 script = ExtResource("1_afc2x")
 
 [node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -21,26 +27,32 @@ grow_vertical = 2
 color = Color(0.113725, 0.133333, 0.160784, 1)
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 31.0
-offset_bottom = -30.0
+offset_left = 5.0
+offset_top = 35.0
+offset_right = -5.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
 split_offset = 180
 
 [node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
+layout_mode = 2
 offset_right = 180.0
-offset_bottom = 587.0
+offset_bottom = 607.0
 split_offset = 200
 
 [node name="FileList" type="VBoxContainer" parent="HSplitContainer/VSplitContainer"]
 custom_minimum_size = Vector2(180, 150)
+layout_mode = 2
 offset_right = 180.0
 offset_bottom = 200.0
 
 [node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/FileList"]
+layout_mode = 2
 offset_right = 180.0
 offset_bottom = 35.0
 text = "插件列表"
@@ -48,6 +60,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ItemList" type="ItemList" parent="HSplitContainer/VSplitContainer/FileList"]
+layout_mode = 2
 offset_top = 39.0
 offset_right = 180.0
 offset_bottom = 200.0
@@ -55,11 +68,13 @@ size_flags_vertical = 3
 
 [node name="FuncList" type="VBoxContainer" parent="HSplitContainer/VSplitContainer"]
 custom_minimum_size = Vector2(180, 150)
+layout_mode = 2
 offset_top = 208.0
 offset_right = 180.0
-offset_bottom = 587.0
+offset_bottom = 607.0
 
 [node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/FuncList"]
+layout_mode = 2
 offset_right = 180.0
 offset_bottom = 35.0
 text = "函数列表"
@@ -67,20 +82,28 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ItemList" type="ItemList" parent="HSplitContainer/VSplitContainer/FuncList"]
+layout_mode = 2
 offset_top = 39.0
 offset_right = 180.0
-offset_bottom = 379.0
+offset_bottom = 399.0
 size_flags_vertical = 3
 
-[node name="CodeEdit" parent="HSplitContainer" instance=ExtResource("2_mo1oq")]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
+layout_mode = 2
+offset_left = 188.0
+offset_right = 1142.0
+offset_bottom = 607.0
+
+[node name="CodeEdit" parent="HSplitContainer/VBoxContainer" instance=ExtResource("2_mo1oq")]
+layout_mode = 2
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 188.0
-offset_right = 1152.0
-offset_bottom = 587.0
+offset_right = 954.0
+offset_bottom = 578.0
 grow_horizontal = 1
 grow_vertical = 1
+size_flags_vertical = 3
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -88,26 +111,64 @@ focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath(".")
 focus_previous = NodePath(".")
 
-[node name="EditorPanel" type="Control" parent="."]
-layout_mode = 3
+[node name="StatusPanel" type="Control" parent="HSplitContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+anchors_preset = 0
+offset_top = 582.0
+offset_right = 954.0
+offset_bottom = 607.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="CodeStatus" type="Label" parent="HSplitContainer/VBoxContainer/StatusPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "当前文件中未发现任何错误"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HideDockButton" type="Button" parent="HSplitContainer/VBoxContainer/StatusPanel"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 21.0
+grow_vertical = 2
+toggle_mode = true
+text = "<"
+flat = true
+expand_icon = true
+
+[node name="EditorPanel" type="Panel" parent="."]
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 33.0
 grow_horizontal = 2
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ldw3")
 
 [node name="Menu" type="HBoxContainer" parent="EditorPanel"]
+layout_mode = 0
 offset_left = 4.0
 offset_right = 343.0
 offset_bottom = 32.0
 
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
+layout_mode = 2
 offset_right = 76.0
 offset_bottom = 32.0
 text = "保存文件"
 flat = true
 
 [node name="SaveReloadButton" type="Button" parent="EditorPanel/Menu"]
+layout_mode = 2
 offset_left = 80.0
 offset_right = 172.0
 offset_bottom = 32.0
@@ -115,37 +176,15 @@ text = "保存并重载"
 flat = true
 
 [node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
+layout_mode = 2
 offset_left = 176.0
 offset_right = 279.0
 offset_bottom = 32.0
 text = "打开API文档"
 flat = true
 
-[node name="File" type="HBoxContainer" parent="EditorPanel"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-alignment = 1
-
-[node name="FileName" type="Label" parent="EditorPanel/File"]
-offset_left = 534.0
-offset_right = 604.0
-offset_bottom = 35.0
-text = "Test.gd"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="FileStatus" type="Label" parent="EditorPanel/File"]
-offset_left = 608.0
-offset_right = 617.0
-offset_bottom = 35.0
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Edit" type="HBoxContainer" parent="EditorPanel"]
+layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
@@ -158,6 +197,7 @@ mouse_filter = 2
 alignment = 2
 
 [node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
+layout_mode = 2
 offset_left = 150.0
 offset_right = 202.0
 offset_bottom = 35.0
@@ -165,32 +205,12 @@ text = "1 : 1"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="StatusPanel" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -30.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="CodeStatus" type="Label" parent="StatusPanel"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "当前文件中未发现任何错误"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [connection signal="item_selected" from="HSplitContainer/VSplitContainer/FileList/ItemList" to="." method="_on_file_list_item_selected"]
 [connection signal="item_selected" from="HSplitContainer/VSplitContainer/FuncList/ItemList" to="." method="_on_func_list_item_selected"]
-[connection signal="caret_changed" from="HSplitContainer/CodeEdit" to="." method="_on_CodeEdit_caret_changed"]
-[connection signal="text_changed" from="HSplitContainer/CodeEdit" to="." method="_on_CodeEdit_text_changed"]
-[connection signal="update_finished" from="HSplitContainer/CodeEdit" to="." method="_on_CodeEdit_update_finished"]
+[connection signal="caret_changed" from="HSplitContainer/VBoxContainer/CodeEdit" to="." method="_on_CodeEdit_caret_changed"]
+[connection signal="text_changed" from="HSplitContainer/VBoxContainer/CodeEdit" to="." method="_on_CodeEdit_text_changed"]
+[connection signal="update_finished" from="HSplitContainer/VBoxContainer/CodeEdit" to="." method="_on_CodeEdit_update_finished"]
+[connection signal="toggled" from="HSplitContainer/VBoxContainer/StatusPanel/HideDockButton" to="." method="_on_hide_dock_button_toggled"]
 [connection signal="button_down" from="EditorPanel/Menu/SaveButton" to="." method="_on_SaveButton_button_down"]
 [connection signal="button_down" from="EditorPanel/Menu/SaveReloadButton" to="." method="_on_SaveReloadButton_button_down"]
 [connection signal="button_down" from="EditorPanel/Menu/HelpButton" to="." method="_on_HelpButton_button_down"]

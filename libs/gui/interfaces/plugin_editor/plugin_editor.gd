@@ -30,7 +30,6 @@ func load_script(path:String)->int:
 			is_valid = true
 	if is_valid:
 		get_code_edit().clear_undo_history()
-		$EditorPanel/File/FileName.text = path.get_file()
 		loaded_path = path
 		loaded_name = path.get_file()
 		if unsaved_dic.has(path):
@@ -59,7 +58,7 @@ func update_file_list():
 
 
 func get_code_edit()->CodeEdit:
-	return $HSplitContainer/CodeEdit
+	return $HSplitContainer/VBoxContainer/CodeEdit
 
 
 func save_script(reload:bool=false)->int:
@@ -95,11 +94,9 @@ func save_script(reload:bool=false)->int:
 func set_unsaved(enabled:bool=true)->void:
 	if enabled:
 		unsaved_dic[loaded_path]=get_code_edit().text
-		$EditorPanel/File/FileStatus.text = "(未保存)"
 	else:
 		if unsaved_dic.has(loaded_path):
 			unsaved_dic.erase(loaded_path)
-		$EditorPanel/File/FileStatus.text = ""
 	update_file_list()
 
 
@@ -137,16 +134,16 @@ func _on_CodeEdit_update_finished()->void:
 	var _err_dic:Dictionary = get_code_edit().error_lines
 	var _l_num:int = get_code_edit().get_caret_line()
 	if _err_dic.has(_l_num):
-		$StatusPanel/CodeStatus.text = "错误: "+_err_dic[_l_num]
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "错误: "+_err_dic[_l_num]
 	elif !_err_dic.is_empty():
 		var _ln:Array[int] = []
 		for _l in _err_dic:
 			_ln.append(_l+1)
-		$StatusPanel/CodeStatus.text = "在以下行检测到错误，请移动到对应行查看详情: "+str(_ln)
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "在以下行检测到错误，请移动到对应行查看详情: "+str(_ln)
 	elif GlobalManager.is_running_from_editor():
-		$StatusPanel/CodeStatus.text = "错误检查在通过Godot编辑器运行时不可用"
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "错误检查在通过Godot编辑器运行时不可用"
 	else:
-		$StatusPanel/CodeStatus.text = "当前文件中未发现任何错误"
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "当前文件中未发现任何错误"
 		
 	var func_dic:Dictionary = get_code_edit().func_line_dic
 	func_list.clear()
@@ -169,3 +166,11 @@ func _on_file_list_item_selected(index:int):
 	var text:String = ""
 	load_script(path)
 	
+
+func _on_hide_dock_button_toggled(button_pressed: bool) -> void:
+	if button_pressed:
+		$HSplitContainer/VBoxContainer/StatusPanel/HideDockButton.text = ">"
+		$HSplitContainer/VSplitContainer.hide()
+	else:
+		$HSplitContainer/VBoxContainer/StatusPanel/HideDockButton.text = "<"
+		$HSplitContainer/VSplitContainer.show()
