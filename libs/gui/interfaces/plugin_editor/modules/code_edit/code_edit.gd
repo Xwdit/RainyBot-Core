@@ -120,6 +120,8 @@ var kw_keys:Array = []
 var api_keys:Array = []
 var class_keys:Array = []
 
+var func_line_dic:Dictionary = {}
+
 var error_lines:Dictionary = {}
 var last_text:String = ""
 
@@ -333,8 +335,6 @@ func _on_CodeEdit_request_code_completion()->void:
 			_add_completion_api_dic(_type)
 			_add_completion_class_dic(_type)
 	else:
-		parse_code_text()
-		
 		for _k in kw_keys:
 			add_code_completion_option(CodeEdit.KIND_MEMBER,_k,_k+" ",keyword_colors[_k])
 		for _a in api_keys:
@@ -423,6 +423,7 @@ func _on_CodeEdit_caret_changed()->void:
 func parse_code_text()->void:
 	var _num:int = get_line_count()
 	var _dic:Dictionary = {}
+	func_line_dic.clear()
 	for n in range(_num):
 		var _text:PackedStringArray = get_line(n).strip_edges().split("#")[0].split(" ",false)
 		if _text.size() > 0 and _text[0].begins_with("@"):
@@ -451,20 +452,22 @@ func parse_code_text()->void:
 						var _word:String = _text[1]
 						if _word.is_valid_identifier():
 							_dic[_word]=FUNCTION_COLOR
-						var _args:PackedStringArray = _text[2].replace(" ","").strip_edges().rstrip("):").lstrip("(").split(",")
-						for _a in _args:
-							_a = _a.split(":")[0].split("=")[0]
-							if _a.is_valid_identifier():
-								_dic[_a]=MEMBER_VAR_COLOR
+							func_line_dic[_word]=n
+							var _args:PackedStringArray = _text[2].replace(" ","").strip_edges().rstrip("):").lstrip("(").split(",")
+							for _a in _args:
+								_a = _a.split(":")[0].split("=")[0]
+								if _a.is_valid_identifier():
+									_dic[_a]=MEMBER_VAR_COLOR
 					elif _words.size()>1:
 						var _word:String = _words[0]
 						if _word.is_valid_identifier():
 							_dic[_word]=FUNCTION_COLOR
-						var _args:PackedStringArray = _words[1].replace(" ","").strip_edges().rstrip("):").split(",")
-						for _a in _args:
-							_a = _a.split(":")[0].split("=")[0]
-							if _a.is_valid_identifier():
-								_dic[_a]=MEMBER_VAR_COLOR
+							func_line_dic[_word]=n
+							var _args:PackedStringArray = _words[1].replace(" ","").strip_edges().rstrip("):").split(",")
+							for _a in _args:
+								_a = _a.split(":")[0].split("=")[0]
+								if _a.is_valid_identifier():
+									_dic[_a]=MEMBER_VAR_COLOR
 	for _w in _dic:
 		var _dw:String = _w
 		var _iw:String = _w
@@ -475,7 +478,7 @@ func parse_code_text()->void:
 			if _o["display_text"] == _dw:
 				return
 		add_code_completion_option(CodeEdit.KIND_MEMBER,_dw,_iw,_dic[_w])
-
+	
 
 func check_error()->void:
 	for _l in range(get_line_count()):
@@ -507,6 +510,7 @@ func check_error()->void:
 func _on_Timer_timeout()->void:
 	if last_text != text:
 		last_text = text
+		parse_code_text()
 		if !GlobalManager.is_running_from_editor():
 			check_error()
 		if (is_in_comment(get_caret_line(),get_caret_column())==-1) and (is_in_string(get_caret_line(),get_caret_column())==-1):

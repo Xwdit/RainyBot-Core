@@ -4,27 +4,61 @@ extends Control
 class_name PluginEditor
 
 
+@onready var func_list:ItemList = $HSplitContainer/VSplitContainer/FuncList/ItemList
+@onready var file_list:ItemList = $HSplitContainer/VSplitContainer/FileList/ItemList
+
+
 var loaded_path:String = ""
 var loaded_name:String = ""
-var unsaved:bool = false
+var unsaved_dic:Dictionary = {}
+
+
+func _ready():
+	PluginManager.connect("plugin_list_changed",update_file_list)
+	update_file_list()
 
 
 func load_script(path:String)->int:
-	var scr:GDScript = PluginManager.load_plugin_script(path)
-	if is_instance_valid(scr):
-		get_code_edit().text = scr.source_code
+	var is_valid:bool = false
+	if unsaved_dic.has(path):
+		get_code_edit().text = unsaved_dic[path]
+		is_valid=true
+	else:
+		var scr:GDScript = PluginManager.load_plugin_script(path)
+		if is_instance_valid(scr):
+			get_code_edit().text = scr.source_code
+			is_valid = true
+	if is_valid:
 		get_code_edit().clear_undo_history()
 		$EditorPanel/File/FileName.text = path.get_file()
 		loaded_path = path
 		loaded_name = path.get_file()
+		if unsaved_dic.has(path):
+			set_unsaved(true)
+		else:
+			set_unsaved(false)
 		return OK
 	else:
 		GuiManager.console_print_error("插件文件加载时出现错误，请检查文件权限是否正确")
 		return ERR_CANT_OPEN
 	
 
+func update_file_list():
+	var f_dic:Dictionary = PluginManager.file_load_status
+	file_list.clear()
+	for f in f_dic:
+		var f_name:String = f
+		var f_path:String = GlobalManager.plugin_path + f_name
+		var f_status:String = " (未保存)" if unsaved_dic.has(f_path) else ""
+		var idx:int = file_list.add_item(f_name+f_status)
+		file_list.set_item_metadata(idx,f_path)
+	for i in file_list.item_count:
+		if file_list.get_item_metadata(i) == loaded_path:
+			file_list.select(i)
+
+
 func get_code_edit()->CodeEdit:
-	return get_node("CodeEdit")
+	return $HSplitContainer/CodeEdit
 
 
 func save_script(reload:bool=false)->int:
@@ -57,11 +91,14 @@ func save_script(reload:bool=false)->int:
 
 
 func set_unsaved(enabled:bool=true)->void:
-	unsaved = enabled
-	if unsaved:
+	if enabled:
+		unsaved_dic[loaded_path]=get_code_edit().text
 		$EditorPanel/File/FileStatus.text = "(未保存)"
 	else:
+		if unsaved_dic.has(loaded_path):
+			unsaved_dic.erase(loaded_path)
 		$EditorPanel/File/FileStatus.text = ""
+	update_file_list()
 
 
 func _on_CodeEdit_text_changed()->void:
@@ -105,3 +142,25 @@ func _on_CodeEdit_update_finished()->void:
 		$StatusPanel/CodeStatus.text = "错误检查在通过Godot编辑器运行时不可用"
 	else:
 		$StatusPanel/CodeStatus.text = "当前文件中未发现任何错误"
+		
+	var func_dic:Dictionary = get_code_edit().func_line_dic
+	func_list.clear()
+	if !func_dic.is_empty():
+		for f in func_dic:
+			var _line:int = func_dic[f]
+			var idx:int = func_list.add_item(f)
+			func_list.set_item_metadata(idx,_line)
+			func_list.set_item_tooltip(idx,"第"+str(_line+1)+"行: "+f)
+
+
+func _on_func_list_item_selected(index:int):
+	var line:int = func_list.get_item_metadata(index)
+	get_code_edit().set_caret_line(line)
+	get_code_edit().center_viewport_to_caret()
+
+
+func _on_file_list_item_selected(index:int):
+	var path:String = file_list.get_item_metadata(index)
+	var text:String = ""
+	load_script(path)
+	

@@ -20,9 +20,63 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[node name="CodeEdit" parent="." instance=ExtResource("2_mo1oq")]
-offset_top = 32.0
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 31.0
 offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 200
+
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
+offset_right = 200.0
+offset_bottom = 587.0
+split_offset = 200
+
+[node name="FileList" type="VBoxContainer" parent="HSplitContainer/VSplitContainer"]
+offset_right = 200.0
+offset_bottom = 200.0
+
+[node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/FileList"]
+offset_right = 200.0
+offset_bottom = 35.0
+text = "插件列表"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/VSplitContainer/FileList"]
+offset_top = 39.0
+offset_right = 200.0
+offset_bottom = 200.0
+size_flags_vertical = 3
+
+[node name="FuncList" type="VBoxContainer" parent="HSplitContainer/VSplitContainer"]
+offset_top = 208.0
+offset_right = 200.0
+offset_bottom = 587.0
+
+[node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/FuncList"]
+offset_right = 200.0
+offset_bottom = 35.0
+text = "函数列表"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/VSplitContainer/FuncList"]
+offset_top = 39.0
+offset_right = 200.0
+offset_bottom = 379.0
+size_flags_vertical = 3
+
+[node name="CodeEdit" parent="HSplitContainer" instance=ExtResource("2_mo1oq")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 208.0
+offset_right = 1152.0
+offset_bottom = 587.0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -128,9 +182,11 @@ text = "当前文件中未发现任何错误"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="caret_changed" from="CodeEdit" to="." method="_on_CodeEdit_caret_changed"]
-[connection signal="text_changed" from="CodeEdit" to="." method="_on_CodeEdit_text_changed"]
-[connection signal="update_finished" from="CodeEdit" to="." method="_on_CodeEdit_update_finished"]
+[connection signal="item_selected" from="HSplitContainer/VSplitContainer/FileList/ItemList" to="." method="_on_file_list_item_selected"]
+[connection signal="item_selected" from="HSplitContainer/VSplitContainer/FuncList/ItemList" to="." method="_on_func_list_item_selected"]
+[connection signal="caret_changed" from="HSplitContainer/CodeEdit" to="." method="_on_CodeEdit_caret_changed"]
+[connection signal="text_changed" from="HSplitContainer/CodeEdit" to="." method="_on_CodeEdit_text_changed"]
+[connection signal="update_finished" from="HSplitContainer/CodeEdit" to="." method="_on_CodeEdit_update_finished"]
 [connection signal="button_down" from="EditorPanel/Menu/SaveButton" to="." method="_on_SaveButton_button_down"]
 [connection signal="button_down" from="EditorPanel/Menu/SaveReloadButton" to="." method="_on_SaveReloadButton_button_down"]
 [connection signal="button_down" from="EditorPanel/Menu/HelpButton" to="." method="_on_HelpButton_button_down"]

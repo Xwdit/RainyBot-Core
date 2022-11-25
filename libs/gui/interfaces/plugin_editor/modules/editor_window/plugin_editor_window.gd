@@ -26,7 +26,7 @@ func load_script(path:String)->int:
 	
 
 func exit()->void:
-	if get_plugin_editor().unsaved:
+	if !get_plugin_editor().unsaved_dic.is_empty():
 		$ExitConfirmWindow.popup_centered(Vector2(430,130))
 	else:
 		GuiManager.console_print_success("插件编辑器已被成功关闭! | 文件:"+get_plugin_editor().loaded_name)
