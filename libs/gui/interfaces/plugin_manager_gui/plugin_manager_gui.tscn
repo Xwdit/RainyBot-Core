@@ -33,46 +33,46 @@ offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 210
+split_offset = 230
 metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 
 [node name="PluginListContainer" type="VBoxContainer" parent="HSplitContainer"]
 layout_mode = 2
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 636.0
 theme_override_constants/separation = 8
 
 [node name="MarketButton" type="Button" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 32.0
 text = "访问插件市场"
 
 [node name="HSeparator" type="HSeparator" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
 offset_top = 40.0
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 44.0
 
 [node name="RefreshButton" type="Button" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
 offset_top = 52.0
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 84.0
 text = "刷新插件列表"
 
 [node name="FolderButton" type="Button" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
 offset_top = 92.0
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 124.0
 text = "打开插件文件夹"
 
 [node name="PluginList" type="ItemList" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
 offset_top = 132.0
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 516.0
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -82,12 +82,12 @@ metadata/_edit_layout_mode = 1
 [node name="CreatePlugin" type="HBoxContainer" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
 offset_top = 524.0
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 556.0
 
 [node name="CreatePluginFile" type="LineEdit" parent="HSplitContainer/PluginListContainer/CreatePlugin"]
 layout_mode = 2
-offset_right = 130.0
+offset_right = 150.0
 offset_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -95,8 +95,8 @@ placeholder_text = "插件文件名"
 
 [node name="CreatePluginButton" type="Button" parent="HSplitContainer/PluginListContainer/CreatePlugin"]
 layout_mode = 2
-offset_left = 134.0
-offset_right = 210.0
+offset_left = 154.0
+offset_right = 230.0
 offset_bottom = 32.0
 disabled = true
 text = "新建插件"
@@ -104,21 +104,21 @@ text = "新建插件"
 [node name="ReloadAllButton" type="Button" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
 offset_top = 564.0
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 596.0
 text = "重载所有插件"
 
 [node name="UnloadAllButton" type="Button" parent="HSplitContainer/PluginListContainer"]
 layout_mode = 2
 offset_top = 604.0
-offset_right = 210.0
+offset_right = 230.0
 offset_bottom = 636.0
 text = "卸载所有插件
 "
 
 [node name="TabContainer" type="TabContainer" parent="HSplitContainer"]
 layout_mode = 2
-offset_left = 218.0
+offset_left = 238.0
 offset_right = 1132.0
 offset_bottom = 636.0
 
@@ -137,7 +137,7 @@ theme_override_constants/separation = 10
 
 [node name="PluginName" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
-offset_right = 906.0
+offset_right = 886.0
 offset_bottom = 49.0
 theme_override_font_sizes/font_size = 30
 text = "示例插件"
@@ -146,7 +146,7 @@ vertical_alignment = 1
 [node name="PluginID" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
 offset_top = 59.0
-offset_right = 906.0
+offset_right = 886.0
 offset_bottom = 98.0
 theme_override_font_sizes/font_size = 20
 text = "插件ID: example_plugin"
@@ -154,7 +154,7 @@ text = "插件ID: example_plugin"
 [node name="PluginAuthor" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
 offset_top = 108.0
-offset_right = 906.0
+offset_right = 886.0
 offset_bottom = 147.0
 theme_override_font_sizes/font_size = 20
 text = "作者: Xwdit"
@@ -162,7 +162,7 @@ text = "作者: Xwdit"
 [node name="PluginVersion" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
 offset_top = 157.0
-offset_right = 906.0
+offset_right = 886.0
 offset_bottom = 196.0
 theme_override_font_sizes/font_size = 20
 text = "版本: 1.0"
@@ -170,7 +170,7 @@ text = "版本: 1.0"
 [node name="PluginDependency" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
 offset_top = 206.0
-offset_right = 906.0
+offset_right = 886.0
 offset_bottom = 245.0
 theme_override_font_sizes/font_size = 20
 text = "依赖的插件: 无"
@@ -178,7 +178,7 @@ text = "依赖的插件: 无"
 [node name="PluginDescription" type="Label" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
 offset_top = 255.0
-offset_right = 906.0
+offset_right = 886.0
 offset_bottom = 294.0
 theme_override_font_sizes/font_size = 20
 text = "描述: 这是一个示例插件，实际上并没有什么作用....."
@@ -189,7 +189,7 @@ anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_top = 304.0
-offset_right = 906.0
+offset_right = 886.0
 offset_bottom = 552.0
 grow_horizontal = 1
 grow_vertical = 1
@@ -198,37 +198,37 @@ indent_size = 4
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer/PluginInfoPanel"]
 layout_mode = 2
 offset_top = 562.0
-offset_right = 906.0
+offset_right = 886.0
 offset_bottom = 594.0
 alignment = 1
 
 [node name="EditButton" type="Button" parent="HSplitContainer/TabContainer/PluginInfoPanel/HBoxContainer"]
 layout_mode = 2
-offset_right = 223.0
+offset_right = 218.0
 offset_bottom = 32.0
 size_flags_horizontal = 3
 text = "编辑"
 
 [node name="ReloadButton" type="Button" parent="HSplitContainer/TabContainer/PluginInfoPanel/HBoxContainer"]
 layout_mode = 2
-offset_left = 227.0
-offset_right = 451.0
+offset_left = 222.0
+offset_right = 441.0
 offset_bottom = 32.0
 size_flags_horizontal = 3
 text = "重新加载"
 
 [node name="UnloadButton" type="Button" parent="HSplitContainer/TabContainer/PluginInfoPanel/HBoxContainer"]
 layout_mode = 2
-offset_left = 455.0
-offset_right = 678.0
+offset_left = 445.0
+offset_right = 663.0
 offset_bottom = 32.0
 size_flags_horizontal = 3
 text = "卸载"
 
 [node name="DeleteButton" type="Button" parent="HSplitContainer/TabContainer/PluginInfoPanel/HBoxContainer"]
 layout_mode = 2
-offset_left = 682.0
-offset_right = 906.0
+offset_left = 667.0
+offset_right = 886.0
 offset_bottom = 32.0
 size_flags_horizontal = 3
 text = "删除文件"
