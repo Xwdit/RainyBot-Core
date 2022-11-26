@@ -35,3 +35,8 @@ func exit()->void:
 func _on_ExitConfirmWindow_confirm_pressed()->void:
 	GuiManager.console_print_success("插件编辑器已被成功关闭! | 文件:"+plugin_editor_node.loaded_name)
 	queue_free()
+
+
+func _on_plugin_editor_file_changed(file_name:String,is_unsaved:bool) -> void:
+	var _status:String = " (未保存)" if is_unsaved else ""
+	title = "RainyBot插件编辑器 - "+file_name+_status

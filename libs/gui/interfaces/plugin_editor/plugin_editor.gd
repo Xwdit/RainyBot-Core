@@ -4,6 +4,9 @@ extends Control
 class_name PluginEditor
 
 
+signal file_changed(file_name:String,is_unsaved:bool)
+
+
 @onready var func_list_node:ItemList = $HSplitContainer/VSplitContainer/FuncList/ItemList
 @onready var file_list_node:ItemList = $HSplitContainer/VSplitContainer/FileList/ItemList
 @onready var code_edit_node:CodeEdit = $HSplitContainer/VBoxContainer/CodeEdit
@@ -12,6 +15,7 @@ class_name PluginEditor
 var loaded_path:String = ""
 var loaded_name:String = ""
 var unsaved_dic:Dictionary = {}
+var file_caret_dic:Dictionary = {}
 
 
 func _ready():
@@ -38,6 +42,10 @@ func load_script(path:String)->int:
 		else:
 			code_edit_node.tag_saved_version()
 			set_unsaved(false)
+		if file_caret_dic.has(path):
+			code_edit_node.set_caret_line(file_caret_dic[path].y)
+			code_edit_node.set_caret_column(file_caret_dic[path].x)
+			code_edit_node.center_viewport_to_caret()
 		return OK
 	else:
 		GuiManager.console_print_error("插件文件加载时出现错误，请检查文件权限是否正确")
@@ -122,6 +130,7 @@ func set_unsaved(enabled:bool=true)->void:
 		if unsaved_dic.has(loaded_path):
 			unsaved_dic.erase(loaded_path)
 	update_file_list()
+	file_changed.emit(loaded_name,enabled)
 
 
 func _on_CodeEdit_text_changed()->void:
@@ -135,6 +144,7 @@ func _on_CodeEdit_caret_changed()->void:
 	$EditorPanel/Edit/EditStatus.text = str(code_edit_node.get_caret_line()+1)+" : "+str(code_edit_node.get_caret_column()+1)
 	$HSplitContainer/VBoxContainer/StatusPanel/LineEdit.max_value = code_edit_node.get_line_count()
 	$HSplitContainer/VBoxContainer/StatusPanel/LineEdit.value = code_edit_node.get_caret_line()+1
+	file_caret_dic[loaded_path] = Vector2i(code_edit_node.get_caret_column(),code_edit_node.get_caret_line())
 
 
 func _on_SaveButton_button_down()->void:
