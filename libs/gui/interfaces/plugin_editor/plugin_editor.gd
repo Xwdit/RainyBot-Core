@@ -4,8 +4,9 @@ extends Control
 class_name PluginEditor
 
 
-@onready var func_list:ItemList = $HSplitContainer/VSplitContainer/FuncList/ItemList
-@onready var file_list:ItemList = $HSplitContainer/VSplitContainer/FileList/ItemList
+@onready var func_list_node:ItemList = $HSplitContainer/VSplitContainer/FuncList/ItemList
+@onready var file_list_node:ItemList = $HSplitContainer/VSplitContainer/FileList/ItemList
+@onready var code_edit_node:CodeEdit = $HSplitContainer/VBoxContainer/CodeEdit
 
 
 var loaded_path:String = ""
@@ -21,21 +22,21 @@ func _ready():
 func load_script(path:String)->int:
 	var is_valid:bool = false
 	if unsaved_dic.has(path):
-		get_code_edit().text = unsaved_dic[path]
+		code_edit_node.text = unsaved_dic[path]
 		is_valid=true
 	else:
 		var scr:GDScript = PluginManager.load_plugin_script(path)
 		if is_instance_valid(scr):
-			get_code_edit().text = scr.source_code
+			code_edit_node.text = scr.source_code
 			is_valid = true
 	if is_valid:
-		get_code_edit().clear_undo_history()
+		code_edit_node.clear_undo_history()
 		loaded_path = path
 		loaded_name = path.get_file()
 		if unsaved_dic.has(path):
 			set_unsaved(true)
 		else:
-			get_code_edit().tag_saved_version()
+			code_edit_node.tag_saved_version()
 			set_unsaved(false)
 		return OK
 	else:
@@ -45,28 +46,51 @@ func load_script(path:String)->int:
 
 func update_file_list():
 	var f_dic:Dictionary = PluginManager.file_load_status
-	file_list.clear()
+	var filter:String = $HSplitContainer/VSplitContainer/FileList/FileSearch.text
+	file_list_node.clear()
 	for f in f_dic:
+		if !filter.is_empty() and f.findn(filter) == -1:
+			continue
 		var f_name:String = f
 		var f_path:String = GlobalManager.plugin_path + f_name
 		var f_status:String = " (未保存)" if unsaved_dic.has(f_path) else ""
-		var idx:int = file_list.add_item(f_name+f_status)
-		file_list.set_item_metadata(idx,f_path)
-	for i in file_list.item_count:
-		if file_list.get_item_metadata(i) == loaded_path:
-			file_list.select(i)
+		var idx:int = file_list_node.add_item(f_name+f_status)
+		file_list_node.set_item_metadata(idx,f_path)
+	for i in file_list_node.item_count:
+		var _path:String = file_list_node.get_item_metadata(i)
+		if _path == loaded_path:
+			file_list_node.select(i)
+			if unsaved_dic.has(_path):
+				$HSplitContainer/VSplitContainer/FileList/EditButton.hide()
+			else:
+				$HSplitContainer/VSplitContainer/FileList/EditButton.show()
+	file_list_node.queue_redraw()
 
 
-func get_code_edit()->CodeEdit:
-	return $HSplitContainer/VBoxContainer/CodeEdit
+func update_func_list():
+	var func_dic:Dictionary = code_edit_node.func_line_dic
+	var filter:String = $HSplitContainer/VSplitContainer/FuncList/FuncSearch.text
+	var case_order:bool = $HSplitContainer/VSplitContainer/FuncList/HBoxContainer/CaseSortButton.button_pressed
+	func_list_node.clear()
+	if !func_dic.is_empty():
+		for f in func_dic:
+			if !filter.is_empty() and f.findn(filter) == -1:
+				continue
+			var _line:int = func_dic[f]
+			var idx:int = func_list_node.add_item(f)
+			func_list_node.set_item_metadata(idx,_line)
+			func_list_node.set_item_tooltip(idx,"第"+str(_line+1)+"行: "+f)
+	if case_order:
+		func_list_node.sort_items_by_text()
+	func_list_node.queue_redraw()
 
 
 func save_script(reload:bool=false)->int:
 	var scr:GDScript = GDScript.new()
-	scr.source_code = get_code_edit().text
+	scr.source_code = code_edit_node.text
 	var err_code:int = ResourceSaver.save(scr,loaded_path)
 	if !err_code:
-		get_code_edit().tag_saved_version()
+		code_edit_node.tag_saved_version()
 		set_unsaved(false)
 		GuiManager.console_print_success("插件保存成功！")
 		if reload:
@@ -93,7 +117,7 @@ func save_script(reload:bool=false)->int:
 
 func set_unsaved(enabled:bool=true)->void:
 	if enabled:
-		unsaved_dic[loaded_path]=get_code_edit().text
+		unsaved_dic[loaded_path]=code_edit_node.text
 	else:
 		if unsaved_dic.has(loaded_path):
 			unsaved_dic.erase(loaded_path)
@@ -101,14 +125,16 @@ func set_unsaved(enabled:bool=true)->void:
 
 
 func _on_CodeEdit_text_changed()->void:
-	if get_code_edit().get_version() != get_code_edit().get_saved_version():
+	if code_edit_node.get_version() != code_edit_node.get_saved_version():
 		set_unsaved()
 	else:
 		set_unsaved(false)
 
 
 func _on_CodeEdit_caret_changed()->void:
-	$EditorPanel/Edit/EditStatus.text = str(get_code_edit().get_caret_line()+1)+" : "+str(get_code_edit().get_caret_column()+1)
+	$EditorPanel/Edit/EditStatus.text = str(code_edit_node.get_caret_line()+1)+" : "+str(code_edit_node.get_caret_column()+1)
+	$HSplitContainer/VBoxContainer/StatusPanel/LineEdit.max_value = code_edit_node.get_line_count()
+	$HSplitContainer/VBoxContainer/StatusPanel/LineEdit.value = code_edit_node.get_caret_line()+1
 
 
 func _on_SaveButton_button_down()->void:
@@ -131,8 +157,8 @@ func _input(event:InputEvent)->void:
 
 
 func _on_CodeEdit_update_finished()->void:
-	var _err_dic:Dictionary = get_code_edit().error_lines
-	var _l_num:int = get_code_edit().get_caret_line()
+	var _err_dic:Dictionary = code_edit_node.error_lines
+	var _l_num:int = code_edit_node.get_caret_line()
 	if _err_dic.has(_l_num):
 		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "错误: "+_err_dic[_l_num]
 	elif !_err_dic.is_empty():
@@ -144,33 +170,63 @@ func _on_CodeEdit_update_finished()->void:
 		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "错误检查在通过Godot编辑器运行时不可用"
 	else:
 		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "当前文件中未发现任何错误"
-		
-	var func_dic:Dictionary = get_code_edit().func_line_dic
-	func_list.clear()
-	if !func_dic.is_empty():
-		for f in func_dic:
-			var _line:int = func_dic[f]
-			var idx:int = func_list.add_item(f)
-			func_list.set_item_metadata(idx,_line)
-			func_list.set_item_tooltip(idx,"第"+str(_line+1)+"行: "+f)
+	update_func_list()
 
 
 func _on_func_list_item_selected(index:int):
-	var line:int = func_list.get_item_metadata(index)
-	get_code_edit().set_caret_line(line)
-	get_code_edit().center_viewport_to_caret()
+	var line:int = func_list_node.get_item_metadata(index)
+	code_edit_node.set_caret_line(line)
+	code_edit_node.center_viewport_to_caret()
 
 
 func _on_file_list_item_selected(index:int):
-	var path:String = file_list.get_item_metadata(index)
+	var path:String = file_list_node.get_item_metadata(index)
 	var text:String = ""
 	load_script(path)
+	if unsaved_dic.has(path):
+		$HSplitContainer/VSplitContainer/FileList/EditButton.hide()
+	else:
+		$HSplitContainer/VSplitContainer/FileList/EditButton.show()
 	
 
 func _on_hide_dock_button_toggled(button_pressed: bool) -> void:
 	if button_pressed:
 		$HSplitContainer/VBoxContainer/StatusPanel/HideDockButton.text = ">"
+		$HSplitContainer/VBoxContainer/StatusPanel/HideDockButton.tooltip_text = "显示左侧栏"
 		$HSplitContainer/VSplitContainer.hide()
 	else:
 		$HSplitContainer/VBoxContainer/StatusPanel/HideDockButton.text = "<"
+		$HSplitContainer/VBoxContainer/StatusPanel/HideDockButton.tooltip_text = "隐藏左侧栏"
 		$HSplitContainer/VSplitContainer.show()
+
+
+func _on_file_search_text_changed(new_text: String) -> void:
+	update_file_list()
+
+
+func _on_func_search_text_changed(new_text: String) -> void:
+	update_func_list()
+
+
+func _on_edit_button_button_down() -> void:
+	if file_list_node.is_anything_selected():
+		for i in file_list_node.get_selected_items():
+			var path:String = file_list_node.get_item_metadata(i)
+			var err:int = await GuiManager.open_plugin_editor(path)
+			if err:
+				GuiManager.popup_notification("尝试编辑插件文件%s时出现错误，请查看控制台来了解更多信息"% path.get_file())
+
+
+func _on_case_sort_button_toggled(button_pressed: bool) -> void:
+	update_func_list()
+
+
+func _on_search_input_text_changed(new_text: String) -> void:
+	code_edit_node.set_search_text(new_text)
+	code_edit_node.queue_redraw()
+
+
+func _on_line_edit_value_changed(value: float) -> void:
+	if code_edit_node.get_caret_line() != value-1:
+		code_edit_node.set_caret_line(value-1)
+		code_edit_node.center_viewport_to_caret()

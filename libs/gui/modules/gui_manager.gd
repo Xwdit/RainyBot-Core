@@ -16,10 +16,11 @@ func open_plugin_editor(path:String)->int:
 		return ERR_CANT_OPEN
 	for child in get_children():
 		if str(child.name).begins_with("PluginEditorWindow"):
-			var l_name:String = child.get_plugin_editor().loaded_name
-			if path.get_file().to_lower() == l_name.to_lower():
-				console_print_error("此文件当前正在编辑中，请勿重复打开相同的文件! | 文件:"+path.get_file())
-				return ERR_ALREADY_IN_USE
+			var unsaved_dic:Dictionary = child.plugin_editor_node.unsaved_dic
+			for f in unsaved_dic:
+				if path.get_file().to_lower() == f.get_file().to_lower():
+					console_print_error("此文件当前正在编辑中，请勿重复打开相同的文件! | 文件:"+path.get_file())
+					return ERR_ALREADY_IN_USE
 	console_print_warning("正在启动插件编辑器，请稍候..... | 文件:"+path.get_file())
 	await get_tree().physics_frame
 	var _ins:Window = _editor.instantiate()
