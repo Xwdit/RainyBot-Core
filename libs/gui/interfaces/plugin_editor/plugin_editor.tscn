@@ -18,7 +18,6 @@ grow_vertical = 2
 script = ExtResource("1_afc2x")
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,7 +26,6 @@ grow_vertical = 2
 color = Color(0.113725, 0.133333, 0.160784, 1)
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -40,19 +38,16 @@ grow_vertical = 2
 split_offset = 180
 
 [node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
-layout_mode = 2
 offset_right = 180.0
 offset_bottom = 607.0
 split_offset = 250
 
 [node name="FileList" type="VBoxContainer" parent="HSplitContainer/VSplitContainer"]
 custom_minimum_size = Vector2(180, 150)
-layout_mode = 2
 offset_right = 180.0
 offset_bottom = 250.0
 
 [node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/FileList"]
-layout_mode = 2
 offset_right = 180.0
 offset_bottom = 35.0
 text = "插件列表"
@@ -60,21 +55,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FileSearch" type="LineEdit" parent="HSplitContainer/VSplitContainer/FileList"]
-layout_mode = 2
 offset_top = 39.0
 offset_right = 180.0
 offset_bottom = 70.0
 placeholder_text = "搜索插件列表"
 
 [node name="ItemList" type="ItemList" parent="HSplitContainer/VSplitContainer/FileList"]
-layout_mode = 2
 offset_top = 74.0
 offset_right = 180.0
 offset_bottom = 214.0
 size_flags_vertical = 3
 
 [node name="EditButton" type="Button" parent="HSplitContainer/VSplitContainer/FileList"]
-layout_mode = 2
 offset_top = 218.0
 offset_right = 180.0
 offset_bottom = 250.0
@@ -82,18 +74,15 @@ text = "在新窗口中打开"
 
 [node name="FuncList" type="VBoxContainer" parent="HSplitContainer/VSplitContainer"]
 custom_minimum_size = Vector2(180, 150)
-layout_mode = 2
 offset_top = 258.0
 offset_right = 180.0
 offset_bottom = 607.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/VSplitContainer/FuncList"]
-layout_mode = 2
 offset_right = 180.0
 offset_bottom = 35.0
 
 [node name="Label" type="Label" parent="HSplitContainer/VSplitContainer/FuncList/HBoxContainer"]
-layout_mode = 2
 offset_right = 146.0
 offset_bottom = 35.0
 size_flags_horizontal = 3
@@ -102,7 +91,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CaseSortButton" type="Button" parent="HSplitContainer/VSplitContainer/FuncList/HBoxContainer"]
-layout_mode = 2
 offset_left = 150.0
 offset_right = 180.0
 offset_bottom = 35.0
@@ -112,27 +100,23 @@ text = "Aa"
 flat = true
 
 [node name="FuncSearch" type="LineEdit" parent="HSplitContainer/VSplitContainer/FuncList"]
-layout_mode = 2
 offset_top = 39.0
 offset_right = 180.0
 offset_bottom = 70.0
 placeholder_text = "搜索函数列表"
 
 [node name="ItemList" type="ItemList" parent="HSplitContainer/VSplitContainer/FuncList"]
-layout_mode = 2
 offset_top = 74.0
 offset_right = 180.0
 offset_bottom = 349.0
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
-layout_mode = 2
 offset_left = 188.0
 offset_right = 1142.0
 offset_bottom = 607.0
 
 [node name="CodeEdit" parent="HSplitContainer/VBoxContainer" instance=ExtResource("2_mo1oq")]
-layout_mode = 2
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -150,7 +134,7 @@ focus_previous = NodePath(".")
 
 [node name="StatusPanel" type="Control" parent="HSplitContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
+layout_mode = 3
 anchors_preset = 0
 offset_top = 582.0
 offset_right = 954.0
@@ -159,7 +143,6 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="CodeStatus" type="Label" parent="HSplitContainer/VBoxContainer/StatusPanel"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -172,7 +155,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HideDockButton" type="Button" parent="HSplitContainer/VBoxContainer/StatusPanel"]
-layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 21.0
@@ -184,7 +166,6 @@ flat = true
 expand_icon = true
 
 [node name="LineEdit" type="SpinBox" parent="HSplitContainer/VBoxContainer/StatusPanel"]
-layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -204,54 +185,46 @@ suffix = "行"
 
 [node name="SearchPanel" type="HBoxContainer" parent="HSplitContainer/VBoxContainer"]
 visible = false
-layout_mode = 2
 offset_top = 575.0
 offset_right = 954.0
 offset_bottom = 607.0
 
 [node name="SearchInput" type="LineEdit" parent="HSplitContainer/VBoxContainer/SearchPanel"]
-layout_mode = 2
 offset_right = 585.0
 offset_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="SearchStatus" type="Label" parent="HSplitContainer/VBoxContainer/SearchPanel"]
 visible = false
-layout_mode = 2
 offset_left = 576.0
 offset_right = 585.0
 offset_bottom = 35.0
 
 [node name="SearchForward" type="Button" parent="HSplitContainer/VBoxContainer/SearchPanel"]
-layout_mode = 2
 offset_left = 589.0
 offset_right = 649.0
 offset_bottom = 32.0
 text = "下一个"
 
 [node name="SearchBackward" type="Button" parent="HSplitContainer/VBoxContainer/SearchPanel"]
-layout_mode = 2
 offset_left = 653.0
 offset_right = 713.0
 offset_bottom = 32.0
 text = "上一个"
 
 [node name="CaseCheckBox" type="CheckBox" parent="HSplitContainer/VBoxContainer/SearchPanel"]
-layout_mode = 2
 offset_left = 717.0
 offset_right = 829.0
 offset_bottom = 32.0
 text = "区分大小写"
 
 [node name="FullMatchCheckBox" type="CheckBox" parent="HSplitContainer/VBoxContainer/SearchPanel"]
-layout_mode = 2
 offset_left = 833.0
 offset_right = 929.0
 offset_bottom = 32.0
 text = "全字匹配"
 
 [node name="CloseButton" type="Button" parent="HSplitContainer/VBoxContainer/SearchPanel"]
-layout_mode = 2
 offset_left = 933.0
 offset_right = 954.0
 offset_bottom = 32.0
@@ -259,7 +232,6 @@ text = "X"
 flat = true
 
 [node name="EditorPanel" type="Panel" parent="."]
-layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 33.0
@@ -268,20 +240,17 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0ldw3")
 
 [node name="Menu" type="HBoxContainer" parent="EditorPanel"]
-layout_mode = 0
 offset_left = 4.0
 offset_right = 343.0
 offset_bottom = 32.0
 
 [node name="SaveButton" type="Button" parent="EditorPanel/Menu"]
-layout_mode = 2
 offset_right = 76.0
 offset_bottom = 32.0
 text = "保存文件"
 flat = true
 
 [node name="SaveReloadButton" type="Button" parent="EditorPanel/Menu"]
-layout_mode = 2
 offset_left = 80.0
 offset_right = 172.0
 offset_bottom = 32.0
@@ -289,7 +258,6 @@ text = "保存并重载"
 flat = true
 
 [node name="HelpButton" type="Button" parent="EditorPanel/Menu"]
-layout_mode = 2
 offset_left = 176.0
 offset_right = 279.0
 offset_bottom = 32.0
@@ -297,7 +265,6 @@ text = "打开API文档"
 flat = true
 
 [node name="Edit" type="HBoxContainer" parent="EditorPanel"]
-layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
@@ -310,7 +277,6 @@ mouse_filter = 2
 alignment = 2
 
 [node name="EditStatus" type="Label" parent="EditorPanel/Edit"]
-layout_mode = 2
 offset_left = 150.0
 offset_right = 202.0
 offset_bottom = 35.0

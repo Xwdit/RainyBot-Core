@@ -53,10 +53,12 @@ func load_script(path:String)->int:
 	
 
 func update_file_list():
-	var f_dic:Dictionary = PluginManager.file_load_status
+	var files:Array = PluginManager.file_load_status.keys()
 	var filter:String = $HSplitContainer/VSplitContainer/FileList/FileSearch.text
+	for id in PluginManager.plugin_files_dic:
+		files.append(PluginManager.plugin_files_dic[id].file)
 	file_list_node.clear()
-	for f in f_dic:
+	for f in files:
 		if !filter.is_empty() and f.findn(filter) == -1:
 			continue
 		var f_name:String = f
