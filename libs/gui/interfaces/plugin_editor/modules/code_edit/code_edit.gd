@@ -533,7 +533,7 @@ func _gui_input(event:InputEvent)->void:
 
 
 func _on_code_edit_symbol_validate(symbol:String)->void:
-	if class_dic.has(symbol) or api_dic.has(symbol):
+	if class_dic.has(symbol) or api_dic.has(symbol) or func_line_dic.has(symbol):
 		set_symbol_lookup_word_as_valid(true)
 
 
@@ -542,3 +542,7 @@ func _on_code_edit_symbol_lookup(symbol:String, line:int, column:int)->void:
 		OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html" % symbol.to_lower())
 	elif api_dic.has(symbol):
 		OS.shell_open("https://docs.rainybot.dev/api/%s"% symbol.to_lower())
+	elif func_line_dic.has(symbol):
+		var new_line:int = func_line_dic[symbol]
+		set_caret_line(new_line)
+		center_viewport_to_caret()
