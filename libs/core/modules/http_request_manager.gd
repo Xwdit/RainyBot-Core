@@ -114,6 +114,10 @@ class HttpRequestInstance:
 	var result:HttpRequestResult = HttpRequestResult.new()
 
 	func _ready()->void:
+		var proxy:PackedStringArray = ConfigManager.get_http_request_proxy().split(":")
+		if proxy.size() == 2:
+			set_http_proxy(proxy[0],int(proxy[1]))
+			set_https_proxy(proxy[0],int(proxy[1]))
 		use_threads = true
 		connect("request_completed",_http_request_completed)
 
