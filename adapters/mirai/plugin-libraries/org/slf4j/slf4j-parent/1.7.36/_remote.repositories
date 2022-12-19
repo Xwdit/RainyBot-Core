@@ -1,3 +1,3 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Wed Nov 02 20:25:40 CET 2022
-slf4j-parent-1.7.36.pom>=
+#Fri Dec 09 17:46:22 CET 2022
+slf4j-parent-1.7.36.pom>https\://maven.aliyun.com/repository/central=

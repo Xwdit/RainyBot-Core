@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.typesafe</groupId>
+    <artifactId>config</artifactId>
+    <packaging>bundle</packaging>
+    <description>configuration library for JVM languages using HOCON files</description>
+    <url>https://github.com/lightbend/config</url>
+    <version>1.4.2</version>
+    <licenses>
+        <license>
+            <name>Apache-2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <name>config</name>
+    <organization>
+        <name>com.typesafe</name>
+        <url>https://github.com/lightbend/config</url>
+    </organization>
+    <scm>
+        <url>https://github.com/lightbend/config</url>
+        <connection>scm:git@github.com:lightbend/config.git</connection>
+    </scm>
+    <developers>
+        <developer>
+            <id>havocp</id>
+            <name>Havoc Pennington</name>
+            <email>@havocp</email>
+            <url>http://ometer.com/</url>
+        </developer>
+    </developers>
+    <dependencies>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config-test-lib_2.12</artifactId>
+            <version>1.4.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>org.jacoco.agent</artifactId>
+            <version>0.7.9</version>
+            <scope>test</scope>
+            <classifier>runtime</classifier>
+        </dependency>
+        <dependency>
+            <groupId>net.liftweb</groupId>
+            <artifactId>lift-json_2.12</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.novocode</groupId>
+            <artifactId>junit-interface</artifactId>
+            <version>0.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

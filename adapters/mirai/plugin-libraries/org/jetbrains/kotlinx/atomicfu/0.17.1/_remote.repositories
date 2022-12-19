@@ -1,4 +1,4 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Wed Nov 02 20:26:23 CET 2022
-atomicfu-0.17.1.jar>=
-atomicfu-0.17.1.pom>=
+#Fri Dec 09 17:46:53 CET 2022
+atomicfu-0.17.1.jar>https\://maven.aliyun.com/repository/central=
+atomicfu-0.17.1.pom>https\://maven.aliyun.com/repository/central=
