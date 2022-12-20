@@ -20,6 +20,10 @@ signal message_received(message: Variant)
 
 
 func connect_to_url(url) -> int:
+	close()
+	clear()
+	socket.inbound_buffer_size = 10485760
+	socket.outbound_buffer_size = 10485760
 	socket.supported_protocols = supported_protocols
 	socket.handshake_headers = handshake_headers
 	var err = socket.connect_to_url(url, tls_verify, tls_trusted_certificate)
