@@ -114,6 +114,8 @@ var adapter_api_path:String = "res://libs/adapters/mirai/api/"
 var class_doc_path:String = "res://libs/gui/resources/class_docs/"
 
 
+var plugin_editor:PluginEditor = null
+
 var api_dic:Dictionary = {}
 var class_dic:Dictionary = {}
 var kw_keys:Array = []

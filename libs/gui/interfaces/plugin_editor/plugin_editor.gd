@@ -21,6 +21,7 @@ var file_caret_dic:Dictionary = {}
 func _ready():
 	PluginManager.connect("plugin_list_changed",update_file_list)
 	update_file_list()
+	code_edit_node.plugin_editor = self
 
 
 func load_script(path:String)->int:
