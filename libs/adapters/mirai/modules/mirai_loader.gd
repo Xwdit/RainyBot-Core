@@ -14,7 +14,7 @@ var mirai_http_config:String = """adapters:
   - ws
 debug: false
 enableVerify: {mirai_verify_key_enabled}
-verifyKey: {mirai_verify_key}
+verifyKey: '{mirai_verify_key}'
 singleMode: false
 cacheSize: 4096
 persistenceFactory: 'built-in'
