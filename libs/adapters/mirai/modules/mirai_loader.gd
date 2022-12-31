@@ -10,19 +10,19 @@ var mirai_login_path:String = mirai_path + "config/Console/"
 var mirai_http_file:String = mirai_http_path + "setting.yml"
 var mirai_login_file:String = mirai_login_path + "AutoLogin.yml"
 
-var mirai_http_config:String = """
-adapters: 
+var mirai_http_config:String = """adapters: 
   - ws
 debug: false
 enableVerify: {mirai_verify_key_enabled}
 verifyKey: {mirai_verify_key}
 singleMode: false
 cacheSize: 4096
+persistenceFactory: 'built-in'
 adapterSettings:
   ws:
-	host: {mirai_address}
-	port: {mirai_port}
-	reservedSyncId: -1
+    host: {mirai_address}
+    port: {mirai_port}
+    reservedSyncId: -1
 """
 
 var mirai_login_config:String = """
