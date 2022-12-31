@@ -25,28 +25,27 @@ adapterSettings:
     reservedSyncId: -1
 """
 
-var mirai_login_config:String = """
-accounts:
-  -  
-	account: {mirai_qq}
-	password: 
-	  kind: PLAIN
-	  value: {mirai_qq_password}
-	configuration: 
-	  protocol: {mirai_protocol}
-	  device: device.json
+var mirai_login_config:String = """accounts: 
+  - 
+    account: {mirai_qq}
+    password: 
+      kind: PLAIN
+      value: {mirai_qq_password}
+    configuration: 
+      protocol: {mirai_protocol}
+      device: device.json
+      enable: true
+      heartbeatStrategy: STAT_HB
 """
 
-var mirai_start_cmd:String = """
-@echo off
+var mirai_start_cmd:String = """@echo off
 title Mirai Console
 cd {mirai_path}
 java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader %*
 pause
 """
 
-var mirai_start_cmd_unix:String = """
-#!/usr/bin/env sh
+var mirai_start_cmd_unix:String = """#!/usr/bin/env sh
 cd {mirai_path}
 java -cp "./libs/*" net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader
 """
