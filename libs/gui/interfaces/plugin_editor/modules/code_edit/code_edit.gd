@@ -303,7 +303,7 @@ func _on_CodeEdit_request_code_completion()->void:
 			for o in list:
 				add_code_completion_option(o.type,o.display_text,o.insert_text,Color.WHITE,_get_complete_icon(o.type, o.display_text),o.default_value)
 			for c in api_keys:
-				add_code_completion_option(CodeEdit.KIND_CLASS,c,c,Color.WHITE,get_theme_icon("PluginScript","EditorIcons"))
+				add_code_completion_option(CodeEdit.KIND_CLASS,c+" (RainyBot)",c,Color.WHITE,get_theme_icon("PluginScript","EditorIcons"))
 			update_code_completion_options(helper.is_completion_forced())
 		set_code_hint(helper.get_completion_hint())
 
@@ -353,7 +353,7 @@ func parse_code_text()->void:
 	error_lines.clear()
 	func_line_dic.clear()
 	var helper:GDScriptHelper = GDScriptHelper.new()
-	var success:bool = helper.set_source(text)
+	var success:bool = helper.set_validate_code(text)
 	if success:
 		if helper.has_functions():
 			func_line_dic = helper.get_functions()
