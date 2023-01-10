@@ -113,7 +113,6 @@ var core_api_path:String = "res://libs/core/api/"
 var adapter_api_path:String = "res://libs/adapters/mirai/api/"
 var class_doc_path:String = "res://libs/gui/resources/class_docs/"
 
-
 var plugin_editor:PluginEditor = null
 
 var api_dic:Dictionary = {}
@@ -303,6 +302,8 @@ func _on_CodeEdit_request_code_completion()->void:
 			var list:Array[Dictionary] = helper.get_completion_options()
 			for o in list:
 				add_code_completion_option(o.type,o.display_text,o.insert_text,Color.WHITE,_get_complete_icon(o.type),o.default_value)
+			for c in api_keys:
+				add_code_completion_option(CodeEdit.KIND_CLASS,c,c,Color.WHITE,_get_complete_icon(CodeEdit.KIND_CLASS))
 			update_code_completion_options(helper.is_completion_forced())
 		set_code_hint(helper.get_completion_hint())
 
