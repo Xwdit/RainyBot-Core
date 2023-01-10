@@ -301,9 +301,9 @@ func _on_CodeEdit_request_code_completion()->void:
 		if helper.has_completion_options():
 			var list:Array[Dictionary] = helper.get_completion_options()
 			for o in list:
-				add_code_completion_option(o.type,o.display_text,o.insert_text,Color.WHITE,_get_complete_icon(o.type),o.default_value)
+				add_code_completion_option(o.type,o.display_text,o.insert_text,Color.WHITE,_get_complete_icon(o.type, o.display_text),o.default_value)
 			for c in api_keys:
-				add_code_completion_option(CodeEdit.KIND_CLASS,c,c,Color.WHITE,_get_complete_icon(CodeEdit.KIND_CLASS))
+				add_code_completion_option(CodeEdit.KIND_CLASS,c,c,Color.WHITE,get_theme_icon("PluginScript","EditorIcons"))
 			update_code_completion_options(helper.is_completion_forced())
 		set_code_hint(helper.get_completion_hint())
 
@@ -316,9 +316,11 @@ func _on_CodeEdit_caret_changed()->void:
 	$Timer.start(0.25)
 
 
-func _get_complete_icon(type:int)->Texture2D:
+func _get_complete_icon(type:int,content:String="")->Texture2D:
 	match type:
 		KIND_CLASS:
+			if !content.is_empty() and has_theme_icon(content, "EditorIcons"):
+				return get_theme_icon(content, "EditorIcons")
 			return get_theme_icon("Object", "EditorIcons")
 		KIND_ENUM:
 			return get_theme_icon("Enum", "EditorIcons")
