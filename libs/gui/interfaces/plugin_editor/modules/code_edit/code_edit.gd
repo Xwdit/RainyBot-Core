@@ -132,9 +132,30 @@ func _ready()->void:
 	grab_focus()
 	set_caret_line(0)
 	set_caret_column(0)
-	init_auto_complete()
+	init_delimiters()
+	init_lookup_dics()
 	init_syntax_highlight()
 	init_keys_arr()
+
+
+func init_delimiters()->void:
+	code_completion_enabled = true
+	code_completion_prefixes = [".",",","(","=","$","@","\"","\'"]
+	
+	indent_automatic = true
+	
+	clear_comment_delimiters()
+	add_comment_delimiter("#","",true)
+	
+	clear_string_delimiters()
+	add_string_delimiter("'","'")
+	add_string_delimiter("\"","\"")
+	add_string_delimiter("\"\"\"","\"\"\"")
+	
+	auto_brace_completion_enabled = true
+	auto_brace_completion_highlight_matching = true
+	if !has_auto_brace_completion_open_key("\"\"\""):
+		add_auto_brace_completion_pair("\"\"\"","\"\"\"")
 
 
 func init_keys_arr()->void:
@@ -146,9 +167,8 @@ func init_keys_arr()->void:
 	class_keys.sort()
 
 
-func init_auto_complete()->void:
+func init_lookup_dics()->void:
 	api_dic["BotAdapter"]= build_script_dic(BotAdapter.get_script())
-	add_comment_delimiter("#","",true)
 	build_class_dics(class_doc_path)
 	build_api_dics(core_api_path)
 	build_api_dics(adapter_api_path)
@@ -276,142 +296,15 @@ func init_syntax_highlight()->void:
 
 
 func _on_CodeEdit_request_code_completion()->void:
-	var _line:String = get_line(get_caret_line()).left(get_caret_column()).strip_edges(true,false)
-	var _l_arr:PackedStringArray = _line.split(" ")
-	var _latest:String = _l_arr[_l_arr.size()-1]
-	if _latest.findn(".")!=-1 and get_word_under_caret() == "":
-		var _l_spl:PackedStringArray = _latest.split(".")
-		var _type:String = "@"
-		for _t in _l_spl:
-			_t = _t.split("(")[0]
-			if _t.ends_with("\"") or _t.ends_with("'") or _t.begins_with("str("):
-				_t = "String"
-			elif _t.ends_with("}"):
-				_t = "Dictionary"
-			elif _t.ends_with("]"):
-				_t = "Array"
-				
-			if class_dic.has(_t) or api_dic.has(_t):
-				_type = _t
-			if _type == "@":
-				var _types:Array[String] = ["@GlobalScope","@GDScript","Node","Plugin"]
-				for _tp in _types:
-					if class_dic.has(_tp):
-						if class_dic[_tp]["m"].has(_t):
-							_type = class_dic[_tp]["m"][_t]
-						elif class_dic[_tp]["p"].has(_t):
-							_type = class_dic[_tp]["p"][_t]
-					if api_dic.has(_tp):
-						if api_dic[_tp]["m"].has(_t):
-							_type = api_dic[_tp]["m"][_t]
-			else:
-				if class_dic.has(_type):
-					if class_dic[_type]["m"].has(_t):
-						_type = class_dic[_type]["m"][_t]
-					elif class_dic[_type]["p"].has(_t):
-						_type = class_dic[_type]["p"][_t]
-				if api_dic.has(_type):
-					if api_dic[_type]["m"].has(_t):
-						_type = api_dic[_type]["m"][_t]
-		if (!api_dic.has(_type) and !class_dic.has(_type)) or _type=="Variant":
-			
-			for _k in kw_keys:
-				add_code_completion_option(CodeEdit.KIND_MEMBER,_k,_k+" ",keyword_colors[_k])
-			for _a in api_keys:
-				if keyword_colors.has(_a):
-					continue
-				add_code_completion_option(CodeEdit.KIND_CLASS,_a,_a,API_COLOR)
-			for _c in class_keys:
-				if keyword_colors.has(_c):
-					continue
-				add_code_completion_option(CodeEdit.KIND_CLASS,_c,_c,CLASS_COLOR)
-			
-			for _a in api_keys:
-				_add_completion_api_dic(_a,true)
-			for _c in class_keys:
-				if !ClassDB.class_exists(_c):
-					_add_completion_class_dic(_c,true)
-			_add_completion_class_dic("Node",true)
-		
-		else:	
-			_add_completion_api_dic(_type)
-			_add_completion_class_dic(_type)
-	else:
-		for _k in kw_keys:
-			add_code_completion_option(CodeEdit.KIND_MEMBER,_k,_k+" ",keyword_colors[_k])
-		for _a in api_keys:
-			if keyword_colors.has(_a):
-				continue
-			add_code_completion_option(CodeEdit.KIND_CLASS,_a,_a,API_COLOR)
-		for _c in class_keys:
-			if keyword_colors.has(_c):
-				continue
-			add_code_completion_option(CodeEdit.KIND_CLASS,_c,_c,CLASS_COLOR)
-	
-		var _type:String = "@GlobalScope"
-		_add_completion_class_dic(_type)
-		_type = "@GDScript"
-		_add_completion_class_dic(_type)	
-		_type = "Node"
-		_add_completion_class_dic(_type)	
-		_type = "Plugin"
-		_add_completion_api_dic(_type)
-		
-	update_code_completion_options(false)
-
-
-func _add_completion_api_dic(_type:String,show_source:bool=false)->void:
-	if !api_dic.has(_type):
-		return
-	var _s_text:String = ""
-	if show_source:
-		_s_text = " [%s]"%[_type]
-	
-	var _m_list:Array = api_dic[_type]["m"].keys()
-	var _c_list:Array = api_dic[_type]["c"].keys()
-	var _e_list:Array = api_dic[_type]["e"].keys()
-	
-	_m_list.sort()
-	_c_list.sort()
-	_e_list.sort()
-	
-	for _m in _m_list:
-		if _m.begins_with("@"):
-			continue
-		add_code_completion_option(CodeEdit.KIND_FUNCTION,_m+"( )"+_s_text,_m+"()",FUNCTION_COLOR)
-	for _c in _c_list:
-		add_code_completion_option(CodeEdit.KIND_CONSTANT,_c+_s_text,_c,MEMBER_VAR_COLOR)
-	for _e in _e_list:
-		add_code_completion_option(CodeEdit.KIND_ENUM,_e+_s_text,_e,MEMBER_VAR_COLOR)
-
-
-func _add_completion_class_dic(_type:String,show_source:bool=false)->void:
-	if !class_dic.has(_type):
-		return
-	var _s_text:String = ""
-	if show_source:
-		_s_text = " [%s]"%[_type]
-		
-	var _m_list:Array = class_dic[_type]["m"].keys()
-	var _c_list:Array = class_dic[_type]["c"].keys()
-	var _p_list:Array = class_dic[_type]["p"].keys()
-	var _s_list:Array = class_dic[_type]["s"].keys()
-	
-	_m_list.sort()
-	_c_list.sort()
-	_p_list.sort()
-	_s_list.sort()
-	
-	for _m in _m_list:
-		if _m.begins_with("@"):
-			continue
-		add_code_completion_option(CodeEdit.KIND_FUNCTION,_m+"( )"+_s_text,_m+"()",FUNCTION_COLOR)
-	for _p in _p_list:
-		add_code_completion_option(CodeEdit.KIND_MEMBER,_p+_s_text,_p,MEMBER_VAR_COLOR)
-	for _s in _s_list:
-		add_code_completion_option(CodeEdit.KIND_SIGNAL,_s+_s_text,_s,MEMBER_VAR_COLOR)
-	for _c in _c_list:
-		add_code_completion_option(CodeEdit.KIND_CONSTANT,_c+_s_text,_c,MEMBER_VAR_COLOR)
+	var helper:GDScriptHelper = GDScriptHelper.new()
+	var error:int = helper.set_completion_code(get_text_for_code_completion())
+	if error == OK:
+		if helper.has_completion_options():
+			var list:Array[Dictionary] = helper.get_completion_options()
+			for o in list:
+				add_code_completion_option(o.type,o.display_text,o.insert_text,Color.WHITE,_get_complete_icon(o.type),o.default_value)
+			update_code_completion_options(helper.is_completion_forced())
+		set_code_hint(helper.get_completion_hint())
 
 
 func _on_CodeEdit_text_changed()->void:
@@ -422,99 +315,60 @@ func _on_CodeEdit_caret_changed()->void:
 	$Timer.start(0.25)
 
 
-func parse_code_text()->void:
-	var _num:int = get_line_count()
-	var _dic:Dictionary = {}
-	func_line_dic.clear()
-	for n in range(_num):
-		var _text:PackedStringArray = get_line(n).strip_edges().split("#")[0].split(" ",false)
-		if _text.size() > 0 and _text[0].begins_with("@"):
-			_text.remove_at(0)
-		if _text.size() > 1:
-			match _text[0]:
-				"var","const":
-					var _word:String = _text[1].split(":")[0].split("=")[0]
-					if _word.is_valid_identifier():
-						_dic[_word]=MEMBER_VAR_COLOR
-				"for":
-					var _word:String = _text[1]
-					if _word.is_valid_identifier():
-						_dic[_word]=MEMBER_VAR_COLOR
-				"signal":
-					var _word:String = _text[1]
-					if _word.is_valid_identifier():
-						_dic[_word]=MEMBER_VAR_COLOR
-				"enum":
-					var _word:String = _text[1].split("{")[0]
-					if _word.is_valid_identifier():
-						_dic[_word]=MEMBER_VAR_COLOR
-				"func":
-					var _words:PackedStringArray = _text[1].split("(")
-					if !_words.size()>1 and _text.size()>2:
-						var _word:String = _text[1]
-						if _word.is_valid_identifier():
-							_dic[_word]=FUNCTION_COLOR
-							func_line_dic[_word]=n
-							var _args:PackedStringArray = _text[2].replace(" ","").strip_edges().rstrip("):").lstrip("(").split(",")
-							for _a in _args:
-								_a = _a.split(":")[0].split("=")[0]
-								if _a.is_valid_identifier():
-									_dic[_a]=MEMBER_VAR_COLOR
-					elif _words.size()>1:
-						var _word:String = _words[0]
-						if _word.is_valid_identifier():
-							_dic[_word]=FUNCTION_COLOR
-							func_line_dic[_word]=n
-							var _args:PackedStringArray = _words[1].replace(" ","").strip_edges().rstrip("):").split(",")
-							for _a in _args:
-								_a = _a.split(":")[0].split("=")[0]
-								if _a.is_valid_identifier():
-									_dic[_a]=MEMBER_VAR_COLOR
-	for _w in _dic:
-		var _dw:String = _w
-		var _iw:String = _w
-		if _dic[_w]==FUNCTION_COLOR:
-			_dw = _w+"( )"
-			_iw = _w+"()"
-		for _o in get_code_completion_options():
-			if _o["display_text"] == _dw:
-				return
-		add_code_completion_option(CodeEdit.KIND_MEMBER,_dw,_iw,_dic[_w])
-	
+func _get_complete_icon(type:int)->Texture2D:
+	match type:
+		KIND_CLASS:
+			return get_theme_icon("Object", "EditorIcons")
+		KIND_ENUM:
+			return get_theme_icon("Enum", "EditorIcons")
+		KIND_FILE_PATH:
+			return get_theme_icon("File", "EditorIcons")
+		KIND_NODE_PATH:
+			return get_theme_icon("NodePath", "EditorIcons")
+		KIND_VARIABLE:
+			return get_theme_icon("Variant", "EditorIcons")
+		KIND_CONSTANT:
+			return get_theme_icon("MemberConstant", "EditorIcons")
+		KIND_MEMBER:
+			return get_theme_icon("MemberProperty", "EditorIcons")
+		KIND_SIGNAL:
+			return get_theme_icon("MemberSignal", "EditorIcons")
+		KIND_FUNCTION:
+			return get_theme_icon("MemberMethod", "EditorIcons")
+		KIND_PLAIN_TEXT:
+			return get_theme_icon("BoxMesh", "EditorIcons")
+		_:
+			return get_theme_icon("String", "EditorIcons")
 
-func check_error()->void:
+
+func parse_code_text()->void:
 	for _l in range(get_line_count()):
 		if get_line_background_color(_l) != Color(0, 0, 0, 0):
 			set_line_background_color(_l,Color(0, 0, 0, 0))
 		else:
 			continue
 	error_lines.clear()
-	var _f:FileAccess = FileAccess.open("user://logs/rainybot.log",FileAccess.READ)
-	var curr_text:String = _f.get_as_text() if _f else ""
-	var _scr:GDScript = GDScript.new()
-	_scr.source_code = text
-	if _scr.reload() != OK:
-		_f = FileAccess.open("user://logs/rainybot.log",FileAccess.READ)
-		var _text:String = _f.get_as_text() if _f else ""
-		GlobalManager.last_log_text = _text
-		var _err:PackedStringArray = _text.replacen(curr_text,"").split("\n")
-		for i in _err.size():
-			var _l:String = _err[i]
-			if _l.findn("GDScript::reload (built-in:")!=-1:
-				var _sl:String = _l.replacen("GDScript::reload (built-in:","").replacen(")","")
-				var _num:int = clampi(abs(_sl.to_int())-1,0,get_line_count()-1)
-				if i > 0:
-					var _error:String = _err[i-1].replacen("USER SCRIPT ERROR: ","")
-					set_line_background_color(_num,Color(1,0.47,0.42,0.3))
-					error_lines[_num]=_error
+	func_line_dic.clear()
+	var helper:GDScriptHelper = GDScriptHelper.new()
+	var success:bool = helper.set_source(text)
+	if success:
+		if helper.has_functions():
+			func_line_dic = helper.get_functions()
+	else:
+		if helper.has_errors():
+			var e_list:Array[Dictionary] = helper.get_errors()
+			for e in e_list:
+				var _line:int = e.line
+				var _column:int = e.column
+				var _error:String = e.message
+				set_line_background_color(_line,Color(1,0.47,0.42,0.3))
+				error_lines[_line]=_error
 
 
 func _on_Timer_timeout()->void:
 	if last_text != text:
 		last_text = text
 		parse_code_text()
-		if !GlobalManager.is_running_from_editor():
-			check_error()
 		if (is_in_comment(get_caret_line(),get_caret_column())==-1) and (is_in_string(get_caret_line(),get_caret_column())==-1):
 			request_code_completion()
 	emit_signal("update_finished")
