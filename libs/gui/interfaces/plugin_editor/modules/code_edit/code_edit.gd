@@ -296,7 +296,7 @@ func init_syntax_highlight()->void:
 
 func _on_CodeEdit_request_code_completion()->void:
 	var helper:GDScriptHelper = GDScriptHelper.new()
-	var error:int = helper.set_completion_code(get_text_for_code_completion())
+	var error:int = helper.set_completion_code(get_text_for_code_completion(),plugin_editor.loaded_path)
 	if error == OK:
 		if helper.has_completion_options():
 			var list:Array[Dictionary] = helper.get_completion_options()
@@ -353,7 +353,7 @@ func parse_code_text()->void:
 	error_lines.clear()
 	func_line_dic.clear()
 	var helper:GDScriptHelper = GDScriptHelper.new()
-	var success:bool = helper.set_validate_code(text)
+	var success:bool = helper.set_validate_code(text,plugin_editor.loaded_path)
 	if success:
 		if helper.has_functions():
 			func_line_dic = helper.get_functions()
@@ -361,7 +361,7 @@ func parse_code_text()->void:
 		if helper.has_errors():
 			var e_list:Array[Dictionary] = helper.get_errors()
 			for e in e_list:
-				var _line:int = e.line
+				var _line:int = e.line if e.line < get_line_count() else get_line_count()-1
 				var _column:int = e.column
 				var _error:String = e.message
 				set_line_background_color(_line,Color(1,0.47,0.42,0.3))
