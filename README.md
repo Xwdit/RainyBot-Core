@@ -126,11 +126,9 @@ RainyBot的[发布版本](https://github.com/Xwdit/RainyBot-Core/releases)中已
 
 ## 联系信息
 
-交流QQ群: 429787496
+交流QQ群: 881409193
 
 Xwdit - xwditfr@gmail.com
-
-项目官网: [https://rainybot.dev](https://rainy.love/rainybot)
 
 项目社区: [https://godoter.cn/t/rainybot](https://godoter.cn/t/rainybot)
 
