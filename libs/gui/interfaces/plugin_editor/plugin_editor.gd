@@ -15,6 +15,7 @@ signal file_changed(file_name:String,is_unsaved:bool)
 var loaded_path:String = ""
 var loaded_name:String = ""
 var loaded_ins:Plugin = null
+var loaded_has_file:bool = false
 var unsaved_dic:Dictionary = {}
 var file_caret_dic:Dictionary = {}
 
@@ -40,6 +41,7 @@ func load_script(path:String)->int:
 		loaded_path = path
 		loaded_name = path.get_file()
 		loaded_ins = PluginManager.get_plugin_with_filename(loaded_name)
+		loaded_has_file = true
 		if unsaved_dic.has(path):
 			set_unsaved(true)
 		else:
@@ -58,13 +60,21 @@ func load_script(path:String)->int:
 func update_file_list():
 	var files:Array[String] = []
 	var filter:String = $HSplitContainer/VSplitContainer/FileList/FileSearch.text
+	loaded_has_file = false
 	for s in PluginManager.file_load_status:
 		if PluginManager.file_load_status[s] == false:
 			files.append(s)
+			if s == loaded_name:
+				loaded_has_file = true
 	for id in PluginManager.plugin_files_dic:
 		files.append(PluginManager.plugin_files_dic[id].file)
+		if PluginManager.plugin_files_dic[id].file == loaded_name:
+			loaded_has_file = true
+	if !loaded_has_file:
+		files.append(loaded_name)
+		set_unsaved(true,false)
+	files.sort()
 	file_list_node.clear()
-	var found:bool = false
 	for f in files:
 		if !filter.is_empty() and f.findn(filter) == -1:
 			continue
@@ -73,10 +83,6 @@ func update_file_list():
 		var f_status:String = " (未保存)" if unsaved_dic.has(f_path) else ""
 		var idx:int = file_list_node.add_item(f_name+f_status)
 		file_list_node.set_item_metadata(idx,f_path)
-		if f_name == loaded_name:
-			found = true
-	if !found:
-	else:
 	for i in file_list_node.item_count:
 		var _path:String = file_list_node.get_item_metadata(i)
 		if _path == loaded_path:
@@ -112,7 +118,9 @@ func save_script(reload:bool=false)->int:
 	var err_code:int = ResourceSaver.save(scr,loaded_path)
 	if !err_code:
 		code_edit_node.tag_saved_version()
-		set_unsaved(false)
+		set_unsaved(false,loaded_has_file)
+		if !loaded_has_file:
+			PluginManager.get_plugin_files_dic()
 		GuiManager.console_print_success("插件保存成功！")
 		if reload:
 			var plug:Plugin = PluginManager.get_plugin_with_filename(loaded_name)
@@ -136,13 +144,14 @@ func save_script(reload:bool=false)->int:
 	return err_code
 
 
-func set_unsaved(enabled:bool=true)->void:
+func set_unsaved(enabled:bool=true,update_list:bool=true)->void:
 	if enabled:
 		unsaved_dic[loaded_path]=code_edit_node.text
 	else:
 		if unsaved_dic.has(loaded_path):
 			unsaved_dic.erase(loaded_path)
-	update_file_list()
+	if update_list:
+		update_file_list()
 	file_changed.emit(loaded_name,enabled)
 
 
