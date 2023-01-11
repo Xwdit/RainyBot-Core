@@ -12,7 +12,6 @@
 	在此Gif图像类实例的属性或数据发生变更时，将会触发此信号
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]GifImage[/color] ￿init￿ [color=gray]([/color] [color=#70bafa]Vector2[/color] img_size [color=gray])[/color]
@@ -93,6 +92,5 @@
 	● [color=#70bafa]float[/color] ￿get_generate_time￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取此Gif图像实例中的所有帧的预计生成时间，需要配合await关键字使用
-
 
 

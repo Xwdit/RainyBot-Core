@@ -28,7 +28,6 @@
 		[color=gray]代表权限为群聊中的群主[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]GroupMember[/color] ￿init￿ [color=gray]([/color] [color=#70bafa]int[/color] group_id, [color=#70bafa]int[/color] member_id [color=gray])[/color]
@@ -212,6 +211,5 @@
 	此函数必须配合await关键字进行使用，否则将会发生错误，且无法获取相关的信息 
 	
 	可以通过指定timeout参数来自定义获取请求结果的超时时间，若不指定则默认将使用配置文件中设置的超时时间
-
 
 

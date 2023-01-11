@@ -21,7 +21,6 @@
 		[color=gray]机器人账号意外掉线(网络原因或服务器原因等)[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]BotOfflineEvent[/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa]Dictionary[/color] dic, [color=#70bafa]int[/color] reason_type [color=gray])[/color]
@@ -37,6 +36,5 @@
 	● [color=#70bafa]bool[/color] ￿is_reason_type￿ [color=gray]([/color] [color=#70bafa]int[/color] reason [color=gray])[/color]
 
 	判定机器人离线事件是否是指定类型的原因，可用类型请参见此类的ReasonType枚举
-
 
 

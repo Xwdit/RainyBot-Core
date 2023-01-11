@@ -18,7 +18,6 @@
 		[color=gray]群成员失去了一个群荣誉[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]MemberHonorChangeEvent[/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa]Dictionary[/color] dic [color=gray])[/color]
@@ -49,6 +48,5 @@
 	● [color=#70bafa]bool[/color] ￿is_action_type￿ [color=gray]([/color] [color=#70bafa]int[/color] action [color=gray])[/color]
 
 	用于判断本次事件是否为指定的变更类型
-
 
 

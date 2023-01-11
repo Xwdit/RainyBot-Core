@@ -18,7 +18,6 @@
 		[color=gray]拒绝入群邀请[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]GroupInviteRequestEvent[/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa]Dictionary[/color] dic [color=gray])[/color]
@@ -29,6 +28,5 @@
 	● [color=#70bafa]String[/color] ￿get_group_name￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取事件对应的被邀请加入的群的名称
-
 
 

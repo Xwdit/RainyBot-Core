@@ -28,7 +28,6 @@
 		[color=gray]女性[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]MemberProfile[/color] ￿init_user￿ [color=gray]([/color] [color=#70bafa]int[/color] user_id, [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
@@ -86,6 +85,5 @@
 	● [color=#70bafa]bool[/color] ￿is_sex￿ [color=gray]([/color] [color=#70bafa]int[/color] sex [color=gray])[/color]
 
 	判断资料中的性别是不是指定类型的性别
-
 
 

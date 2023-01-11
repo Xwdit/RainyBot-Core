@@ -39,4 +39,3 @@
 	返回的类型不定，可能返回Member,GroupMember或OtherClient类的实例
 
 
-

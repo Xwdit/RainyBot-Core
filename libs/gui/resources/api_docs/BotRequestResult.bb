@@ -45,7 +45,6 @@
 		[color=gray]命令用法有误[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]BotRequestResult[/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa]Dictionary[/color] dic [color=gray])[/color]
@@ -86,6 +85,5 @@
 	● [color=#70bafa]bool[/color] ￿is_status￿ [color=gray]([/color] [color=#70bafa]int[/color] code [color=gray])[/color]
 
 	判断请求结果是否为指定的结果
-
 
 

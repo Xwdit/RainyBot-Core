@@ -18,7 +18,6 @@
 		[color=gray]群成员被管理员/群主踢出群聊[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]MemberLeaveEvent[/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa]Dictionary[/color] dic, [color=#70bafa]int[/color] reason_type [color=gray])[/color]
@@ -49,6 +48,5 @@
 	● [color=#70bafa]bool[/color] ￿is_reason_type￿ [color=gray]([/color] [color=#70bafa]int[/color] reason [color=gray])[/color]
 
 	判断此事件的发生是否为指定的原因类型
-
 
 

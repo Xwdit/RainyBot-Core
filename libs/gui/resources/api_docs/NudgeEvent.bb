@@ -18,7 +18,6 @@
 		[color=gray]事件发生在群组聊天中[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]NudgeEvent[/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa]Dictionary[/color] dic [color=gray])[/color]
@@ -59,6 +58,5 @@
 	● [color=#70bafa]String[/color] ￿get_suffix_text￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取戳一戳事件的后缀文本
-
 
 

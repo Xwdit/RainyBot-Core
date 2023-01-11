@@ -30,7 +30,6 @@
 		[color=gray]放大招[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]static[/color] [color=#70bafa]PokeMessage[/color] ￿init￿ [color=gray]([/color] [color=#70bafa]int[/color] type [color=gray])[/color]
@@ -61,6 +60,5 @@
 	● [color=#70bafa]String[/color] ￿get_as_text￿ [color=gray]([/color] [color=gray])[/color]
 
 	将此实例获取为字符串的形式
-
 
 

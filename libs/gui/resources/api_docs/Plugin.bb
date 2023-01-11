@@ -55,7 +55,6 @@
 		[color=gray]当前函数处理完毕后，将完全阻断事件传递，事件后续函数及其他插件均不会收到事件[/color]
 
 
-
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
 	● [color=gray]void[/color] ￿_on_init￿ [color=gray]([/color] [color=gray])[/color]
@@ -603,6 +602,5 @@
 	
 	若第一个参数传入内容为一个字符串，则将用于响应指定ID的上下文等待，此时可通过第二个参数指定响应的内容 
 	第二个参数为可选参数，可以是任何类型的值；若不填则默认响应内容为布尔值true
-
 
 

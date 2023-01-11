@@ -32,4 +32,3 @@
 	获取变更后的当前群权限，可用权限请参考GroupMember中的Permission枚举
 
 
-
