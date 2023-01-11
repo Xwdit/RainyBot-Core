@@ -19,7 +19,7 @@
 	获取实例中的元数据字典，仅当你知道自己在做什么时才使用
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_metadata￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_metadata￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
 
 	使用指定字典覆盖实例中的元数据字典，仅当你知道自己在做什么时才使用
 

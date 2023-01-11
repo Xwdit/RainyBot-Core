@@ -57,7 +57,7 @@
 
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿_on_init￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿_on_init￿ [color=gray]([/color] [color=gray])[/color]
 
 	在插件中覆盖此虚函数，以便定义将在此插件的文件每次被读取时执行的操作 
 	
@@ -68,21 +68,21 @@
 	可以在此处初始化和使用一些基本变量，但不建议执行其它代码，可能会导致出现未知问题
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿_on_connect￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿_on_connect￿ [color=gray]([/color] [color=gray])[/color]
 
 	在插件中覆盖此虚函数，以便定义RainyBot在与协议后端建立连接后插件将执行的操作 
 	
 	可以在此处进行一些与连接状态相关的操作，例如恢复连接后发送通知等
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿_on_load￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿_on_load￿ [color=gray]([/color] [color=gray])[/color]
 
 	在插件中覆盖此虚函数，以便定义插件在被加载完毕后执行的操作 
 	
 	可以在此处进行各类事件/关键词/命令的注册，以及配置/数据文件的初始化等
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿_on_ready￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿_on_ready￿ [color=gray]([/color] [color=gray])[/color]
 
 	在插件中覆盖此虚函数，以便定义插件在所有其他插件加载完毕后执行的操作 
 	
@@ -91,14 +91,14 @@
 	注意：如果此插件硬性依赖某插件，推荐在插件信息中注册所依赖的插件，以确保其在此插件之前被正确加载
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿_on_process￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿_on_process￿ [color=gray]([/color] [color=gray])[/color]
 
 	在插件中覆盖此虚函数，以便定义插件运行中的每一秒将执行的操作 
 	
 	可在此处进行一些计时，或时间判定相关的操作，例如整点报时等
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿_on_error￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿_on_error￿ [color=gray]([/color] [color=gray])[/color]
 
 	在插件中覆盖此虚函数，以便定义在RainyBot检测到运行时错误后将执行的操作 
 	
@@ -107,14 +107,14 @@
 	您可以使用[get_last_errors]函数来获取错误的详细内容
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿_on_disconnect￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿_on_disconnect￿ [color=gray]([/color] [color=gray])[/color]
 
 	在插件中覆盖此虚函数，以便定义RainyBot在与协议后端断开建立连接后插件将执行的操作 
 	
 	可以在此处进行一些与连接状态相关的操作，例如断开连接后暂停某些任务的运行等
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿_on_unload￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿_on_unload￿ [color=gray]([/color] [color=gray])[/color]
 
 	在插件中覆盖此虚函数，以便定义插件在即将被卸载时执行的操作 
 	
@@ -123,7 +123,7 @@
 	无需在此处取消注册事件/关键词/命令，或者对内置的配置/数据功能进行保存，插件卸载时将会自动进行处理
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_plugin_info￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] p_id, [color=#70bafa][url=godot:String]String[/url][/color] p_name, [color=#70bafa][url=godot:String]String[/url][/color] p_author, [color=#70bafa][url=godot:String]String[/url][/color] p_version, [color=#70bafa][url=godot:String]String[/url][/color] p_description, [color=#70bafa][url=godot:Variant]Variant[/url][/color] p_dependency[color=gray] = null[/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_plugin_info￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] p_id, [color=#70bafa][url=godot:String]String[/url][/color] p_name, [color=#70bafa][url=godot:String]String[/url][/color] p_author, [color=#70bafa][url=godot:String]String[/url][/color] p_version, [color=#70bafa][url=godot:String]String[/url][/color] p_description, [color=#70bafa][url=godot:Variant]Variant[/url][/color] p_dependency[color=gray] = null[/color] [color=gray])[/color]
 
 	用于设定插件的相关信息，需要在[_on_init]虚函数中执行以便RainyBot正确加载您的插件 
 	
@@ -151,7 +151,7 @@
 	用于获取插件对应的文件路径，将返回插件文件的绝对路径 (如 [code]D://RainyBot/plugins/ChatBot.gd[/code])
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=godot:String]String[/url][/color] ￿get_plugin_path￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=godot:String]String[/url][/color] ￿get_plugin_path￿ [color=gray]([/color] [color=gray])[/color]
 
 	用于获取RainyBot的插件文件夹的路径，将返回插件文件夹的绝对路径 (如 [code]D://RainyBot/plugins/[/code])
 
@@ -161,19 +161,19 @@
 	用于获取插件的已运行时间，默认情况下为插件成功加载以来经过的秒数
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=godot:int]int[/url][/color] ￿get_global_runtime￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=godot:int]int[/url][/color] ￿get_global_runtime￿ [color=gray]([/color] [color=gray])[/color]
 
 	用于获取RainyBot全局的已运行时间，默认情况下为RainyBot成功启动以来经过的秒数
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:Plugin]Plugin[/url][/color] ￿get_plugin_instance￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] plugin_id [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:Plugin]Plugin[/url][/color] ￿get_plugin_instance￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] plugin_id [color=gray])[/color]
 
 	用于获取其他插件的实例引用，可用于插件之间的联动与数据互通等 
 	
 	需要传入其他插件的ID作为参数来获取其实例，若未找到插件则返回null
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=godot:String]String[/url][/color] ￿get_data_path￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=godot:String]String[/url][/color] ￿get_data_path￿ [color=gray]([/color] [color=gray])[/color]
 
 	用于获取RainyBot的数据文件夹的路径，将返回数据文件夹的绝对路径 (如 [code]D://RainyBot/data/[/code])
 
@@ -183,7 +183,7 @@
 	用于获取该插件对应的数据库文件的路径，即插件对应的.rdb格式文件的绝对路径
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=godot:String]String[/url][/color] ￿get_config_path￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=godot:String]String[/url][/color] ￿get_config_path￿ [color=gray]([/color] [color=gray])[/color]
 
 	用于获取RainyBot的配置文件夹的路径，将返回配置文件夹的绝对路径 (如 [code]D://RainyBot/config/[/code])
 
@@ -193,7 +193,7 @@
 	用于获取该插件对应的配置文件的路径，即插件对应的.json格式文件的绝对路径
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=godot:String]String[/url][/color] ￿get_cache_path￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=godot:String]String[/url][/color] ￿get_cache_path￿ [color=gray]([/color] [color=gray])[/color]
 
 	用于获取RainyBot的缓存文件夹的路径，将返回缓存文件夹的绝对路径 (如 D://RainyBot/cache)
 
@@ -218,7 +218,7 @@
 	用于检查插件对应的缓存数据库文件内容是否已被加载
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=godot:PackedStringArray]PackedStringArray[/url][/color] ￿get_last_errors￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=godot:PackedStringArray]PackedStringArray[/url][/color] ￿get_last_errors￿ [color=gray]([/color] [color=gray])[/color]
 
 	用于获取最近一次检测到的所有RainyBot运行时错误，将返回一个包含了这些错误的字符串数组 
 	
@@ -227,7 +227,7 @@
 	当前版本中仅支持自动检测脚本运行时错误，若要获取其他类型的错误，请通过主菜单来访问内部日志进行查看
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿register_event￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] event, [color=#70bafa][url=godot:Variant]Variant[/url][/color] function, [color=#70bafa][url=godot:int]int[/url][/color] priority[color=gray] = 0[/color], [color=#70bafa][url=godot:int]int[/url][/color] block_mode[color=gray] = 3[/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿register_event￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] event, [color=#70bafa][url=godot:Variant]Variant[/url][/color] function, [color=#70bafa][url=godot:int]int[/url][/color] priority[color=gray] = 0[/color], [color=#70bafa][url=godot:int]int[/url][/color] block_mode[color=gray] = 3[/color] [color=gray])[/color]
 
 	用于注册一个或多个事件并将其绑定到一个或多个函数，事件发生时将触发绑定的函数并传入事件实例 
 	
@@ -250,14 +250,14 @@
 	- 阻断的具体行为将由阻断模式决定, 每种阻断模式的具体效果请参见上方的BlockMode枚举
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿unregister_event￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] event [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿unregister_event￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] event [color=gray])[/color]
 
 	用于取消注册一个或多个事件，取消注册后插件将不再对此事件做出响应 
 	
 	此处可传入单个事件类型名，或一个包含了任意数量事件类型名的数组以批量取消注册事件
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿register_console_command￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] command, [color=#70bafa][url=godot:Variant]Variant[/url][/color] function, [color=#70bafa][url=godot:bool]bool[/url][/color] need_arguments[color=gray] = false[/color], [color=#70bafa][url=godot:Array]Array[/url][/color] usages[color=gray] = [][/color], [color=#70bafa][url=godot:bool]bool[/url][/color] need_connect[color=gray] = false[/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿register_console_command￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] command, [color=#70bafa][url=godot:Variant]Variant[/url][/color] function, [color=#70bafa][url=godot:bool]bool[/url][/color] need_arguments[color=gray] = false[/color], [color=#70bafa][url=godot:Array]Array[/url][/color] usages[color=gray] = [][/color], [color=#70bafa][url=godot:bool]bool[/url][/color] need_connect[color=gray] = false[/color] [color=gray])[/color]
 
 	用于注册一个控制台命令并将其绑定到指定函数，命令被执行时将触发此函数，并传入对应的命令名与参数数组 
 	
@@ -283,14 +283,14 @@
 	- 若为true则在未连接协议后端时无法在控制台调用此命令
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿unregister_console_command￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] command [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿unregister_console_command￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] command [color=gray])[/color]
 
 	用于取消注册一个控制台命令，命令被取消注册后将无法在控制台被执行，且不会在帮助菜单中显示 
 	
 	需要传入对应的命令名来将其取消注册，无法取消注册不属于此插件的命令
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿register_keyword￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] keyword, [color=#70bafa][url=godot:Variant]Variant[/url][/color] function, [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] var_dic[color=gray] = {}[/color], [color=#70bafa][url=godot:int]int[/url][/color] match_mode[color=gray] = 0[/color], [color=#70bafa][url=godot:bool]bool[/url][/color] block[color=gray] = true[/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿register_keyword￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] keyword, [color=#70bafa][url=godot:Variant]Variant[/url][/color] function, [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] var_dic[color=gray] = {}[/color], [color=#70bafa][url=godot:int]int[/url][/color] match_mode[color=gray] = 0[/color], [color=#70bafa][url=godot:bool]bool[/url][/color] block[color=gray] = true[/color] [color=gray])[/color]
 
 	用于注册一个或多个关键词并将其绑定到某个函数，关键词匹配时将触发绑定的函数并传入相关数据 
 	
@@ -323,7 +323,7 @@
 	- 阻断的具体行为将由相关事件注册时设置的阻断模式决定
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿unregister_keyword￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] keyword [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿unregister_keyword￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] keyword [color=gray])[/color]
 
 	用于取消注册一个关键词，关键词被取消注册后将不会被用于匹配 
 	
@@ -514,7 +514,7 @@
 	最后一项可选参数用于指定是否在清空的同时将更改立即保存到缓存数据库文件中
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿unload_plugin￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿unload_plugin￿ [color=gray]([/color] [color=gray])[/color]
 
 	调用此函数后，插件将会尝试卸载自身 
 	

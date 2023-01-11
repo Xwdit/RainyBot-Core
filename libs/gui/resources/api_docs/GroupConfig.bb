@@ -13,7 +13,7 @@
 
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:GroupConfig]GroupConfig[/url][/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:GroupConfig]GroupConfig[/url][/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
 
 	通过机器人协议后端的元数据字典构造一个GroupConfig类的实例，仅当你知道自己在做什么时才使用
 
@@ -23,7 +23,7 @@
 	获取实例中的元数据字典，仅当你知道自己在做什么时才使用
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_metadata￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_metadata￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
 
 	使用指定字典覆盖实例中的元数据字典，仅当你知道自己在做什么时才使用
 
@@ -58,32 +58,32 @@
 	获取群组配置实例中储存的匿名聊天启用状态
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_name￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] name [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_name￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] name [color=gray])[/color]
 
 	更改群组配置实例中储存的群名称
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_announcement￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] text [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_announcement￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] text [color=gray])[/color]
 
 	更改群组配置实例中储存的入群公告
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_confess_talk￿ [color=gray]([/color] [color=#70bafa][url=godot:bool]bool[/url][/color] enabled [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_confess_talk￿ [color=gray]([/color] [color=#70bafa][url=godot:bool]bool[/url][/color] enabled [color=gray])[/color]
 
 	更改群组配置实例中储存的坦白说启用状态
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_allow_member_invite￿ [color=gray]([/color] [color=#70bafa][url=godot:bool]bool[/url][/color] enabled [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_allow_member_invite￿ [color=gray]([/color] [color=#70bafa][url=godot:bool]bool[/url][/color] enabled [color=gray])[/color]
 
 	更改群组配置实例中储存的允许邀请入群启用状态
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_auto_approve￿ [color=gray]([/color] [color=#70bafa][url=godot:bool]bool[/url][/color] enabled [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_auto_approve￿ [color=gray]([/color] [color=#70bafa][url=godot:bool]bool[/url][/color] enabled [color=gray])[/color]
 
 	更改群组配置实例中储存的自动入群审批启用状态
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_anonymous_chat￿ [color=gray]([/color] [color=#70bafa][url=godot:bool]bool[/url][/color] enabled [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_anonymous_chat￿ [color=gray]([/color] [color=#70bafa][url=godot:bool]bool[/url][/color] enabled [color=gray])[/color]
 
 	更改群组配置实例中储存的匿名聊天启用状态
 

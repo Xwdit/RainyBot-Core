@@ -14,7 +14,7 @@
 
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:GifImage]GifImage[/url][/color] ￿init￿ [color=gray]([/color] [color=#70bafa][url=godot:Vector2]Vector2[/url][/color] img_size [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:GifImage]GifImage[/url][/color] ￿init￿ [color=gray]([/color] [color=#70bafa][url=godot:Vector2]Vector2[/url][/color] img_size [color=gray])[/color]
 
 	基于指定的图像大小来构造一个GifImage类图像的实例
 
@@ -54,7 +54,7 @@
 	设置此Gif图像实例中位于指定位置的某一帧的延迟时间 (持续时间)
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿clear_frames￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿clear_frames￿ [color=gray]([/color] [color=gray])[/color]
 
 	清除此Gif图像实例中的所有帧
 

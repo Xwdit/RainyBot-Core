@@ -7,37 +7,37 @@
 
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init￿ [color=gray]([/color] [color=#70bafa][url=godot:Image]Image[/url][/color] image [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init￿ [color=gray]([/color] [color=#70bafa][url=godot:Image]Image[/url][/color] image [color=gray])[/color]
 
 	基于图像实例缓存并手动构造一个FlashImageMessage类的实例
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_gif￿ [color=gray]([/color] [color=#70bafa][url=api:GifImage]GifImage[/url][/color] gif_image [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_gif￿ [color=gray]([/color] [color=#70bafa][url=api:GifImage]GifImage[/url][/color] gif_image [color=gray])[/color]
 
 	基于Gif动图实例缓存并手动构造一个FlashImageMessage类的实例
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_id￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_id [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_id￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_id [color=gray])[/color]
 
 	基于指定的图像ID来手动构造一个FlashImageMessage类的实例
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_url￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_url [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_url￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_url [color=gray])[/color]
 
 	基于指定的URL地址来手动构造一个FlashImageMessage类的实例
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_path￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_path [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_path￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_path [color=gray])[/color]
 
 	基于指定的本地文件路径来手动构造一个FlashImageMessage类的实例
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_base64￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_base64 [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_base64￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_base64 [color=gray])[/color]
 
 	基于指定的BASE64编码来手动构造一个FlashImageMessage类的实例
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:FlashImageMessage]FlashImageMessage[/url][/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
 
 	通过机器人协议后端的元数据字典构造一个此类的实例，仅当你知道自己在做什么时才使用
 
@@ -47,7 +47,7 @@
 	获取此实例对应的图像的ID
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_image_id￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_id [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_image_id￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_id [color=gray])[/color]
 
 	设置此实例对应的图像的ID
 
@@ -57,7 +57,7 @@
 	获取此实例对应的图像的URL链接
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_image_url￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_url [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_image_url￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_url [color=gray])[/color]
 
 	设置此实例对应的图像的URL链接
 
@@ -67,7 +67,7 @@
 	获取此实例对应的图像的本地路径
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_image_path￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_path [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_image_path￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_path [color=gray])[/color]
 
 	设置此实例对应的图像的本地路径
 
@@ -77,7 +77,7 @@
 	获取此实例对应的图像的Base64编码
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_image_base64￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_base64 [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_image_base64￿ [color=gray]([/color] [color=#70bafa][url=godot:String]String[/url][/color] image_base64 [color=gray])[/color]
 
 	设置此实例对应的图像的Base64编码
 

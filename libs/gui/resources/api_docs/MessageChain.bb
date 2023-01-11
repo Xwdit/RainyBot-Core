@@ -14,7 +14,7 @@
 
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:MessageChain]MessageChain[/url][/color] ￿init￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] msg [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:MessageChain]MessageChain[/url][/color] ￿init￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] msg [color=gray])[/color]
 
 	手动构造一个MessageChain类的实例，以便将多种消息合并为单条消息发送 
 	
@@ -26,7 +26,7 @@
 	- 已知的消息ID(以便对此ID关联的消息进行如撤回一类的操作)
 
 
-	● [color=gray]static[/color] [color=#70bafa][url=api:MessageChain]MessageChain[/url][/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa][url=godot:Array]Array[/url][/color] arr [color=gray])[/color]
+	● [color=gray][hint=此方法调用时无需构造实例，可通过类名直接调用]static[/hint][/color] [color=#70bafa][url=api:MessageChain]MessageChain[/url][/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa][url=godot:Array]Array[/url][/color] arr [color=gray])[/color]
 
 	通过机器人协议后端的元数据数组构造一个MessageChain类的实例，仅当你知道自己在做什么时才使用
 
@@ -36,7 +36,7 @@
 	获取实例中的元数据数组，仅当你知道自己在做什么时才使用
 
 
-	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_metadata￿ [color=gray]([/color] [color=#70bafa][url=godot:Array]Array[/url][/color] arr [color=gray])[/color]
+	● [color=gray][hint=此方法无返回值]void[/hint][/color] ￿set_metadata￿ [color=gray]([/color] [color=#70bafa][url=godot:Array]Array[/url][/color] arr [color=gray])[/color]
 
 	使用指定数组覆盖实例中的元数据数组，仅当你知道自己在做什么时才使用
 
