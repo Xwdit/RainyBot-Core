@@ -47,6 +47,7 @@ func load_doc(doc_name:String,member:String="")->int:
 		if i.get_text(0) == doc_name:
 			if tree.get_selected() != i:
 				tree.set_selected(i,0)
+				tree.scroll_to_item(i,true)
 				tree.queue_redraw()
 				break
 	scroll_to_member.call(member)

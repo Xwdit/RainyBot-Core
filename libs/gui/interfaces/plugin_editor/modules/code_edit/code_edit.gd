@@ -405,8 +405,10 @@ func _on_code_edit_symbol_lookup(symbol:String, line:int, column:int)->void:
 	if !lookup_result.is_empty():
 		var c_name:String = lookup_result["class_name"]
 		var s_path:String = lookup_result["class_path"]
+		var type:int = lookup_result["type"]
+		var type_name:Array[String] = ["","","#constants","#properties","#methods","#signals","#enumerations","","#annotations",""]
 		if class_dic.has(c_name):
-			OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html" % c_name.to_lower())
+			OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html%s" % [c_name.to_lower(),type_name[type]])
 			return
 		elif api_dic.has(s_path.get_basename().get_file()):
 			GuiManager.open_doc_viewer(s_path.get_basename().get_file(),symbol)
