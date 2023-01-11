@@ -18,9 +18,6 @@ var cache_path:String = root_path+"cache/"
 var log_path:String = root_path+"logs/"
 
 var godot_dir_path:String = root_path + ".godot/"
-var project_file_path:String = root_path+"project.godot"
-var import_helper_path:String = "res://libs/resources/addons/import_helper/"
-var import_helper_target_path:String = root_path+"addons/import_helper/"
 
 var global_timer:Timer = Timer.new()
 var global_run_time:int = 0
@@ -145,14 +142,12 @@ func reimport()->void:
 	await PluginManager.unload_plugins()
 	BotAdapter.mirai_client.disconnect_to_mirai()
 	clear_cache()
-	_add_import_helper()
 	await get_tree().create_timer(0.5).timeout
 	GuiManager.console_print_warning("正在重新导入资源，在此过程中RainyBot将会停止响应，请耐心等待.....")
 	await get_tree().create_timer(0.5).timeout
 	clear_dir_files(godot_dir_path)
 	await get_tree().create_timer(0.5).timeout
-	OS.execute(OS.get_executable_path(),["--editor","--headless","--wait-import"])
-	_remove_import_helper()
+	OS.execute(OS.get_executable_path(),["--editor","--headless","--quit"])
 	GuiManager.console_print_success("资源重新导入完毕！正在准备重新启动RainyBot...")
 	await get_tree().create_timer(0.5).timeout
 	restart()
@@ -198,27 +193,6 @@ func is_running_from_editor()->bool:
 		if arg == "--from-editor":
 			return true
 	return false
-
-
-func _add_import_helper()->void:
-	var c_file:ConfigFile = ConfigFile.new()
-	var err:int = c_file.load(project_file_path)
-	var arr:Array = ["res://addons/import_helper/plugin.cfg"]
-	if !DirAccess.dir_exists_absolute(import_helper_target_path):
-		DirAccess.make_dir_recursive_absolute(import_helper_target_path)
-	var dir:DirAccess = DirAccess.open(import_helper_path)
-	dir.include_hidden = true
-	for f in dir.get_files():
-		dir.copy(import_helper_path+f,import_helper_target_path+f)
-	dir.copy(project_file_path,"res://project.godot.bak")
-	c_file.set_value("editor_plugins","enabled",PackedStringArray(arr))
-	c_file.save(project_file_path)
-
-
-func _remove_import_helper()->void:
-	clear_dir_files(root_path+"addons/")
-	DirAccess.copy_absolute("res://project.godot.bak",project_file_path)
-	DirAccess.remove_absolute("res://project.godot.bak")
 
 
 class ResourceLoadHelper:
