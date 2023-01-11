@@ -159,3 +159,12 @@ func _on_item_list_item_selected(index: int) -> void:
 
 func _on_case_sort_button_toggled(button_pressed: bool) -> void:
 	update_member_list()
+
+
+func _on_rich_text_label_meta_clicked(meta:String) -> void:
+	var arr:PackedStringArray = meta.split(":")
+	match arr[0]:
+		"godot":
+			OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html" % arr[1].to_lower())
+		"api":
+			load_doc(arr[1])

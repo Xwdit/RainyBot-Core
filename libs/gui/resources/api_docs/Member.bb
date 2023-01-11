@@ -1,5 +1,5 @@
 [font_size=25][b][color=#70bafa]类:[/color] Member[/b][/font_size]
-[color=#70bafa]继承:[/color] MemberAPI
+[color=#70bafa]继承:[/color] [url=api:MemberAPI]MemberAPI[/url]
 
 
 [b]RainyBot的个体成员类，通常代表一个对应实例，实现了用于与好友或单向好友(陌生人)进行交互的各类功能[/b]
@@ -7,7 +7,8 @@
 
 [font_size=25][color=#70bafa][b]描述[/b][/color][/font_size]
 
-这是RainyBot的个体成员类，通常代表一个对应实例，实现了用于与好友或单向好友(陌生人)进行交互的各类功能 [br]绝大部分与好友/单向好友(陌生人)直接相关的操作都可以通过此类来进行
+这是RainyBot的个体成员类，通常代表一个对应实例，实现了用于与好友或单向好友(陌生人)进行交互的各类功能 
+绝大部分与好友/单向好友(陌生人)直接相关的操作都可以通过此类来进行
 
 
 [font_size=25][color=#70bafa][b]枚举[/b][/color][/font_size]
@@ -27,73 +28,73 @@
 
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
-	● [color=gray]static[/color] [color=#70bafa]Member[/color] ￿init￿ [color=gray]([/color] [color=#70bafa]int[/color] member_id, [color=#70bafa]int[/color] role[color=gray] = 0[/color] [color=gray])[/color]
+	● [color=gray]static[/color] [color=#70bafa][url=api:Member]Member[/url][/color] ￿init￿ [color=gray]([/color] [color=#70bafa][url=godot:int]int[/url][/color] member_id, [color=#70bafa][url=godot:int]int[/url][/color] role[color=gray] = 0[/color] [color=gray])[/color]
 
 	手动构造一个Member类的实例，用于主动进行与个体成员的交互时使用 
 	
 	需要传入的参数分别为个体成员的ID，个体成员的类型(可选，默认为Member.Role.FRIEND)
 
 
-	● [color=gray]static[/color] [color=#70bafa]Member[/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa]Dictionary[/color] dic, [color=#70bafa]int[/color] role[color=gray] = 0[/color] [color=gray])[/color]
+	● [color=gray]static[/color] [color=#70bafa][url=api:Member]Member[/url][/color] ￿init_meta￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic, [color=#70bafa][url=godot:int]int[/url][/color] role[color=gray] = 0[/color] [color=gray])[/color]
 
 	通过机器人协议后端的元数据字典构造一个Member类的实例，仅当你知道自己在做什么时才使用
 
 
-	● [color=#70bafa]Dictionary[/color] ￿get_metadata￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] ￿get_metadata￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取实例中的元数据字典，仅当你知道自己在做什么时才使用
 
 
-	● [color=gray]void[/color] ￿set_metadata￿ [color=gray]([/color] [color=#70bafa]Dictionary[/color] dic [color=gray])[/color]
+	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_metadata￿ [color=gray]([/color] [color=#70bafa][url=godot:Dictionary]Dictionary[/url][/color] dic [color=gray])[/color]
 
 	使用指定字典覆盖实例中的元数据字典，仅当你知道自己在做什么时才使用
 
 
-	● [color=#70bafa]int[/color] ￿get_role￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:int]int[/url][/color] ￿get_role￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取个体成员实例的类型，将返回一个对应Role枚举的整数值 
 	
 	若为手动构造的实例，将始终返回0
 
 
-	● [color=gray]void[/color] ￿set_role￿ [color=gray]([/color] [color=#70bafa]int[/color] role [color=gray])[/color]
+	● [color=gray][hint=此函数无返回值]void[/hint][/color] ￿set_role￿ [color=gray]([/color] [color=#70bafa][url=godot:int]int[/url][/color] role [color=gray])[/color]
 
 	设置个体成员实例的类型
 
 
-	● [color=#70bafa]bool[/color] ￿is_role￿ [color=gray]([/color] [color=#70bafa]int[/color] role [color=gray])[/color]
+	● [color=#70bafa][url=godot:bool]bool[/url][/color] ￿is_role￿ [color=gray]([/color] [color=#70bafa][url=godot:int]int[/url][/color] role [color=gray])[/color]
 
 	判断个体成员实例是否为某类型
 
 
-	● [color=#70bafa]int[/color] ￿get_id￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:int]int[/url][/color] ￿get_id￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取个体成员实例的ID
 
 
-	● [color=#70bafa]String[/color] ￿get_name￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:String]String[/url][/color] ￿get_name￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取个体成员实例的名称(昵称)，若为手动构造的实例，将始终返回空字符串
 
 
-	● [color=#70bafa]String[/color] ￿get_remark￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:String]String[/url][/color] ￿get_remark￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取Bot对个体成员实例的备注，若为手动构造的实例，将始终返回空字符串
 
 
-	● [color=#70bafa]String[/color] ￿get_avatar_url￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:String]String[/url][/color] ￿get_avatar_url￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取个体成员实例对应账号的头像的图像链接，通常为jpg格式
 
 
-	● [color=#70bafa]MemberProfile[/color] ￿get_profile￿ [color=gray]([/color] [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:MemberProfile]MemberProfile[/url][/color] ￿get_profile￿ [color=gray]([/color] [color=#70bafa][url=godot:float]float[/url][/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
 
 	获取个体成员实例相关资料的MemberProfile实例，需要配合await关键字使用 
 	
 	可以通过指定timeout参数来自定义获取请求结果的超时时间，若不指定则默认将使用配置文件中设置的超时时间
 
 
-	● [color=#70bafa]BotRequestResult[/color] ￿send_message￿ [color=gray]([/color] [color=#70bafa]Variant[/color] msg, [color=#70bafa]int[/color] quote_msgid[color=gray] = -1[/color], [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:BotRequestResult]BotRequestResult[/url][/color] ￿send_message￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] msg, [color=#70bafa][url=godot:int]int[/url][/color] quote_msgid[color=gray] = -1[/color], [color=#70bafa][url=godot:float]float[/url][/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
 
 	向个体成员实例发送消息，同时可指定一个需要引用回复的消息ID 
 	
@@ -108,7 +109,7 @@
 	可以通过指定timeout参数来自定义获取请求结果的超时时间，若不指定则默认将使用配置文件中设置的超时时间
 
 
-	● [color=#70bafa]BotRequestResult[/color] ￿send_nudge￿ [color=gray]([/color] [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:BotRequestResult]BotRequestResult[/url][/color] ￿send_nudge￿ [color=gray]([/color] [color=#70bafa][url=godot:float]float[/url][/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
 
 	向个体成员实例发送一个戳一戳消息 
 	
@@ -117,7 +118,7 @@
 	可以通过指定timeout参数来自定义获取请求结果的超时时间，若不指定则默认将使用配置文件中设置的超时时间
 
 
-	● [color=#70bafa]BotRequestResult[/color] ￿delete_friend￿ [color=gray]([/color] [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:BotRequestResult]BotRequestResult[/url][/color] ￿delete_friend￿ [color=gray]([/color] [color=#70bafa][url=godot:float]float[/url][/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
 
 	解除与个体成员实例的好友/单向好友关系 
 	
@@ -126,7 +127,7 @@
 	可以通过指定timeout参数来自定义获取请求结果的超时时间，若不指定则默认将使用配置文件中设置的超时时间
 
 
-	● [color=#70bafa]MessageChain[/color] ￿get_roaming_messages￿ [color=gray]([/color] [color=#70bafa]int[/color] start_time[color=gray] = 0[/color], [color=#70bafa]int[/color] end_time[color=gray] = 9223372036854775807[/color], [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:MessageChain]MessageChain[/url][/color] ￿get_roaming_messages￿ [color=gray]([/color] [color=#70bafa][url=godot:int]int[/url][/color] start_time[color=gray] = 0[/color], [color=#70bafa][url=godot:int]int[/url][/color] end_time[color=gray] = 9223372036854775807[/color], [color=#70bafa][url=godot:float]float[/url][/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
 
 	用于在个体成员实例中获取指定时间段的漫游消息，将返回包含符合条件的漫游消息的[MessageChain]实例 
 	
@@ -139,7 +140,7 @@
 	可以通过指定timeout参数来自定义获取请求结果的超时时间，若不指定则默认将使用配置文件中设置的超时时间
 
 
-	● [color=#70bafa]BotRequestResult[/color] ￿recall_message￿ [color=gray]([/color] [color=#70bafa]int[/color] msg_id, [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:BotRequestResult]BotRequestResult[/url][/color] ￿recall_message￿ [color=gray]([/color] [color=#70bafa][url=godot:int]int[/url][/color] msg_id, [color=#70bafa][url=godot:float]float[/url][/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
 
 	用于在个体成员实例中将指定ID的消息撤回，仅可撤回机器人发送的消息 
 	
@@ -148,7 +149,7 @@
 	可以通过指定timeout参数来自定义获取请求结果的超时时间，若不指定则默认将使用配置文件中设置的超时时间
 
 
-	● [color=#70bafa]CacheMessage[/color] ￿get_cache_message￿ [color=gray]([/color] [color=#70bafa]int[/color] msg_id, [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:CacheMessage]CacheMessage[/url][/color] ￿get_cache_message￿ [color=gray]([/color] [color=#70bafa][url=godot:int]int[/url][/color] msg_id, [color=#70bafa][url=godot:float]float[/url][/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
 
 	用于在个体成员实例中获取指定ID的本地缓存消息，将返回一个[CacheMessage]类的实例 
 	

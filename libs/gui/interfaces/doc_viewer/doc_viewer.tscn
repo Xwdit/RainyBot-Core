@@ -104,7 +104,6 @@ layout_mode = 2
 text = "访问Godot文档页面"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="HSplitContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
@@ -135,3 +134,4 @@ horizontal_alignment = 1
 [connection signal="item_selected" from="HSplitContainer/VBoxContainer/VSplitContainer/MemberList/ItemList" to="." method="_on_item_list_item_selected"]
 [connection signal="button_down" from="HSplitContainer/VBoxContainer/BrowserButton" to="." method="_on_browser_button_button_down"]
 [connection signal="button_down" from="HSplitContainer/VBoxContainer/GodotDocButton" to="." method="_on_godot_doc_button_button_down"]
+[connection signal="meta_clicked" from="HSplitContainer/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]

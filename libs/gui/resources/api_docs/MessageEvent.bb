@@ -1,6 +1,6 @@
 [font_size=25][b][color=#70bafa]类:[/color] MessageEvent[/b][/font_size]
-[color=#70bafa]继承:[/color] Event
-[color=#70bafa]派生:[/color] FriendMessageEvent, GroupMessageEvent, OtherClientMessageEvent, StrangerMessageEvent, TempMessageEvent
+[color=#70bafa]继承:[/color] [url=api:Event]Event[/url]
+[color=#70bafa]派生:[/color] [url=api:FriendMessageEvent]FriendMessageEvent[/url], [url=api:GroupMessageEvent]GroupMessageEvent[/url], [url=api:OtherClientMessageEvent]OtherClientMessageEvent[/url], [url=api:StrangerMessageEvent]StrangerMessageEvent[/url], [url=api:TempMessageEvent]TempMessageEvent[/url]
 
 
 [b]RainyBot的消息事件类，与消息直接相关的各类事件通常直接或间接继承此类[/b]
@@ -8,12 +8,12 @@
 
 [font_size=25][color=#70bafa][b]方法[/b][/color][/font_size]
 
-	● [color=#70bafa]MessageChain[/color] ￿get_message_chain￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:MessageChain]MessageChain[/url][/color] ￿get_message_chain￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取消息事件所对应的消息内容的消息链实例
 
 
-	● [color=#70bafa]Array[/color] ￿get_message_array￿ [color=gray]([/color] [color=#70bafa]Variant[/color] types[color=gray] = null[/color], [color=#70bafa]bool[/color] exclude[color=gray] = false[/color], [color=#70bafa]int[/color] max_size[color=gray] = -1[/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:Array]Array[/url][/color] ￿get_message_array￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] types[color=gray] = null[/color], [color=#70bafa][url=godot:bool]bool[/url][/color] exclude[color=gray] = false[/color], [color=#70bafa][url=godot:int]int[/url][/color] max_size[color=gray] = -1[/color] [color=gray])[/color]
 
 	根据指定的条件，来从消息事件包含的消息链实例中获取由符合条件的消息类实例组成的数组 
 	
@@ -26,7 +26,7 @@
 	获取的消息数量的上限(若不为-1，则获取到的消息实例总数到达上限后将直接返回对应数组
 
 
-	● [color=#70bafa]String[/color] ￿get_message_text￿ [color=gray]([/color] [color=#70bafa]Variant[/color] types[color=gray] = null[/color], [color=#70bafa]bool[/color] exclude[color=gray] = false[/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:String]String[/url][/color] ￿get_message_text￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] types[color=gray] = null[/color], [color=#70bafa][url=godot:bool]bool[/url][/color] exclude[color=gray] = false[/color] [color=gray])[/color]
 
 	根据指定的条件，来从消息事件包含的消息链实例中获取由符合条件的消息类实例转换并拼接而成的单个字符串 
 	
@@ -39,22 +39,22 @@
 	是否为排除模式(若为true，则将获取除上个参数的列表以外的所有消息类实例)
 
 
-	● [color=#70bafa]int[/color] ￿get_message_id￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:int]int[/url][/color] ￿get_message_id￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取消息事件所对应的消息的ID
 
 
-	● [color=#70bafa]int[/color] ￿get_message_timestamp￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:int]int[/url][/color] ￿get_message_timestamp￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取消息事件所对应的消息的发送时间戳
 
 
-	● [color=#70bafa]int[/color] ￿get_sender_id￿ [color=gray]([/color] [color=gray])[/color]
+	● [color=#70bafa][url=godot:int]int[/url][/color] ￿get_sender_id￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取消息事件所对应的消息的发送者ID
 
 
-	● [color=#70bafa]BotRequestResult[/color] ￿reply￿ [color=gray]([/color] [color=#70bafa]Variant[/color] msg, [color=#70bafa]bool[/color] quote[color=gray] = false[/color], [color=#70bafa]bool[/color] at[color=gray] = false[/color], [color=#70bafa]float[/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
+	● [color=#70bafa][url=api:BotRequestResult]BotRequestResult[/url][/color] ￿reply￿ [color=gray]([/color] [color=#70bafa][url=godot:Variant]Variant[/url][/color] msg, [color=#70bafa][url=godot:bool]bool[/url][/color] quote[color=gray] = false[/color], [color=#70bafa][url=godot:bool]bool[/url][/color] at[color=gray] = false[/color], [color=#70bafa][url=godot:float]float[/url][/color] timeout[color=gray] = inf_neg[/color] [color=gray])[/color]
 
 	用于回应某个消息事件，同时可指定是否需要引用回复原消息，以及是否需要AT原发送者(仅在群消息事件有效) 
 	
