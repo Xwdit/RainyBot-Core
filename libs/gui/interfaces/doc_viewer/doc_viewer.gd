@@ -116,3 +116,7 @@ func _on_browser_button_button_down() -> void:
 	if $HSplitContainer/VBoxContainer/BrowserButton.has_meta("doc_name"):
 		doc_name = $HSplitContainer/VBoxContainer/BrowserButton.get_meta("doc_name")
 	OS.shell_open("https://docs.rainybot.dev/api/%s"%doc_name.to_lower())
+
+
+func _on_godot_doc_button_button_down() -> void:
+	OS.shell_open("https://docs.godotengine.org/en/latest/classes/")

@@ -84,3 +84,4 @@ label_settings = SubResource("LabelSettings_0o8af")
 
 [connection signal="item_selected" from="HSplitContainer/VBoxContainer/Tree" to="." method="_on_tree_item_selected"]
 [connection signal="button_down" from="HSplitContainer/VBoxContainer/BrowserButton" to="." method="_on_browser_button_button_down"]
+[connection signal="button_down" from="HSplitContainer/VBoxContainer/GodotDocButton" to="." method="_on_godot_doc_button_button_down"]
