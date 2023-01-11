@@ -15,7 +15,7 @@ func load_script(path:String)->int:
 	var err:int = plugin_editor_node.load_script(path)
 	if err:
 		return err
-	popup_centered(Vector2i(1280,720))
+	popup_centered(Vector2i(1152,648))
 	await get_tree().process_frame
 	plugin_editor_node.code_edit_node.set_caret_line(0)
 	plugin_editor_node.code_edit_node.set_caret_column(0)

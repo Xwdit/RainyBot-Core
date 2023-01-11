@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmw7jhvlj3oqd"]
+
+[ext_resource type="Script" path="res://libs/gui/interfaces/doc_viewer/doc_viewer.gd" id="1_fwmyt"]
+
+[sub_resource type="FontVariation" id="FontVariation_e80wf"]
+variation_embolden = 0.5
+
+[sub_resource type="LabelSettings" id="LabelSettings_0o8af"]
+font_size = 20
+
+[node name="DocViewer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fwmyt")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.113725, 0.133333, 0.160784, 1)
+metadata/_edit_layout_mode = 1
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 250
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Tree" type="Tree" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+allow_reselect = true
+allow_rmb_select = true
+
+[node name="BrowserButton" type="Button" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "访问RainyBot文档页面"
+
+[node name="GodotDocButton" type="Button" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "访问Godot文档页面"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HSplitContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 2
+theme_override_colors/default_color = Color(0.960784, 0.960784, 0.960784, 1)
+theme_override_colors/font_selected_color = Color(0.203922, 0.203922, 0.203922, 1)
+theme_override_colors/selection_color = Color(0.788235, 0.788235, 0.788235, 1)
+theme_override_constants/line_separation = 5
+theme_override_fonts/bold_font = SubResource("FontVariation_e80wf")
+bbcode_enabled = true
+context_menu_enabled = true
+threaded = true
+selection_enabled = true
+
+[node name="NoDocLabel" type="CenterContainer" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HSplitContainer/NoDocLabel"]
+layout_mode = 2
+text = "请在左侧栏选择您想要查看的文档项目"
+label_settings = SubResource("LabelSettings_0o8af")
+
+[connection signal="item_selected" from="HSplitContainer/VBoxContainer/Tree" to="." method="_on_tree_item_selected"]
+[connection signal="button_down" from="HSplitContainer/VBoxContainer/BrowserButton" to="." method="_on_browser_button_button_down"]

@@ -37,6 +37,10 @@ func open_scene_editor()->void:
 		console_print_warning("正在启动场景编辑器，请稍候..... | 版本: Godot-%s"% Engine.get_version_info().string)
 		scene_editor_pid = OS.create_instance(["--editor"])
 	
+	
+func open_doc_viewer(doc_name:String,member:String="")->void:
+	get_tree().call_group("MainGui","load_doc",doc_name,member)
+	
 
 func console_print_text(text,sysout:bool=true)->void:
 	if sysout_disabled and sysout:

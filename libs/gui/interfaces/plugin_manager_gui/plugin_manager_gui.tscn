@@ -321,7 +321,6 @@ text = "还未选择任何文件，请选择一个文件来对其进行操作"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="visibility_changed" from="." to="." method="_on_plugin_manager_gui_visibility_changed"]
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/MarketButton" to="." method="_on_market_button_button_down"]
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/RefreshButton" to="." method="_on_refresh_button_button_down"]
 [connection signal="button_down" from="HSplitContainer/PluginListContainer/FolderButton" to="." method="_on_folder_button_button_down"]

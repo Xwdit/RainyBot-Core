@@ -30,11 +30,7 @@ func _ready():
 	$HSplitContainer/TabContainer.set_tab_title(1,"插件注册列表")
 	$HSplitContainer/TabContainer.set_tab_title(2,"插件数据列表")
 	PluginManager.connect("plugin_list_changed",update_plugin_list)
-
-
-func _on_plugin_manager_gui_visibility_changed():
-	if is_inside_tree() and visible:
-		update_plugin_list(true)
+	update_plugin_list(true)
 
 
 func update_plugin_list(reload_dic:bool=false)->void:
@@ -287,7 +283,6 @@ func _on_delete_button_button_down()->void:
 			GuiManager.popup_notification("成功删除插件文件%s!"% file)
 		else:
 			GuiManager.popup_notification("无法删除插件文件%s，请查看控制台来了解更多信息"% file)
-		update_plugin_list(true)
 		set_lock_panel(false)
 
 
@@ -340,7 +335,6 @@ func _on_create_plugin_button_button_down()->void:
 			text += ".gd"
 		if await PluginManager.create_plugin(text) == OK:
 			$HSplitContainer/PluginListContainer/CreatePlugin/CreatePluginFile.text = ""
-			update_plugin_list(true)
 			GuiManager.popup_notification("插件%s创建成功，请填写必要信息以确保插件可被加载"% text)
 		else:
 			GuiManager.popup_notification("插件%s创建失败，请查看控制台来了解更多信息"% text)

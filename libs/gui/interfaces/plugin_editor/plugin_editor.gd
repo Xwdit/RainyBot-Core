@@ -159,7 +159,7 @@ func _on_SaveReloadButton_button_down()->void:
 
 
 func _on_HelpButton_button_down()->void:
-	OS.shell_open("https://docs.rainybot.dev/api")
+	GuiManager.open_doc_viewer("")
 
 
 func _input(event:InputEvent)->void:

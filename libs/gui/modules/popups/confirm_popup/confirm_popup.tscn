@@ -7,7 +7,9 @@ size = Vector2i(300, 100)
 transient = false
 exclusive = false
 min_size = Vector2i(300, 100)
+ok_button_text = "确定"
 dialog_close_on_escape = false
+cancel_button_text = "取消"
 script = ExtResource("1_11ji8")
 
 [connection signal="cancelled" from="." to="." method="_on_confirm_popup_cancelled"]

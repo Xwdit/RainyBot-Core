@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0kmegunidh5l"]
+[gd_scene load_steps=10 format=3 uid="uid://b0kmegunidh5l"]
 
 [ext_resource type="Script" path="res://libs/gui/main_gui.gd" id="1_g1tev"]
 [ext_resource type="PackedScene" uid="uid://hrtt5klpd3fp" path="res://libs/gui/interfaces/console/console.tscn" id="2_xrvn5"]
 [ext_resource type="PackedScene" uid="uid://c5jsjshx2x220" path="res://libs/gui/interfaces/plugin_manager_gui/plugin_manager_gui.tscn" id="3_cydll"]
 [ext_resource type="Script" path="res://libs/gui/modules/control_bar.gd" id="3_j8q6e"]
+[ext_resource type="PackedScene" uid="uid://bmw7jhvlj3oqd" path="res://libs/gui/interfaces/doc_viewer/doc_viewer.tscn" id="4_ta7ge"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glv58"]
 content_margin_left = 8.0
@@ -22,7 +23,7 @@ bg_color = Color(0.113725, 0.133333, 0.160784, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6888m"]
 
-[node name="MainGui" type="Control"]
+[node name="MainGui" type="Control" groups=["MainGui"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -62,6 +63,10 @@ metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 
 [node name="PluginManagerGui" parent="TabContainer" instance=ExtResource("3_cydll")]
+visible = false
+layout_mode = 2
+
+[node name="DocViewer" parent="TabContainer" instance=ExtResource("4_ta7ge")]
 visible = false
 layout_mode = 2
 
@@ -158,7 +163,7 @@ text = "帮助"
 alignment = 0
 expand_icon = true
 item_count = 7
-popup/item_0/text = "教程与API文档"
+popup/item_0/text = "在线教程与文档"
 popup/item_0/id = 0
 popup/item_1/text = "问与答"
 popup/item_1/id = 1

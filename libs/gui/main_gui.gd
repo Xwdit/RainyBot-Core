@@ -28,3 +28,11 @@ func update_tabs():
 	$TabContainer.set_tab_icon(0,get_theme_icon("Window","EditorIcons"))
 	$TabContainer.set_tab_title(1,"插件管理器")
 	$TabContainer.set_tab_icon(1,get_theme_icon("PluginScript","EditorIcons"))
+	$TabContainer.set_tab_title(2,"API文档")
+	$TabContainer.set_tab_icon(2,get_theme_icon("Help","EditorIcons"))
+
+
+func load_doc(doc_name:String,member:String="")->void:
+	get_tree().root.grab_focus()
+	$TabContainer.current_tab = 2
+	$TabContainer/DocViewer.load_doc(doc_name,member)

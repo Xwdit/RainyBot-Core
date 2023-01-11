@@ -392,15 +392,30 @@ func _gui_input(event:InputEvent)->void:
 
 
 func _on_code_edit_symbol_validate(symbol:String)->void:
-	if class_dic.has(symbol) or api_dic.has(symbol) or func_line_dic.has(symbol):
+	var helper:GDScriptHelper = GDScriptHelper.new()
+	var lookup_result:Dictionary = helper.lookup_code(get_text_for_symbol_lookup(),symbol,plugin_editor.loaded_path)
+	if !lookup_result.is_empty() or class_dic.has(symbol) or api_dic.has(symbol) or func_line_dic.has(symbol):
 		set_symbol_lookup_word_as_valid(true)
 
 
 func _on_code_edit_symbol_lookup(symbol:String, line:int, column:int)->void:
+	var helper:GDScriptHelper = GDScriptHelper.new()
+	var lookup_result:Dictionary = helper.lookup_code(get_text_for_symbol_lookup(),symbol,plugin_editor.loaded_path)
+	
+	if !lookup_result.is_empty():
+		var c_name:String = lookup_result["class_name"]
+		var s_path:String = lookup_result["class_path"]
+		if class_dic.has(c_name):
+			OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html" % c_name.to_lower())
+			return
+		elif api_dic.has(s_path.get_basename().get_file()):
+			GuiManager.open_doc_viewer(s_path.get_basename().get_file(),symbol)
+			return
+		
 	if class_dic.has(symbol):
 		OS.shell_open("https://docs.godotengine.org/en/latest/classes/class_%s.html" % symbol.to_lower())
 	elif api_dic.has(symbol):
-		OS.shell_open("https://docs.rainybot.dev/api/%s"% symbol.to_lower())
+		GuiManager.open_doc_viewer(symbol)
 	elif func_line_dic.has(symbol):
 		var new_line:int = func_line_dic[symbol]
 		set_caret_line(new_line)

@@ -268,6 +268,7 @@ func create_plugin(file_name:String)->int:
 		file_name = file_name + ".gd"
 	var scr:GDScript = load("res://libs/core/templates/plugin_template.gd")
 	if ResourceSaver.save(scr,plugin_path+file_name) == OK:
+		get_plugin_files_dic()
 		plugin_list_changed.emit()
 		GuiManager.console_print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
 		GuiManager.console_print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
@@ -279,11 +280,15 @@ func create_plugin(file_name:String)->int:
 
 func delete_plugin(file_name:String)->int:
 	if FileAccess.file_exists(plugin_path+file_name) && file_name.ends_with(".gd"):
+		var plug:Plugin = get_plugin_with_filename(file_name)
+		if is_instance_valid(plug):
+			var err:int = await unload_plugin(plug)
+			if err != OK:
+				GuiManager.console_print_error("插件文件删除失败，无法卸载已存在的插件!")
+				return ERR_LOCKED
 		var dir:DirAccess = DirAccess.open(plugin_path)
 		if dir && dir.remove(plugin_path+file_name)==OK:
-			var plug:Plugin = get_plugin_with_filename(file_name)
-			if is_instance_valid(plug):
-				await unload_plugin(plug)
+			get_plugin_files_dic()
 			plugin_list_changed.emit()
 			GuiManager.console_print_success("插件文件删除成功!")
 			return OK
@@ -392,6 +397,7 @@ func load_plugins()->int:
 		if await load_plugin(_files_dic[_id].file,_files_dic) != OK:
 			err_count += 1
 	get_tree().call_group("Plugin","_on_ready")
+	plugin_list_changed.emit()
 	return err_count
 
 
