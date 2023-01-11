@@ -33,7 +33,7 @@ offset_right = -8.0
 offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 250
+split_offset = 285
 
 [node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource("1_yhib5")]
 layout_mode = 2

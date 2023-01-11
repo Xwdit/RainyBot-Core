@@ -14,14 +14,15 @@ signal file_changed(file_name:String,is_unsaved:bool)
 
 var loaded_path:String = ""
 var loaded_name:String = ""
+var loaded_ins:Plugin = null
 var unsaved_dic:Dictionary = {}
 var file_caret_dic:Dictionary = {}
 
 
 func _ready():
 	PluginManager.connect("plugin_list_changed",update_file_list)
-	update_file_list()
 	code_edit_node.plugin_editor = self
+	update_file_list()
 
 
 func load_script(path:String)->int:
@@ -38,6 +39,7 @@ func load_script(path:String)->int:
 		code_edit_node.clear_undo_history()
 		loaded_path = path
 		loaded_name = path.get_file()
+		loaded_ins = PluginManager.get_plugin_with_filename(loaded_name)
 		if unsaved_dic.has(path):
 			set_unsaved(true)
 		else:
@@ -54,11 +56,15 @@ func load_script(path:String)->int:
 	
 
 func update_file_list():
-	var files:Array = PluginManager.file_load_status.keys()
+	var files:Array[String] = []
 	var filter:String = $HSplitContainer/VSplitContainer/FileList/FileSearch.text
+	for s in PluginManager.file_load_status:
+		if PluginManager.file_load_status[s] == false:
+			files.append(s)
 	for id in PluginManager.plugin_files_dic:
 		files.append(PluginManager.plugin_files_dic[id].file)
 	file_list_node.clear()
+	var found:bool = false
 	for f in files:
 		if !filter.is_empty() and f.findn(filter) == -1:
 			continue
@@ -67,6 +73,10 @@ func update_file_list():
 		var f_status:String = " (未保存)" if unsaved_dic.has(f_path) else ""
 		var idx:int = file_list_node.add_item(f_name+f_status)
 		file_list_node.set_item_metadata(idx,f_path)
+		if f_name == loaded_name:
+			found = true
+	if !found:
+	else:
 	for i in file_list_node.item_count:
 		var _path:String = file_list_node.get_item_metadata(i)
 		if _path == loaded_path:

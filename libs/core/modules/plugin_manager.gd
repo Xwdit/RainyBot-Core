@@ -178,14 +178,12 @@ func load_plugin_script(path:String)->GDScript:
 
 
 func load_plugin(file:String,files_dic:Dictionary={},source:String="")->int:
-	file_load_status[file] = false
 	GuiManager.console_print_warning("正在尝试加载插件文件: " + file)
 	var _f_dic:Dictionary
 	if !files_dic.is_empty():
 		_f_dic = files_dic
 	else:
 		_f_dic = get_plugin_files_dic()
-		plugin_list_changed.emit()
 	for _id in _f_dic:
 		var _f:Dictionary = _f_dic[_id]
 		if _f.file == file:
@@ -270,7 +268,6 @@ func create_plugin(file_name:String)->int:
 	var scr:GDScript = load("res://libs/core/templates/plugin_template.gd")
 	if ResourceSaver.save(scr,plugin_path+file_name) == OK:
 		get_plugin_files_dic()
-		plugin_list_changed.emit()
 		GuiManager.console_print_success("插件文件创建成功! 路径: "+plugin_path+file_name)
 		GuiManager.console_print_success("您可以使用以下指令来开始编辑插件: plugins edit "+file_name)
 		return OK
@@ -290,7 +287,6 @@ func delete_plugin(file_name:String)->int:
 		var dir:DirAccess = DirAccess.open(plugin_path)
 		if dir && dir.remove(plugin_path+file_name)==OK:
 			get_plugin_files_dic()
-			plugin_list_changed.emit()
 			GuiManager.console_print_success("插件文件删除成功!")
 			return OK
 		else:
@@ -356,10 +352,11 @@ func get_plugin_file_info(file:String)->Dictionary:
 
 func get_plugin_files_dic()->Dictionary:
 	GuiManager.console_print_warning("开始扫描插件目录.....")
-	var _file_dic:Dictionary = {}
 	var _files:Array = _list_files_in_directory(plugin_path)
 	file_load_status.clear()
+	plugin_files_dic.clear()
 	if _files.size() == 0:
+		plugin_list_changed.emit()
 		GuiManager.console_print_warning("插件目录下未找到任何插件...")
 		return {}
 	for _file in _files:
@@ -368,15 +365,15 @@ func get_plugin_files_dic()->Dictionary:
 			file_load_status[_file] = false
 			continue
 		var _id:String = _plugin_info.id.to_lower()
-		if _file_dic.has(_id):
+		if plugin_files_dic.has(_id):
 			file_load_status[_file] = false
 			GuiManager.console_print_error("无法读取插件文件: " + _file)
-			GuiManager.console_print_error("已经存在ID为"+str(_id)+"的插件文件: "+str(_file_dic[_id].file))
+			GuiManager.console_print_error("已经存在ID为"+str(_id)+"的插件文件: "+str(plugin_files_dic[_id].file))
 			continue
-		_file_dic[_id] = {"file":_file,"info":_plugin_info}
-	plugin_files_dic = _file_dic
+		plugin_files_dic[_id] = {"file":_file,"info":_plugin_info}
+	plugin_list_changed.emit()
 	GuiManager.console_print_success("插件目录扫描完毕！")
-	return _file_dic
+	return plugin_files_dic
 	
 	
 func get_plugin_instance_dic()->Dictionary:
@@ -398,7 +395,6 @@ func load_plugins()->int:
 		if await load_plugin(_files_dic[_id].file,_files_dic) != OK:
 			err_count += 1
 	get_tree().call_group("Plugin","_on_ready")
-	plugin_list_changed.emit()
 	return err_count
 
 

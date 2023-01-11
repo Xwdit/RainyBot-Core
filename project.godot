@@ -671,6 +671,8 @@ file_logging/log_path="user://logs/rainybot.log"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/subwindows/embed_subwindows=false
 window/dpi/allow_hidpi.macos=false
 

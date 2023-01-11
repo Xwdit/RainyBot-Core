@@ -15,7 +15,9 @@ func load_script(path:String)->int:
 	var err:int = plugin_editor_node.load_script(path)
 	if err:
 		return err
-	popup_centered(Vector2i(1152,648))
+	var width:int = ProjectSettings.get_setting("display/window/size/viewport_width")
+	var height:int = ProjectSettings.get_setting("display/window/size/viewport_height")
+	popup_centered(Vector2i(width,height))
 	await get_tree().process_frame
 	plugin_editor_node.code_edit_node.set_caret_line(0)
 	plugin_editor_node.code_edit_node.set_caret_column(0)
