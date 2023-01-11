@@ -23,7 +23,6 @@ var file_caret_dic:Dictionary = {}
 func _ready():
 	PluginManager.connect("plugin_list_changed",update_file_list)
 	code_edit_node.plugin_editor = self
-	update_file_list()
 
 
 func load_script(path:String)->int:
@@ -41,7 +40,6 @@ func load_script(path:String)->int:
 		loaded_path = path
 		loaded_name = path.get_file()
 		loaded_ins = PluginManager.get_plugin_with_filename(loaded_name)
-		loaded_has_file = true
 		if unsaved_dic.has(path):
 			set_unsaved(true)
 		else:
@@ -58,21 +56,26 @@ func load_script(path:String)->int:
 	
 
 func update_file_list():
-	var files:Array[String] = []
-	var filter:String = $HSplitContainer/VSplitContainer/FileList/FileSearch.text
+	var f_dic:Dictionary = {}
 	loaded_has_file = false
 	for s in PluginManager.file_load_status:
 		if PluginManager.file_load_status[s] == false:
-			files.append(s)
+			f_dic[s] = null
 			if s == loaded_name:
 				loaded_has_file = true
 	for id in PluginManager.plugin_files_dic:
-		files.append(PluginManager.plugin_files_dic[id].file)
+		f_dic[PluginManager.plugin_files_dic[id].file] = null
 		if PluginManager.plugin_files_dic[id].file == loaded_name:
 			loaded_has_file = true
 	if !loaded_has_file:
-		files.append(loaded_name)
+		f_dic[loaded_name] = null
 		set_unsaved(true,false)
+	for k in unsaved_dic:
+		var f_name:String = k.get_file()
+		if !f_dic.has(f_name):
+			f_dic[f_name] = null
+	var filter:String = $HSplitContainer/VSplitContainer/FileList/FileSearch.text
+	var files:Array[String] = f_dic.keys()
 	files.sort()
 	file_list_node.clear()
 	for f in files:

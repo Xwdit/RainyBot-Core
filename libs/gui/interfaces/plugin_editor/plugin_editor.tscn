@@ -37,7 +37,7 @@ offset_right = -5.0
 offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 180
+split_offset = 200
 
 [node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
 layout_mode = 2
