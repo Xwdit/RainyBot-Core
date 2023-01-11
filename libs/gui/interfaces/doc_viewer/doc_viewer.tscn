@@ -124,8 +124,10 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="HSplitContainer/NoDocLabel"]
 layout_mode = 2
-text = "请在左侧栏选择您想要查看的文档项目"
+text = "请在左侧栏选择您想要查看的文档项目
+(小贴士：您可以在插件编辑器中按住左侧Ctrl键，并点击某段代码来快速跳转到其文档)"
 label_settings = SubResource("LabelSettings_0o8af")
+horizontal_alignment = 1
 
 [connection signal="item_selected" from="HSplitContainer/VBoxContainer/VSplitContainer/DocList/Tree" to="." method="_on_tree_item_selected"]
 [connection signal="toggled" from="HSplitContainer/VBoxContainer/VSplitContainer/MemberList/HBoxContainer/CaseSortButton" to="." method="_on_case_sort_button_toggled"]
