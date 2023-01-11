@@ -185,6 +185,7 @@ func load_plugin(file:String,files_dic:Dictionary={},source:String="")->int:
 		_f_dic = files_dic
 	else:
 		_f_dic = get_plugin_files_dic()
+		plugin_list_changed.emit()
 	for _id in _f_dic:
 		var _f:Dictionary = _f_dic[_id]
 		if _f.file == file:
