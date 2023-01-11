@@ -44,11 +44,56 @@ split_offset = 250
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Tree" type="Tree" parent="HSplitContainer/VBoxContainer"]
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DocList" type="VBoxContainer" parent="HSplitContainer/VBoxContainer/VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="HSplitContainer/VBoxContainer/VSplitContainer/DocList"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "文档列表"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tree" type="Tree" parent="HSplitContainer/VBoxContainer/VSplitContainer/DocList"]
 layout_mode = 2
 size_flags_vertical = 3
 allow_reselect = true
 allow_rmb_select = true
+
+[node name="MemberList" type="VBoxContainer" parent="HSplitContainer/VBoxContainer/VSplitContainer"]
+custom_minimum_size = Vector2(180, 150)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/VBoxContainer/VSplitContainer/MemberList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/VBoxContainer/VSplitContainer/MemberList/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "成员列表"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CaseSortButton" type="Button" parent="HSplitContainer/VBoxContainer/VSplitContainer/MemberList/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "切换首字母排序"
+toggle_mode = true
+text = "Aa"
+flat = true
+
+[node name="MemberSearch" type="LineEdit" parent="HSplitContainer/VBoxContainer/VSplitContainer/MemberList"]
+layout_mode = 2
+placeholder_text = "搜索成员列表"
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/VBoxContainer/VSplitContainer/MemberList"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="BrowserButton" type="Button" parent="HSplitContainer/VBoxContainer"]
 layout_mode = 2
@@ -82,6 +127,9 @@ layout_mode = 2
 text = "请在左侧栏选择您想要查看的文档项目"
 label_settings = SubResource("LabelSettings_0o8af")
 
-[connection signal="item_selected" from="HSplitContainer/VBoxContainer/Tree" to="." method="_on_tree_item_selected"]
+[connection signal="item_selected" from="HSplitContainer/VBoxContainer/VSplitContainer/DocList/Tree" to="." method="_on_tree_item_selected"]
+[connection signal="toggled" from="HSplitContainer/VBoxContainer/VSplitContainer/MemberList/HBoxContainer/CaseSortButton" to="." method="_on_case_sort_button_toggled"]
+[connection signal="text_changed" from="HSplitContainer/VBoxContainer/VSplitContainer/MemberList/MemberSearch" to="." method="_on_member_search_text_changed"]
+[connection signal="item_selected" from="HSplitContainer/VBoxContainer/VSplitContainer/MemberList/ItemList" to="." method="_on_item_list_item_selected"]
 [connection signal="button_down" from="HSplitContainer/VBoxContainer/BrowserButton" to="." method="_on_browser_button_button_down"]
 [connection signal="button_down" from="HSplitContainer/VBoxContainer/GodotDocButton" to="." method="_on_godot_doc_button_button_down"]

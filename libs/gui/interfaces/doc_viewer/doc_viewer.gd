@@ -6,7 +6,8 @@ const CATALOG_PATH = API_DOC_PATH+"CATALOG"
 
 
 @onready var label:RichTextLabel = $HSplitContainer/RichTextLabel
-@onready var tree:Tree = $HSplitContainer/VBoxContainer/Tree
+@onready var tree:Tree = $HSplitContainer/VBoxContainer/VSplitContainer/DocList/Tree
+@onready var member_list:ItemList = $HSplitContainer/VBoxContainer/VSplitContainer/MemberList/ItemList
 
 var tree_items:Array[TreeItem] = []
 var loaded_doc:String = ""
@@ -49,7 +50,32 @@ func load_doc(doc_name:String,member:String="")->int:
 				tree.queue_redraw()
 				break
 	scroll_to_member.call(member)
+	update_member_list()
 	return OK
+	
+	
+func update_member_list()->void:
+	var filter:String = $HSplitContainer/VBoxContainer/VSplitContainer/MemberList/MemberSearch.text
+	var case_order:bool = $HSplitContainer/VBoxContainer/VSplitContainer/MemberList/HBoxContainer/CaseSortButton.button_pressed
+	
+	member_list.clear()
+	var s_arr:PackedStringArray = label.text.split(char(0xFFFF))
+	for i in s_arr.size():
+		if i%2 == 1:
+			var f:String = s_arr[i]
+			if f.is_empty():
+				continue
+			if !filter.is_empty() and f.findn(filter) == -1:
+				continue
+			var pos:int = label.get_parsed_text().findn(char(0xFFFF)+f+char(0xFFFF))
+			if pos == -1:
+				continue
+			var _line:int = label.get_character_line(pos)
+			var idx:int = member_list.add_item(f)
+			member_list.set_item_metadata(idx,_line)
+	if case_order:
+		member_list.sort_items_by_text()
+	member_list.queue_redraw()
 	
 	
 func load_catalog_tree()->int:
@@ -120,3 +146,15 @@ func _on_browser_button_button_down() -> void:
 
 func _on_godot_doc_button_button_down() -> void:
 	OS.shell_open("https://docs.godotengine.org/en/latest/classes/")
+
+
+func _on_member_search_text_changed(new_text: String) -> void:
+	update_member_list()
+
+
+func _on_item_list_item_selected(index: int) -> void:
+	label.scroll_to_line(member_list.get_item_metadata(index))
+	
+
+func _on_case_sort_button_toggled(button_pressed: bool) -> void:
+	update_member_list()
