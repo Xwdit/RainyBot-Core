@@ -72,7 +72,8 @@ func update_file_list():
 			loaded_has_file = true
 	if !loaded_has_file:
 		files.append(loaded_name)
-		set_unsaved(true,false)
+		if !is_unsaved():
+			set_unsaved(true,false)
 	files.sort()
 	file_list_node.clear()
 	for f in files:
@@ -153,6 +154,10 @@ func set_unsaved(enabled:bool=true,update_list:bool=true)->void:
 	if update_list:
 		update_file_list()
 	file_changed.emit(loaded_name,enabled)
+	
+	
+func is_unsaved()->bool:
+	return unsaved_dic.has(loaded_path)
 
 
 func _on_CodeEdit_text_changed()->void:
