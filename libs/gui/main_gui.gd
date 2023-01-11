@@ -33,6 +33,6 @@ func update_tabs():
 
 
 func load_doc(doc_name:String,member:String="")->void:
-	get_tree().root.grab_focus()
+	get_window().grab_focus()
 	$TabContainer.current_tab = 2
 	$TabContainer/DocViewer.load_doc(doc_name,member)
