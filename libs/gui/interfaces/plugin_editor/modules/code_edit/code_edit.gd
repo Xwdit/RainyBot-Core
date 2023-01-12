@@ -34,8 +34,7 @@ func _gui_input(event:InputEvent)->void:
 
 
 func _on_CodeEdit_request_code_completion()->void:
-	var src_path:String = plugin_editor.loaded_ins.get_script().resource_path if is_instance_valid(plugin_editor.loaded_ins) else ProjectSettings.localize_path(plugin_editor.loaded_path)
-	var error:int = helper.set_completion_code(get_text_for_code_completion(),src_path,plugin_editor.loaded_ins)
+	var error:int = helper.set_completion_code(get_text_for_code_completion(),get_script_path(),plugin_editor.loaded_ins)
 	if error == OK:
 		if helper.has_completion_options():
 			var list:Array[Dictionary] = helper.get_completion_options()
@@ -96,8 +95,7 @@ func parse_code_text()->void:
 			continue
 	error_lines.clear()
 	func_line_dic.clear()
-	var src_path:String = plugin_editor.loaded_ins.get_script().resource_path if is_instance_valid(plugin_editor.loaded_ins) else ProjectSettings.localize_path(plugin_editor.loaded_path)
-	var success:bool = helper.set_validate_code(text,src_path)
+	var success:bool = helper.set_validate_code(text,get_script_path())
 	if success:
 		if helper.has_functions():
 			func_line_dic = helper.get_functions()
@@ -122,15 +120,13 @@ func _on_Timer_timeout()->void:
 
 
 func _on_code_edit_symbol_validate(symbol:String)->void:
-	var src_path:String = plugin_editor.loaded_ins.get_script().resource_path if is_instance_valid(plugin_editor.loaded_ins) else ProjectSettings.localize_path(plugin_editor.loaded_path)
-	var lookup_result:Dictionary = helper.lookup_code(get_text_for_symbol_lookup(),symbol,src_path,plugin_editor.loaded_ins)
+	var lookup_result:Dictionary = helper.lookup_code(get_text_for_symbol_lookup(),symbol,get_script_path(),plugin_editor.loaded_ins)
 	if !lookup_result.is_empty() or GuiManager.class_dic.has(symbol) or GuiManager.api_dic.has(symbol) or func_line_dic.has(symbol):
 		set_symbol_lookup_word_as_valid(true)
 
 
 func _on_code_edit_symbol_lookup(symbol:String, line:int, column:int)->void:
-	var src_path:String = plugin_editor.loaded_ins.get_script().resource_path if is_instance_valid(plugin_editor.loaded_ins) else ProjectSettings.localize_path(plugin_editor.loaded_path)
-	var lookup_result:Dictionary = helper.lookup_code(get_text_for_symbol_lookup(),symbol,src_path,plugin_editor.loaded_ins)
+	var lookup_result:Dictionary = helper.lookup_code(get_text_for_symbol_lookup(),symbol,get_script_path(),plugin_editor.loaded_ins)
 	
 	if !lookup_result.is_empty():
 		var c_name:String = lookup_result["class_name"]
@@ -152,3 +148,7 @@ func _on_code_edit_symbol_lookup(symbol:String, line:int, column:int)->void:
 		var new_line:int = func_line_dic[symbol]
 		set_caret_line(new_line)
 		center_viewport_to_caret()
+		
+		
+func get_script_path()->String:
+	return plugin_editor.loaded_ins.get_script().resource_path if is_instance_valid(plugin_editor.loaded_ins) else ProjectSettings.localize_path(plugin_editor.loaded_path)
