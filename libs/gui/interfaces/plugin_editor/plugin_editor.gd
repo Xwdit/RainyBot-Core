@@ -21,7 +21,7 @@ var file_caret_dic:Dictionary = {}
 
 
 func _ready():
-	PluginManager.connect("plugin_list_changed",update_file_list)
+	PluginManager.connect("plugin_list_changed",_on_plugin_list_changed)
 	code_edit_node.plugin_editor = self
 
 
@@ -163,6 +163,11 @@ func _on_CodeEdit_text_changed()->void:
 		set_unsaved()
 	elif loaded_has_file:
 		set_unsaved(false)
+
+
+func _on_plugin_list_changed()->void:
+	loaded_ins = PluginManager.get_plugin_with_filename(loaded_name)
+	update_file_list()
 
 
 func _on_CodeEdit_caret_changed()->void:
