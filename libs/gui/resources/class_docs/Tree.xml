@@ -52,6 +52,12 @@
 				The new item will be the [param idx]th child of parent, or it will be the last child if there are not enough siblings.
 			</description>
 		</method>
+		<method name="deselect_all">
+			<return type="void" />
+			<description>
+				Deselects all tree items (rows and columns). In [constant SELECT_MULTI] mode also removes selection cursor.
+			</description>
+		</method>
 		<method name="edit_selected">
 			<return type="bool" />
 			<description>
@@ -70,7 +76,7 @@
 			<return type="int" />
 			<param index="0" name="position" type="Vector2" />
 			<description>
-				Returns the button id at [param position], or -1 if no button is there.
+				Returns the button ID at [param position], or -1 if no button is there.
 			</description>
 		</method>
 		<method name="get_column_at_position" qualifiers="const">
@@ -522,6 +528,7 @@
 		</theme_item>
 		<theme_item name="outline_size" data_type="constant" type="int" default="0">
 			The size of the text outline.
+			[b]Note:[/b] If using a font with [member FontFile.multichannel_signed_distance_field] enabled, its [member FontFile.msdf_pixel_range] must be set to at least [i]twice[/i] the value of [theme_item outline_size] for outline rendering to look correct. Otherwise, the outline may appear to be cut off earlier than intended.
 		</theme_item>
 		<theme_item name="parent_hl_line_margin" data_type="constant" type="int" default="0">
 			The space between the parent relationship lines for the selected [TreeItem] and the relationship lines to its siblings that are not selected.
