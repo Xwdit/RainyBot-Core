@@ -36,7 +36,7 @@ static func init(g_id:int,m_id:int)->GroupMember:
 
 
 static func init_meta(dic:Dictionary)->GroupMember:
-	if !dic.is_empty() and dic.has("id"):
+	if dic.has("id"):
 		var ins:GroupMember = GroupMember.new()
 		ins.data_dic = dic
 		return ins
@@ -49,7 +49,7 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	if !dic.is_empty() and dic.has("id"):
+	if dic.has("id"):
 		data_dic = dic
 
 

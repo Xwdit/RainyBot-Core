@@ -15,7 +15,7 @@ static func init()->AtAllMessage:
 
 
 static func init_meta(dic:Dictionary)->AtAllMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:AtAllMessage = AtAllMessage.new()
 		ins.data_dic = dic
 		return ins

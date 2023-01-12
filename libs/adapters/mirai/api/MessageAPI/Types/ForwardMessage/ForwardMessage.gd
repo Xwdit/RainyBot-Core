@@ -28,7 +28,7 @@ static func init(node_list:ForwardMessageNodeList)->ForwardMessage:
 
 
 static func init_meta(dic:Dictionary)->ForwardMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:ForwardMessage = ForwardMessage.new()
 		ins.data_dic = dic
 		return ins

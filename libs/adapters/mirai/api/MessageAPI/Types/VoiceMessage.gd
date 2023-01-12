@@ -43,7 +43,7 @@ static func init_base64(voice_base64:String)->VoiceMessage:
 
 
 static func init_meta(dic:Dictionary)->VoiceMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:VoiceMessage = VoiceMessage.new()
 		ins.data_dic = dic
 		return ins

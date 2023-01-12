@@ -31,7 +31,7 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->GroupAllowAnonyChatEvent:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:GroupAllowAnonyChatEvent = GroupAllowAnonyChatEvent.new()
 		ins.data_dic = dic
 		return ins

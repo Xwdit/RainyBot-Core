@@ -30,7 +30,7 @@ static func init(kind:String,title:String,summary:String,jump_url:String,picture
 
 
 static func init_meta(dic:Dictionary)->MusicShareMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:MusicShareMessage = MusicShareMessage.new()
 		ins.data_dic = dic
 		return ins

@@ -25,7 +25,7 @@ var event_reason:int = ReasonType.ACTIVE
 
 
 static func init_meta(dic:Dictionary,reason:int)->BotLeaveGroupEvent:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:BotLeaveGroupEvent = BotLeaveGroupEvent.new()
 		ins.data_dic = dic
 		ins.event_reason = reason

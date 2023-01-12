@@ -31,7 +31,7 @@ var data_dic:Dictionary = {
 
 ## 通过机器人协议后端的元数据数组构造一个BotRequestResult类的实例，仅当你知道自己在做什么时才使用
 static func init_meta(dic:Dictionary)->BotRequestResult:
-	if !dic.is_empty() and dic.has("code"):
+	if dic.has("code"):
 		var ins:BotRequestResult = BotRequestResult.new()
 		ins.data_dic = dic
 		return ins
@@ -46,7 +46,7 @@ func get_metadata()->Dictionary:
 
 ## 使用指定字典覆盖实例中的元数据字典，仅当你知道自己在做什么时才使用
 func set_metadata(dic:Dictionary)->void:
-	if !dic.is_empty() and dic.has("code"):
+	if dic.has("code"):
 		data_dic = dic
 
 

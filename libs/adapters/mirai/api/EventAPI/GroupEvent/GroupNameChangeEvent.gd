@@ -31,7 +31,7 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->GroupNameChangeEvent:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:GroupNameChangeEvent = GroupNameChangeEvent.new()
 		ins.data_dic = dic
 		return ins

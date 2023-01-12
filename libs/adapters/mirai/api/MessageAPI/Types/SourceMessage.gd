@@ -12,7 +12,7 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->SourceMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:SourceMessage = SourceMessage.new()
 		ins.data_dic = dic
 		return ins

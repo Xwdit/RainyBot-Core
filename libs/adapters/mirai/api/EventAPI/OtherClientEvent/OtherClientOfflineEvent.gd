@@ -14,7 +14,7 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->OtherClientOfflineEvent:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:OtherClientOfflineEvent = OtherClientOfflineEvent.new()
 		ins.data_dic = dic
 		return ins

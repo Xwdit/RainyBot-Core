@@ -16,7 +16,7 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->GroupAnnounceInfo:
-	if !dic.is_empty() and dic.has("group"):
+	if dic.has("group"):
 		var ins:GroupAnnounceInfo = GroupAnnounceInfo.new()
 		ins.data_dic = dic
 		return ins
@@ -29,7 +29,7 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	if !dic.is_empty() and dic.has("group"):
+	if dic.has("group"):
 		data_dic = dic
 
 

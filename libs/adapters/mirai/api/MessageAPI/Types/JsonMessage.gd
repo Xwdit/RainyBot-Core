@@ -18,7 +18,7 @@ static func init(text:String)->JsonMessage:
 
 
 static func init_meta(dic:Dictionary)->JsonMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:JsonMessage = JsonMessage.new()
 		ins.data_dic = dic
 		return ins

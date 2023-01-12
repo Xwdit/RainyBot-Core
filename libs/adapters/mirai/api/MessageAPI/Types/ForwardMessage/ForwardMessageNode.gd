@@ -32,7 +32,7 @@ static func init_id(message_id:int)->ForwardMessageNode:
 
 
 static func init_meta(dic:Dictionary)->ForwardMessageNode:
-	if !dic.is_empty() and (dic.has("senderId") or dic.has("messageId")):
+	if dic.has("senderId") or dic.has("messageId"):
 		var ins:ForwardMessageNode = ForwardMessageNode.new()
 		ins.data_dic = dic
 		return ins
@@ -45,7 +45,7 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	if !dic.is_empty() and (dic.has("senderId") or dic.has("messageId")):
+	if dic.has("senderId") or dic.has("messageId"):
 		data_dic = dic
 
 

@@ -18,7 +18,7 @@ static func init(text:String)->TextMessage:
 
 
 static func init_meta(dic:Dictionary)->TextMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:TextMessage = TextMessage.new()
 		ins.data_dic = dic
 		return ins

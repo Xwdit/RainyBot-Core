@@ -50,7 +50,7 @@ static func init(type:int)->PokeMessage:
 
 
 static func init_meta(dic:Dictionary)->PokeMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:PokeMessage = PokeMessage.new()
 		ins.data_dic = dic
 		return ins

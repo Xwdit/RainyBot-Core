@@ -76,7 +76,7 @@ static func init_base64(image_base64:String)->FlashImageMessage:
 
 
 static func init_meta(dic:Dictionary)->FlashImageMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:FlashImageMessage = FlashImageMessage.new()
 		ins.data_dic = dic
 		return ins

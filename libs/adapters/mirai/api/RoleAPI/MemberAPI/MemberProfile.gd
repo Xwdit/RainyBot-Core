@@ -30,7 +30,7 @@ static func init_user(user_id:int,timeout:float=-INF)->MemberProfile:
 
 
 static func init_meta(dic:Dictionary)->MemberProfile:
-	if !dic.is_empty() and dic.has("nickname"):
+	if dic.has("nickname"):
 		var ins:MemberProfile = MemberProfile.new()
 		ins.data_dic = dic
 		return ins
@@ -43,7 +43,7 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	if !dic.is_empty() and dic.has("nickname"):
+	if dic.has("nickname"):
 		data_dic = dic
 
 

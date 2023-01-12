@@ -24,7 +24,7 @@ static func init(face)->FaceMessage:
 
 
 static func init_meta(dic:Dictionary)->FaceMessage:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:FaceMessage = FaceMessage.new()
 		ins.data_dic = dic
 		return ins

@@ -25,7 +25,7 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->BotMuteEvent:
-	if !dic.is_empty() and dic.has("type"):
+	if dic.has("type"):
 		var ins:BotMuteEvent = BotMuteEvent.new()
 		ins.data_dic = dic
 		return ins

@@ -24,7 +24,7 @@ static func init(content:String)->GroupAnnounce:
 
 
 static func init_meta(dic:Dictionary)->GroupAnnounce:
-	if !dic.is_empty() and dic.has("content"):
+	if dic.has("content"):
 		var ins:GroupAnnounce = GroupAnnounce.new()
 		ins.data_dic = dic
 		return ins
@@ -37,7 +37,7 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	if !dic.is_empty() and dic.has("content"):
+	if dic.has("content"):
 		data_dic = dic
 
 
