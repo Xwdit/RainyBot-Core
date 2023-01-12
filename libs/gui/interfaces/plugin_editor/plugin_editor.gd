@@ -200,14 +200,20 @@ func _on_CodeEdit_update_finished()->void:
 	var _err_dic:Dictionary = code_edit_node.error_lines
 	var _l_num:int = code_edit_node.get_caret_line()
 	if _err_dic.has(_l_num):
-		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "错误: "+_err_dic[_l_num]
+		var txt:String = "错误: "+_err_dic[_l_num]
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = txt
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.tooltip_text = txt
 	elif !_err_dic.is_empty():
 		var _ln:Array[int] = []
 		for _l in _err_dic:
 			_ln.append(_l+1)
-		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "在以下行检测到错误，请移动到对应行查看详情: "+str(_ln)
+		var txt:String = "在以下行检测到错误，请移动到对应行查看详情: "+str(_ln)
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = txt
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.tooltip_text = txt
 	else:
-		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = "当前文件中未发现任何错误"
+		var txt:String = "当前文件中未发现任何错误"
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.text = txt
+		$HSplitContainer/VBoxContainer/StatusPanel/CodeStatus.tooltip_text = txt
 	update_func_list()
 
 
