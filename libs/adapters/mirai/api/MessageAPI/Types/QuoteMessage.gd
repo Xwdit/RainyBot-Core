@@ -15,9 +15,12 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->QuoteMessage:
-	var ins:QuoteMessage = QuoteMessage.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:QuoteMessage = QuoteMessage.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 
 func get_message_id()->int:

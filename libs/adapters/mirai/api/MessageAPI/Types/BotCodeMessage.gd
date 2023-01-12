@@ -18,9 +18,12 @@ static func init(text:String)->BotCodeMessage:
 
 
 static func init_meta(dic:Dictionary)->BotCodeMessage:
-	var ins:BotCodeMessage = BotCodeMessage.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:BotCodeMessage = BotCodeMessage.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 	
 func get_code_text()->String:

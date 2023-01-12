@@ -27,6 +27,8 @@ func _iter_get(_arg)->Group:
 
 
 static func init_meta(arr:Array)->GroupList:
+	if arr.is_empty():
+		return null
 	var ins:GroupList = GroupList.new()
 	ins.data_array = arr
 	return ins
@@ -37,6 +39,8 @@ func get_metadata()->Array:
 
 
 func set_metadata(arr:Array)->void:
+	if arr.is_empty():
+		return
 	data_array = arr
 
 

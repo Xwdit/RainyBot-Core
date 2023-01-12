@@ -22,21 +22,20 @@ var data_dic:Dictionary = {
 
 
 static func init_user(user_id:int,timeout:float=-INF)->MemberProfile:
-	var ins:MemberProfile = MemberProfile.new()
 	var _req_dic:Dictionary = {
 		"target":user_id,
 	}
 	var _result:Dictionary = await BotAdapter.send_bot_request("userProfile","",_req_dic,timeout)
-	if !_result.is_empty():
-		ins.data_dic = _result
-	return ins
+	return MemberProfile.init_meta(_result)
 
 
 static func init_meta(dic:Dictionary)->MemberProfile:
-	var ins:MemberProfile = MemberProfile.new()
-	if !dic.is_empty():
+	if !dic.is_empty() and dic.has("nickname"):
+		var ins:MemberProfile = MemberProfile.new()
 		ins.data_dic = dic
-	return ins
+		return ins
+	else:
+		return null
 	
 	
 func get_metadata()->Dictionary:
@@ -44,7 +43,8 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	data_dic = dic
+	if !dic.is_empty() and dic.has("nickname"):
+		data_dic = dic
 
 
 func get_nickname()->String:

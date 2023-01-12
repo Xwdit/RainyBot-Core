@@ -32,9 +32,12 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->GroupRecallEvent:
-	var ins:GroupRecallEvent = GroupRecallEvent.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:GroupRecallEvent = GroupRecallEvent.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 
 func get_sender_id()->int:

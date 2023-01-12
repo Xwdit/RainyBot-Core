@@ -18,9 +18,12 @@ static func init(text:String)->XmlMessage:
 
 
 static func init_meta(dic:Dictionary)->XmlMessage:
-	var ins:XmlMessage = XmlMessage.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:XmlMessage = XmlMessage.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 	
 func get_xml_text()->String:

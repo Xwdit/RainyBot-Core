@@ -19,6 +19,8 @@ var data_dic:Dictionary = {
 
 
 static func init(node_list:ForwardMessageNodeList)->ForwardMessage:
+	if !is_instance_valid(node_list):
+		return null
 	var ins:ForwardMessage = ForwardMessage.new()
 	var dic:Dictionary = ins.data_dic
 	dic.nodeList = node_list.get_metadata()
@@ -26,9 +28,13 @@ static func init(node_list:ForwardMessageNodeList)->ForwardMessage:
 
 
 static func init_meta(dic:Dictionary)->ForwardMessage:
-	var ins:ForwardMessage = ForwardMessage.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:ForwardMessage = ForwardMessage.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
+	
 
 
 func get_node_list()->ForwardMessageNodeList:

@@ -18,9 +18,12 @@ static func init(value:int)->DiceMessage:
 
 
 static func init_meta(dic:Dictionary)->DiceMessage:
-	var ins:DiceMessage = DiceMessage.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:DiceMessage = DiceMessage.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 	
 func get_dice_value()->int:

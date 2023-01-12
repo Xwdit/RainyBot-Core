@@ -41,6 +41,8 @@ var data_dic:Dictionary = {
 
 
 static func init(type:int)->PokeMessage:
+	if !type_dic.has(type):
+		return null
 	var ins:PokeMessage = PokeMessage.new()
 	var dic:Dictionary = ins.data_dic
 	dic.name = type_dic[type]
@@ -48,9 +50,12 @@ static func init(type:int)->PokeMessage:
 
 
 static func init_meta(dic:Dictionary)->PokeMessage:
-	var ins:PokeMessage = PokeMessage.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:PokeMessage = PokeMessage.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 	
 func get_poke_type()->int:

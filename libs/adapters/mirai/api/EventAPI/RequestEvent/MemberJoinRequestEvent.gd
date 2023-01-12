@@ -25,9 +25,12 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->MemberJoinRequestEvent:
-	var ins:MemberJoinRequestEvent = MemberJoinRequestEvent.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:MemberJoinRequestEvent = MemberJoinRequestEvent.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 
 func get_group_name()->String:

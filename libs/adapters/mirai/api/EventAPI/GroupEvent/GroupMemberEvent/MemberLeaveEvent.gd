@@ -33,10 +33,13 @@ var event_reason:int = ReasonType.QUIT
 
 
 static func init_meta(dic:Dictionary,reason:int)->MemberLeaveEvent:
-	var ins:MemberLeaveEvent = MemberLeaveEvent.new()
-	ins.data_dic = dic
-	ins.event_reason = reason
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:MemberLeaveEvent = MemberLeaveEvent.new()
+		ins.data_dic = dic
+		ins.event_reason = reason
+		return ins
+	else:
+		return null
 
 
 func get_member()->GroupMember:

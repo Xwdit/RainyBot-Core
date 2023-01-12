@@ -16,9 +16,12 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->FriendInputStatusChangeEvent:
-	var ins:FriendInputStatusChangeEvent = FriendInputStatusChangeEvent.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:FriendInputStatusChangeEvent = FriendInputStatusChangeEvent.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 	
 	
 func get_input_state()->bool:

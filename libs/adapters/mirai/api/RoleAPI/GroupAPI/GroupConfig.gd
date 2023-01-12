@@ -15,10 +15,12 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->GroupConfig:
-	var ins:GroupConfig = GroupConfig.new()
-	if !dic.is_empty():
+	if !dic.is_empty() and dic.has("name"):
+		var ins:GroupConfig = GroupConfig.new()
 		ins.data_dic = dic
-	return ins
+		return ins
+	else:
+		return null
 
 
 func get_metadata()->Dictionary:
@@ -26,7 +28,8 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	data_dic = dic
+	if !dic.is_empty() and dic.has("name"):
+		data_dic = dic
 
 
 func get_name()->String:

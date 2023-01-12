@@ -31,9 +31,12 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->GroupMuteAllEvent:
-	var ins:GroupMuteAllEvent = GroupMuteAllEvent.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:GroupMuteAllEvent = GroupMuteAllEvent.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 
 func get_origin_state()->bool:

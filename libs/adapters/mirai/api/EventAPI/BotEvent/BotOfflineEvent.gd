@@ -20,10 +20,13 @@ var event_reason:int = ReasonType.ACTIVE
 
 
 static func init_meta(dic:Dictionary,reason_type:int)->BotOfflineEvent:
-	var ins:BotOfflineEvent = BotOfflineEvent.new()
-	ins.data_dic = dic
-	ins.event_reason = reason_type
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:BotOfflineEvent = BotOfflineEvent.new()
+		ins.data_dic = dic
+		ins.event_reason = reason_type
+		return ins
+	else:
+		return null
 	
 	
 func get_reason_type()->int:

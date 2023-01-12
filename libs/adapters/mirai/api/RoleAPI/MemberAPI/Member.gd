@@ -37,10 +37,13 @@ static func init(member_id:int,role:int=Role.FRIEND)->Member:
 
 ## 通过机器人协议后端的元数据字典构造一个Member类的实例，仅当你知道自己在做什么时才使用
 static func init_meta(dic:Dictionary,role:int=Role.FRIEND)->Member:
-	var ins:Member = Member.new()
-	ins.data_dic = dic
-	ins.member_role = role
-	return ins
+	if !dic.is_empty() and dic.has("id"):
+		var ins:Member = Member.new()
+		ins.data_dic = dic
+		ins.member_role = role
+		return ins
+	else:
+		return null
 
 
 ## 获取实例中的元数据字典，仅当你知道自己在做什么时才使用
@@ -50,7 +53,8 @@ func get_metadata()->Dictionary:
 
 ## 使用指定字典覆盖实例中的元数据字典，仅当你知道自己在做什么时才使用
 func set_metadata(dic:Dictionary)->void:
-	data_dic = dic
+	if !dic.is_empty() and dic.has("id"):
+		data_dic = dic
 
 
 ## 获取个体成员实例的类型，将返回一个对应Role枚举的整数值

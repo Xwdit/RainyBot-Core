@@ -22,9 +22,12 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->NewFriendRequestEvent:
-	var ins:NewFriendRequestEvent = NewFriendRequestEvent.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:NewFriendRequestEvent = NewFriendRequestEvent.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 	
 	
 func respond(respond_type:int,msg:String="",timeout:float=-INF)->BotRequestResult:

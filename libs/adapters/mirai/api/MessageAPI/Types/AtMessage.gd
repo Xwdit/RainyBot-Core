@@ -19,9 +19,12 @@ static func init(target_id:int)->AtMessage:
 
 
 static func init_meta(dic:Dictionary)->AtMessage:
-	var ins:AtMessage = AtMessage.new()
-	ins.data_dic = dic
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:AtMessage = AtMessage.new()
+		ins.data_dic = dic
+		return ins
+	else:
+		return null
 
 
 func get_target_id()->int:

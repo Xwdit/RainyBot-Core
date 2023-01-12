@@ -25,10 +25,13 @@ var event_reason:int = ReasonType.ACTIVE
 
 
 static func init_meta(dic:Dictionary,reason:int)->BotLeaveGroupEvent:
-	var ins:BotLeaveGroupEvent = BotLeaveGroupEvent.new()
-	ins.data_dic = dic
-	ins.event_reason = reason
-	return ins
+	if !dic.is_empty() and dic.has("type"):
+		var ins:BotLeaveGroupEvent = BotLeaveGroupEvent.new()
+		ins.data_dic = dic
+		ins.event_reason = reason
+		return ins
+	else:
+		return null
 	
 
 func get_operator()->Member:

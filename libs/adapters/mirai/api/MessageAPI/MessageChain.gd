@@ -52,6 +52,8 @@ static func init(msg)->MessageChain:
 
 
 static func init_meta(arr:Array)->MessageChain:
+	if arr.is_empty():
+		return null
 	var ins:MessageChain = MessageChain.new()
 	ins.data_array = arr
 	return ins
@@ -62,6 +64,8 @@ func get_metadata()->Array:
 
 
 func set_metadata(arr:Array)->void:
+	if arr.is_empty():
+		return
 	data_array = arr
 
 

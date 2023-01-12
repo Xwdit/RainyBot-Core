@@ -9,4 +9,5 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	set("data_dic",dic)
+	if !dic.is_empty() and dic.has("type"):
+		set("data_dic",dic)

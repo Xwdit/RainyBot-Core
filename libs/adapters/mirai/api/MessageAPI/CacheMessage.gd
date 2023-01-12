@@ -16,10 +16,12 @@ var data_dic:Dictionary = {
 
 
 static func init_meta(dic:Dictionary)->CacheMessage:
-	var ins:CacheMessage = CacheMessage.new()
-	if !dic.is_empty():
+	if !dic.is_empty() and dic.has("type"):
+		var ins:CacheMessage = CacheMessage.new()
 		ins.data_dic = dic
-	return ins
+		return ins
+	else:
+		return null
 
 
 func get_metadata()->Dictionary:
@@ -27,7 +29,8 @@ func get_metadata()->Dictionary:
 
 
 func set_metadata(dic:Dictionary)->void:
-	data_dic = dic
+	if !dic.is_empty() and dic.has("type"):
+		data_dic = dic
 
 
 func get_message_chain()->MessageChain:
