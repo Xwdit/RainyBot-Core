@@ -151,4 +151,7 @@ func _on_code_edit_symbol_lookup(symbol:String, line:int, column:int)->void:
 		
 		
 func get_script_path()->String:
-	return plugin_editor.loaded_ins.get_script().resource_path if is_instance_valid(plugin_editor.loaded_ins) else ProjectSettings.localize_path(plugin_editor.loaded_path)
+	var _path:String = plugin_editor.loaded_path
+	if is_instance_valid(plugin_editor.loaded_ins):
+		_path = plugin_editor.loaded_ins.get_script().resource_path
+	return ProjectSettings.localize_path(_path)
