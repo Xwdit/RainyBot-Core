@@ -16,8 +16,8 @@ border_width_top = 2
 border_color = Color(0.356863, 0.580392, 0.776471, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hv3be"]
-content_margin_bottom = 4.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gunjv"]
+content_margin_bottom = 2.0
 
 [node name="Console" type="Panel" groups=["ConsoleBase"]]
 anchors_preset = 15
@@ -38,7 +38,7 @@ offset_right = -8.0
 offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 280
+split_offset = 285
 
 [node name="ConsoleOutput" parent="VSplitContainer" groups=["Console"] instance=ExtResource("1_yhib5")]
 layout_mode = 2
@@ -73,14 +73,14 @@ alignment = 1
 
 [node name="Label" type="Label" parent="VSplitContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/normal = SubResource("StyleBoxEmpty_hv3be")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gunjv")
 text = "切换控制台"
 horizontal_alignment = 1
 
 [node name="OptionButton" type="OptionButton" parent="VSplitContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
+tooltip_text = "切换控制台"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 alignment = 1
 item_count = 2
