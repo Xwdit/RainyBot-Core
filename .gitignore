@@ -15,5 +15,9 @@
 /data/
 /logs/
 /plugins/
+/private_plugins/
+/adapters/mirai/logs/
+/adapters/mirai/config/
+/adapters/mirai/bots/
 /RainyBot.exe
 /启动RainyBot场景编辑器.cmd

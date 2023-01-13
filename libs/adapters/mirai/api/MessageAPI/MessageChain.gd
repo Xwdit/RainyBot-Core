@@ -98,7 +98,7 @@ func get_message(index:int)->Message:
 		return null
 
 
-func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
+func get_message_array(types:Variant=[],exclude:bool=false,max_size:int=-1)->Array:
 	var arr:Array = []
 	for _dic in data_array:
 		var _msg:Message = BotAdapter.parse_message_dic(_dic)
@@ -127,7 +127,7 @@ func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
 	return arr
 
 
-func get_message_text(types=[],exclude:bool=false)->String:
+func get_message_text(types:Variant=[],exclude:bool=false)->String:
 	var text:String = ""
 	for _dic in data_array:
 		var _msg:Message = BotAdapter.parse_message_dic(_dic)

@@ -8,11 +8,11 @@ func get_message_chain()->MessageChain:
 	return MessageChain.init_meta(get("data_dic").messageChain)
 
 
-func get_message_array(types=[],exclude:bool=false,max_size:int=-1)->Array:
+func get_message_array(types:Variant=[],exclude:bool=false,max_size:int=-1)->Array:
 	return get_message_chain().get_message_array(types,exclude,max_size)
 
 
-func get_message_text(types=[],exclude:bool=false)->String:
+func get_message_text(types:Variant=[],exclude:bool=false)->String:
 	return get_message_chain().get_message_text(types,exclude)
 
 

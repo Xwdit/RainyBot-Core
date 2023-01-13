@@ -71,6 +71,9 @@ func _notification(what:int)->void:
 		await PluginManager.unload_plugins()
 		BotAdapter.mirai_client.disconnect_to_mirai()
 		await get_tree().create_timer(0.5).timeout
+		if BotAdapter.mirai_loader.mirai_process != null and BotAdapter.mirai_loader.mirai_process.get_exit_status() == -1:
+			BotAdapter.mirai_loader.mirai_process.kill()
+		await get_tree().create_timer(0.5).timeout
 		GuiManager.console_print_success("RainyBot核心进程已被安全退出!")
 		await get_tree().create_timer(0.5).timeout
 		clear_cache()
