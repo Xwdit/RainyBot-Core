@@ -192,6 +192,38 @@ func console_init_log(save_current:bool=false)->void:
 	get_tree().call_group("Console","init_log",save_current)
 
 
+func mirai_console_print_text(text,sysout:bool=true)->void:
+	if sysout_disabled and sysout:
+		return
+	get_tree().call_group("MiraiConsole","add_newline_with_time",text)
+	
+	
+func mirai_console_print_error(text,sysout:bool=true)->void:
+	if sysout_disabled and sysout:
+		return
+	get_tree().call_group("MiraiConsole","add_error",text)
+	
+	
+func mirai_console_print_warning(text,sysout:bool=true)->void:
+	if sysout_disabled and sysout:
+		return
+	get_tree().call_group("MiraiConsole","add_warning",text)
+	
+
+func mirai_console_print_success(text,sysout:bool=true)->void:
+	if sysout_disabled and sysout:
+		return
+	get_tree().call_group("MiraiConsole","add_success",text)
+	
+	
+func mirai_console_save_log(close:bool=false)->void:
+	get_tree().call_group("MiraiConsole","save_log",close)
+	
+	
+func mirai_console_init_log(save_current:bool=false)->void:
+	get_tree().call_group("MiraiConsole","init_log",save_current)
+
+
 func popup_notification(text:String,title:String="提示")->bool:
 	var _popup:AcceptDialog = _accept_popup.instantiate()
 	add_child(_popup)

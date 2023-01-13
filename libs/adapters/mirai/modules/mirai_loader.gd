@@ -46,9 +46,13 @@ func _process(delta: float) -> void:
 		var out_count:int = mirai_process.get_available_stdout_lines()
 		var err_count:int = mirai_process.get_available_stderr_lines()
 		for i in out_count:
-			GuiManager.console_print_warning(mirai_process.get_stdout_line())
+			var _lines:PackedStringArray = mirai_process.get_stdout_line().replacen("\n","").split(": ",false,1)
+			if _lines.size() == 2:
+				GuiManager.mirai_console_print_warning(_lines[1],true)
 		for i in err_count:
-			GuiManager.console_print_warning(mirai_process.get_stderr_line())
+			var _lines:PackedStringArray = mirai_process.get_stderr_line().replacen("\n","").split(": ",false,1)
+			if _lines.size() == 2:
+				GuiManager.mirai_console_print_error(_lines[1],true)
 		if mirai_process.get_exit_status() != -1:
 			GuiManager.console_print_warning("Mirai进程已退出，退出状态为: %s"%mirai_process.get_exit_status())
 			mirai_process = null
@@ -97,7 +101,7 @@ func load_mirai()->int:
 		GuiManager.console_print_success("Java环境检测通过，正在生成Mirai配置文件...")
 		init_mirai_config()
 		GuiManager.console_print_success("Mirai配置文件生成完毕!正在启动Mirai进程...")
-		mirai_process = Process.create("java",["-cp",'./libs/*',"net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader","--no-console","--safe-reading","--dont-setup-terminal-ansi","--no-ansi"],mirai_path,true)
+		mirai_process = Process.create("java",["-cp",'./libs/*',"net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader","--no-console","--safe-reading","--dont-setup-terminal-ansi","--no-ansi","--no-logging"],mirai_path,true)
 		if !is_instance_valid(mirai_process):
 			return ERR_CANT_CREATE
 		return OK

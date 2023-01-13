@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://hrtt5klpd3fp"]
+[gd_scene load_steps=7 format=3 uid="uid://hrtt5klpd3fp"]
 
+[ext_resource type="Script" path="res://libs/gui/interfaces/console/console.gd" id="1_e4epa"]
 [ext_resource type="PackedScene" uid="uid://c815lq5unh7gj" path="res://libs/gui/interfaces/console/modules/console_output/console_output.tscn" id="1_yhib5"]
+[ext_resource type="PackedScene" uid="uid://b858a0iryr1eh" path="res://libs/gui/interfaces/console/modules/mirai_console_output/mirai_console_output.tscn" id="2_1sakh"]
 [ext_resource type="PackedScene" uid="uid://des1ncbtor5uh" path="res://libs/gui/interfaces/console/modules/command_input/command_input.tscn" id="2_i0io6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
@@ -15,13 +17,14 @@ border_width_top = 2
 border_color = Color(0.356863, 0.580392, 0.776471, 1)
 border_blend = true
 
-[node name="Console" type="Panel"]
+[node name="Console" type="Panel" groups=["ConsoleBase"]]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qi3ek")
+script = ExtResource("1_e4epa")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 layout_mode = 0
@@ -40,7 +43,15 @@ layout_mode = 2
 bbcode_enabled = true
 context_menu_enabled = true
 
-[node name="CommandInput" parent="VSplitContainer" instance=ExtResource("2_i0io6")]
+[node name="MiraiConsoleOutput" parent="VSplitContainer" instance=ExtResource("2_1sakh")]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="CommandInput" parent="VSplitContainer/HBoxContainer" instance=ExtResource("2_i0io6")]
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
@@ -50,3 +61,17 @@ focus_next = NodePath(".")
 focus_previous = NodePath(".")
 theme_override_styles/normal = SubResource("StyleBoxFlat_5jndw")
 expand_to_text_length = false
+
+[node name="OptionButton" type="OptionButton" parent="VSplitContainer/HBoxContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+alignment = 1
+item_count = 2
+selected = 0
+popup/item_0/text = "RaintBot"
+popup/item_0/id = 0
+popup/item_1/text = "Mirai"
+popup/item_1/id = 1
+
+[connection signal="item_selected" from="VSplitContainer/HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]

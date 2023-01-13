@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://b858a0iryr1eh"]
+
+[ext_resource type="Script" path="res://libs/gui/interfaces/console/modules/mirai_console_output/mirai_console_output.gd" id="1_42sl3"]
+
+[node name="MiraiConsoleOutput" type="RichTextLabel" groups=["MiraiConsole"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 2
+theme_override_colors/selection_color = Color(0.701961, 0.701961, 0.701961, 1)
+theme_override_constants/line_separation = 5
+theme_override_font_sizes/normal_font_size = 15
+scroll_following = true
+threaded = true
+selection_enabled = true
+script = ExtResource("1_42sl3")

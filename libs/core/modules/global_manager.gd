@@ -78,6 +78,7 @@ func _notification(what:int)->void:
 		await get_tree().create_timer(0.5).timeout
 		clear_cache()
 		GuiManager.console_save_log(true)
+		GuiManager.mirai_console_save_log(true)
 		if restarting:
 			OS.create_instance([])
 		get_tree().quit()
