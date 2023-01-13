@@ -17,6 +17,7 @@
 /plugins/
 /private_plugins/
 /adapters/mirai/logs/
+/adapters/mirai/data/
 /adapters/mirai/config/
 /adapters/mirai/bots/
 /RainyBot.exe
