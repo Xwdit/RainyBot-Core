@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://libs/gui/interfaces/console/console.gd" id="1_e4epa"]
 [ext_resource type="PackedScene" uid="uid://c815lq5unh7gj" path="res://libs/gui/interfaces/console/modules/console_output/console_output.tscn" id="1_yhib5"]
-[ext_resource type="PackedScene" uid="uid://b858a0iryr1eh" path="res://libs/gui/interfaces/console/modules/mirai_console_output/mirai_console_output.tscn" id="2_1sakh"]
 [ext_resource type="PackedScene" uid="uid://des1ncbtor5uh" path="res://libs/gui/interfaces/console/modules/command_input/command_input.tscn" id="2_i0io6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qi3ek"]
@@ -16,6 +15,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_top = 2
 border_color = Color(0.356863, 0.580392, 0.776471, 1)
 border_blend = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hv3be"]
+content_margin_bottom = 4.0
 
 [node name="Console" type="Panel" groups=["ConsoleBase"]]
 anchors_preset = 15
@@ -36,16 +38,18 @@ offset_right = -8.0
 offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 285
+split_offset = 280
 
-[node name="ConsoleOutput" parent="VSplitContainer" instance=ExtResource("1_yhib5")]
+[node name="ConsoleOutput" parent="VSplitContainer" groups=["Console"] instance=ExtResource("1_yhib5")]
 layout_mode = 2
 bbcode_enabled = true
 context_menu_enabled = true
+file_name = "rainybot"
 
-[node name="MiraiConsoleOutput" parent="VSplitContainer" instance=ExtResource("2_1sakh")]
+[node name="MiraiConsoleOutput" parent="VSplitContainer" groups=["MiraiConsole"] instance=ExtResource("1_yhib5")]
 visible = false
 layout_mode = 2
+file_name = "mirai_adapter"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer"]
 custom_minimum_size = Vector2(0, 50)
@@ -62,7 +66,19 @@ focus_previous = NodePath(".")
 theme_override_styles/normal = SubResource("StyleBoxFlat_5jndw")
 expand_to_text_length = false
 
-[node name="OptionButton" type="OptionButton" parent="VSplitContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = -4
+alignment = 1
+
+[node name="Label" type="Label" parent="VSplitContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hv3be")
+text = "切换控制台"
+horizontal_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="VSplitContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -74,4 +90,4 @@ popup/item_0/id = 0
 popup/item_1/text = "Mirai"
 popup/item_1/id = 1
 
-[connection signal="item_selected" from="VSplitContainer/HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="item_selected" from="VSplitContainer/HBoxContainer/VBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]

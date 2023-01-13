@@ -26,8 +26,8 @@ static func print_success(text)->void:
 
 
 ## 将控制台的内容立刻保存为以当前日期与时间命名的日志文件
-static func save_log(close:bool=false)->void:
-	GuiManager.console_save_log(close)
+static func save_log()->void:
+	GuiManager.console_save_log()
 
 
 ## 在控制台弹出一个具有指定文本的提示框，并且可以指定一个可选的自定义窗口标题

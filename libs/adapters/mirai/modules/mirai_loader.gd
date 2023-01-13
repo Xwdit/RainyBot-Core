@@ -4,6 +4,10 @@ extends Node
 class_name MiraiLoader
 
 
+signal mirai_started
+signal mirai_closed
+
+
 var mirai_path:String = GlobalManager.adapter_path + "mirai/"
 var mirai_http_path:String = mirai_path + "config/net.mamoe.mirai-api-http/"
 var mirai_login_path:String = mirai_path + "config/Console/"
@@ -55,7 +59,9 @@ func _process(delta: float) -> void:
 				GuiManager.mirai_console_print_error(_lines[1],true)
 		if mirai_process.get_exit_status() != -1:
 			GuiManager.console_print_warning("Mirai进程已退出，退出状态为: %s"%mirai_process.get_exit_status())
+			GuiManager.mirai_console_print_warning("Mirai进程已退出，退出状态为: %s"%mirai_process.get_exit_status())
 			mirai_process = null
+			mirai_closed.emit()
 
 
 func check_java_version()->bool:
@@ -101,11 +107,24 @@ func load_mirai()->int:
 		GuiManager.console_print_success("Java环境检测通过，正在生成Mirai配置文件...")
 		init_mirai_config()
 		GuiManager.console_print_success("Mirai配置文件生成完毕!正在启动Mirai进程...")
-		mirai_process = Process.create("java",["-cp",'./libs/*',"net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader","--no-console","--safe-reading","--dont-setup-terminal-ansi","--no-ansi","--no-logging"],mirai_path,true)
+		await kill_mirai()
+		mirai_process = Process.create("java",["-cp",'./libs/*',"net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader","--no-console","--safe-reading","--dont-setup-terminal-ansi","--no-ansi","--no-logging"],mirai_path)
 		if !is_instance_valid(mirai_process):
 			return ERR_CANT_CREATE
+		mirai_started.emit()
+		GuiManager.console_print_success("Mirai进程启动成功，正在等待与其建立连接...")
+		GuiManager.mirai_console_print_success("Mirai进程启动成功，正在等待与RainyBot建立连接...")
 		return OK
 	else:
 		GuiManager.console_print_error("检测到您还未安装启动Mirai所需的Java运行时(版本 >= Java 11),请访问 https://www.oracle.com/java/technologies/downloads/#jdk17-windows 进行下载并安装")
 		GuiManager.console_print_error("安装完毕后请重新启动RainyBot")
 		return ERR_FILE_NOT_FOUND
+		
+		
+func kill_mirai()->int:
+	if mirai_process != null and mirai_process.get_exit_status() == -1:
+		mirai_process.kill(true)
+		await mirai_closed
+		return OK
+	else:
+		return ERR_DOES_NOT_EXIST

@@ -5,6 +5,7 @@ class_name MiraiClient
 
 
 var _client:WebSocketClient = WebSocketClient.new()
+var current_session:String = ""
 var processing_command:Dictionary = {}
 var found_mirai:bool = false
 var first_connected:bool = false
@@ -42,22 +43,25 @@ func _closed(_was_clean:bool=false)->void:
 		get_tree().call_group("Plugin","_on_disconnect")
 	if found_mirai:
 		GuiManager.console_print_warning("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
+		GuiManager.mirai_console_print_warning("到RainyBot的连接已被关闭，若非人为请检查配置是否有误")
 		GuiManager.console_print_warning("若Mirai进程被意外关闭，请使用命令 mirai restart 来重新启动")
+		GuiManager.mirai_console_print_warning("若Mirai进程被意外关闭，请使用命令restart来重新启动")
 		GuiManager.console_print_warning("将于10秒后尝试重新连接...")
+		GuiManager.mirai_console_print_warning("将于10秒后尝试重新与RainyBot建立连接...")
 		await get_tree().create_timer(10).timeout
 		connect_to_mirai(BotAdapter.get_ws_url())
 	else:
 		GuiManager.console_print_warning("未检测到可进行连接的Mirai框架，正在启动新的Mirai进程...")
 		if await BotAdapter.mirai_loader.load_mirai() == OK:
 			found_mirai = true
-			GuiManager.console_print_success("Mirai进程启动成功，正在等待Mirai进行初始化...")
-			await get_tree().create_timer(10).timeout
+			await get_tree().create_timer(5).timeout
 			connect_to_mirai(BotAdapter.get_ws_url())
 
 
 func _connected(_proto:String="")->void:
 	found_mirai = true
 	GuiManager.console_print_success("成功与Mirai框架进行通信，正在等待响应...")
+	GuiManager.mirai_console_print_success("成功与RainyBot进行通信，正在等待响应...")
 
 
 func _on_data(message:String)->void:
@@ -72,12 +76,15 @@ func _on_data(message:String)->void:
 			if data["data"].has("type"):
 				BotAdapter.parse_event(data)
 			if data["data"].has("session"):
+				current_session = data["data"].session
 				if !first_connected:
 					GuiManager.console_print_success("成功连接至Mirai框架!开始加载插件.....")
+					GuiManager.mirai_console_print_success("成功连接至RainyBot!")
 					PluginManager.reload_plugins()
 					first_connected = true
 				else:
 					GuiManager.console_print_success("成功恢复与Mirai框架的连接!")
+					GuiManager.mirai_console_print_success("成功恢复与RainyBot的连接!")
 				mirai_connected = true
 				get_tree().call_group("Plugin","_on_connect")
 

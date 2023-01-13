@@ -18,6 +18,7 @@ func _process(delta: float) -> void:
 
 
 func _on_option_button_item_selected(index: int) -> void:
+	$VSplitContainer/HBoxContainer/CommandInput.current_console = index
 	if index == ConsoleOptions.RAINYBOT:
 		$VSplitContainer/ConsoleOutput.show()
 		$VSplitContainer/MiraiConsoleOutput.hide()
@@ -29,9 +30,9 @@ func _on_option_button_item_selected(index: int) -> void:
 func clear():
 	if $VSplitContainer/HBoxContainer/OptionButton.selected == ConsoleOptions.RAINYBOT:
 		$VSplitContainer/ConsoleOutput.clear()
-		$VSplitContainer/ConsoleOutput.init_log(true)
+		$VSplitContainer/ConsoleOutput.init_log()
 		$VSplitContainer/ConsoleOutput.add_success("已为您保存日志并清空控制台中的所有历史输出！")
 	else:
 		$VSplitContainer/MiraiConsoleOutput.clear()
-		$VSplitContainer/MiraiConsoleOutput.init_log(true)
+		$VSplitContainer/MiraiConsoleOutput.init_log()
 		$VSplitContainer/MiraiConsoleOutput.add_success("已为您保存日志并清空控制台中的所有历史输出！")
