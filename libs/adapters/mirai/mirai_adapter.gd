@@ -15,7 +15,8 @@ func start()->void:
 	add_to_group("console_command_mirai")
 	var usages:Array = [
 		"mirai status - 获取与Mirai框架的连接状态",
-		"mirai restart - 在Mirai主进程被关闭后重新启动Mirai框架",
+		"mirai restart - 关闭正在运行的Mirai进程(若有)，并重新启动Mirai框架",
+		"mirai stop - 关闭正在运行的Mirai进程(若有)",
 		"mirai command <命令> - 向Mirai框架发送命令并显示回调(不支持额外参数)",
 	]
 	CommandManager.register_console_command("mirai",true,usages,"Mirai-Adapter",false)
@@ -31,7 +32,9 @@ func start()->void:
 
 func _mirai_config_loaded()->void:
 	if await mirai_loader.load_mirai() == OK:
-		await get_tree().create_timer(10).timeout
+		GuiManager.console_print_warning("正在等待Mirai后端完成初始化步骤，请稍候...")
+		GuiManager.console_print_warning("若长时间没有响应，请在Mirai控制台检查其状态，或使用命令 mirai restart 来重新启动...")
+		await mirai_loader.mirai_ready
 		mirai_client.connect_to_mirai(get_ws_url())
 
 
@@ -42,6 +45,8 @@ func _call_console_command(_cmd:String,args:Array)->void:
 			GuiManager.console_print_text("连接地址: "+get_ws_url())
 		"restart":
 			mirai_loader.load_mirai()
+		"stop":
+			mirai_loader.kill_mirai()
 		"command":
 			if args.size() > 1:
 				var result:Dictionary = await send_bot_request(args[1])

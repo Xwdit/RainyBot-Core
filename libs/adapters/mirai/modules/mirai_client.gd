@@ -7,7 +7,6 @@ class_name MiraiClient
 var _client:WebSocketClient = WebSocketClient.new()
 var current_session:String = ""
 var processing_command:Dictionary = {}
-var found_mirai:bool = false
 var first_connected:bool = false
 var mirai_connected:bool = false
 
@@ -20,16 +19,22 @@ func _ready()->void:
 
 func connect_to_mirai(ws_url:String)->void:
 	GuiManager.console_print_warning("正在尝试连接到Mirai框架中，请稍候... | 连接地址: "+ws_url)
-	var err:int = _client.connect_to_url(ws_url)
-	if err:
-		GuiManager.console_print_error("无法连接到Mirai框架，请检查配置是否有误")
-		GuiManager.console_print_warning("将于10秒后尝试重新连接...")
-		await get_tree().create_timer(10).timeout
-		connect_to_mirai(ws_url)
+	if BotAdapter.mirai_loader.is_mirai_running():
+		var err:int = _client.connect_to_url(ws_url)
+		if err:
+			GuiManager.console_print_error("无法连接到Mirai框架，请检查配置是否有误")
+			GuiManager.console_print_warning("将于10秒后尝试重新连接...")
+			await get_tree().create_timer(10).timeout
+			connect_to_mirai(ws_url)
+		else:
+			await get_tree().create_timer(5).timeout
+			if _client.get_socket().get_ready_state() == WebSocketPeer.STATE_CONNECTING:
+				_client.close()
 	else:
-		await get_tree().create_timer(5).timeout
-		if _client.get_socket().get_ready_state() == WebSocketPeer.STATE_CONNECTING:
-			_client.close()
+		GuiManager.console_print_warning("Mirai进程未在运行中，将在其启动后自动进行连接...")
+		GuiManager.mirai_console_print_warning("Mirai进程未在运行中，将在其启动后自动与RainyBot进行连接...")
+		await BotAdapter.mirai_loader.mirai_ready
+		connect_to_mirai(ws_url)
 
 
 func disconnect_to_mirai()->void:
@@ -41,25 +46,24 @@ func _closed(_was_clean:bool=false)->void:
 	if mirai_connected:
 		mirai_connected = false
 		get_tree().call_group("Plugin","_on_disconnect")
-	if found_mirai:
-		GuiManager.console_print_warning("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
-		GuiManager.mirai_console_print_warning("到RainyBot的连接已被关闭，若非人为请检查配置是否有误")
-		GuiManager.console_print_warning("若Mirai进程被意外关闭，请使用命令 mirai restart 来重新启动")
-		GuiManager.mirai_console_print_warning("若Mirai进程被意外关闭，请使用命令restart来重新启动")
+	
+	GuiManager.console_print_warning("到Mirai框架的连接已被关闭，若非人为请检查配置是否有误")
+	GuiManager.mirai_console_print_warning("到RainyBot的连接已被关闭，若非人为请检查配置是否有误")
+	GuiManager.console_print_warning("若Mirai进程被意外关闭或运行异常，请使用命令 mirai restart 来重新启动")
+	GuiManager.mirai_console_print_warning("若Mirai进程被意外关闭或运行异常，请使用命令 restart 来重新启动")
+	
+	if BotAdapter.mirai_loader.is_mirai_running():
 		GuiManager.console_print_warning("将于10秒后尝试重新连接...")
 		GuiManager.mirai_console_print_warning("将于10秒后尝试重新与RainyBot建立连接...")
 		await get_tree().create_timer(10).timeout
-		connect_to_mirai(BotAdapter.get_ws_url())
 	else:
-		GuiManager.console_print_warning("未检测到可进行连接的Mirai框架，正在启动新的Mirai进程...")
-		if await BotAdapter.mirai_loader.load_mirai() == OK:
-			found_mirai = true
-			await get_tree().create_timer(10).timeout
-			connect_to_mirai(BotAdapter.get_ws_url())
+		GuiManager.console_print_warning("Mirai进程未在运行中，将在其启动后自动进行重连...")
+		GuiManager.mirai_console_print_warning("Mirai进程未在运行中，将在其启动后自动与RainyBot进行重连...")
+		await BotAdapter.mirai_loader.mirai_ready
+	connect_to_mirai(BotAdapter.get_ws_url())
 
 
 func _connected(_proto:String="")->void:
-	found_mirai = true
 	GuiManager.console_print_success("成功与Mirai框架进行通信，正在等待响应...")
 	GuiManager.mirai_console_print_success("成功与RainyBot进行通信，正在等待响应...")
 

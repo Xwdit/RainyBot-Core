@@ -51,11 +51,11 @@ func _on_CommandInput_text_submitted(new_text:String)->void:
 			GuiManager.mirai_console_print_text("-----命令列表(全部)-----")
 			return
 		elif new_text.to_lower() == "/restart" or new_text.to_lower() == "restart":
-			GuiManager.mirai_console_print_success("指令%s执行成功！"%new_text)
+			GuiManager.mirai_console_print_success("指令 %s 执行成功！"%new_text)
 			BotAdapter.mirai_loader.load_mirai()
 			return
 		elif new_text.to_lower() == "/stop" or new_text.to_lower() == "stop":
-			GuiManager.mirai_console_print_success("指令%s执行成功！"%new_text)
+			GuiManager.mirai_console_print_success("指令 %s 执行成功！"%new_text)
 			await BotAdapter.mirai_loader.kill_mirai()
 			return
 		if !new_text.begins_with("/"):
@@ -68,8 +68,8 @@ func _on_CommandInput_text_submitted(new_text:String)->void:
 		var _res:BotRequestResult = BotRequestResult.init_meta(_res_dic)
 		if _res:
 			if _res.is_success():
-				GuiManager.mirai_console_print_success("指令%s执行成功！"%new_text)
+				GuiManager.mirai_console_print_success("指令 %s 执行成功！"%new_text)
 			else:
-				GuiManager.mirai_console_print_error("指令%s执行失败，可能是参数有误或指令不存在！"%new_text)
+				GuiManager.mirai_console_print_error("指令 %s 执行失败，可能是参数有误或指令不存在！"%new_text)
 		else:
-			GuiManager.mirai_console_print_error("指令%s执行失败，未能成功获取Mirai后端的指令响应！"%new_text)
+			GuiManager.mirai_console_print_error("指令 %s 执行失败，未能成功获取Mirai后端的指令响应！"%new_text)

@@ -194,8 +194,8 @@ func _test_generate_speed()->int:
 		return ERR_CANT_RESOLVE
 	GuiManager.console_print_warning("正在测试Gif图像数据的生成速度，请稍候.....")
 	var _test_frames:Array = [frames[0]]
-	var _start_time:int = Time.get_ticks_msec()
 	var _f_path:String = GlobalManager.cache_path+"gif-image-test-"+Time.get_datetime_string_from_system().replace(":","-")+"-"+str(randi())+".gif"
+	var _start_time:int = Time.get_ticks_msec()
 	var _thread:Thread = Thread.new()
 	var _err:int = _thread.start(_export_data.bind(_f_path,_test_frames))
 	if !_err:
@@ -204,9 +204,9 @@ func _test_generate_speed()->int:
 		var _result:bool = _thread.wait_to_finish()
 		if !_result:
 			return ERR_CANT_CREATE
+		var _end_time:int = Time.get_ticks_msec()
 		if FileAccess.file_exists(_f_path):
 			DirAccess.remove_absolute(_f_path)
-		var _end_time:int = Time.get_ticks_msec()
 		frame_generate_time = _end_time-_start_time
 		GuiManager.console_print_success("Gif图像数据生成速度测试完毕！相关数据已保存至该Gif图像实例，以便用于预估生成时长！")
 		return OK
