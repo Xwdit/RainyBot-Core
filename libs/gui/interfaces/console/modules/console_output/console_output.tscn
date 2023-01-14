@@ -19,6 +19,5 @@ theme_override_colors/selection_color = Color(0.701961, 0.701961, 0.701961, 1)
 theme_override_constants/line_separation = 5
 theme_override_font_sizes/normal_font_size = 15
 scroll_following = true
-threaded = true
 selection_enabled = true
 script = ExtResource("1_yyqsj")
