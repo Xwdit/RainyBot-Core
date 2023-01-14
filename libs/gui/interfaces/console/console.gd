@@ -29,10 +29,10 @@ func _on_option_button_item_selected(index: int) -> void:
 		
 func clear():
 	if $VSplitContainer/HBoxContainer/VBoxContainer/OptionButton.selected == ConsoleOptions.RAINYBOT:
-		$VSplitContainer/ConsoleOutput.clear()
 		$VSplitContainer/ConsoleOutput.init_log()
+		$VSplitContainer/ConsoleOutput.clear()
 		$VSplitContainer/ConsoleOutput.add_success("已为您保存日志并清空控制台中的所有历史输出！")
 	else:
-		$VSplitContainer/MiraiConsoleOutput.clear()
 		$VSplitContainer/MiraiConsoleOutput.init_log()
+		$VSplitContainer/MiraiConsoleOutput.clear()
 		$VSplitContainer/MiraiConsoleOutput.add_success("已为您保存日志并清空控制台中的所有历史输出！")
