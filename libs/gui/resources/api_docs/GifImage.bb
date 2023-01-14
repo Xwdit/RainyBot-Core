@@ -84,11 +84,6 @@
 	将此Gif图像实例生成图像数据并保存至指定的gif文件，需要配合await关键字使用
 
 
-	● [color=#70bafa][url=godot:PackedByteArray]PackedByteArray[/url][/color] ￿get_data￿ [color=gray]([/color] [color=gray])[/color]
-
-	从此Gif图像实例生成并获取对应的gif图像数据，需要配合await关键字使用
-
-
 	● [color=#70bafa][url=godot:float]float[/url][/color] ￿get_generate_time￿ [color=gray]([/color] [color=gray])[/color]
 
 	获取此Gif图像实例中的所有帧的预计生成时间，需要配合await关键字使用
