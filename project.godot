@@ -679,6 +679,7 @@ window/dpi/allow_hidpi.macos=false
 [editor]
 
 run/main_run_args="--from-editor"
+export/convert_text_resources_to_binary=true
 
 [gui]
 
