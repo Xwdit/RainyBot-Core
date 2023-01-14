@@ -31,7 +31,7 @@ func start()->void:
 
 func _mirai_config_loaded()->void:
 	if await mirai_loader.load_mirai() == OK:
-		await get_tree().create_timer(5).timeout
+		await get_tree().create_timer(10).timeout
 		mirai_client.connect_to_mirai(get_ws_url())
 
 

@@ -54,7 +54,7 @@ func _closed(_was_clean:bool=false)->void:
 		GuiManager.console_print_warning("未检测到可进行连接的Mirai框架，正在启动新的Mirai进程...")
 		if await BotAdapter.mirai_loader.load_mirai() == OK:
 			found_mirai = true
-			await get_tree().create_timer(5).timeout
+			await get_tree().create_timer(10).timeout
 			connect_to_mirai(BotAdapter.get_ws_url())
 
 
