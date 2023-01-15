@@ -105,7 +105,7 @@ const CORE_API_PATH:String = "res://libs/core/api/"
 const ADAPTER_API_PATH:String = "res://libs/adapters/mirai/api/"
 const CLASS_DOC_PATH:String = "res://libs/gui/resources/class_docs/"
 
-var syntax_highlighter:CodeHighlighter
+var highlight_dic:Dictionary = {}
 
 var api_dic:Dictionary = {}
 var class_dic:Dictionary = {}
@@ -246,6 +246,17 @@ func popup_confirm(text:String,title:String="请确认")->bool:
 	return await _popup.closed
 
 
+func get_syntax_highlighter()->CodeHighlighter:
+	var chl:CodeHighlighter = CodeHighlighter.new()
+	chl.number_color = NUMBER_COLOR
+	chl.symbol_color = SYMBOL_COLOR
+	chl.function_color = FUNCTION_COLOR
+	chl.member_variable_color = MEMBER_VAR_COLOR
+	chl.keyword_colors = highlight_dic
+	chl.color_regions = COLOR_REGIONS
+	return chl
+
+
 func _init_keys_arr()->void:
 	kw_keys = KEYWORD_COLORS.keys()
 	api_keys = api_dic.keys()
@@ -363,24 +374,16 @@ func _build_script_dic(script:GDScript)->Dictionary:
 
 
 func _init_syntax_highlight()->void:
-	var _dic:Dictionary = KEYWORD_COLORS.duplicate()
-	_dic["BotAdapter"]=API_COLOR
+	highlight_dic = KEYWORD_COLORS.duplicate()
+	highlight_dic["BotAdapter"]=API_COLOR
 	for c_name in class_dic:
-		if _dic.has(c_name):
+		if highlight_dic.has(c_name):
 			continue
-		_dic[c_name] = CLASS_COLOR
+		highlight_dic[c_name] = CLASS_COLOR
 	for a_name in api_dic:
-		if _dic.has(a_name):
+		if highlight_dic.has(a_name):
 			continue
-		_dic[a_name] = API_COLOR
-	var chl:CodeHighlighter = CodeHighlighter.new()
-	chl.number_color = NUMBER_COLOR
-	chl.symbol_color = SYMBOL_COLOR
-	chl.function_color = FUNCTION_COLOR
-	chl.member_variable_color = MEMBER_VAR_COLOR
-	chl.keyword_colors = _dic
-	chl.color_regions = COLOR_REGIONS
-	syntax_highlighter = chl
+		highlight_dic[a_name] = API_COLOR
 
 
 func init_delimiters(code_edit:CodeEdit,no_completion:bool=false)->void:

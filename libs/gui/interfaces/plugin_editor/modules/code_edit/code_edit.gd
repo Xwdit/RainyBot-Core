@@ -16,7 +16,7 @@ func _ready()->void:
 	set_caret_line(0)
 	set_caret_column(0)
 	GuiManager.init_delimiters(self)
-	syntax_highlighter = GuiManager.syntax_highlighter
+	syntax_highlighter = GuiManager.get_syntax_highlighter()
 
 
 func _gui_input(event:InputEvent)->void:
