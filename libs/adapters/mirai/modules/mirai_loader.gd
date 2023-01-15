@@ -146,5 +146,13 @@ func update_mirai_state(line:String):
 		GuiManager.console_print_warning("解决此问题后，请使用命令 mirai restart 来重新启动Mirai进程，RainyBot将在其成功启动后自动与其进行连接...")
 		GuiManager.mirai_console_print_warning("解决此问题后，请使用命令 restart 来重新启动Mirai进程，其将在成功启动后自动与RainyBot建立连接...")
 		await kill_mirai()
-	elif line.findn("is listening at") != -1:
+	elif line.begins_with("Bot cancelled: Bot closed"):
+		GuiManager.console_print_error("Mirai后端账号已退出登录/登录失败，请前往Mirai控制台来检查原因")
+		GuiManager.mirai_console_print_error("Mirai后端账号已退出登录/登录失败，请查看上方日志输出来检查原因")
+		GuiManager.console_print_warning("解决此问题后，请使用命令 mirai restart 来重新启动Mirai进程，RainyBot将在其成功启动后自动与其进行连接...")
+		GuiManager.mirai_console_print_warning("解决此问题后，请使用命令 restart 来重新启动Mirai进程，其将在成功启动后自动与RainyBot建立连接...")
+		await kill_mirai()
+	elif line.begins_with("Bot login successful"):
+		GuiManager.console_print_success("Mirai后端账号登录成功，开始监听来自账号的事件/消息...")
+		GuiManager.mirai_console_print_success("Mirai后端账号登录成功，开始监听来自账号的事件/消息...")
 		mirai_ready.emit()
