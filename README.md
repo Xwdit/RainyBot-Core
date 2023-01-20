@@ -18,7 +18,7 @@
 	 ·
 	<a href="https://godoter.cn/t/rainybot">交流论坛</a>
 	 ·
-	<a href="https://godoter.cn/t/rainybot-plugins">插件市场</a>
+	<a href="https://store.rainybot.dev/">插件市场</a>
 	 ·
 	<a href="https://godoter.cn/t/rainybot-tutorials">教程分享</a>
 	·
