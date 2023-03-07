@@ -49,6 +49,13 @@
 				When inheriting from [AnimationRootNode], implement this virtual method to return whether the blend tree editor should display filter editing on this node.
 			</description>
 		</method>
+		<method name="_is_parameter_read_only" qualifiers="virtual const">
+			<return type="bool" />
+			<param index="0" name="parameter" type="StringName" />
+			<description>
+				When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your nodes, given a resource can be reused in multiple trees.
+			</description>
+		</method>
 		<method name="_process" qualifiers="virtual const">
 			<return type="float" />
 			<param index="0" name="time" type="float" />
@@ -61,10 +68,10 @@
 			</description>
 		</method>
 		<method name="add_input">
-			<return type="void" />
+			<return type="bool" />
 			<param index="0" name="name" type="String" />
 			<description>
-				Adds an input to the node. This is only useful for nodes created for use in an [AnimationNodeBlendTree].
+				Adds an input to the node. This is only useful for nodes created for use in an [AnimationNodeBlendTree]. If the addition fails, returns [code]false[/code].
 			</description>
 		</method>
 		<method name="blend_animation">
@@ -108,13 +115,20 @@
 				Blend another animation node (in case this node contains children animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, else editors will not display your node for addition.
 			</description>
 		</method>
+		<method name="find_input" qualifiers="const">
+			<return type="int" />
+			<param index="0" name="name" type="String" />
+			<description>
+				Returns the input index which corresponds to [param name]. If not found, returns [code]-1[/code].
+			</description>
+		</method>
 		<method name="get_input_count" qualifiers="const">
 			<return type="int" />
 			<description>
 				Amount of inputs in this node, only useful for nodes that go into [AnimationNodeBlendTree].
 			</description>
 		</method>
-		<method name="get_input_name">
+		<method name="get_input_name" qualifiers="const">
 			<return type="String" />
 			<param index="0" name="input" type="int" />
 			<description>
@@ -150,6 +164,14 @@
 				Adds or removes a path for the filter.
 			</description>
 		</method>
+		<method name="set_input_name">
+			<return type="bool" />
+			<param index="0" name="input" type="int" />
+			<param index="1" name="name" type="String" />
+			<description>
+				Sets the name of the input at the given [param input] index. If the setting fails, returns [code]false[/code].
+			</description>
+		</method>
 		<method name="set_parameter">
 			<return type="void" />
 			<param index="0" name="name" type="StringName" />
@@ -165,9 +187,24 @@
 		</member>
 	</members>
 	<signals>
+		<signal name="animation_node_removed">
+			<param index="0" name="object_id" type="int" />
+			<param index="1" name="name" type="String" />
+			<description>
+				Emitted by nodes that inherit from this class and that have an internal tree when one of their nodes removes. The nodes that emit this signal are [AnimationNodeBlendSpace1D], [AnimationNodeBlendSpace2D], [AnimationNodeStateMachine], and [AnimationNodeBlendTree].
+			</description>
+		</signal>
+		<signal name="animation_node_renamed">
+			<param index="0" name="object_id" type="int" />
+			<param index="1" name="old_name" type="String" />
+			<param index="2" name="new_name" type="String" />
+			<description>
+				Emitted by nodes that inherit from this class and that have an internal tree when one of their node names changes. The nodes that emit this signal are [AnimationNodeBlendSpace1D], [AnimationNodeBlendSpace2D], [AnimationNodeStateMachine], and [AnimationNodeBlendTree].
+			</description>
+		</signal>
 		<signal name="tree_changed">
 			<description>
-				Emitted by nodes that inherit from this class and that have an internal tree when one of their nodes changes. The nodes that emit this signal are [AnimationNodeBlendSpace1D], [AnimationNodeBlendSpace2D], [AnimationNodeStateMachine], and [AnimationNodeBlendTree].
+				Emitted by nodes that inherit from this class and that have an internal tree when one of their nodes changes. The nodes that emit this signal are [AnimationNodeBlendSpace1D], [AnimationNodeBlendSpace2D], [AnimationNodeStateMachine], [AnimationNodeBlendTree] and [AnimationNodeTransition].
 			</description>
 		</signal>
 	</signals>

@@ -59,14 +59,14 @@
 			<param index="2" name="class_name" type="StringName" />
 			<param index="3" name="script" type="Variant" />
 			<description>
-				Creates a typed array from the [param base] array. The base array can't be already typed. See [method set_typed] for more details.
+				Creates a typed array from the [param base] array.
 			</description>
 		</constructor>
 		<constructor name="Array">
 			<return type="Array" />
 			<param index="0" name="from" type="Array" />
 			<description>
-				Constructs an [Array] as a copy of the given [Array].
+				Returns the same array as [param from]. If you need a copy of the array, use [method duplicate].
 			</description>
 		</constructor>
 		<constructor name="Array">
@@ -200,6 +200,13 @@
 				[/codeblock]
 			</description>
 		</method>
+		<method name="assign">
+			<return type="void" />
+			<param index="0" name="array" type="Array" />
+			<description>
+				Assigns elements of another [param array] into the array. Resizes the array to match [param array]. Performs type conversions if the array is typed.
+			</description>
+		</method>
 		<method name="back" qualifiers="const">
 			<return type="Variant" />
 			<description>
@@ -207,7 +214,7 @@
 				[b]Note:[/b] Calling this function is not the same as writing [code]array[-1][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
 			</description>
 		</method>
-		<method name="bsearch">
+		<method name="bsearch" qualifiers="const">
 			<return type="int" />
 			<param index="0" name="value" type="Variant" />
 			<param index="1" name="before" type="bool" default="true" />
@@ -216,7 +223,7 @@
 				[b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 			</description>
 		</method>
-		<method name="bsearch_custom">
+		<method name="bsearch_custom" qualifiers="const">
 			<return type="int" />
 			<param index="0" name="value" type="Variant" />
 			<param index="1" name="func" type="Callable" />
@@ -269,7 +276,7 @@
 				array.fill(0) # Initialize the 10 elements to 0.
 				[/gdscript]
 				[csharp]
-				var array = new Godot.Collections.Array{};
+				var array = new Godot.Collections.Array();
 				array.Resize(10);
 				array.Fill(0); // Initialize the 10 elements to 0.
 				[/csharp]
@@ -340,7 +347,7 @@
 				print(["inside", 7].has("7")) # False
 				[/gdscript]
 				[csharp]
-				var arr = new Godot.Collections.Array{"inside", 7};
+				var arr = new Godot.Collections.Array { "inside", 7 };
 				// has is renamed to Contains
 				GD.Print(arr.Contains("inside")); // True
 				GD.Print(arr.Contains("outside")); // False
@@ -357,7 +364,7 @@
 				[/gdscript]
 				[csharp]
 				// As there is no "in" keyword in C#, you have to use Contains
-				var array = new Godot.Collections.Array{2, 4, 6, 8};
+				var array = new Godot.Collections.Array { 2, 4, 6, 8 };
 				if (array.Contains(2))
 				{
 				    GD.Print("Contains!");
@@ -392,13 +399,26 @@
 		<method name="is_read_only" qualifiers="const">
 			<return type="bool" />
 			<description>
-				Returns [code]true[/code] if the array is read-only. See [method set_read_only]. Arrays are automatically read-only if declared with [code]const[/code] keyword.
+				Returns [code]true[/code] if the array is read-only. See [method make_read_only]. Arrays are automatically read-only if declared with [code]const[/code] keyword.
+			</description>
+		</method>
+		<method name="is_same_typed" qualifiers="const">
+			<return type="bool" />
+			<param index="0" name="array" type="Array" />
+			<description>
+				Returns [code]true[/code] if the array is typed the same as [param array].
 			</description>
 		</method>
 		<method name="is_typed" qualifiers="const">
 			<return type="bool" />
 			<description>
 				Returns [code]true[/code] if the array is typed. Typed arrays can only store elements of their associated type and provide type safety for the [code][][/code] operator. Methods of typed array still return [Variant].
+			</description>
+		</method>
+		<method name="make_read_only">
+			<return type="void" />
+			<description>
+				Makes the array read-only, i.e. disabled modifying of the array's elements. Does not apply to nested content, e.g. content of nested arrays.
 			</description>
 		</method>
 		<method name="map" qualifiers="const">
@@ -434,10 +454,16 @@
 			<return type="Variant" />
 			<description>
 				Returns a random value from the target array.
-				[codeblock]
+				[codeblocks]
+				[gdscript]
 				var array: Array[int] = [1, 2, 3, 4]
 				print(array.pick_random())  # Prints either of the four numbers.
-				[/codeblock]
+				[/gdscript]
+				[csharp]
+				var array = new Godot.Collections.Array { 1, 2, 3, 4 };
+				GD.Print(array.PickRandom()); // Prints either of the four numbers.
+				[/csharp]
+				[/codeblocks]
 			</description>
 		</method>
 		<method name="pop_at">
@@ -524,23 +550,6 @@
 				Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 			</description>
 		</method>
-		<method name="set_read_only">
-			<return type="void" />
-			<param index="0" name="enable" type="bool" />
-			<description>
-				Makes the [Array] read-only, i.e. disabled modifying of the array's elements. Does not apply to nested content, e.g. content of nested arrays.
-			</description>
-		</method>
-		<method name="set_typed">
-			<return type="void" />
-			<param index="0" name="type" type="int" />
-			<param index="1" name="class_name" type="StringName" />
-			<param index="2" name="script" type="Variant" />
-			<description>
-				Makes the [Array] typed. The [param type] should be one of the [enum Variant.Type] constants. [param class_name] is optional and can only be provided for [constant TYPE_OBJECT]. [param script] can only be provided if [param class_name] is not empty.
-				The method fails if an array is already typed.
-			</description>
-		</method>
 		<method name="shuffle">
 			<return type="void" />
 			<description>
@@ -563,7 +572,7 @@
 				Returns the slice of the [Array], from [param begin] (inclusive) to [param end] (exclusive), as a new [Array].
 				The absolute value of [param begin] and [param end] will be clamped to the array size, so the default value for [param end] makes it slice to the size of the array by default (i.e. [code]arr.slice(1)[/code] is a shorthand for [code]arr.slice(1, arr.size())[/code]).
 				If either [param begin] or [param end] are negative, they will be relative to the end of the array (i.e. [code]arr.slice(0, -2)[/code] is a shorthand for [code]arr.slice(0, arr.size() - 2)[/code]).
-				If specified, [param step] is the relative index between source elements. It can be negative, then [param begin] must be higher than [param end]. For example, [code][0, 1, 2, 3, 4, 5].slice(5, 1, -2)[/code] returns [code][5, 3][/code]).
+				If specified, [param step] is the relative index between source elements. It can be negative, then [param begin] must be higher than [param end]. For example, [code][0, 1, 2, 3, 4, 5].slice(5, 1, -2)[/code] returns [code][5, 3][/code].
 				If [param deep] is true, each element will be copied by value rather than by reference.
 			</description>
 		</method>
@@ -580,7 +589,9 @@
 				print(strings) # Prints [string1, string10, string11, string2]
 				[/gdscript]
 				[csharp]
-				// There is no sort support for Godot.Collections.Array
+				var strings = new Godot.Collections.Array { "string1", "string2", "string10", "string11" };
+				strings.Sort();
+				GD.Print(strings); // Prints [string1, string10, string11, string2]
 				[/csharp]
 				[/codeblocks]
 				To perform natural order sorting, you can use [method sort_custom] with [method String.naturalnocasecmp_to] as follows:
@@ -618,13 +629,6 @@
 				// There is no custom sort support for Godot.Collections.Array
 				[/csharp]
 				[/codeblocks]
-			</description>
-		</method>
-		<method name="typed_assign">
-			<return type="bool" />
-			<param index="0" name="array" type="Array" />
-			<description>
-				Assigns a different [Array] to this array reference. It the array is typed, the new array's type must be compatible and its elements will be automatically converted.
 			</description>
 		</method>
 	</methods>
@@ -679,7 +683,7 @@
 			</description>
 		</operator>
 		<operator name="operator []">
-			<return type="void" />
+			<return type="Variant" />
 			<param index="0" name="index" type="int" />
 			<description>
 				Returns a reference to the element of type [Variant] at the specified location. Arrays start at index 0. [param index] can be a zero or positive value to start from the beginning, or a negative value to start from the end. Out-of-bounds array access causes a run-time error, which will result in an error being printed and the project execution pausing if run from the editor.

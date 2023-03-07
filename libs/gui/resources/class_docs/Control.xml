@@ -37,11 +37,11 @@
 				    return typeof(data) == TYPE_DICTIONARY and data.has("expected")
 				[/gdscript]
 				[csharp]
-				public override bool CanDropData(Vector2 position, object data)
+				public override bool _CanDropData(Vector2 atPosition, Variant data)
 				{
 				    // Check position if it is relevant to you
 				    // Otherwise, just check data
-				    return data is Godot.Collections.Dictionary &amp;&amp; (data as Godot.Collections.Dictionary).Contains("expected");
+				    return data.VariantType == Variant.Type.Dictionary &amp;&amp; data.AsGodotDictionary().Contains("expected");
 				}
 				[/csharp]
 				[/codeblocks]
@@ -57,17 +57,19 @@
 				[gdscript]
 				func _can_drop_data(position, data):
 				    return typeof(data) == TYPE_DICTIONARY and data.has("color")
+
 				func _drop_data(position, data):
 				    var color = data["color"]
 				[/gdscript]
 				[csharp]
-				public override bool CanDropData(Vector2 position, object data)
+				public override bool _CanDropData(Vector2 atPosition, Variant data)
 				{
-				    return data is Godot.Collections.Dictionary &amp;&amp; (data as Godot.Collections.Dictionary).Contains("color");
+				    return data.VariantType == Variant.Type.Dictionary &amp;&amp; dict.AsGodotDictionary().Contains("color");
 				}
-				public override void DropData(Vector2 position, object data)
+
+				public override void _DropData(Vector2 atPosition, Variant data)
 				{
-				    Color color = (Color)(data as Godot.Collections.Dictionary)["color"];
+				    Color color = data.AsGodotDictionary()["color"].AsColor();
 				}
 				[/csharp]
 				[/codeblocks]
@@ -87,11 +89,11 @@
 				    return mydata
 				[/gdscript]
 				[csharp]
-				public override object GetDragData(Vector2 position)
+				public override Variant _GetDragData(Vector2 atPosition)
 				{
-				    object mydata = MakeData(); // This is your custom method generating the drag data.
-				    SetDragPreview(MakePreview(mydata)); // This is your custom method generating the preview of the drag data.
-				    return mydata;
+				    var myData = MakeData(); // This is your custom method generating the drag data.
+				    SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
+				    return myData;
 				}
 				[/csharp]
 				[/codeblocks]
@@ -121,10 +123,9 @@
 				[csharp]
 				public override void _GuiInput(InputEvent @event)
 				{
-				    if (@event is InputEventMouseButton)
+				    if (@event is InputEventMouseButton mb)
 				    {
-				        var mb = @event as InputEventMouseButton;
-				        if (mb.ButtonIndex == (int)ButtonList.Left &amp;&amp; mb.Pressed)
+				        if (mb.ButtonIndex == MouseButton.Left &amp;&amp; mb.Pressed)
 				        {
 				            GD.Print("I've been clicked D:");
 				        }
@@ -143,11 +144,11 @@
 		</method>
 		<method name="_has_point" qualifiers="virtual const">
 			<return type="bool" />
-			<param index="0" name="position" type="Vector2" />
+			<param index="0" name="point" type="Vector2" />
 			<description>
-				Virtual method to be implemented by the user. Returns whether the given [param position] is inside this control.
+				Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.
 				If not overridden, default behavior is checking if the point is within control's Rect.
-				[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]get_rect().has_point(point)[/code].
+				[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
 			</description>
 		</method>
 		<method name="_make_custom_tooltip" qualifiers="virtual const">
@@ -168,7 +169,7 @@
 				    return label
 				[/gdscript]
 				[csharp]
-				public override Godot.Control _MakeCustomTooltip(String forText)
+				public override Control _MakeCustomTooltip(string forText)
 				{
 				    var label = new Label();
 				    label.Text = forText;
@@ -180,14 +181,14 @@
 				[codeblocks]
 				[gdscript]
 				func _make_custom_tooltip(for_text):
-				    var tooltip = preload("res://SomeTooltipScene.tscn").instantiate()
+				    var tooltip = preload("res://some_tooltip_scene.tscn").instantiate()
 				    tooltip.get_node("Label").text = for_text
 				    return tooltip
 				[/gdscript]
 				[csharp]
-				public override Godot.Control _MakeCustomTooltip(String forText)
+				public override Control _MakeCustomTooltip(string forText)
 				{
-				    Node tooltip = ResourceLoader.Load&lt;PackedScene&gt;("res://SomeTooltipScene.tscn").Instantiate();
+				    Node tooltip = ResourceLoader.Load&lt;PackedScene&gt;("res://some_tooltip_scene.tscn").Instantiate();
 				    tooltip.GetNode&lt;Label&gt;("Label").Text = forText;
 				    return tooltip;
 				}
@@ -196,12 +197,12 @@
 			</description>
 		</method>
 		<method name="_structured_text_parser" qualifiers="virtual const">
-			<return type="Vector2i[]" />
+			<return type="Vector3i[]" />
 			<param index="0" name="args" type="Array" />
 			<param index="1" name="text" type="String" />
 			<description>
 				User defined BiDi algorithm override function.
-				Returns an [Array] of [Vector2i] text ranges, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
+				Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
 			</description>
 		</method>
 		<method name="accept_event">
@@ -229,11 +230,11 @@
 				[/gdscript]
 				[csharp]
 				// Given the child Label node "MyLabel", override its font color with a custom value.
-				GetNode&lt;Label&gt;("MyLabel").AddThemeColorOverride("font_color", new Color(1, 0.5f, 0))
+				GetNode&lt;Label&gt;("MyLabel").AddThemeColorOverride("font_color", new Color(1, 0.5f, 0));
 				// Reset the font color of the child label.
-				GetNode&lt;Label&gt;("MyLabel").RemoveThemeColorOverride("font_color")
+				GetNode&lt;Label&gt;("MyLabel").RemoveThemeColorOverride("font_color");
 				// Alternatively it can be overridden with the default value from the Label type.
-				GetNode&lt;Label&gt;("MyLabel").AddThemeColorOverride("font_color", GetThemeColor("font_color", "Label"))
+				GetNode&lt;Label&gt;("MyLabel").AddThemeColorOverride("font_color", GetThemeColor("font_color", "Label"));
 				[/csharp]
 				[/codeblocks]
 			</description>
@@ -383,7 +384,9 @@
 		<method name="get_global_rect" qualifiers="const">
 			<return type="Rect2" />
 			<description>
-				Returns the position and size of the control relative to the [CanvasLayer]. See [member global_position] and [member size].
+				Returns the position and size of the control relative to the containing canvas. See [member global_position] and [member size].
+				[b]Note:[/b] If the node itself or any parent [CanvasItem] between the node and the canvas have a non default rotation or skew, the resulting size is likely not meaningful.
+				[b]Note:[/b] Setting [member Viewport.gui_snap_controls_to_pixels] to [code]true[/code] can lead to rounding inaccuracies between the displayed control and the returned [Rect2].
 			</description>
 		</method>
 		<method name="get_minimum_size" qualifiers="const">
@@ -414,7 +417,9 @@
 		<method name="get_rect" qualifiers="const">
 			<return type="Rect2" />
 			<description>
-				Returns the position and size of the control relative to the top-left corner of the parent Control. See [member position] and [member size].
+				Returns the position and size of the control in the coordinate system of the containing node. See [member position], [member scale] and [member size].
+				[b]Note:[/b] If [member rotation] is not the default rotation, the resulting size is not meaningful.
+				[b]Note:[/b] Setting [member Viewport.gui_snap_controls_to_pixels] to [code]true[/code] can lead to rounding inaccuracies between the displayed control and the returned [Rect2].
 			</description>
 		</method>
 		<method name="get_screen_position" qualifiers="const">
@@ -538,12 +543,12 @@
 				[codeblocks]
 				[gdscript]
 				func _process(delta):
-				    grab_click_focus() #when clicking another Control node, this node will be clicked instead
+				    grab_click_focus() # When clicking another Control node, this node will be clicked instead.
 				[/gdscript]
 				[csharp]
-				public override void _Process(float delta)
+				public override void _Process(double delta)
 				{
-				    GrabClickFocus(); //when clicking another Control node, this node will be clicked instead
+				    GrabClickFocus(); // When clicking another Control node, this node will be clicked instead.
 				}
 				[/csharp]
 				[/codeblocks]
@@ -553,7 +558,7 @@
 			<return type="void" />
 			<description>
 				Steal the focus from another control and become the focused control (see [member focus_mode]).
-				[b]Note[/b]: Using this method together with [method Callable.call_deferred] makes it more reliable, especially when called inside [method Node._ready].
+				[b]Note:[/b] Using this method together with [method Callable.call_deferred] makes it more reliable, especially when called inside [method Node._ready].
 			</description>
 		</method>
 		<method name="has_focus" qualifiers="const">
@@ -796,7 +801,7 @@
 				Shows the given control at the mouse pointer. A good time to call this method is in [method _get_drag_data]. The control must not be in the scene tree. You should not free the control, and you should not keep a reference to the control beyond the duration of the drag. It will be deleted automatically after the drag has ended.
 				[codeblocks]
 				[gdscript]
-				export (Color, RGBA) var color = Color(1, 0, 0, 1)
+				@export var color = Color(1, 0, 0, 1)
 
 				func _get_drag_data(position):
 				    # Use a control that is not in the tree
@@ -808,16 +813,16 @@
 				[/gdscript]
 				[csharp]
 				[Export]
-				public Color Color = new Color(1, 0, 0, 1);
+				private Color _color = new Color(1, 0, 0, 1);
 
-				public override object GetDragData(Vector2 position)
+				public override Variant _GetDragData(Vector2 atPosition)
 				{
 				    // Use a control that is not in the tree
 				    var cpb = new ColorPickerButton();
-				    cpb.Color = Color;
-				    cpb.RectSize = new Vector2(50, 50);
+				    cpb.Color = _color;
+				    cpb.Size = new Vector2(50, 50);
 				    SetDragPreview(cpb);
-				    return Color;
+				    return _color;
 				}
 				[/csharp]
 				[/codeblocks]
@@ -895,6 +900,7 @@
 			<param index="0" name="position" type="Vector2" />
 			<description>
 				Moves the mouse cursor to [param position], relative to [member position] of this [Control].
+				[b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 			</description>
 		</method>
 	</methods>
@@ -991,24 +997,26 @@
 			By default, the node's pivot is its top-left corner. When you change its [member rotation] or [member scale], it will rotate or scale around this pivot. Set this property to [member size] / 2 to pivot around the Control's center.
 		</member>
 		<member name="position" type="Vector2" setter="_set_position" getter="get_position" default="Vector2(0, 0)">
-			The node's position, relative to its parent. It corresponds to the rectangle's top-left corner. The property is not affected by [member pivot_offset].
+			The node's position, relative to its containing node. It corresponds to the rectangle's top-left corner. The property is not affected by [member pivot_offset].
 		</member>
 		<member name="rotation" type="float" setter="set_rotation" getter="get_rotation" default="0.0">
 			The node's rotation around its pivot, in radians. See [member pivot_offset] to change the pivot's position.
+			[b]Note:[/b] This property is edited in the inspector in degrees. If you want to use degrees in a script, use [member rotation_degrees].
 		</member>
 		<member name="rotation_degrees" type="float" setter="set_rotation_degrees" getter="get_rotation_degrees">
 			Helper property to access [member rotation] in degrees instead of radians.
 		</member>
 		<member name="scale" type="Vector2" setter="set_scale" getter="get_scale" default="Vector2(1, 1)">
 			The node's scale, relative to its [member size]. Change this property to scale the node around its [member pivot_offset]. The Control's [member tooltip_text] will also scale according to this value.
-			[b]Note:[/b] This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]documentation[/url] instead of scaling Controls individually.
+			[b]Note:[/b] This property is mainly intended to be used for animation purposes. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the [url=$DOCS_URL/tutorials/rendering/multiple_resolutions.html]documentation[/url] instead of scaling Controls individually.
+			[b]Note:[/b] [member FontFile.oversampling] does [i]not[/i] take [Control] [member scale] into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [member ProjectSettings.gui/theme/default_font_multichannel_signed_distance_field] (applies to the default project font only), or enabling [b]Multichannel Signed Distance Field[/b] in the import options of a DynamicFont for custom fonts. On system fonts, [member SystemFont.multichannel_signed_distance_field] can be enabled in the inspector.
 			[b]Note:[/b] If the Control node is a child of a [Container] node, the scale will be reset to [code]Vector2(1, 1)[/code] when the scene is instantiated. To set the Control's scale when it's instantiated, wait for one frame using [code]await get_tree().process_frame[/code] then set its [member scale] property.
 		</member>
 		<member name="shortcut_context" type="Node" setter="set_shortcut_context" getter="get_shortcut_context">
 			The [Node] which must be a parent of the focused [Control] for the shortcut to be activated. If [code]null[/code], the shortcut can be activated when any control is focused (a global shortcut). This allows shortcuts to be accepted only when the user has a certain area of the GUI focused.
 		</member>
 		<member name="size" type="Vector2" setter="_set_size" getter="get_size" default="Vector2(0, 0)">
-			The size of the node's bounding rectangle, in pixels. [Container] nodes update this property automatically.
+			The size of the node's bounding rectangle, in the node's coordinate system. [Container] nodes update this property automatically.
 		</member>
 		<member name="size_flags_horizontal" type="int" setter="set_h_size_flags" getter="get_h_size_flags" enum="Control.SizeFlags" default="1">
 			Tells the parent [Container] nodes how they should resize and place the node on the X axis. Use one of the [enum SizeFlags] constants to change the flags. See the constants to learn what each does.

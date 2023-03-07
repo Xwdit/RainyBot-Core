@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="NavigationServer2D" inherits="Object" is_experimental="true" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
 	<brief_description>
-		Server interface for low-level 2D navigation access
+		Server interface for low-level 2D navigation access.
 	</brief_description>
 	<description>
 		NavigationServer2D is the server responsible for all 2D navigation. It handles several objects, namely maps, regions and agents.
@@ -41,12 +41,10 @@
 		<method name="agent_set_callback">
 			<return type="void" />
 			<param index="0" name="agent" type="RID" />
-			<param index="1" name="object_id" type="int" />
-			<param index="2" name="method" type="StringName" />
-			<param index="3" name="userdata" type="Variant" default="null" />
+			<param index="1" name="callback" type="Callable" />
 			<description>
-				Sets the callback [param object_id] and [param method] that gets called after each avoidance processing step for the [param agent]. The calculated [code]safe_velocity[/code] will be dispatched with a signal to the object just before the physics calculations.
-				[b]Note:[/b] Created callbacks are always processed independently of the SceneTree state as long as the agent is on a navigation map and not freed. To disable the dispatch of a callback from an agent use [method agent_set_callback] again with a [code]0[/code] ObjectID as the [param object_id].
+				Sets the callback that gets called after each avoidance processing step for the [param agent]. The calculated [code]safe_velocity[/code] will be passed as the first parameter just before the physics calculations.
+				[b]Note:[/b] Created callbacks are always processed independently of the SceneTree state as long as the agent is on a navigation map and not freed. To disable the dispatch of a callback from an agent use [method agent_set_callback] again with an empty [Callable].
 			</description>
 		</method>
 		<method name="agent_set_map">
@@ -128,6 +126,12 @@
 				Destroys the given RID.
 			</description>
 		</method>
+		<method name="get_debug_enabled" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] when the NavigationServer has debug enabled.
+			</description>
+		</method>
 		<method name="get_maps" qualifiers="const">
 			<return type="RID[]" />
 			<description>
@@ -137,21 +141,21 @@
 		<method name="link_create">
 			<return type="RID" />
 			<description>
-				Create a new link between two locations on a map.
+				Create a new link between two positions on a map.
 			</description>
 		</method>
-		<method name="link_get_end_location" qualifiers="const">
+		<method name="link_get_end_position" qualifiers="const">
 			<return type="Vector2" />
 			<param index="0" name="link" type="RID" />
 			<description>
-				Returns the ending location of this [code]link[/code].
+				Returns the ending position of this [code]link[/code].
 			</description>
 		</method>
 		<method name="link_get_enter_cost" qualifiers="const">
 			<return type="float" />
 			<param index="0" name="link" type="RID" />
 			<description>
-				Returns the [code]enter_cost[/code] of this [code]link[/code].
+				Returns the enter cost of this [param link].
 			</description>
 		</method>
 		<method name="link_get_map" qualifiers="const">
@@ -175,18 +179,18 @@
 				Returns the [code]ObjectID[/code] of the object which manages this link.
 			</description>
 		</method>
-		<method name="link_get_start_location" qualifiers="const">
+		<method name="link_get_start_position" qualifiers="const">
 			<return type="Vector2" />
 			<param index="0" name="link" type="RID" />
 			<description>
-				Returns the starting location of this [code]link[/code].
+				Returns the starting position of this [code]link[/code].
 			</description>
 		</method>
 		<method name="link_get_travel_cost" qualifiers="const">
 			<return type="float" />
 			<param index="0" name="link" type="RID" />
 			<description>
-				Returns the [code]travel_cost[/code] of this [code]link[/code].
+				Returns the travel cost of this [param link].
 			</description>
 		</method>
 		<method name="link_is_bidirectional" qualifiers="const">
@@ -204,12 +208,12 @@
 				Sets whether this [code]link[/code] can be travelled in both directions.
 			</description>
 		</method>
-		<method name="link_set_end_location">
+		<method name="link_set_end_position">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
-			<param index="1" name="location" type="Vector2" />
+			<param index="1" name="position" type="Vector2" />
 			<description>
-				Sets the exit location for the [code]link[/code].
+				Sets the exit position for the [code]link[/code].
 			</description>
 		</method>
 		<method name="link_set_enter_cost">
@@ -244,12 +248,12 @@
 				Set the [code]ObjectID[/code] of the object which manages this link.
 			</description>
 		</method>
-		<method name="link_set_start_location">
+		<method name="link_set_start_position">
 			<return type="void" />
 			<param index="0" name="link" type="RID" />
-			<param index="1" name="location" type="Vector2" />
+			<param index="1" name="position" type="Vector2" />
 			<description>
-				Sets the entry location for this [code]link[/code].
+				Sets the entry position for this [code]link[/code].
 			</description>
 		</method>
 		<method name="link_set_travel_cost">
@@ -425,7 +429,7 @@
 			<return type="float" />
 			<param index="0" name="region" type="RID" />
 			<description>
-				Returns the [code]enter_cost[/code] of this [param region].
+				Returns the enter cost of this [param region].
 			</description>
 		</method>
 		<method name="region_get_map" qualifiers="const">
@@ -453,7 +457,7 @@
 			<return type="float" />
 			<param index="0" name="region" type="RID" />
 			<description>
-				Returns the [code]travel_cost[/code] of this [param region].
+				Returns the travel cost of this [param region].
 			</description>
 		</method>
 		<method name="region_owns_point" qualifiers="const">
@@ -522,12 +526,24 @@
 				Sets the [param travel_cost] for this [param region].
 			</description>
 		</method>
+		<method name="set_debug_enabled">
+			<return type="void" />
+			<param index="0" name="enabled" type="bool" />
+			<description>
+				If [code]true[/code] enables debug mode on the NavigationServer.
+			</description>
+		</method>
 	</methods>
 	<signals>
 		<signal name="map_changed">
 			<param index="0" name="map" type="RID" />
 			<description>
 				Emitted when a navigation map is updated, when a region moves or is modified.
+			</description>
+		</signal>
+		<signal name="navigation_debug_changed">
+			<description>
+				Emitted when navigation debug settings are changed. Only available in debug builds.
 			</description>
 		</signal>
 	</signals>

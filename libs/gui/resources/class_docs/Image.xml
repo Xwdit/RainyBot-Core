@@ -75,12 +75,10 @@
 			<return type="int" enum="Error" />
 			<param index="0" name="mode" type="int" enum="Image.CompressMode" />
 			<param index="1" name="source" type="int" enum="Image.CompressSource" default="0" />
-			<param index="2" name="lossy_quality" type="float" default="0.7" />
-			<param index="3" name="astc_format" type="int" enum="Image.ASTCFormat" default="0" />
+			<param index="2" name="astc_format" type="int" enum="Image.ASTCFormat" default="0" />
 			<description>
 				Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
 				The [param mode] parameter helps to pick the best compression method for DXT and ETC2 formats. It is ignored for ASTC compression.
-				The [param lossy_quality] parameter is optional for compressors that support it.
 				For ASTC compression, the [param astc_format] parameter must be supplied.
 			</description>
 		</method>
@@ -88,12 +86,10 @@
 			<return type="int" enum="Error" />
 			<param index="0" name="mode" type="int" enum="Image.CompressMode" />
 			<param index="1" name="channels" type="int" enum="Image.UsedChannels" />
-			<param index="2" name="lossy_quality" type="float" default="0.7" />
-			<param index="3" name="astc_format" type="int" enum="Image.ASTCFormat" default="0" />
+			<param index="2" name="astc_format" type="int" enum="Image.ASTCFormat" default="0" />
 			<description>
 				Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
 				This is an alternative to [method compress] that lets the user supply the channels used in order for the compressor to pick the best DXT and ETC2 formats. For other formats (non DXT or ETC2), this argument is ignored.
-				The [param lossy_quality] parameter is optional for compressors that support it.
 				For ASTC compression, the [param astc_format] parameter must be supplied.
 			</description>
 		</method>
@@ -486,16 +482,14 @@
 				[gdscript]
 				var img_width = 10
 				var img_height = 5
-				var img = Image.new()
-				img.create(img_width, img_height, false, Image.FORMAT_RGBA8)
+				var img = Image.create(img_width, img_height, false, Image.FORMAT_RGBA8)
 
 				img.set_pixel(1, 2, Color.RED) # Sets the color at (1, 2) to red.
 				[/gdscript]
 				[csharp]
 				int imgWidth = 10;
 				int imgHeight = 5;
-				var img = new Image();
-				img.Create(imgWidth, imgHeight, false, Image.Format.Rgba8);
+				var img = Image.Create(imgWidth, imgHeight, false, Image.Format.Rgba8);
 
 				img.SetPixel(1, 2, Colors.Red); // Sets the color at (1, 2) to red.
 				[/csharp]
@@ -514,18 +508,16 @@
 				[gdscript]
 				var img_width = 10
 				var img_height = 5
-				var img = Image.new()
-				img.create(img_width, img_height, false, Image.FORMAT_RGBA8)
+				var img = Image.create(img_width, img_height, false, Image.FORMAT_RGBA8)
 
 				img.set_pixelv(Vector2i(1, 2), Color.RED) # Sets the color at (1, 2) to red.
 				[/gdscript]
 				[csharp]
 				int imgWidth = 10;
 				int imgHeight = 5;
-				var img = new Image();
-				img.Create(imgWidth, imgHeight, false, Image.Format.Rgba8);
+				var img = Image.Create(imgWidth, imgHeight, false, Image.Format.Rgba8);
 
-				img.SetPixelv(new Vector2i(1, 2), Colors.Red); // Sets the color at (1, 2) to red.
+				img.SetPixelv(new Vector2I(1, 2), Colors.Red); // Sets the color at (1, 2) to red.
 				[/csharp]
 				[/codeblocks]
 				This is the same as [method set_pixel], but with a [Vector2i] argument instead of two integer arguments.

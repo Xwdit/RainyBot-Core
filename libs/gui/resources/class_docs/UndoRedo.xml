@@ -17,7 +17,7 @@
 		func undo_something():
 		    pass # Put here the code that reverts what's done by "do_something()".
 
-		func _on_MyButton_pressed():
+		func _on_my_button_pressed():
 		    var node = get_node("MyNode2D")
 		    undo_redo.create_action("Move the node")
 		    undo_redo.add_do_method(self, "do_something")
@@ -27,11 +27,11 @@
 		    undo_redo.commit_action()
 		[/gdscript]
 		[csharp]
-		public UndoRedo UndoRedo;
+		private UndoRedo _undoRedo;
 
 		public override void _Ready()
 		{
-		    UndoRedo = GetUndoRedo(); // Method of EditorPlugin.
+		    _undoRedo = GetUndoRedo(); // Method of EditorPlugin.
 		}
 
 		public void DoSomething()
@@ -47,12 +47,12 @@
 		private void OnMyButtonPressed()
 		{
 		    var node = GetNode&lt;Node2D&gt;("MyNode2D");
-		    UndoRedo.CreateAction("Move the node");
-		    UndoRedo.AddDoMethod(this, nameof(DoSomething));
-		    UndoRedo.AddUndoMethod(this, nameof(UndoSomething));
-		    UndoRedo.AddDoProperty(node, "position", new Vector2(100, 100));
-		    UndoRedo.AddUndoProperty(node, "position", node.Position);
-		    UndoRedo.CommitAction();
+		    _undoRedo.CreateAction("Move the node");
+		    _undoRedo.AddDoMethod(new Callable(this, MethodName.DoSomething));
+		    _undoRedo.AddUndoMethod(new Callable(this, MethodName.UndoSomething));
+		    _undoRedo.AddDoProperty(node, "position", new Vector2(100, 100));
+		    _undoRedo.AddUndoProperty(node, "position", node.Position);
+		    _undoRedo.CommitAction();
 		}
 		[/csharp]
 		[/codeblocks]
