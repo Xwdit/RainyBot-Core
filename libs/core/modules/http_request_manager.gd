@@ -46,9 +46,9 @@ func send_http_post_request(url:String,data:Variant="",headers:PackedStringArray
 	add_child(node)
 	var error:int
 	if data is PackedByteArray:
-		error = node.request_raw(url,headers,true,HTTPClient.METHOD_POST,data)
+		error = node.request_raw(url,headers,HTTPClient.METHOD_POST,data)
 	else:
-		error = node.request(url,headers,true,HTTPClient.METHOD_POST,data)
+		error = node.request(url,headers,HTTPClient.METHOD_POST,data)
 	if error:
 		node.queue_free()
 		GuiManager.console_print_error("在发送Http Post请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])
@@ -86,9 +86,9 @@ func send_http_put_request(url:String,data:Variant="",headers:PackedStringArray=
 	add_child(node)
 	var error:int
 	if data is PackedByteArray:
-		error = node.request_raw(url,headers,true,HTTPClient.METHOD_PUT,data)
+		error = node.request_raw(url,headers,HTTPClient.METHOD_PUT,data)
 	else:
-		error = node.request(url,headers,true,HTTPClient.METHOD_PUT,data)
+		error = node.request(url,headers,HTTPClient.METHOD_PUT,data)
 	if error:
 		node.queue_free()
 		GuiManager.console_print_error("在发送Http Put请求到 %s 时发生了一个错误: %s"%[url,error_string(error)])

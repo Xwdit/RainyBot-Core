@@ -26,7 +26,7 @@ func connect_to_url(url) -> int:
 	socket.outbound_buffer_size = 10485760
 	socket.supported_protocols = supported_protocols
 	socket.handshake_headers = handshake_headers
-	var err = socket.connect_to_url(url, tls_verify, tls_trusted_certificate)
+	var err = socket.connect_to_url(url, TLSOptions.client(tls_trusted_certificate) if tls_verify else TLSOptions.client_unsafe(tls_trusted_certificate))
 	if err != OK:
 		return err
 	return OK

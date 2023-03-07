@@ -4,7 +4,7 @@ extends AcceptDialog
 signal closed(confirmed:bool)
 
 
-func _on_accept_popup_cancelled()->void:
+func _on_accept_popup_canceled()->void:
 	closed.emit(false)
 
 

@@ -11,6 +11,6 @@ ok_button_text = "确定"
 dialog_close_on_escape = false
 script = ExtResource("1_kda2m")
 
-[connection signal="cancelled" from="." to="." method="_on_accept_popup_cancelled"]
+[connection signal="canceled" from="." to="." method="_on_accept_popup_canceled"]
 [connection signal="confirmed" from="." to="." method="_on_accept_popup_confirmed"]
 [connection signal="visibility_changed" from="." to="." method="_on_accept_popup_visibility_changed"]

@@ -12,6 +12,6 @@ dialog_close_on_escape = false
 cancel_button_text = "取消"
 script = ExtResource("1_11ji8")
 
-[connection signal="cancelled" from="." to="." method="_on_confirm_popup_cancelled"]
+[connection signal="canceled" from="." to="." method="_on_confirm_popup_canceled"]
 [connection signal="confirmed" from="." to="." method="_on_confirm_popup_confirmed"]
 [connection signal="visibility_changed" from="." to="." method="_on_confirm_popup_visibility_changed"]

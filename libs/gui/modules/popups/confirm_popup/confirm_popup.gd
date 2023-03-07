@@ -4,7 +4,7 @@ extends ConfirmationDialog
 signal closed(confirmed:bool)
 
 
-func _on_confirm_popup_cancelled()->void:
+func _on_confirm_popup_canceled()->void:
 	closed.emit(false)
 
 
