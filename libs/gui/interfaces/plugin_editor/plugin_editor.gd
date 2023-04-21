@@ -75,7 +75,7 @@ func update_file_list():
 		if !f_dic.has(f_name):
 			f_dic[f_name] = null
 	var filter:String = $HSplitContainer/VSplitContainer/FileList/FileSearch.text
-	var files:Array[String] = f_dic.keys()
+	var files:Array = f_dic.keys()
 	files.sort()
 	file_list_node.clear()
 	for f in files:

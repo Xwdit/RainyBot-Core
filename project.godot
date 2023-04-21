@@ -14,6 +14,8 @@ config/name="RainyBot-Core"
 run/main_scene="res://libs/gui/main_gui.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="RainyBot"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.0")
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0.113725, 0.133333, 0.160784, 1)
@@ -22,8 +24,6 @@ boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://libs/resources/logo.png"
 config/windows_native_icon="res://libs/resources/logo.ico"
-config/auto_accept_quit=false
-config/quit_on_go_back=false
 
 [autoload]
 
