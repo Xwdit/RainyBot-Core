@@ -11,7 +11,8 @@ const default_config:Dictionary = {
 	"silk_encoder_path":"",
 	"output_cleanup_threshold":1000,
 	"output_max_length":2000,
-	"http_request_proxy":""
+	"http_request_proxy":"",
+	"output_warning_enabled":true
 }
 
 const config_description:Dictionary = {
@@ -21,7 +22,8 @@ const config_description:Dictionary = {
 	"silk_encoder_path":"在这里填写silk-encoder可执行文件的绝对路径(请使用正斜杠\"/\"而不是反斜杠\"\\\")，或其位于RainyBot根目录下的相对路径(以res://作为前缀)，可用于与ffmpeg配合将音频文件自动转为音质更好的.slk语音格式",
 	"output_cleanup_threshold":"在这里设置控制台自动清空历史输出的触发行数，较低的值可显著降低控制台的内存占用，若为小于或等于0的值则不进行自动清空 (默认为每1000行清空一次)",
 	"output_max_length":"单次输出/打印的最大长度，超过此长度的部分将会被自动省略 (默认为1000个字符)",
-	"http_request_proxy":"在这里设置RainyBot全局HTTP请求的代理服务器地址，格式需要为：\"主机名:端口号\""
+	"http_request_proxy":"在这里设置RainyBot全局HTTP请求的代理服务器地址，格式需要为：\"主机名:端口号\"",
+	"output_warning_enabled":"在这里设置是否开启控制台警告"
 }
 
 var loaded_config:Dictionary = default_config
@@ -106,6 +108,10 @@ func get_update_source()->String:
 	
 func is_update_enabled()->bool:
 	return loaded_config["update_enabled"]
+
+
+func is_output_warning_enabled()->bool:
+	return loaded_config["output_warning_enabled"]
 
 
 func get_ffmpeg_path()->String:
