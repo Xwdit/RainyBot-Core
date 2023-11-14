@@ -67,12 +67,15 @@ func init_config()->void:
 					GuiManager.console_print_error("配置文件更新失败，请检查文件权限是否配置正确! 路径:"+config_path)
 					GuiManager.console_print_warning("若要重试请重启RainyBot!")
 					return
+			var is_valid_config:bool = true
 			for key in _config:
 				if (_config[key] is String && _config[key] == "") or (_config[key] == null):
+					is_valid_config = false
 					GuiManager.console_print_warning("警告: 检测到内容为空的配置项，可能会导致出现问题: "+key)
 					GuiManager.console_print_warning("该配置项的描述为: %s" % config_description[key])
-					GuiManager.console_print_warning("可以通过控制台菜单，或前往以下路径来验证与修改配置: "+config_path)
-					GuiManager.console_print_warning("配置完成后请重启RainyBot")
+			if !is_valid_config:
+				GuiManager.console_print_warning("可以通过控制台菜单，或前往以下路径来验证与修改配置: "+config_path)
+				GuiManager.console_print_warning("配置完成后请重启RainyBot")
 			loaded_config = _config
 			GuiManager.console_print_success("RainyBot控制台配置文件加载成功！")
 			emit_signal("config_loaded")
