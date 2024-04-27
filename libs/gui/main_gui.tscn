@@ -6,11 +6,6 @@
 [ext_resource type="Script" path="res://libs/gui/modules/control_bar.gd" id="3_j8q6e"]
 [ext_resource type="PackedScene" uid="uid://bmw7jhvlj3oqd" path="res://libs/gui/interfaces/doc_viewer/doc_viewer.tscn" id="4_ta7ge"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6888m"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_260fn"]
-bg_color = Color(0.113725, 0.133333, 0.160784, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glv58"]
 content_margin_left = 8.0
 content_margin_right = 8.0
@@ -22,6 +17,11 @@ border_color = Color(0.356863, 0.580392, 0.776471, 1)
 content_margin_left = 8.0
 content_margin_right = 8.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_260fn"]
+bg_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6888m"]
 
 [node name="MainGui" type="Control" groups=["MainGui"]]
 layout_mode = 3
@@ -49,12 +49,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_selected_color = Color(0.423529, 0.701961, 0.945098, 1)
-theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_6888m")
-theme_override_styles/panel = SubResource("StyleBoxFlat_260fn")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_glv58")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_46na4")
+theme_override_styles/panel = SubResource("StyleBoxFlat_260fn")
+theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_6888m")
 tab_alignment = 1
-current_tab = 0
 
 [node name="Console" parent="TabContainer" instance=ExtResource("2_xrvn5")]
 layout_mode = 2
