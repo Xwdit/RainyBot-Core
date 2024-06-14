@@ -30,8 +30,8 @@ func get_sender()->Member:
 	
 func reply(msg,quote:bool=false,_at:bool=false,timeout:float=-INF)->BotRequestResult:
 	var _chain:Array = []
-	if msg is String:
-		_chain.append(BotCodeMessage.init(msg).get_metadata())
+	if msg is String or msg is int:
+		_chain.append(BotCodeMessage.init(str(msg)).get_metadata())
 	elif msg is Message:
 		_chain.append(msg.get_metadata())
 	elif msg is MessageChain:

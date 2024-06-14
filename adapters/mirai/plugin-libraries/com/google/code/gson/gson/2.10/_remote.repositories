@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Sat Nov 11 14:38:51 CST 2023
+gson-2.10.jar>https\://maven.aliyun.com/repository/central=
+gson-2.10.pom>https\://maven.aliyun.com/repository/central=

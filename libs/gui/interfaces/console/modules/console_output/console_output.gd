@@ -38,7 +38,8 @@ func add_error(_text)->void:
 	
 	
 func add_warning(_text)->void:
-	add_newline_with_time(_text,Color("ffeda1"))
+	if ConfigManager.is_output_warning_enabled():
+		add_newline_with_time(_text,Color("ffeda1"))
 
 
 func add_success(_text)->void:
